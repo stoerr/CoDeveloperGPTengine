@@ -26,5 +26,4 @@ target
 # Mac OS X
 ._*
 .DS_*
-forChatGPTtoMigrate/
-
+dependency-reduced-pom.xml
