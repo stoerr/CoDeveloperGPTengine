@@ -26,3 +26,5 @@ target
 # Mac OS X
 ._*
 .DS_*
+forChatGPTtoMigrate/
+
