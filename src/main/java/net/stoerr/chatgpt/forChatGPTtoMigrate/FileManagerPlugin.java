@@ -1,4 +1,4 @@
-#!/usr/bin/env java --source 16
+package net.stoerr.chatgpt.forChatGPTtoMigrate;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.nio.file.StandardOpenOption.CREATE;
@@ -165,14 +165,7 @@ public class FileManagerPlugin implements HttpHandler {
         exchange.close();
     }
 
-    private static abstract class AbstractPluginOperation {
-
-        private final Path currentDir;
-
-        public AbstractPluginOperation(Path currentDir) {
-            this.currentDir = currentDir;
-        }
-
+    private abstract class AbstractPluginOperation {
         public abstract void handle(HttpExchange exchange) throws IOException;
 
         Map<String, String> getQueryParams(HttpExchange exchange) {
@@ -204,7 +197,7 @@ public class FileManagerPlugin implements HttpHandler {
     }
 
     // curl -is http://localhost:3001/listFiles?path=.
-    private final AbstractPluginOperation LIST_FILES = new AbstractPluginOperation(currentDir) {
+    private final AbstractPluginOperation LIST_FILES = new AbstractPluginOperation() {
         {
             handlers.put("/listFiles", this);
             pathDescriptions.append("""
@@ -284,7 +277,7 @@ public class FileManagerPlugin implements HttpHandler {
     };
 
     // curl -is http://localhost:3001/readFile?path=somefile.txt
-    private final AbstractPluginOperation READ_FILE = new AbstractPluginOperation(currentDir) {
+    private final AbstractPluginOperation READ_FILE = new AbstractPluginOperation() {
         {
             handlers.put("/readFile", this);
             pathDescriptions.append("""
@@ -330,7 +323,7 @@ public class FileManagerPlugin implements HttpHandler {
      * An operation /reason that might or might not be good to introduce a REACT like pattern - it just gets a text on stdin and writes that to stdout.
      */
     // curl -is http://localhost:3001/reason -d "{\"reason\": \"testreason\"}"
-    private final AbstractPluginOperation GIVE_REASON = new AbstractPluginOperation(currentDir) {
+    private final AbstractPluginOperation GIVE_REASON = new AbstractPluginOperation() {
         {
             handlers.put("/reason", this);
             pathDescriptions.append("""
@@ -368,7 +361,7 @@ public class FileManagerPlugin implements HttpHandler {
      * an operation that writes the message into the file at path.
      */
     // curl -is http://localhost:3001/writeFile?path=testfile -d '{"content":"testcontent line one\nline two\n"}'
-    private final AbstractPluginOperation WRITEFILE = new AbstractPluginOperation(currentDir) {
+    private final AbstractPluginOperation WRITEFILE = new AbstractPluginOperation() {
         {
             handlers.put("/writeFile", this);
             pathDescriptions.append("""
