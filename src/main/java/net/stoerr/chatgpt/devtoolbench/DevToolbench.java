@@ -8,8 +8,9 @@ import io.undertow.util.Headers;
 public class DevToolbench {
 
     public static void main(final String[] args) {
+        int port = args.length > 0 ? Integer.parseInt(args[0]) : 3001;
         Undertow server = Undertow.builder()
-                .addHttpListener(8080, "localhost")
+                .addHttpListener(port, "localhost")
                 .setHandler(new HttpHandler() {
                     @Override
                     public void handleRequest(final HttpServerExchange exchange) throws Exception {
