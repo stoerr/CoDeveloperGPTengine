@@ -1,0 +1,6 @@
+Create a pom.xml for a project running a Spark http server, using Java version 16 in the corresponding maven.compiler.* properties.
+groupid should be net.stoerr.chatgpt, artifactid developersChatGPTtoolbenchPlugin.
+
+Create a java file net.stoerr.chatgpt.devtoolbench.DevToolbench that starts a http server and returns "Hello World!" to every get request on port 8080.
+Configure that as the main class for the maven generated jar.
+Use the fatjar plugin to create a jar with all dependencies included.

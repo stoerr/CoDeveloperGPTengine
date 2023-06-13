@@ -1,27 +1,15 @@
 package net.stoerr.chatgpt.forChatGPTtoMigrate;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.nio.file.StandardOpenOption.CREATE;
-import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
-import static java.nio.file.StandardOpenOption.WRITE;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.net.InetSocketAddress;
-import java.net.URLDecoder;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -46,7 +34,7 @@ public class FileManagerPlugin implements HttpHandler {
             Options: -h or --help print this help message.
             """;
 
-    private static final Pattern IGNORE = Pattern.compile(".*/[.].*");
+    public static final Pattern IGNORE = Pattern.compile(".*/[.].*");
 
     int port = 3001;
 
@@ -104,6 +92,18 @@ public class FileManagerPlugin implements HttpHandler {
         System.out.println("Server started on http://localhost:" + handler.port + "/ in " + handler.currentDir);
     }
 
+    FileManagerPlugin() {
+        register(new ListFilesOperation());
+        register(new ReadFileOperation());
+        register(new WriteFileOperation());
+        register(new GiveReasonOperation());
+    }
+
+    void register(AbstractPluginOperation operation) {
+        handlers.put(operation.getUrl(), operation);
+        pathDescriptions.append(operation.openApiDescription());
+    }
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         if (!"OPTIONS".equals(exchange.getRequestMethod())) {
@@ -138,7 +138,6 @@ public class FileManagerPlugin implements HttpHandler {
 
     /**
      * Remove any CORS restrictions so that ChatGPT interface can use it.
-     * TODO: restrict to ChatGPT domain
      */
     private void giveCORSResponse(HttpExchange exchange) throws IOException {
         // already there: exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
@@ -165,266 +164,5 @@ public class FileManagerPlugin implements HttpHandler {
         exchange.close();
     }
 
-    private abstract class AbstractPluginOperation {
-        public abstract void handle(HttpExchange exchange) throws IOException;
-
-        Map<String, String> getQueryParams(HttpExchange exchange) {
-            String query = exchange.getRequestURI().getQuery();
-            if (query == null) {
-                return Collections.emptyMap();
-            }
-            return Arrays.stream(query.split("&")).map(s -> s.split("=")).collect(Collectors.toMap(a -> a[0], a -> URLDecoder.decode(a[1], UTF_8)));
-        }
-
-        Path getPath(HttpExchange exchange) {
-            String path = getQueryParams(exchange).get("path");
-            Path resolved = currentDir.resolve(path).normalize().toAbsolutePath();
-            if (!resolved.startsWith(currentDir)) {
-                throw new IllegalArgumentException("Path " + path + " is not in current directory " + currentDir);
-            }
-            return resolved;
-        }
-
-        String jsonRep(String string) {
-            string = string == null ? "" : string;
-            string = string.replace("\b", "\\b")
-                    .replace("\f", "\\f")
-                    .replace("\n", "\\n")
-                    .replace("\r", "\\r")
-                    .replace("\t", "\\t");
-            return "\"" + string.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
-        }
-    }
-
-    // curl -is http://localhost:3001/listFiles?path=.
-    private final AbstractPluginOperation LIST_FILES = new AbstractPluginOperation() {
-        {
-            handlers.put("/listFiles", this);
-            pathDescriptions.append("""
-                      /listFiles:
-                        get:
-                          operationId: listFiles
-                          summary: Recursively lists files in a directory.
-                          parameters:
-                            - name: path
-                              in: query
-                              description: relative path to directory
-                              required: true
-                              schema:
-                                type: string
-                            - name: filenameRegex
-                              in: query
-                              description: regex to filter file names
-                              required: false
-                              schema:
-                                type: string
-                            - name: grepRegex
-                              in: query
-                              description: q
-                              required: false
-                              schema:
-                                type: string
-                          responses:
-                            '200':
-                              description: List of relative paths of the files
-                              content:
-                                application/json:
-                                  schema:
-                                    type: array
-                                    items:
-                                      type: string
-                            '404':
-                              description: Directory not found
-                    """.stripIndent());
-        }
-
-        public void handle(HttpExchange exchange) throws IOException {
-            Map<String, String> queryParams = getQueryParams(exchange);
-            Path path = getPath(exchange);
-            String filenameRegex = queryParams.get("filenameRegex");
-            String grepRegex = queryParams.get("grepRegex");
-            Pattern filenamePattern = filenameRegex != null ? Pattern.compile(filenameRegex) : null;
-            Pattern grepPattern = grepRegex != null ? Pattern.compile(grepRegex) : null;
-
-            if (Files.isDirectory(path)) {
-                exchange.getResponseHeaders().add("Content-Type", "application/json; charset=utf-8");
-                exchange.sendResponseHeaders(200, 0);
-                List<String> files = Files.walk(path)
-                        .filter(Files::isRegularFile)
-                        .filter(p -> !IGNORE.matcher(p.toString()).matches())
-                        .filter(p -> filenamePattern == null || filenamePattern.matcher(p.getFileName().toString()).matches())
-                        .filter(p -> {
-                            if (grepPattern == null) {
-                                return true;
-                            } else {
-                                try (Stream<String> lines = Files.lines(p)) {
-                                    return lines.anyMatch(line -> grepPattern.matcher(line).find());
-                                } catch (IOException e) {
-                                    throw new UncheckedIOException(e);
-                                }
-                            }
-                        })
-                        .map(p -> currentDir.relativize(p).toString())
-                        .collect(Collectors.toList());
-                String response = "[\n" + files.stream().map(this::jsonRep).collect(Collectors.joining(",\n")) + "\n]\n";
-                exchange.getResponseBody().write(response.getBytes(UTF_8));
-            } else {
-                exchange.sendResponseHeaders(404, 0);
-                exchange.getResponseBody().write("Directory not found".getBytes());
-                return;
-            }
-        }
-    };
-
-    // curl -is http://localhost:3001/readFile?path=somefile.txt
-    private final AbstractPluginOperation READ_FILE = new AbstractPluginOperation() {
-        {
-            handlers.put("/readFile", this);
-            pathDescriptions.append("""
-                      /readFile:
-                        get:
-                          operationId: readFile
-                          summary: Read a files content.
-                          parameters:
-                            - name: path
-                              in: query
-                              description: relative path to file
-                              required: true
-                              schema:
-                                type: string
-                          responses:
-                            '200':
-                              description: Content of the file
-                              content:
-                                text/plain:
-                                  schema:
-                                    type: string
-                            '404':
-                              description: File not found
-                    """.stripIndent());
-        }
-
-        public void handle(HttpExchange exchange) throws IOException {
-            Path path = getPath(exchange);
-            if (Files.exists(path)) {
-                exchange.getResponseHeaders().add("Content-Type", "text/plain; charset=utf-8");
-                byte[] bytes = Files.readAllBytes(path);
-                exchange.sendResponseHeaders(200, bytes.length);
-                exchange.getResponseBody().write(bytes);
-            } else {
-                exchange.getResponseHeaders().add("Content-Type", "text/plain; charset=utf-8");
-                exchange.sendResponseHeaders(404, 0);
-                exchange.getResponseBody().write("File not found".getBytes());
-            }
-        }
-    };
-
-    /**
-     * An operation /reason that might or might not be good to introduce a REACT like pattern - it just gets a text on stdin and writes that to stdout.
-     */
-    // curl -is http://localhost:3001/reason -d "{\"reason\": \"testreason\"}"
-    private final AbstractPluginOperation GIVE_REASON = new AbstractPluginOperation() {
-        {
-            handlers.put("/reason", this);
-            pathDescriptions.append("""
-                      /reason:
-                        post:
-                          operationId: reason
-                          summary: Provide a reason for the next operation on the filemanager plugin.
-                          requestBody:
-                            required: true
-                            content:
-                              application/json:
-                                schema:
-                                  type: object
-                                  properties:
-                                    content:
-                                      type: string
-                          responses:
-                            '204':
-                              description: Reason accepted
-                    """.stripIndent());
-        }
-
-        public void handle(HttpExchange exchange) throws IOException {
-            exchange.getResponseHeaders().add("Content-Type", "text/plain; charset=utf-8");
-            exchange.sendResponseHeaders(204, -1);
-            try (InputStream is = exchange.getRequestBody()) {
-                System.out.print("Reason: ");
-                is.transferTo(System.out);
-                System.out.println();
-            }
-        }
-    };
-
-    /**
-     * an operation that writes the message into the file at path.
-     */
-    // curl -is http://localhost:3001/writeFile?path=testfile -d '{"content":"testcontent line one\nline two\n"}'
-    private final AbstractPluginOperation WRITEFILE = new AbstractPluginOperation() {
-        {
-            handlers.put("/writeFile", this);
-            pathDescriptions.append("""
-                      /writeFile:
-                        post:
-                          operationId: writeFile
-                          summary: Write a file.
-                          parameters:
-                            - name: path
-                              in: query
-                              description: relative path to directory for the created file
-                              required: true
-                              schema:
-                                type: string
-                          requestBody:
-                            required: true
-                            content:
-                              application/json:
-                                schema:
-                                  type: object
-                                  properties:
-                                    content:
-                                      type: string
-                          responses:
-                            '204':
-                              description: File written
-                            '422':
-                              description: The request body was not a valid JSON object with a content property
-                    """.stripIndent());
-        }
-
-        /**
-         * Content JSON is  e.g. {"content":"Sunlight warms the day,\nClouds dance in the azure sky,\nWeather's gentle play."}
-         * We transform to real text by matching that with regex. The regex should match the whole thing including braces, possibly whitespace before and after and at places where it doesn't hurt the JSON
-         */
-        static final Pattern CONTENT_PATTERN = Pattern.compile("\\s*\\{\\s*\"content\"\\s*:\\s*\"(.*)\"\\s*\\}\\s*");
-
-        public void handle(HttpExchange exchange) throws IOException {
-            try (InputStream is = exchange.getRequestBody()) {
-                String json = new String(is.readAllBytes(), UTF_8);
-                Matcher matcher = CONTENT_PATTERN.matcher(json);
-                if (!matcher.matches()) { // send 422
-                    System.out.println("Broken JSON: " + json);
-                    exchange.sendResponseHeaders(422, 0);
-                    exchange.getResponseBody().write("The request body was not a valid JSON object with a content property".getBytes());
-                    return;
-                }
-                exchange.sendResponseHeaders(204, -1);
-                String content = matcher.group(1);
-                // unquote quoted characters \n, \t, \", \\, \b, \f, \r in content
-                content = content.replaceAll("\\\\n", "\n");
-                content = content.replaceAll("\\\\t", "\t");
-                content = content.replaceAll("\\\\\"", "\"");
-                content = content.replaceAll("\\\\\\\\", "\\\\");
-                content = content.replaceAll("\\\\b", "\b");
-                content = content.replaceAll("\\\\f", "\f");
-                Path path = getPath(exchange);
-                if (!Files.exists(path.getParent())) {
-                    Files.createDirectories(path.getParent());
-                }
-                Files.write(path, content.getBytes(UTF_8), CREATE, WRITE, TRUNCATE_EXISTING);
-                System.out.println("Wrote file " + path);
-            }
-        }
-    };
+    ;;;;
 }
