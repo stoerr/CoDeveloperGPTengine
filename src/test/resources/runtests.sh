@@ -15,7 +15,7 @@ port=7364
 cd "$(dirname "$0")"
 # start the app
 cd testdir
-../FileManagerPlugin $port &
+java -jar ../../../../target/developersChatGPTtoolbenchPlugin-*.jar $port &
 # save the pid of the app
 pid=$!
 trap "kill $pid" EXIT

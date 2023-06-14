@@ -18,6 +18,11 @@ public class WriteFileOperation extends AbstractPluginOperation {
     public void handleRequest(HttpServerExchange exchange) throws Exception {
         Deque<String> jsonDeque = exchange.getQueryParameters().get("content");
         String json = jsonDeque != null ? jsonDeque.peekFirst() : null;
+        if (json == null) {
+            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
+            exchange.getResponseSender().send("Missing content parameter");
+            return;
+        }
         Matcher matcher = CONTENT_PATTERN.matcher(json);
         if (!matcher.matches()) {
             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
@@ -25,13 +30,10 @@ public class WriteFileOperation extends AbstractPluginOperation {
             return;
         }
         String content = matcher.group(1);
-        // unquote quoted characters \n, \t, \", \\, \b, \f, \r in content
         content = content.replaceAll("\\\\n", "\n");
         content = content.replaceAll("\\\\t", "\t");
         content = content.replaceAll("\\\\\"", "\"");
         content = content.replaceAll("\\\\\\\\", "\\\\");
-        content = content.replaceAll("\\\\b", "\b");
-        content = content.replaceAll("\\\\f", "\f");
         Path path = getPath(exchange);
         if (!Files.exists(path.getParent())) {
             Files.createDirectories(path.getParent());

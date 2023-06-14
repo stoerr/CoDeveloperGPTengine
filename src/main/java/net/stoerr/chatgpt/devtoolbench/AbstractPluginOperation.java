@@ -2,11 +2,9 @@ package net.stoerr.chatgpt.devtoolbench;
 
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
-import io.undertow.util.PathTemplateMatch;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -23,8 +21,7 @@ public abstract class AbstractPluginOperation implements HttpHandler {
     }
 
     protected Path getPath(HttpServerExchange exchange) {
-        PathTemplateMatch pathMatch = exchange.getAttachment(PathTemplateMatch.ATTACHMENT_KEY);
-        String path = pathMatch.getParameters().get("path");
+        String path = getQueryParams(exchange).get("path");
         Path resolved = currentDir.resolve(path).normalize().toAbsolutePath();
         if (!resolved.startsWith(currentDir)) {
             throw new IllegalArgumentException("Path " + path + " is not in current directory " + currentDir);
