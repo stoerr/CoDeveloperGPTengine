@@ -50,7 +50,7 @@ public class FileManagerPlugin implements HttpHandler {
                 },
                 "api": {
                     "type": "openapi",
-                    "url": "http://localhost:THEPORT/filemanager.yaml"
+                    "url": "http://localhost:THEPORT/devtoolbench.yaml"
                 },
                 "logo_url": "https://d1q6f0aelx0por.cloudfront.net/product-logos/library-hello-world-logo.png",
                 "contact_email": "hans-peter+publicsoftware@stoerr.net",
@@ -73,7 +73,7 @@ public class FileManagerPlugin implements HttpHandler {
     final Map<String, AbstractPluginOperation> handlers = new HashMap<>();
 
     final Map<String, Supplier<String>> STATICFILES = Map.of("/.well-known/ai-plugin.json",
-            () -> AIPLUGIN_JSON.replaceAll("THEPORT", String.valueOf(port)), "/filemanager.yaml",
+            () -> AIPLUGIN_JSON.replaceAll("THEPORT", String.valueOf(port)), "/devtoolbench.yaml",
             () -> OPENAPI_DESCR_START.replaceAll("THEPORT", String.valueOf(port)) + pathDescriptions.toString());
 
     final Path currentDir = Path.of(".").normalize().toAbsolutePath();
