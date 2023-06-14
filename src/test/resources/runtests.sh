@@ -50,7 +50,7 @@ function executetest() {
 }
 
 executetest /.well-known/ai-plugin.json "" ai-plugin.json
-executetest /filemanager.yaml "" filemanager.yaml
+executetest /devtoolbench.yaml "" devtoolbench.yaml
 executetest /listFiles?path=. "" listFiles.json
 executetest /listFiles?path=subdir "" listFilesSubdir.json
 executetest /readFile?path=firstfile.txt "" getFirstfile.txt
