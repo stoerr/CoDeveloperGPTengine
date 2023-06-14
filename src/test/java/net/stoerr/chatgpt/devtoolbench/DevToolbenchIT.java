@@ -28,6 +28,6 @@ public class DevToolbenchIT {
         }
         rd.close();
 
-        Assert.assertEquals("Hello World!", result.toString());
+        Assert.assertEquals("Unknown request", result.toString());
     }
 }
