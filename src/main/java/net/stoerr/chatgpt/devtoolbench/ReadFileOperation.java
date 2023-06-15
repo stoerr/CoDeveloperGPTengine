@@ -6,7 +6,39 @@ import io.undertow.util.Headers;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+// curl -is http://localhost:3001/readFile?path=somefile.txt
 public class ReadFileOperation extends AbstractPluginOperation {
+
+    @Override
+    public String getUrl() {
+        return "/readFile";
+    }
+
+    @Override
+    public String openApiDescription() {
+        return """
+                  /readFile:
+                    get:
+                      operationId: readFile
+                      summary: Read a files content.
+                      parameters:
+                        - name: path
+                          in: query
+                          description: relative path to file
+                          required: true
+                          schema:
+                            type: string
+                      responses:
+                        '200':
+                          description: Content of the file
+                          content:
+                            text/plain:
+                              schema:
+                                type: string
+                        '404':
+                          description: File not found
+                """.stripIndent();
+    }
 
     @Override
     public void handleRequest(HttpServerExchange exchange) throws Exception {

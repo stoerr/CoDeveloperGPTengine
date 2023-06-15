@@ -15,6 +15,16 @@ public abstract class AbstractPluginOperation implements HttpHandler {
     @Override
     public abstract void handleRequest(HttpServerExchange exchange) throws Exception;
 
+    /**
+     * The URL it is deployed at, e.g. /listFiles.
+     */
+    public abstract String getUrl();
+
+    /**
+     * The OpenAPI description for this operation.
+     */
+    public abstract String openApiDescription();
+
     protected Map<String, String> getQueryParams(HttpServerExchange exchange) {
         return exchange.getQueryParameters().entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().peekFirst()));
@@ -37,9 +47,5 @@ public abstract class AbstractPluginOperation implements HttpHandler {
                 .replace("\r", "\\r")
                 .replace("\t", "\\t");
         return "\"" + string.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
-    }
-
-    public String openApiDescription() {
-        return "";
     }
 }

@@ -10,9 +10,49 @@ import java.util.Deque;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * an operation that writes the message into the file at path.
+ */
+// curl -is http://localhost:3001/writeFile?path=testfile -d '{"content":"testcontent line one\nline two\n"}'
 public class WriteFileOperation extends AbstractPluginOperation {
 
     static final Pattern CONTENT_PATTERN = Pattern.compile("\\s*\\{\\s*\"content\"\\s*:\\s*\"(.*)\"\\s*\\}\\s*");
+
+    @Override
+    public String getUrl() {
+        return "/writeFile";
+    }
+
+    @Override
+    public String openApiDescription() {
+        return """
+                  /writeFile:
+                    post:
+                      operationId: writeFile
+                      summary: Write a file.
+                      parameters:
+                        - name: path
+                          in: query
+                          description: relative path to directory for the created file
+                          required: true
+                          schema:
+                            type: string
+                      requestBody:
+                        required: true
+                        content:
+                          application/json:
+                            schema:
+                              type: object
+                              properties:
+                                content:
+                                  type: string
+                      responses:
+                        '204':
+                          description: File written
+                        '422':
+                          description: The request body was not a valid JSON object with a content property
+                """.stripIndent();
+    }
 
     @Override
     public void handleRequest(HttpServerExchange exchange) throws Exception {
