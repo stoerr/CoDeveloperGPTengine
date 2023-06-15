@@ -17,6 +17,8 @@ import io.undertow.Undertow;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
+import io.undertow.util.HttpString;
+import io.undertow.util.Methods;
 
 public class DevToolbench {
 
@@ -36,7 +38,7 @@ public class DevToolbench {
             openapi: 3.0.1
             info:
               title: FileManager ChatGPT Plugin
-              description: A plugin that allows the user to inspect a directory and read the contents of files using ChatGPT
+              description: A plugin that allows the user to inspect a directory and read the contents of files using ChatGPT. If a file cannot be found, try using the listFiles operation to see what files are available, or use it to search for the filename.
               version: 1.0.0
             servers:
               - url: http://localhost:THEPORT
@@ -50,8 +52,7 @@ public class DevToolbench {
         HANDLERS.put("/readFile", new ReadFileOperation());
         HANDLERS.put("/writeFile", new WriteFileOperation());
         STATICFILES.put("/.well-known/ai-plugin.json", () -> {
-            try {
-                InputStream in = DevToolbench.class.getResourceAsStream("/ai-plugin.json");
+            try (InputStream in = DevToolbench.class.getResourceAsStream("/ai-plugin.json")) {
                 if (in == null) {
                     throw new RuntimeException("Could not find ai-plugin.json");
                 }
@@ -63,8 +64,8 @@ public class DevToolbench {
         STATICFILES.put("/devtoolbench.yaml", () -> {
             StringBuilder pathDescriptions = new StringBuilder();
             HANDLERS.values().stream().sorted(Comparator.comparing(AbstractPluginOperation::getUrl))
-                    .forEach(handler -> pathDescriptions.append(((AbstractPluginOperation) handler).openApiDescription()));
-            return OPENAPI_DESCR_START.replaceAll("THEPORT", "" + port) + pathDescriptions.toString();
+                    .forEach(handler -> pathDescriptions.append(handler.openApiDescription()));
+            return OPENAPI_DESCR_START.replace("THEPORT", "" + port) + pathDescriptions;
         });
         STATICFILES.put("/", () -> "<html><body><h1>FileManagerPlugin</h1><p>See <a href=\"/.well-known/ai-plugin.json\">/.well-known/ai-plugin.json</a> for the plugin description.</p></body></html>\n");
     }
@@ -76,6 +77,7 @@ public class DevToolbench {
                 .setHandler(DevToolbench::handleRequest)
                 .build();
         server.start();
+        System.out.println("Started on http://localhost:" + port);
     }
 
     public static void stop() {
@@ -86,8 +88,16 @@ public class DevToolbench {
         try {
             System.out.println("Request: " + exchange.getRequestURI());
             String path = exchange.getRequestPath();
-            if (STATICFILES.containsKey(path)) {
+            exchange.getResponseHeaders().put(HttpString.tryFromString("Access-Control-Allow-Origin"), "*"); // TODO https://chat.openai.com
+            if (exchange.getRequestMethod().equals(Methods.OPTIONS)) {
+                giveCORSResponse(exchange);
+            } else if (STATICFILES.containsKey(path)) {
                 handleStaticFile(exchange, path);
+            } else if (path.equals("icon.png")) {
+                // send resource icon.png with content type image/png
+                exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "image/png");
+                byte[] bytes = DevToolbench.class.getResourceAsStream("/icon.png").readAllBytes();
+                exchange.getOutputStream().write(bytes);
             } else {
                 HttpHandler handler = HANDLERS.get(path);
                 if (handler != null) {
@@ -99,7 +109,20 @@ public class DevToolbench {
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
+        } finally {
+            exchange.endExchange();
         }
+    }
+
+    private static void giveCORSResponse(HttpServerExchange exchange) throws IOException {
+        // already there: exchange.getResponseHeaders().add(HttpString.tryFromString("Access-Control-Allow-Origin"), "*");
+        exchange.getResponseHeaders().put(HttpString.tryFromString("Access-Control-Allow-Methods"), "GET, POST, PUT, DELETE");
+        if (exchange.getRequestHeaders().contains("Access-control-request-headers")) {
+            exchange.getResponseHeaders().add(HttpString.tryFromString("Access-Control-Allow-Headers"), exchange.getRequestHeaders().getFirst("access-control-request-headers"));
+        }
+        exchange.getResponseHeaders().put(HttpString.tryFromString("Access-Control-Max-Age"), "3600");
+        exchange.getResponseHeaders().put(HttpString.tryFromString("Allow"), "*");
+        exchange.setStatusCode(200);
     }
 
     private static void handleStaticFile(HttpServerExchange exchange, String path) {
@@ -112,4 +135,6 @@ public class DevToolbench {
             sendError(exchange, 404, "File not found");
         }
     }
+
+
 }
