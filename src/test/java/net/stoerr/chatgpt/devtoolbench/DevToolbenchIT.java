@@ -7,12 +7,10 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Paths;
-import java.util.Random;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -25,39 +23,56 @@ public class DevToolbenchIT {
     int port = 7364;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         DevToolbench.currentDir = Paths.get(".").resolve("src/test/resources/testdir").normalize()
                 .toAbsolutePath();
         DevToolbench.main(new String[]{String.valueOf(port)});
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         DevToolbench.stop();
     }
 
     @Test
     public void testServer() throws Exception {
-        checkResponse("/.well-known/ai-plugin.json", "/test-expected/ai-plugin.json");
-        checkResponse("/devtoolbench.yaml", "/test-expected/devtoolbench.yaml");
-        checkResponse("/listFiles?path=.", "/test-expected/listFiles.txt");
-        checkResponse("/listFiles?path=subdir", "/test-expected/listFilesSubdir.txt");
-        checkResponse("/readFile?path=firstfile.txt", "/test-expected/getFirstfile.txt");
-        checkResponse("/", "/test-expected/index.html");
-        checkResponse("/listFiles?path=.&filenameRegex=.*%5C.txt", "/test-expected/listFilesFilenameRegex.txt");
-        checkResponse("/listFiles?path=.&grepRegex=testcontent", "/test-expected/listFilesGrepRegex.txt");
+        checkResponse("/.well-known/ai-plugin.json", "ai-plugin.json");
+        checkResponse("/devtoolbench.yaml", "devtoolbench.yaml");
+        checkResponse("/listFiles?path=.", "listFiles.txt");
+        checkResponse("/listFiles?path=subdir", "listFilesSubdir.txt");
+        checkResponse("/readFile?path=firstfile.txt", "getFirstfile.txt");
+        checkResponse("/", "index.html");
+        checkResponse("/listFiles?path=.&filenameRegex=.*%5C.txt", "listFilesFilenameRegex.txt");
+        checkResponse("/listFiles?path=.&grepRegex=testcontent", "listFilesGrepRegex.txt");
         checkResponse("/listFiles?path=.&filenameRegex=.*%5C.txt&grepRegex=testcontent",
-                "/test-expected/listFilesBothRegex.txt");
+                "listFilesBothRegex.txt");
     }
 
-    @Ignore
     @Test(expected = IOException.class)
     public void testUnknownRequest() throws Exception {
-        checkResponse("/nothing", "/test-expected/unknown");
+        checkResponse("/nothing", "unknown");
+    }
+
+    @Test
+    public void testWrite() throws IOException {
+        // curl -is $baseurl/writeFile?path=filewritten.txt -d '{"content":"testcontent line one\nline two \\\n with quoted backslashing \n"}'
+        // perform a POST to url
+        URL url = new URL("http://localhost:" + port + "/writeFile?path=filewritten.txt");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setDoOutput(true);
+        conn.getOutputStream().write("{\"content\":\"testcontent line one\\nline two \\\\\\n with quoted backslashing \\n\"}".getBytes(UTF_8));
+        conn.getOutputStream().close();
+        collector.checkThat(conn.getResponseCode(), CoreMatchers.is(204));
+        collector.checkThat(conn.getResponseMessage(), CoreMatchers.is("No Content"));
+        // check that the file was written
+        String expected = readFile("/test-expected/filewritten.txt");
+        String actual = readFile("/testdir/filewritten.txt");
+        collector.checkThat(actual, CoreMatchers.is(expected));
     }
 
     private void checkResponse(String path, String expectFile) throws IOException {
-        String expectedResponse = readFile(expectFile);
+        String expectedResponse = readFile("/test-expected/" + expectFile);
         String actual = executeGet(path);
         collector.checkThat(actual, CoreMatchers.is(expectedResponse));
     }
@@ -66,8 +81,7 @@ public class DevToolbenchIT {
         InputStream resourceAsStream = getClass().getResourceAsStream(filepath);
         collector.checkThat(filepath, resourceAsStream, CoreMatchers.notNullValue());
         if (resourceAsStream == null) throw new RuntimeException("Could not find " + filepath);
-        String fileContent = new String(resourceAsStream.readAllBytes(), UTF_8);
-        return fileContent;
+        return new String(resourceAsStream.readAllBytes(), UTF_8);
     }
 
     private String executeGet(String path) throws IOException {
