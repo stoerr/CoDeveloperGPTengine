@@ -17,6 +17,17 @@ public class DevToolbench {
     private static final Map<String, Supplier<String>> STATICFILES = new HashMap<>();
     private static final Map<String, HttpHandler> HANDLERS = new HashMap<>();
 
+    private static final String OPENAPI_DESCR_START = """
+            openapi: 3.0.1
+            info:
+              title: FileManager ChatGPT Plugin
+              description: A plugin that allows the user to inspect a directory and read the contents of files using ChatGPT
+              version: 1.0.0
+            servers:
+              - url: http://localhost:THEPORT
+            paths:
+            """.stripIndent();
+
     static {
         HANDLERS.put("/listFiles", new ListFilesOperation());
         HANDLERS.put("/readFile", new ReadFileOperation());
@@ -32,7 +43,11 @@ public class DevToolbench {
                 throw new RuntimeException(e);
             }
         });
-        STATICFILES.put("/devtoolbench.yaml", () -> "..." /* TODO: Construct the YAML content here */);
+        STATICFILES.put("/devtoolbench.yaml", () -> {
+            StringBuilder pathDescriptions = new StringBuilder();
+            HANDLERS.values().forEach(handler -> pathDescriptions.append(((AbstractPluginOperation) handler).openApiDescription()));
+            return OPENAPI_DESCR_START + pathDescriptions.toString();
+        });
     }
 
     public static void main(String[] args) {
@@ -68,4 +83,6 @@ public class DevToolbench {
         exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
         exchange.getResponseSender().send(content);
     }
+
+    // ... rest of the class ...
 }

@@ -38,4 +38,8 @@ public abstract class AbstractPluginOperation implements HttpHandler {
                 .replace("\t", "\\t");
         return "\"" + string.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
     }
+
+    public String openApiDescription() {
+        return "";
+    }
 }
