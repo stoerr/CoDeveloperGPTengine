@@ -64,7 +64,7 @@ public class WriteFileOperation extends AbstractPluginOperation {
         exchange.startBlocking();
         String json = new String(exchange.getInputStream().readAllBytes(), UTF_8);
         Map<String, String> decoded;
-        if (json == null || json.isEmpty() || "{}".equals(json)) {
+        if (json.isEmpty() || "{}".equals(json)) {
             sendError(exchange, 422, "Missing content parameter");
             return;
         }
@@ -86,6 +86,7 @@ public class WriteFileOperation extends AbstractPluginOperation {
         }
         Files.write(path, content.getBytes(), java.nio.file.StandardOpenOption.CREATE,
                 java.nio.file.StandardOpenOption.WRITE, java.nio.file.StandardOpenOption.TRUNCATE_EXISTING);
+        exchange.setStatusCode(204);
     }
 
 }
