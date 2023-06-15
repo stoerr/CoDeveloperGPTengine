@@ -58,10 +58,11 @@ public class DevToolbench {
                     .forEach(handler -> pathDescriptions.append(((AbstractPluginOperation) handler).openApiDescription()));
             return OPENAPI_DESCR_START.replaceAll("THEPORT", "" + port) + pathDescriptions.toString();
         });
+        STATICFILES.put("/", () -> "<html><body><h1>FileManagerPlugin</h1><p>See <a href=\"/.well-known/ai-plugin.json\">/.well-known/ai-plugin.json</a> for the plugin description.</p></body></html>\n");
     }
 
     public static void main(String[] args) {
-        port = args.length > 0 ? Integer.parseInt(args[0]) : 3001;
+        port = args.length > 0 ? Integer.parseInt(args[0]) : 3002;
         Undertow server = Undertow.builder()
                 .addHttpListener(port, "localhost")
                 .setHandler(DevToolbench::handleRequest)
