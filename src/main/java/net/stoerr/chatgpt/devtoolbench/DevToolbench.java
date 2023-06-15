@@ -1,21 +1,30 @@
 package net.stoerr.chatgpt.devtoolbench;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+import java.util.regex.Pattern;
+
 import io.undertow.Undertow;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
-
 public class DevToolbench {
 
     private static final Map<String, Supplier<String>> STATICFILES = new HashMap<>();
-    private static final Map<String, HttpHandler> HANDLERS = new HashMap<>();
+    private static final Map<String, AbstractPluginOperation> HANDLERS = new HashMap<>();
+
+    /**
+     * Which files we always ignore.
+     */
+    public static final Pattern IGNORE = Pattern.compile(".*/[.].*|.*/target/.*");
+
+    private static int port;
 
     private static final String OPENAPI_DESCR_START = """
             openapi: 3.0.1
@@ -38,20 +47,21 @@ public class DevToolbench {
                 if (in == null) {
                     throw new RuntimeException("Could not find ai-plugin.json");
                 }
-                return new String(in.readAllBytes(), StandardCharsets.UTF_8);
+                return new String(in.readAllBytes(), StandardCharsets.UTF_8).replaceAll("THEPORT", "" + port);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
         STATICFILES.put("/devtoolbench.yaml", () -> {
             StringBuilder pathDescriptions = new StringBuilder();
-            HANDLERS.values().forEach(handler -> pathDescriptions.append(((AbstractPluginOperation) handler).openApiDescription()));
-            return OPENAPI_DESCR_START + pathDescriptions.toString();
+            HANDLERS.values().stream().sorted(Comparator.comparing(AbstractPluginOperation::getUrl))
+                    .forEach(handler -> pathDescriptions.append(((AbstractPluginOperation) handler).openApiDescription()));
+            return OPENAPI_DESCR_START.replaceAll("THEPORT", "" + port) + pathDescriptions.toString();
         });
     }
 
     public static void main(String[] args) {
-        int port = args.length > 0 ? Integer.parseInt(args[0]) : 3001;
+        port = args.length > 0 ? Integer.parseInt(args[0]) : 3001;
         Undertow server = Undertow.builder()
                 .addHttpListener(port, "localhost")
                 .setHandler(DevToolbench::handleRequest)

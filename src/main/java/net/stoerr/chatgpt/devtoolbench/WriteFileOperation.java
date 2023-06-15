@@ -1,14 +1,14 @@
 package net.stoerr.chatgpt.devtoolbench;
 
-import io.undertow.server.HttpServerExchange;
-import io.undertow.util.Headers;
-
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Deque;
-import java.util.regex.Matcher;
+import java.util.Map;
 import java.util.regex.Pattern;
+
+import com.google.gson.Gson;
+
+import io.undertow.server.HttpServerExchange;
 
 /**
  * an operation that writes the message into the file at path.
@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 // curl -is http://localhost:3001/writeFile?path=testfile -d '{"content":"testcontent line one\nline two\n"}'
 public class WriteFileOperation extends AbstractPluginOperation {
 
-    static final Pattern CONTENT_PATTERN = Pattern.compile("\\s*\\{\\s*\"content\"\\s*:\\s*\"(.*)\"\\s*\\}\\s*");
+    private final Gson gson = new Gson();
 
     @Override
     public String getUrl() {
@@ -58,26 +58,29 @@ public class WriteFileOperation extends AbstractPluginOperation {
     public void handleRequest(HttpServerExchange exchange) throws Exception {
         Deque<String> jsonDeque = exchange.getQueryParameters().get("content");
         String json = jsonDeque != null ? jsonDeque.peekFirst() : null;
-        if (json == null) {
-            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
-            exchange.getResponseSender().send("Missing content parameter");
+        Map<String, String> decoded;
+        if (json == null || json.isEmpty() || "{}".equals(json)) {
+            sendeError(exchange, "Missing content parameter");
             return;
         }
-        Matcher matcher = CONTENT_PATTERN.matcher(json);
-        if (!matcher.matches()) {
-            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
-            exchange.getResponseSender().send("The request body was not a valid JSON object with a content property");
+        try {
+            decoded = gson.fromJson(json, Map.class);
+        } catch (Exception e) {
+            String error = "Parse error for content: " + e.getMessage();
+            sendeError(exchange, error);
             return;
         }
-        String content = matcher.group(1);
-        content = content.replaceAll("\\\\n", "\n");
-        content = content.replaceAll("\\\\t", "\t");
-        content = content.replaceAll("\\\\\"", "\"");
-        content = content.replaceAll("\\\\\\\\", "\\\\");
+        String content = decoded.get("content");
+        if (content == null) {
+            sendeError(exchange, "Missing content parameter");
+            return;
+        }
         Path path = getPath(exchange);
         if (!Files.exists(path.getParent())) {
             Files.createDirectories(path.getParent());
         }
-        Files.write(path, content.getBytes(), java.nio.file.StandardOpenOption.CREATE, java.nio.file.StandardOpenOption.WRITE, java.nio.file.StandardOpenOption.TRUNCATE_EXISTING);
+        Files.write(path, content.getBytes(), java.nio.file.StandardOpenOption.CREATE,
+                java.nio.file.StandardOpenOption.WRITE, java.nio.file.StandardOpenOption.TRUNCATE_EXISTING);
     }
+
 }

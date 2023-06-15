@@ -1,8 +1,5 @@
 package net.stoerr.chatgpt.devtoolbench;
 
-import io.undertow.server.HttpServerExchange;
-import io.undertow.util.Headers;
-
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -12,6 +9,10 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import io.undertow.server.HttpServerExchange;
+import io.undertow.util.Headers;
+import net.stoerr.chatgpt.forChatGPTtoMigrate.FileManagerPlugin;
 
 // curl -is http://localhost:3001/listFiles?path=.
 public class ListFilesOperation extends AbstractPluginOperation {
@@ -74,7 +75,9 @@ public class ListFilesOperation extends AbstractPluginOperation {
             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/json; charset=utf-8");
             List<String> files = Files.walk(path)
                     .filter(Files::isRegularFile)
+                    .filter(p -> !FileManagerPlugin.IGNORE.matcher(p.toString()).matches())
                     .filter(p -> filenamePattern == null || filenamePattern.matcher(p.getFileName().toString()).matches())
+                    // FIXME implement grepregex
                     .filter(p -> {
                         if (grepPattern == null) {
                             return true;
@@ -88,7 +91,7 @@ public class ListFilesOperation extends AbstractPluginOperation {
                     })
                     .map(p -> currentDir.relativize(p).toString())
                     .collect(Collectors.toList());
-            String response = "[\n" + files.stream().map(this::jsonRep).collect(Collectors.joining(",\n")) + "\n]\n";
+            String response = files.stream().collect(Collectors.joining("\n")) + "\n";
             exchange.getResponseSender().send(response);
         } else {
             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
