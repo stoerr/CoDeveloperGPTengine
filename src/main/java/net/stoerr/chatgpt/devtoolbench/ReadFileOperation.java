@@ -1,10 +1,10 @@
 package net.stoerr.chatgpt.devtoolbench;
 
-import io.undertow.server.HttpServerExchange;
-import io.undertow.util.Headers;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
+
+import io.undertow.server.HttpServerExchange;
+import io.undertow.util.Headers;
 
 // curl -is http://localhost:3001/readFile?path=somefile.txt
 public class ReadFileOperation extends AbstractPluginOperation {
@@ -48,8 +48,7 @@ public class ReadFileOperation extends AbstractPluginOperation {
             byte[] bytes = Files.readAllBytes(path);
             exchange.getResponseSender().send(new String(bytes));
         } else {
-            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
-            exchange.getResponseSender().send("File not found");
+            sendError(exchange, 404, "File not found");
         }
     }
 }

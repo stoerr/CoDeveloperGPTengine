@@ -65,19 +65,19 @@ public class WriteFileOperation extends AbstractPluginOperation {
         String json = new String(exchange.getInputStream().readAllBytes(), UTF_8);
         Map<String, String> decoded;
         if (json == null || json.isEmpty() || "{}".equals(json)) {
-            sendeError(exchange, "Missing content parameter");
+            sendError(exchange, 422, "Missing content parameter");
             return;
         }
         try {
             decoded = gson.fromJson(json, Map.class);
         } catch (Exception e) {
             String error = "Parse error for content: " + e.getMessage();
-            sendeError(exchange, error);
+            sendError(exchange, 422, error);
             return;
         }
         String content = decoded.get("content");
         if (content == null) {
-            sendeError(exchange, "Missing content parameter");
+            sendError(exchange, 422, "Missing content parameter");
             return;
         }
         Path path = getPath(exchange);

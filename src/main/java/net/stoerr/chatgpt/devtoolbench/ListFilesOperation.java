@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.undertow.server.HttpServerExchange;
@@ -77,7 +76,6 @@ public class ListFilesOperation extends AbstractPluginOperation {
                     .filter(Files::isRegularFile)
                     .filter(p -> !FileManagerPlugin.IGNORE.matcher(p.toString()).matches())
                     .filter(p -> filenamePattern == null || filenamePattern.matcher(p.getFileName().toString()).matches())
-                    // FIXME implement grepregex
                     .filter(p -> {
                         if (grepPattern == null) {
                             return true;
@@ -90,12 +88,11 @@ public class ListFilesOperation extends AbstractPluginOperation {
                         }
                     })
                     .map(p -> currentDir.relativize(p).toString())
-                    .collect(Collectors.toList());
-            String response = files.stream().collect(Collectors.joining("\n")) + "\n";
+                    .toList();
+            String response = String.join("\n", files) + "\n";
             exchange.getResponseSender().send(response);
         } else {
-            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
-            exchange.getResponseSender().send("Directory not found");
+            sendError(exchange, 404, "Directory not found");
         }
     }
 }

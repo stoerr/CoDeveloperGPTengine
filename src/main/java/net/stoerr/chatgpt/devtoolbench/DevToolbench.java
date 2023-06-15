@@ -1,5 +1,7 @@
 package net.stoerr.chatgpt.devtoolbench;
 
+import static net.stoerr.chatgpt.devtoolbench.AbstractPluginOperation.sendError;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -91,9 +93,12 @@ public class DevToolbench {
 
     private static void handleStaticFile(HttpServerExchange exchange, String path) {
         String content = STATICFILES.get(path).get();
-        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
-        exchange.getResponseSender().send(content);
+        if (content != null && !content.isBlank()) {
+            exchange.setStatusCode(200);
+            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
+            exchange.getResponseSender().send(content);
+        } else {
+            sendError(exchange, 404, "File not found");
+        }
     }
-
-    // ... rest of the class ...
 }
