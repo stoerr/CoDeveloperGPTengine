@@ -13,7 +13,53 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+// curl -is http://localhost:3001/listFiles?path=.
 public class ListFilesOperation extends AbstractPluginOperation {
+
+    @Override
+    public String getUrl() {
+        return "/listFiles";
+    }
+
+    @Override
+    public String openApiDescription() {
+        return """
+                  /listFiles:
+                    get:
+                      operationId: listFiles
+                      summary: Recursively lists files in a directory.
+                      parameters:
+                        - name: path
+                          in: query
+                          description: relative path to directory
+                          required: true
+                          schema:
+                            type: string
+                        - name: filenameRegex
+                          in: query
+                          description: regex to filter file names
+                          required: false
+                          schema:
+                            type: string
+                        - name: grepRegex
+                          in: query
+                          description: q
+                          required: false
+                          schema:
+                            type: string
+                      responses:
+                        '200':
+                          description: List of relative paths of the files
+                          content:
+                            application/json:
+                              schema:
+                                type: array
+                                items:
+                                  type: string
+                        '404':
+                          description: Directory not found
+                """.stripIndent();
+    }
 
     @Override
     public void handleRequest(HttpServerExchange exchange) throws Exception {
