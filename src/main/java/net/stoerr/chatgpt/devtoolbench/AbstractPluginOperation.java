@@ -13,8 +13,8 @@ public abstract class AbstractPluginOperation implements HttpHandler {
 
     protected final Path currentDir = Paths.get(".").normalize().toAbsolutePath();
 
-    protected static void sendeError(HttpServerExchange exchange, String error) {
-        exchange.setStatusCode(422);
+    protected static void sendError(HttpServerExchange exchange, int statusCode, String error) {
+        exchange.setStatusCode(statusCode);
         exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
         exchange.getResponseSender().send(error);
     }

@@ -1,0 +1,2 @@
+filewritten.txt
+subdir/fileinsubdir.md
