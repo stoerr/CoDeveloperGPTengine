@@ -1,19 +1,17 @@
 package net.stoerr.chatgpt.devtoolbench;
 
+import java.nio.file.Path;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 public abstract class AbstractPluginOperation implements HttpHandler {
 
-    protected final Path currentDir = Paths.get(".").normalize().toAbsolutePath();
-
     protected static void sendError(HttpServerExchange exchange, int statusCode, String error) {
+        System.out.println("Error " + statusCode + ": " + error);
         exchange.setStatusCode(statusCode);
         exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
         exchange.getResponseSender().send(error);
@@ -42,9 +40,9 @@ public abstract class AbstractPluginOperation implements HttpHandler {
         if (DevToolbench.IGNORE.matcher(path).matches()) {
             throw new IllegalArgumentException("Path " + path + " is not allowed");
         }
-        Path resolved = currentDir.resolve(path).normalize().toAbsolutePath();
-        if (!resolved.startsWith(currentDir)) {
-            throw new IllegalArgumentException("Path " + path + " is not in current directory " + currentDir);
+        Path resolved = DevToolbench.currentDir.resolve(path).normalize().toAbsolutePath();
+        if (!resolved.startsWith(DevToolbench.currentDir)) {
+            throw new IllegalArgumentException("Path " + path + " is not in current directory " + DevToolbench.currentDir);
         }
         return resolved;
     }
