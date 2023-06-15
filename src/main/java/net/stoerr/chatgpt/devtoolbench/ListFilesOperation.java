@@ -26,11 +26,11 @@ public class ListFilesOperation extends AbstractPluginOperation {
                   /listFiles:
                     get:
                       operationId: listFiles
-                      summary: Recursively lists files in a directory.
+                      summary: Recursively lists files in a directory. Optionally filters by filename and content.
                       parameters:
                         - name: path
                           in: query
-                          description: relative path to directory
+                          description: relative path to directory. root directory = '.'
                           required: true
                           schema:
                             type: string
@@ -42,7 +42,7 @@ public class ListFilesOperation extends AbstractPluginOperation {
                             type: string
                         - name: grepRegex
                           in: query
-                          description: q
+                          description: an optional regex that lists only files with matching content
                           required: false
                           schema:
                             type: string
@@ -50,11 +50,9 @@ public class ListFilesOperation extends AbstractPluginOperation {
                         '200':
                           description: List of relative paths of the files
                           content:
-                            application/json:
+                            text/plain:
                               schema:
-                                type: array
-                                items:
-                                  type: string
+                                type: string
                         '404':
                           description: Directory not found
                 """.stripIndent();
@@ -70,7 +68,7 @@ public class ListFilesOperation extends AbstractPluginOperation {
         Pattern grepPattern = grepRegex != null ? Pattern.compile(grepRegex) : null;
 
         if (Files.isDirectory(path)) {
-            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/json; charset=utf-8");
+            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=utf-8");
             List<String> files = Files.walk(path)
                     .filter(Files::isRegularFile)
                     .filter(p -> !DevToolbench.IGNORE.matcher(p.toString()).matches())

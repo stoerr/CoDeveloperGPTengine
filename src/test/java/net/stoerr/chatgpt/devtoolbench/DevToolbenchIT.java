@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import org.hamcrest.CoreMatchers;
@@ -74,6 +75,8 @@ public class DevToolbenchIT {
     private void checkResponse(String path, String expectFile) throws IOException {
         String expectedResponse = readFile("/test-expected/" + expectFile);
         String actual = executeGet(path);
+        Files.createDirectories(Paths.get("target/test-actual"));
+        Files.writeString(Paths.get("target/test-actual/" + expectFile), actual, UTF_8);
         collector.checkThat(actual, CoreMatchers.is(expectedResponse));
     }
 

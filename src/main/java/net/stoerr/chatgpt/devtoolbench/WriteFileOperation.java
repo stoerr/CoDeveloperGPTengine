@@ -1,7 +1,6 @@
 package net.stoerr.chatgpt.devtoolbench;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
@@ -55,38 +54,44 @@ public class WriteFileOperation extends AbstractPluginOperation {
     }
 
     @Override
-    public void handleRequest(HttpServerExchange exchange) throws Exception {
-        if (exchange.isInIoThread()) {
-            exchange.dispatch(this);
-            return;
-        }
-        // read json from request body
-        exchange.startBlocking();
-        String json = new String(exchange.getInputStream().readAllBytes(), UTF_8);
-        Map<String, String> decoded;
-        if (json.isEmpty() || "{}".equals(json)) {
-            sendError(exchange, 422, "Missing content parameter");
-            return;
-        }
-        try {
-            decoded = gson.fromJson(json, Map.class);
-        } catch (Exception e) {
-            String error = "Parse error for content: " + e.getMessage();
-            sendError(exchange, 422, error);
-            return;
-        }
-        String content = decoded.get("content");
-        if (content == null) {
-            sendError(exchange, 422, "Missing content parameter");
-            return;
-        }
-        Path path = getPath(exchange);
-        if (!Files.exists(path.getParent())) {
-            Files.createDirectories(path.getParent());
-        }
-        Files.write(path, content.getBytes(), java.nio.file.StandardOpenOption.CREATE,
-                java.nio.file.StandardOpenOption.WRITE, java.nio.file.StandardOpenOption.TRUNCATE_EXISTING);
-        exchange.setStatusCode(204);
+    public void handleRequest(HttpServerExchange exchange) {
+        exchange.getRequestReceiver().receiveFullString(this::handleBody, this::handleError);
     }
+
+    private void handleBody(HttpServerExchange exchange, String json) {
+        try {
+            Map<String, String> decoded;
+            if (json.isEmpty() || "{}".equals(json)) {
+                sendError(exchange, 422, "Missing content parameter");
+                return;
+            }
+            try {
+                decoded = gson.fromJson(json, Map.class);
+            } catch (Exception e) {
+                String error = "Parse error for content: " + e.getMessage();
+                sendError(exchange, 422, error);
+                return;
+            }
+            String content = decoded.get("content");
+            if (content == null || content.isBlank()) {
+                sendError(exchange, 422, "Missing content parameter or empty content");
+                return;
+            }
+            Path path = getPath(exchange);
+            if (!Files.exists(path.getParent())) {
+                Files.createDirectories(path.getParent());
+            }
+            Files.write(path, content.getBytes(), java.nio.file.StandardOpenOption.CREATE,
+                    java.nio.file.StandardOpenOption.WRITE, java.nio.file.StandardOpenOption.TRUNCATE_EXISTING);
+            exchange.setStatusCode(204);
+        } catch (IOException e) {
+            sendError(exchange, 422, "Error writing file: " + e.getMessage());
+        }
+    }
+
+    private void handleError(HttpServerExchange httpServerExchange, IOException e) {
+        sendError(httpServerExchange, 422, "Error reading request body: " + e.getMessage());
+    }
+
 
 }
