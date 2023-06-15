@@ -51,26 +51,21 @@ function executetest() {
 
 executetest /.well-known/ai-plugin.json "" ai-plugin.json
 executetest /devtoolbench.yaml "" devtoolbench.yaml
-executetest /listFiles?path=. "" listFiles.json
-executetest /listFiles?path=subdir "" listFilesSubdir.json
+executetest /listFiles?path=. "" listFiles.xt
+executetest /listFiles?path=subdir "" listFilesSubdir.txt
 executetest /readFile?path=firstfile.txt "" getFirstfile.txt
 executetest / "" index.html
 executetest /unknown "" unknown
 
-executetest "/listFiles?path=.&filenameRegex=.*%5C.txt" "" listFilesFilenameRegex.json
-executetest '/listFiles?path=.&grepRegex=testcontent' "" listFilesGrepRegex.json
-executetest "/listFiles?path=.&filenameRegex=.*%5C.txt&grepRegex=testcontent" "" listFilesBothRegex.json
+executetest "/listFiles?path=.&filenameRegex=.*%5C.txt" "" listFilesFilenameRegex.txt
+executetest '/listFiles?path=.&grepRegex=testcontent' "" listFilesGrepRegex.txt
+executetest "/listFiles?path=.&filenameRegex=.*%5C.txt&grepRegex=testcontent" "" listFilesBothRegex.txt
 
 echo
 echo Testing write: we get a 204 and then read the file back
 rm -f testdir/filewritten.txt
 curl -is $baseurl/writeFile?path=filewritten.txt -d '{"content":"testcontent line one\nline two \\\n with quoted backslashing \n"}'
 executetest /readFile?path=filewritten.txt "" filewritten.txt
-
-# cannot really test this because that has no output,http://localhost:3001 just logs to stdoud, but maybe we'll notice
-echo
-echo expecting output "testreason"
-curl -s $baseurl/reason -d '{\"reason\": \"testreason\"}'
 
 # if there are failures, print them out and exit with a non-zero exit code
 if [ -n "$failures" ]; then

@@ -39,6 +39,9 @@ public abstract class AbstractPluginOperation implements HttpHandler {
 
     protected Path getPath(HttpServerExchange exchange) {
         String path = getQueryParams(exchange).get("path");
+        if (DevToolbench.IGNORE.matcher(path).matches()) {
+            throw new IllegalArgumentException("Path " + path + " is not allowed");
+        }
         Path resolved = currentDir.resolve(path).normalize().toAbsolutePath();
         if (!resolved.startsWith(currentDir)) {
             throw new IllegalArgumentException("Path " + path + " is not in current directory " + currentDir);

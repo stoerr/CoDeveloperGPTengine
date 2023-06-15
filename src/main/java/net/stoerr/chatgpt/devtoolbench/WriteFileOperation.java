@@ -1,10 +1,10 @@
 package net.stoerr.chatgpt.devtoolbench;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Deque;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import com.google.gson.Gson;
 
@@ -56,8 +56,13 @@ public class WriteFileOperation extends AbstractPluginOperation {
 
     @Override
     public void handleRequest(HttpServerExchange exchange) throws Exception {
-        Deque<String> jsonDeque = exchange.getQueryParameters().get("content");
-        String json = jsonDeque != null ? jsonDeque.peekFirst() : null;
+        if (exchange.isInIoThread()) {
+            exchange.dispatch(this);
+            return;
+        }
+        // read json from request body
+        exchange.startBlocking();
+        String json = new String(exchange.getInputStream().readAllBytes(), UTF_8);
         Map<String, String> decoded;
         if (json == null || json.isEmpty() || "{}".equals(json)) {
             sendeError(exchange, "Missing content parameter");

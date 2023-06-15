@@ -16,7 +16,7 @@ public class DevToolbenchIT {
         int port = new Random().nextInt(10000) + 10000;
         DevToolbench.main(new String[]{String.valueOf(port)});
 
-        URL url = new URL("http://localhost:" + port);
+        URL url = new URL("http://localhost:" + port + "/nothing");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
 
