@@ -11,7 +11,6 @@ import java.util.stream.Stream;
 
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
-import net.stoerr.chatgpt.forChatGPTtoMigrate.FileManagerPlugin;
 
 // curl -is http://localhost:3001/listFiles?path=.
 public class ListFilesOperation extends AbstractPluginOperation {
@@ -74,7 +73,7 @@ public class ListFilesOperation extends AbstractPluginOperation {
             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/json; charset=utf-8");
             List<String> files = Files.walk(path)
                     .filter(Files::isRegularFile)
-                    .filter(p -> !FileManagerPlugin.IGNORE.matcher(p.toString()).matches())
+                    .filter(p -> !DevToolbench.IGNORE.matcher(p.toString()).matches())
                     .filter(p -> filenamePattern == null || filenamePattern.matcher(p.getFileName().toString()).matches())
                     .filter(p -> {
                         if (grepPattern == null) {
@@ -87,7 +86,7 @@ public class ListFilesOperation extends AbstractPluginOperation {
                             }
                         }
                     })
-                    .map(p -> currentDir.relativize(p).toString())
+                    .map(p -> DevToolbench.currentDir.relativize(p).toString())
                     .toList();
             String response = String.join("\n", files) + "\n";
             exchange.getResponseSender().send(response);

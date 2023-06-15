@@ -5,6 +5,8 @@ import static net.stoerr.chatgpt.devtoolbench.AbstractPluginOperation.sendError;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +19,8 @@ import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
 
 public class DevToolbench {
+
+    static Path currentDir = Paths.get(".").normalize().toAbsolutePath();
 
     private static final Map<String, Supplier<String>> STATICFILES = new HashMap<>();
     private static final Map<String, AbstractPluginOperation> HANDLERS = new HashMap<>();
@@ -38,6 +42,8 @@ public class DevToolbench {
               - url: http://localhost:THEPORT
             paths:
             """.stripIndent();
+
+    private static Undertow server;
 
     static {
         HANDLERS.put("/listFiles", new ListFilesOperation());
@@ -65,15 +71,20 @@ public class DevToolbench {
 
     public static void main(String[] args) {
         port = args.length > 0 ? Integer.parseInt(args[0]) : 3002;
-        Undertow server = Undertow.builder()
+        server = Undertow.builder()
                 .addHttpListener(port, "localhost")
                 .setHandler(DevToolbench::handleRequest)
                 .build();
         server.start();
     }
 
+    public static void stop() {
+        server.stop();
+    }
+
     private static void handleRequest(HttpServerExchange exchange) {
         try {
+            System.out.println("Request: " + exchange.getRequestURI());
             String path = exchange.getRequestPath();
             if (STATICFILES.containsKey(path)) {
                 handleStaticFile(exchange, path);
@@ -81,9 +92,9 @@ public class DevToolbench {
                 HttpHandler handler = HANDLERS.get(path);
                 if (handler != null) {
                     handler.handleRequest(exchange);
+                    System.out.println("Response: " + exchange.getStatusCode() + " " + exchange.getResponseHeaders());
                 } else {
-                    exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
-                    exchange.getResponseSender().send("Unknown request");
+                    sendError(exchange, 404, "Unknown request");
                 }
             }
         } catch (Exception e) {
