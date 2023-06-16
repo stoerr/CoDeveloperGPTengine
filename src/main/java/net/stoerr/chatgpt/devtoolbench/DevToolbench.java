@@ -114,7 +114,7 @@ public class DevToolbench {
             System.out.println("Aborted and problem reported to ChatGPT: " + e.getMessage());
         } catch (Exception e) {
             System.err.println("Bug! Abort handling request " + exchange.getRequestURI());
-            throw new RuntimeException(e);
+            e.printStackTrace(System.err);
         } finally {
             exchange.endExchange();
         }

@@ -6,6 +6,37 @@ info:
 servers:
   - url: http://localhost:7364
 paths:
+  /executePluginAction:
+    post:
+      operationId: executePluginAction
+      summary: Execute an action with given content as standard input. Only on explicit user request.
+      parameters:
+        - name: actionName
+          in: query
+          description: name of the action to be executed
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+      responses:
+        '200':
+          description: Action executed successfully, output returned
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Action not found
+        '500':
+          description: Action execution failed, output returned
   /listFiles:
     get:
       operationId: listFiles
