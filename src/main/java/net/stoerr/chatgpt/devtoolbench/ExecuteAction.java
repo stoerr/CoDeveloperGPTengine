@@ -14,21 +14,21 @@ import com.google.gson.Gson;
 
 import io.undertow.server.HttpServerExchange;
 
-public class ExecutePluginAction extends AbstractPluginOperation {
+public class ExecuteAction extends AbstractPluginOperation {
 
     private final Gson gson = new Gson();
 
     @Override
     public String getUrl() {
-        return "/executePluginAction";
+        return "/executeAction";
     }
 
     @Override
     public String openApiDescription() {
         return """
-                  /executePluginAction:
+                  /executeAction:
                     post:
-                      operationId: executePluginAction
+                      operationId: executeAction
                       summary: Execute an action with given content as standard input. Only on explicit user request.
                       parameters:
                         - name: actionName
@@ -85,7 +85,7 @@ public class ExecutePluginAction extends AbstractPluginOperation {
                 return;
             }
             String actionName = getQueryParams(exchange).get("actionName");
-            Path path = DevToolbench.currentDir.resolve(".cgptfmgr/" + actionName + ".sh");
+            Path path = DevToolbench.currentDir.resolve(".cgptdevbench/" + actionName + ".sh");
 
             if (!Files.exists(path)) {
                 sendError(exchange, 400, "Action " + actionName + " not found");

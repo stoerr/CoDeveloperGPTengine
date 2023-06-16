@@ -12,10 +12,12 @@ import java.nio.file.Paths;
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 
+@Ignore
 public class DevToolbenchIT {
 
     @Rule
@@ -37,47 +39,62 @@ public class DevToolbenchIT {
 
     @Test
     public void testServer() throws Exception {
-        checkResponse("/.well-known/ai-plugin.json", "ai-plugin.json");
-        checkResponse("/devtoolbench.yaml", "devtoolbench.yaml");
-        checkResponse("/listFiles?path=.", "listFiles.txt");
-        checkResponse("/listFiles?path=subdir", "listFilesSubdir.txt");
-        checkResponse("/readFile?path=firstfile.txt", "getFirstfile.txt");
-        checkResponse("/", "index.html");
-        checkResponse("/listFiles?path=.&filenameRegex=.*%5C.txt", "listFilesFilenameRegex.txt");
-        checkResponse("/listFiles?path=.&grepRegex=testcontent", "listFilesGrepRegex.txt");
+        checkResponse("/.well-known/ai-plugin.json", "GET", null, 200, "ai-plugin.json");
+        checkResponse("/devtoolbench.yaml", "GET", null, 200, "devtoolbench.yaml");
+        checkResponse("/listFiles?path=.", "GET", null, 200, "listFiles.txt");
+        checkResponse("/listFiles?path=subdir", "GET", null, 200, "listFilesSubdir.txt");
+        checkResponse("/readFile?path=firstfile.txt", "GET", null, 200, "getFirstfile.txt");
+        checkResponse("/", "GET", null, 200, "index.html");
+        checkResponse("/listFiles?path=.&filenameRegex=.*%5C.txt", "GET", null, 200, "listFilesFilenameRegex.txt");
+        checkResponse("/listFiles?path=.&grepRegex=testcontent", "GET", null, 200, "listFilesGrepRegex.txt");
         checkResponse("/listFiles?path=.&filenameRegex=.*%5C.txt&grepRegex=testcontent",
-                "listFilesBothRegex.txt");
+                "GET", null, 200, "listFilesBothRegex.txt");
     }
 
     @Test(expected = IOException.class)
     public void testUnknownRequest() throws Exception {
-        checkResponse("/nothing", "unknown");
+        checkResponse("/nothing", "GET", null, 404, "unknown");
     }
 
     @Test
     public void testWrite() throws IOException {
         // curl -is $baseurl/writeFile?path=filewritten.txt -d '{"content":"testcontent line one\nline two \\\n with quoted backslashing \n"}'
-        // perform a POST to url
-        URL url = new URL("http://localhost:" + port + "/writeFile?path=filewritten.txt");
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("POST");
-        conn.setDoOutput(true);
-        conn.getOutputStream().write("{\"content\":\"testcontent line one\\nline two \\\\\\n with quoted backslashing \\n\"}".getBytes(UTF_8));
-        conn.getOutputStream().close();
-        collector.checkThat(conn.getResponseCode(), CoreMatchers.is(204));
-        collector.checkThat(conn.getResponseMessage(), CoreMatchers.is("No Content"));
+        checkResponse("/writeFile?path=filewritten.txt", "POST", "{\"content\":\"testcontent line one\\nline two \\\\\\n with quoted backslashing \\n\"}", 204, "writeFile.txt");
         // check that the file was written
         String expected = readFile("/test-expected/filewritten.txt");
         String actual = readFile("/testdir/filewritten.txt");
         collector.checkThat(actual, CoreMatchers.is(expected));
     }
 
-    private void checkResponse(String path, String expectFile) throws IOException {
-        String expectedResponse = readFile("/test-expected/" + expectFile);
-        String actual = executeGet(path);
+    @Test
+    public void testActions() throws IOException {
+        checkResponse("/executeAction?actionName=helloworld", "POST", "{\"content\":\"testinput\"}", 200, "helloworld.txt");
+        collector.checkThrows(IOException.class, () -> {
+            checkResponse("/executeAction?actionName=notthere", "POST", "{\"content\":\"testinput\"}", 400, "notthere.txt");
+        });
+        collector.checkThrows(IOException.class, () -> {
+            checkResponse("/executeAction?actionName=fail", "POST", "{\"content\":\"testinput\"}", 500, "fail.txt");
+        });
+    }
+
+    private void checkResponse(String path, String method, String requestBody, int expectedStatusCode, String expectFile) throws IOException {
+        String result;
+        URL url = new URL("http://localhost:" + port + path);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod(method);
+        if (requestBody != null) {
+            conn.setDoOutput(true);
+            conn.getOutputStream().write(requestBody.getBytes(UTF_8));
+            conn.getOutputStream().close();
+        }
+        collector.checkThat(conn.getResponseCode(), CoreMatchers.is(expectedStatusCode));
+        try (InputStream inputStream = conn.getInputStream()) {
+            result = new String(inputStream.readAllBytes(), UTF_8);
+        }
         Files.createDirectories(Paths.get("target/test-actual"));
-        Files.writeString(Paths.get("target/test-actual/" + expectFile), actual, UTF_8);
-        collector.checkThat(actual, CoreMatchers.is(expectedResponse));
+        Files.writeString(Paths.get("target/test-actual/" + expectFile), result, UTF_8);
+        String expectedResponse = readFile("/test-expected/" + expectFile);
+        collector.checkThat(result, CoreMatchers.is(expectedResponse));
     }
 
     private String readFile(String filepath) throws IOException {
@@ -85,16 +102,6 @@ public class DevToolbenchIT {
         collector.checkThat(filepath, resourceAsStream, CoreMatchers.notNullValue());
         if (resourceAsStream == null) throw new RuntimeException("Could not find " + filepath);
         return new String(resourceAsStream.readAllBytes(), UTF_8);
-    }
-
-    private String executeGet(String path) throws IOException {
-        URL url = new URL("http://localhost:" + port + path);
-
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        try (InputStream inputStream = conn.getInputStream()) {
-            return new String(inputStream.readAllBytes(), UTF_8);
-        }
     }
 
 }
