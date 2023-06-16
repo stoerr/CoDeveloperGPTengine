@@ -38,11 +38,13 @@ public abstract class AbstractPluginOperation implements HttpHandler {
     protected Path getPath(HttpServerExchange exchange) {
         String path = getQueryParams(exchange).get("path");
         if (DevToolbench.IGNORE.matcher(path).matches()) {
-            throw new IllegalArgumentException("Path " + path + " is not allowed");
+            sendError(exchange, 400, "Access to path " + path + " is not allowed! (matches " + DevToolbench.IGNORE.pattern() + ")");
+            throw new ExecutionAbortedException("Path " + path + " is not allowed");
         }
         Path resolved = DevToolbench.currentDir.resolve(path).normalize().toAbsolutePath();
         if (!resolved.startsWith(DevToolbench.currentDir)) {
-            throw new IllegalArgumentException("Path " + path + " is not in current directory " + DevToolbench.currentDir);
+            sendError(exchange, 400, "Path " + path + " is outside of current directory!");
+            throw new ExecutionAbortedException("Path " + path + " is not in current directory " + DevToolbench.currentDir);
         }
         return resolved;
     }

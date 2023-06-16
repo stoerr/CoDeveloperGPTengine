@@ -31,7 +31,7 @@ public class DevToolbench {
     /**
      * Which files we always ignore.
      */
-    public static final Pattern IGNORE = Pattern.compile(".*/[.].*|.*/target/.*");
+    public static final Pattern IGNORE = Pattern.compile(".*/[.].*|.*/target/.*|.*/(Hpsx|hpsx).*");
 
     private static int port;
 
@@ -52,6 +52,7 @@ public class DevToolbench {
         HANDLERS.put("/listFiles", new ListFilesOperation());
         HANDLERS.put("/readFile", new ReadFileOperation());
         HANDLERS.put("/writeFile", new WriteFileOperation());
+        HANDLERS.put("/executePluginAction", new ExecutePluginAction());
         STATICFILES.put("/.well-known/ai-plugin.json", () -> {
             try (InputStream in = DevToolbench.class.getResourceAsStream("/ai-plugin.json")) {
                 if (in == null) {
@@ -109,6 +110,8 @@ public class DevToolbench {
                     sendError(exchange, 404, "Unknown request");
                 }
             }
+        } catch (ExecutionAbortedException e) {
+            System.out.println("Aborted and problem reported to ChatGPT: " + e.getMessage());
         } catch (Exception e) {
             System.err.println("Bug! Abort handling request " + exchange.getRequestURI());
             throw new RuntimeException(e);
