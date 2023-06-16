@@ -1,7 +1,5 @@
 package net.stoerr.chatgpt.devtoolbench;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -66,8 +64,20 @@ public class ListFilesOperation extends AbstractPluginOperation {
         Path path = getPath(exchange);
         String filenameRegex = queryParams.get("filenameRegex");
         String grepRegex = queryParams.get("grepRegex");
-        Pattern filenamePattern = filenameRegex != null ? Pattern.compile(filenameRegex) : null;
-        Pattern grepPattern = grepRegex != null ? Pattern.compile(grepRegex) : null;
+        Pattern filenamePattern;
+        try {
+            filenamePattern = filenameRegex != null ? Pattern.compile(filenameRegex) : null;
+        } catch (Exception e) {
+            sendError(exchange, 400, "Invalid filenameRegex: " + e.getMessage());
+            return;
+        }
+        Pattern grepPattern;
+        try {
+            grepPattern = grepRegex != null ? Pattern.compile(grepRegex) : null;
+        } catch (Exception e) {
+            sendError(exchange, 400, "Invalid grepRegex: " + e.getMessage());
+            return;
+        }
 
         if (Files.isDirectory(path)) {
             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=utf-8");
@@ -81,8 +91,9 @@ public class ListFilesOperation extends AbstractPluginOperation {
                         } else {
                             try (Stream<String> lines = Files.lines(p)) {
                                 return lines.anyMatch(line -> grepPattern.matcher(line).find());
-                            } catch (IOException e) {
-                                throw new UncheckedIOException(e);
+                            } catch (Exception e) {
+                                System.out.println("Error reading " + p + " : " + e.getMessage());
+                                return false;
                             }
                         }
                     })

@@ -110,6 +110,7 @@ public class DevToolbench {
                 }
             }
         } catch (Exception e) {
+            System.err.println("Bug! Abort handling request " + exchange.getRequestURI());
             throw new RuntimeException(e);
         } finally {
             exchange.endExchange();
