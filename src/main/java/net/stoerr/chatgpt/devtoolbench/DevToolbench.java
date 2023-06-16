@@ -48,11 +48,16 @@ public class DevToolbench {
 
     private static Undertow server;
 
+    private static void addHandler(AbstractPluginOperation handler) {
+        HANDLERS.put(handler.getUrl(), handler);
+    }
+
     static {
-        HANDLERS.put("/listFiles", new ListFilesOperation());
-        HANDLERS.put("/readFile", new ReadFileOperation());
-        HANDLERS.put("/writeFile", new WriteFileOperation());
-        HANDLERS.put("/executePluginAction", new ExecutePluginAction());
+        addHandler(new ListFilesOperation());
+        addHandler(new ReadFileOperation());
+        addHandler(new WriteFileOperation());
+        addHandler(new ExecuteAction());
+
         STATICFILES.put("/.well-known/ai-plugin.json", () -> {
             try (InputStream in = DevToolbench.class.getResourceAsStream("/ai-plugin.json")) {
                 if (in == null) {
@@ -88,7 +93,7 @@ public class DevToolbench {
 
     private static void handleRequest(HttpServerExchange exchange) {
         try {
-            System.out.println("Request: " + exchange.getRequestURI());
+            System.out.println("Request: " + exchange.getRequestURL());
             String path = exchange.getRequestPath();
             exchange.getResponseHeaders().put(HttpString.tryFromString("Access-Control-Allow-Origin"), "*"); // TODO https://chat.openai.com
             if (exchange.getRequestMethod().equals(Methods.OPTIONS)) {
@@ -113,7 +118,7 @@ public class DevToolbench {
         } catch (ExecutionAbortedException e) {
             System.out.println("Aborted and problem reported to ChatGPT: " + e.getMessage());
         } catch (Exception e) {
-            System.err.println("Bug! Abort handling request " + exchange.getRequestURI());
+            System.err.println("Bug! Abort handling request " + exchange.getRequestURL());
             e.printStackTrace(System.err);
         } finally {
             exchange.endExchange();

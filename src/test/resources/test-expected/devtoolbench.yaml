@@ -6,9 +6,9 @@ info:
 servers:
   - url: http://localhost:7364
 paths:
-  /executePluginAction:
+  /executeAction:
     post:
-      operationId: executePluginAction
+      operationId: executeAction
       summary: Execute an action with given content as standard input. Only on explicit user request.
       parameters:
         - name: actionName
