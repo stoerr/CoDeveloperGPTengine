@@ -4,6 +4,7 @@ import static net.stoerr.chatgpt.devtoolbench.AbstractPluginOperation.sendError;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -93,11 +94,12 @@ public class DevToolbench {
                 giveCORSResponse(exchange);
             } else if (STATICFILES.containsKey(path)) {
                 handleStaticFile(exchange, path);
-            } else if (path.equals("icon.png")) {
-                // send resource icon.png with content type image/png
-                exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "image/png");
+            } else if (path.equals("/icon.png")) {
                 byte[] bytes = DevToolbench.class.getResourceAsStream("/icon.png").readAllBytes();
-                exchange.getOutputStream().write(bytes);
+                exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "image/png");
+                exchange.setStatusCode(200);
+                exchange.setResponseContentLength(bytes.length);
+                exchange.getResponseSender().send(ByteBuffer.wrap(bytes));
             } else {
                 HttpHandler handler = HANDLERS.get(path);
                 if (handler != null) {
