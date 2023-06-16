@@ -10,6 +10,6 @@ cd $progdir || exit 1
 mvn -B install || exit 1
 
 echo Copying to bin
-mv -f bin/developersToolbenchPlugin-SNAPSHOT bin/developersToolbenchPlugin.bak.jar
+mv -f bin/developersToolbenchPlugin.jar bin/developersToolbenchPlugin.bak.jar
 mv $progdir/target/developersChatGPTtoolbenchPlugin-*.jar bin/developersToolbenchPlugin.jar
 ls -l bin

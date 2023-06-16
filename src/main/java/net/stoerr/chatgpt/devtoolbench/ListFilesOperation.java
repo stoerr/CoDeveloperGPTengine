@@ -84,7 +84,7 @@ public class ListFilesOperation extends AbstractPluginOperation {
             List<String> files = Files.walk(path)
                     .filter(Files::isRegularFile)
                     .filter(p -> !DevToolbench.IGNORE.matcher(p.toString()).matches())
-                    .filter(p -> filenamePattern == null || filenamePattern.matcher(p.getFileName().toString()).matches())
+                    .filter(p -> filenamePattern == null || filenamePattern.matcher(p.getFileName().toString()).find())
                     .filter(p -> {
                         if (grepPattern == null) {
                             return true;
@@ -99,6 +99,10 @@ public class ListFilesOperation extends AbstractPluginOperation {
                     })
                     .map(p -> DevToolbench.currentDir.relativize(p).toString())
                     .toList();
+            if (files.isEmpty()) {
+                sendError(exchange, 404, "No files found");
+                return;
+            }
             byte[] response = (String.join("\n", files) + "\n").getBytes(StandardCharsets.UTF_8);
             exchange.setStatusCode(200);
             exchange.setResponseContentLength(response.length);
