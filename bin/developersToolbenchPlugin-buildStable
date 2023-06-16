@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+echo build latest version and copy that to the bin directory
+
+progfile=$0
+if test -L "$progfile"; then
+  progfile=$(readlink "$progfile")
+fi
+progdir=$(dirname "$progfile")/..
+cd $progdir || exit 1
+mvn -B install || exit 1
+
+echo Copying to bin
+mv -f bin/developersToolbenchPlugin-SNAPSHOT bin/developersToolbenchPlugin.bak.jar
+mv $progdir/target/developersChatGPTtoolbenchPlugin-*.jar bin/developersToolbenchPlugin.jar
+ls -l bin

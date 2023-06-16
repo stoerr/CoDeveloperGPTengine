@@ -2,6 +2,8 @@ package net.stoerr.chatgpt.devtoolbench;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -86,8 +88,10 @@ public class ListFilesOperation extends AbstractPluginOperation {
                     })
                     .map(p -> DevToolbench.currentDir.relativize(p).toString())
                     .toList();
-            String response = String.join("\n", files) + "\n";
-            exchange.getResponseSender().send(response);
+            byte[] response = (String.join("\n", files) + "\n").getBytes(StandardCharsets.UTF_8);
+            exchange.setStatusCode(200);
+            exchange.setResponseContentLength(response.length);
+            exchange.getResponseSender().send(ByteBuffer.wrap(response));
         } else {
             sendError(exchange, 404, "Directory not found");
         }

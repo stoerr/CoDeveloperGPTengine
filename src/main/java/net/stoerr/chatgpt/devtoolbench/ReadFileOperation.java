@@ -44,8 +44,10 @@ public class ReadFileOperation extends AbstractPluginOperation {
     public void handleRequest(HttpServerExchange exchange) throws Exception {
         Path path = getPath(exchange);
         if (Files.exists(path)) {
-            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=utf-8");
             byte[] bytes = Files.readAllBytes(path);
+            exchange.setResponseContentLength(bytes.length);
+            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=utf-8");
+            exchange.setStatusCode(200);
             exchange.getResponseSender().send(new String(bytes));
         } else {
             sendError(exchange, 404, "File not found");

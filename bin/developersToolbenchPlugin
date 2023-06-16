@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+progfile=$0
+if test -L "$progfile"; then
+  progfile=$(readlink "$progfile")
+fi
+progdir=$(dirname "$progfile")/..
+
+/usr/bin/java -jar $progdir/bin/developersToolbenchPlugin.jar "$@"
