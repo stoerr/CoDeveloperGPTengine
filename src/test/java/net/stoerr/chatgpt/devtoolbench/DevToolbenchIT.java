@@ -51,6 +51,11 @@ public class DevToolbenchIT {
                 "GET", null, 200, "listFilesBothRegex.txt");
     }
 
+    @Test
+    public void testGrepOperation() throws IOException {
+        checkResponse("/grepFiles?path=firstfile.txt&grepRegex=Hello", "GET", null, 200, "grepFirst.txt");
+    }
+
     @Test(expected = IOException.class)
     public void testUnknownRequest() throws Exception {
         checkResponse("/nothing", "GET", null, 404, "unknown");

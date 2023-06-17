@@ -37,6 +37,46 @@ paths:
           description: Action not found
         '500':
           description: Action execution failed, output returned
+  /grepFiles:
+    post:
+      operationId: grepAction
+      summary: Search for lines in files matching the given regex.
+      parameters:
+        - name: path
+          in: query
+          description: relative path to directory. root directory = '.'
+          required: true
+          schema:
+            type: string
+        - name: fileRegex
+          in: query
+          description: optional regex to filter file names
+          required: false
+          schema:
+            type: string
+        - name: grepRegex
+          in: query
+          description: regex to filter lines in the files
+          required: true
+          schema:
+            type: string
+        - name: contextLines
+          in: query
+          description: number of context lines to include with each match (not yet used)
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lines matching the regex
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Invalid regex
+        '500':
+          description: Error reading files
   /listFiles:
     get:
       operationId: listFiles
