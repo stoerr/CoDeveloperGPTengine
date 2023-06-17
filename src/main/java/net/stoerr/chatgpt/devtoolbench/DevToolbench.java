@@ -57,6 +57,7 @@ public class DevToolbench {
         addHandler(new ReadFileOperation());
         addHandler(new WriteFileOperation());
         addHandler(new ExecuteAction());
+        addHandler(new GrepOperation());
 
         STATICFILES.put("/.well-known/ai-plugin.json", () -> {
             try (InputStream in = DevToolbench.class.getResourceAsStream("/ai-plugin.json")) {
