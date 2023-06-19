@@ -76,8 +76,8 @@ public class ListFilesOperation extends AbstractPluginOperation {
 
         if (Files.isDirectory(path)) {
             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=utf-8");
-            List<String> files = findMatchingFiles(path, filenamePattern, grepPattern)
-                    .map(p -> DevToolbench.currentDir.relativize(p).toString())
+            List<String> files = findMatchingFiles(exchange, path, filenamePattern, grepPattern)
+                    .map(this::mappedFilename)
                     .toList();
             if (files.isEmpty()) {
                 throw sendError(exchange, 404, "No files found");
