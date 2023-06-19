@@ -65,6 +65,7 @@ public class DevToolbenchIT {
     @Test
     public void testGrepOperation() throws IOException {
         checkResponse("/grepFiles?path=firstfile.txt&grepRegex=Hello", "GET", null, 200, "grepFirst.txt");
+        checkResponse("/grepFiles?path=.&grepRegex=duck&fileRegex=md&contextLines=1", "GET", null, 200, "grepContext.txt");
     }
 
     @Test(expected = IOException.class)

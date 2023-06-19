@@ -35,24 +35,28 @@ public abstract class AbstractPluginOperation implements HttpHandler {
         throw new ExecutionAbortedException(error);
     }
 
-    protected static Stream<Path> findMatchingFiles(Path path, Pattern filenamePattern, Pattern grepPattern) throws IOException {
+    protected static Stream<Path> findMatchingFiles(HttpServerExchange exchange, Path path, Pattern filenamePattern, Pattern grepPattern) {
         List<Path> result = new ArrayList<>();
-        Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
-            @Override
-            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                if (DevToolbench.IGNORE.matcher(dir.toString()).matches()) {
-                    return FileVisitResult.SKIP_SUBTREE;
+        try {
+            Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                    if (DevToolbench.IGNORE.matcher(dir.toString()).matches()) {
+                        return FileVisitResult.SKIP_SUBTREE;
+                    }
+                    return super.preVisitDirectory(dir, attrs);
                 }
-                return super.preVisitDirectory(dir, attrs);
-            }
 
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                FileVisitResult res = super.visitFile(file, attrs);
-                result.add(file);
-                return res;
-            }
-        });
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    FileVisitResult res = super.visitFile(file, attrs);
+                    result.add(file);
+                    return res;
+                }
+            });
+        } catch (IOException e) {
+            sendError(exchange, 500, "Error reading " + path + " : " + e.getMessage());
+        }
 
         return result.stream()
                 .filter(Files::isRegularFile)
@@ -124,6 +128,10 @@ public abstract class AbstractPluginOperation implements HttpHandler {
 
     protected void handleRequestBodyError(HttpServerExchange httpServerExchange, IOException e) {
         sendError(httpServerExchange, 400, "Error reading request body: " + e.getMessage());
+    }
+
+    protected String mappedFilename(Path path) {
+        return DevToolbench.currentDir.relativize(path).toString();
     }
 
 }
