@@ -74,7 +74,7 @@ paths:
               schema:
                 type: string
         '400':
-          description: Invalid regex
+          description: Invalid parameter
         '500':
           description: Error reading files
   /listFiles:
@@ -152,5 +152,5 @@ paths:
       responses:
         '204':
           description: File written
-        '422':
-          description: The request body was not a valid JSON object with a content property
+        '400':
+          description: Invalid parameter

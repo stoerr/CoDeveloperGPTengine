@@ -1,8 +1,19 @@
 package net.stoerr.chatgpt.devtoolbench;
 
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
+
+import com.google.gson.Gson;
 
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
@@ -10,15 +21,56 @@ import io.undertow.util.Headers;
 
 public abstract class AbstractPluginOperation implements HttpHandler {
 
-    protected static void sendError(HttpServerExchange exchange, int statusCode, String error) {
+    private final Gson gson = new Gson();
+
+    /**
+     * Logs an error and sends it to ChatGPT, always throws {@link ExecutionAbortedException}.
+     * Use with pattern {@code thow sendError(...)} to let compiler know that.
+     */
+    protected static ExecutionAbortedException sendError(HttpServerExchange exchange, int statusCode, String error) throws ExecutionAbortedException {
         System.out.println("Error " + statusCode + ": " + error);
         exchange.setStatusCode(statusCode);
         exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
         exchange.getResponseSender().send(error);
+        throw new ExecutionAbortedException(error);
     }
 
-    @Override
-    public abstract void handleRequest(HttpServerExchange exchange) throws Exception;
+    protected static Stream<Path> findMatchingFiles(Path path, Pattern filenamePattern, Pattern grepPattern) throws IOException {
+        List<Path> result = new ArrayList<>();
+        Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                if (DevToolbench.IGNORE.matcher(dir.toString()).matches()) {
+                    return FileVisitResult.SKIP_SUBTREE;
+                }
+                return super.preVisitDirectory(dir, attrs);
+            }
+
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                FileVisitResult res = super.visitFile(file, attrs);
+                result.add(file);
+                return res;
+            }
+        });
+
+        return result.stream()
+                .filter(Files::isRegularFile)
+                .filter(p -> !DevToolbench.IGNORE.matcher(p.toString()).matches())
+                .filter(p -> filenamePattern == null || filenamePattern.matcher(p.getFileName().toString()).find())
+                .filter(p -> {
+                    if (grepPattern == null) {
+                        return true;
+                    } else {
+                        try (Stream<String> lines = Files.lines(p)) {
+                            return lines.anyMatch(line -> grepPattern.matcher(line).find());
+                        } catch (Exception e) {
+                            System.out.println("Error reading " + p + " : " + e.getMessage());
+                            return false;
+                        }
+                    }
+                });
+    }
 
     /**
      * The URL it is deployed at, e.g. /listFiles.
@@ -30,23 +82,48 @@ public abstract class AbstractPluginOperation implements HttpHandler {
      */
     public abstract String openApiDescription();
 
-    protected Map<String, String> getQueryParams(HttpServerExchange exchange) {
-        return exchange.getQueryParameters().entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().peekFirst()));
+    protected String getQueryParam(HttpServerExchange exchange, String name) {
+        Deque<String> paramDeque = exchange.getQueryParameters().get(name);
+        return paramDeque != null ? paramDeque.peekFirst() : null;
+    }
+
+    protected String getMandatoryQueryParam(HttpServerExchange exchange, String name) {
+        String result = getQueryParam(exchange, name);
+        if (null == result) {
+            System.out.println("Missing query parameter " + name + " in " + exchange.getRequestURI());
+            sendError(exchange, 400, "Missing query parameter " + name);
+        }
+        return result;
     }
 
     protected Path getPath(HttpServerExchange exchange) {
-        String path = getQueryParams(exchange).get("path");
+        String path = getMandatoryQueryParam(exchange, "path");
         if (DevToolbench.IGNORE.matcher(path).matches()) {
             sendError(exchange, 400, "Access to path " + path + " is not allowed! (matches " + DevToolbench.IGNORE.pattern() + ")");
-            throw new ExecutionAbortedException("Path " + path + " is not allowed");
         }
         Path resolved = DevToolbench.currentDir.resolve(path).normalize().toAbsolutePath();
         if (!resolved.startsWith(DevToolbench.currentDir)) {
             sendError(exchange, 400, "Path " + path + " is outside of current directory!");
-            throw new ExecutionAbortedException("Path " + path + " is not in current directory " + DevToolbench.currentDir);
         }
         return resolved;
+    }
+
+    protected String getMandatoryContentFromBody(HttpServerExchange exchange, String json) {
+        String content = "";
+        if (!json.isEmpty() && !"{}".equals(json)) {
+            try {
+                Map<String, String> decoded = gson.fromJson(json, Map.class);
+                content = decoded.get("content") == null ? "" : decoded.get("content");
+            } catch (Exception e) {
+                String error = "Parse error for content: " + e.getMessage();
+                sendError(exchange, 400, error);
+            }
+        }
+        return content;
+    }
+
+    protected void handleRequestBodyError(HttpServerExchange httpServerExchange, IOException e) {
+        sendError(httpServerExchange, 400, "Error reading request body: " + e.getMessage());
     }
 
 }
