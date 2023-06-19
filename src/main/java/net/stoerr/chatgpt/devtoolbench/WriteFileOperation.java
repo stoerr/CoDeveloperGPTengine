@@ -3,7 +3,6 @@ package net.stoerr.chatgpt.devtoolbench;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Map;
 
 import com.google.gson.Gson;
 
@@ -48,35 +47,19 @@ public class WriteFileOperation extends AbstractPluginOperation {
                       responses:
                         '204':
                           description: File written
-                        '422':
-                          description: The request body was not a valid JSON object with a content property
+                        '400':
+                          description: Invalid parameter
                 """.stripIndent();
     }
 
     @Override
     public void handleRequest(HttpServerExchange exchange) {
-        exchange.getRequestReceiver().receiveFullString(this::handleBody, this::handleError);
+        exchange.getRequestReceiver().receiveFullString(this::handleBody, this::handleRequestBodyError);
     }
 
     private void handleBody(HttpServerExchange exchange, String json) {
         try {
-            Map<String, String> decoded;
-            if (json.isEmpty() || "{}".equals(json)) {
-                sendError(exchange, 422, "Missing content parameter");
-                return;
-            }
-            try {
-                decoded = gson.fromJson(json, Map.class);
-            } catch (Exception e) {
-                String error = "Parse error for content: " + e.getMessage();
-                sendError(exchange, 422, error);
-                return;
-            }
-            String content = decoded.get("content");
-            if (content == null || content.isBlank()) {
-                sendError(exchange, 422, "Missing content parameter or empty content");
-                return;
-            }
+            String content = getMandatoryContentFromBody(exchange, json);
             Path path = getPath(exchange);
             if (!Files.exists(path.getParent())) {
                 Files.createDirectories(path.getParent());
@@ -85,13 +68,8 @@ public class WriteFileOperation extends AbstractPluginOperation {
                     java.nio.file.StandardOpenOption.WRITE, java.nio.file.StandardOpenOption.TRUNCATE_EXISTING);
             exchange.setStatusCode(204);
         } catch (IOException e) {
-            sendError(exchange, 422, "Error writing file: " + e.getMessage());
+            sendError(exchange, 500, "Error writing file: " + e.getMessage());
         }
     }
-
-    private void handleError(HttpServerExchange httpServerExchange, IOException e) {
-        sendError(httpServerExchange, 422, "Error reading request body: " + e.getMessage());
-    }
-
 
 }

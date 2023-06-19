@@ -1,8 +1,7 @@
 package net.stoerr.chatgpt.devtoolbench;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Map;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -55,7 +54,7 @@ public class GrepOperation extends AbstractPluginOperation {
                               schema:
                                 type: string
                         '400':
-                          description: Invalid regex
+                          description: Invalid parameter
                         '500':
                           description: Error reading files
                 """.stripIndent();
@@ -64,29 +63,25 @@ public class GrepOperation extends AbstractPluginOperation {
     @Override
     public void handleRequest(HttpServerExchange exchange) {
         try {
-            Map<String, String> queryParams = getQueryParams(exchange);
-            String fileRegex = queryParams.get("fileRegex");
-            String grepRegex = queryParams.get("grepRegex");
-            if (grepRegex == null || grepRegex.isBlank()) {
-                sendError(exchange, 422, "Missing grepRegex parameters");
-                return;
-            }
+            String fileRegex = getQueryParam(exchange, "fileRegex");
+            String grepRegex = getMandatoryQueryParam(exchange, "grepRegex");
             Pattern grepPattern = Pattern.compile(grepRegex);
             Pattern filePattern = fileRegex != null ? Pattern.compile(fileRegex) : Pattern.compile(".*");
+            int contextLines = 0;
+            String contextLinesParam = getQueryParam(exchange, "contextLines");
+            if (contextLinesParam != null && !contextLinesParam.isBlank()) {
+                try {
+                    contextLines = Integer.parseInt(contextLinesParam);
+                } catch (NumberFormatException e) {
+                    sendError(exchange, 400, "Invalid contextLines parameter: " + contextLinesParam);
+                }
+            }
+
             // TODO: Implement the contextLines parameter
-            String result = Files.walk(getPath(exchange))
-                    .filter(Files::isRegularFile)
-                    .filter(path -> filePattern != null ? filePattern.matcher(path.getFileName().toString()).find() : true)
-                    .flatMap(p -> {
-                        try {
-                            return Files.lines(p).filter(line -> grepPattern.matcher(line).find());
-                        } catch (IOException e) {
-                            System.out.println("Error reading " + p + " : " + e.getMessage());
-                            return "".lines();
-                        }
-                    })
-                    .collect(Collectors.joining("\n"));
-            exchange.getResponseSender().send(result);
+            List<String> result = findMatchingFiles(getPath(exchange), filePattern, grepPattern)
+                    .map(p -> DevToolbench.currentDir.relativize(p).toString())
+                    .toList();
+            exchange.getResponseSender().send(result.stream().collect(Collectors.joining("\n")) + "\n");
         } catch (IOException e) {
             sendError(exchange, 500, "Error reading files: " + e.getMessage());
         }

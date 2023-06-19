@@ -7,16 +7,11 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Map;
 import java.util.regex.Pattern;
-
-import com.google.gson.Gson;
 
 import io.undertow.server.HttpServerExchange;
 
 public class ExecuteAction extends AbstractPluginOperation {
-
-    private final Gson gson = new Gson();
 
     @Override
     public String getUrl() {
@@ -62,34 +57,17 @@ public class ExecuteAction extends AbstractPluginOperation {
 
     @Override
     public void handleRequest(HttpServerExchange exchange) {
-        exchange.getRequestReceiver().receiveFullString(this::handleBody, this::handleError);
+        exchange.getRequestReceiver().receiveFullString(this::handleBody, this::handleRequestBodyError);
     }
 
     private void handleBody(HttpServerExchange exchange, String json) {
         try {
-            Map<String, String> decoded;
-            if (json.isEmpty() || "{}".equals(json)) {
-                sendError(exchange, 422, "Missing content parameter");
-                return;
-            }
-            try {
-                decoded = gson.fromJson(json, Map.class);
-            } catch (Exception e) {
-                String error = "Parse error for content: " + e.getMessage();
-                sendError(exchange, 422, error);
-                return;
-            }
-            String content = decoded.get("content");
-            if (content == null || content.isBlank()) {
-                sendError(exchange, 422, "Missing content parameter or empty content");
-                return;
-            }
-            String actionName = getQueryParams(exchange).get("actionName");
+            String content = getMandatoryContentFromBody(exchange, json);
+            String actionName = getMandatoryQueryParam(exchange, "actionName");
             Path path = DevToolbench.currentDir.resolve(".cgptdevbench/" + actionName + ".sh");
 
             if (!Files.exists(path)) {
                 sendError(exchange, 400, "Action " + actionName + " not found");
-                return;
             }
 
             ProcessBuilder pb = new ProcessBuilder("/bin/sh", path.toString());
@@ -104,7 +82,7 @@ public class ExecuteAction extends AbstractPluginOperation {
             String output = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
             int exitCode = process.waitFor();
             System.out.println("Process finished with exit code " + exitCode + ": " + output);
-            output = output.replaceAll(Pattern.quote(DevToolbench.currentDir.toString()), "");
+            output = output.replaceAll(Pattern.quote(DevToolbench.currentDir.toString() + "/"), "");
 
             if (exitCode == 0) {
                 exchange.setStatusCode(200);
@@ -113,12 +91,13 @@ public class ExecuteAction extends AbstractPluginOperation {
                 String response = "Execution failed with exit code " + exitCode + ": " + output;
                 sendError(exchange, 500, response);
             }
-        } catch (IOException | InterruptedException e) {
-            sendError(exchange, 422, "Error executing action: " + e.getMessage());
+        } catch (InterruptedException e) {
+            sendError(exchange, 500, "Error executing action: " + e.getMessage());
+            Thread.currentThread().interrupt();
+        } catch (IOException e) {
+            sendError(exchange, 500, "Error executing action: " + e.getMessage());
         }
+
     }
 
-    private void handleError(HttpServerExchange httpServerExchange, IOException e) {
-        sendError(httpServerExchange, 422, "Error reading request body: " + e.getMessage());
-    }
 }

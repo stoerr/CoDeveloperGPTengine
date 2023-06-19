@@ -5,9 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
@@ -60,55 +58,37 @@ public class ListFilesOperation extends AbstractPluginOperation {
 
     @Override
     public void handleRequest(HttpServerExchange exchange) throws Exception {
-        Map<String, String> queryParams = getQueryParams(exchange);
         Path path = getPath(exchange);
-        String filenameRegex = queryParams.get("filenameRegex");
-        String grepRegex = queryParams.get("grepRegex");
+        String filenameRegex = getQueryParam(exchange, "filenameRegex");
+        String grepRegex = getQueryParam(exchange, "grepRegex");
         Pattern filenamePattern;
         try {
             filenamePattern = filenameRegex != null ? Pattern.compile(filenameRegex) : null;
         } catch (Exception e) {
-            sendError(exchange, 400, "Invalid filenameRegex: " + e.getMessage());
-            return;
+            throw sendError(exchange, 400, "Invalid filenameRegex: " + e.getMessage());
         }
         Pattern grepPattern;
         try {
             grepPattern = grepRegex != null ? Pattern.compile(grepRegex) : null;
         } catch (Exception e) {
-            sendError(exchange, 400, "Invalid grepRegex: " + e.getMessage());
-            return;
+            throw sendError(exchange, 400, "Invalid grepRegex: " + e.getMessage());
         }
 
         if (Files.isDirectory(path)) {
             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=utf-8");
-            List<String> files = Files.walk(path)
-                    .filter(Files::isRegularFile)
-                    .filter(p -> !DevToolbench.IGNORE.matcher(p.toString()).matches())
-                    .filter(p -> filenamePattern == null || filenamePattern.matcher(p.getFileName().toString()).find())
-                    .filter(p -> {
-                        if (grepPattern == null) {
-                            return true;
-                        } else {
-                            try (Stream<String> lines = Files.lines(p)) {
-                                return lines.anyMatch(line -> grepPattern.matcher(line).find());
-                            } catch (Exception e) {
-                                System.out.println("Error reading " + p + " : " + e.getMessage());
-                                return false;
-                            }
-                        }
-                    })
+            List<String> files = findMatchingFiles(path, filenamePattern, grepPattern)
                     .map(p -> DevToolbench.currentDir.relativize(p).toString())
                     .toList();
             if (files.isEmpty()) {
-                sendError(exchange, 404, "No files found");
-                return;
+                throw sendError(exchange, 404, "No files found");
             }
             byte[] response = (String.join("\n", files) + "\n").getBytes(StandardCharsets.UTF_8);
             exchange.setStatusCode(200);
             exchange.setResponseContentLength(response.length);
             exchange.getResponseSender().send(ByteBuffer.wrap(response));
         } else {
-            sendError(exchange, 404, "Directory not found");
+            throw sendError(exchange, 404, "Directory not found");
         }
     }
+
 }
