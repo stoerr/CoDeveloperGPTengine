@@ -31,7 +31,7 @@ public class WriteFileAction extends AbstractPluginAction {
                       parameters:
                         - name: path
                           in: query
-                          description: relative path to directory for the created file
+                          description: relative path to file
                           required: true
                           schema:
                             type: string

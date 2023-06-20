@@ -27,7 +27,7 @@ public class GrepAction extends AbstractPluginAction {
                       parameters:
                         - name: path
                           in: query
-                          description: relative path to directory. root directory = '.'
+                          description: relative path to the directory to search in or the file to search. root directory = '.'
                           required: true
                           schema:
                             type: string

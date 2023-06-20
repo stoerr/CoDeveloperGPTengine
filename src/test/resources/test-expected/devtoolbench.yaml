@@ -44,7 +44,7 @@ paths:
       parameters:
         - name: path
           in: query
-          description: relative path to directory. root directory = '.'
+          description: relative path to the directory to search in or the file to search. root directory = '.'
           required: true
           schema:
             type: string
@@ -84,7 +84,7 @@ paths:
       parameters:
         - name: path
           in: query
-          description: relative path to directory. root directory = '.'
+          description: relative path to directory to list. root directory = '.'
           required: true
           schema:
             type: string
@@ -136,7 +136,7 @@ paths:
       parameters:
         - name: path
           in: query
-          description: relative path to directory for the created file
+          description: relative path to file
           required: true
           schema:
             type: string
