@@ -4,12 +4,10 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -22,7 +20,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.ErrorCollector;
 
-public abstract class AbstractIT {
+public abstract class AbstractActionIT {
 
     @Rule
     public ErrorCollector collector = new ErrorCollector();
@@ -63,6 +61,10 @@ public abstract class AbstractIT {
 
         collector.checkThat(response.getStatusLine().getStatusCode(), CoreMatchers.is(expectedStatusCode));
 
+        if (expectedStatusCode == 204) {
+            collector.checkThat(response.getEntity(), CoreMatchers.nullValue());
+            return;
+        }
         result = EntityUtils.toString(response.getEntity(), UTF_8);
 
         Files.createDirectories(Paths.get("target/test-actual"));

@@ -2,7 +2,7 @@ package net.stoerr.chatgpt.devtoolbench;
 
 import org.junit.Test;
 
-public class ListFilesOperationIT extends AbstractIT {
+public class ListFilesOperationActionIT extends AbstractActionIT {
 
     @Test
     public void testListFilesOperation() throws Exception {

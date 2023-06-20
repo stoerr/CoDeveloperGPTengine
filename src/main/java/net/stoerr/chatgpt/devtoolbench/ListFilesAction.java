@@ -11,7 +11,7 @@ import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
 
 // curl -is http://localhost:3001/listFiles?path=.
-public class ListFilesOperation extends AbstractPluginOperation {
+public class ListFilesAction extends AbstractPluginAction {
 
     @Override
     public String getUrl() {

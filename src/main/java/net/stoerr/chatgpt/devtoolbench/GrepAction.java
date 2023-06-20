@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 import io.undertow.server.HttpServerExchange;
 
-public class GrepOperation extends AbstractPluginOperation {
+public class GrepAction extends AbstractPluginAction {
 
     @Override
     public String getUrl() {

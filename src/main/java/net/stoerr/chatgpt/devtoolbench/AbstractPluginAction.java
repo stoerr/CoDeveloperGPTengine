@@ -19,7 +19,7 @@ import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
 
-public abstract class AbstractPluginOperation implements HttpHandler {
+public abstract class AbstractPluginAction implements HttpHandler {
 
     private final Gson gson = new Gson();
 

@@ -7,7 +7,7 @@ import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
 
 // curl -is http://localhost:3001/readFile?path=somefile.txt
-public class ReadFileOperation extends AbstractPluginOperation {
+public class ReadFileAction extends AbstractPluginAction {
 
     @Override
     public String getUrl() {
