@@ -28,7 +28,7 @@ public class ListFilesAction extends AbstractPluginAction {
                       parameters:
                         - name: path
                           in: query
-                          description: relative path to directory. root directory = '.'
+                          description: relative path to directory to list. root directory = '.'
                           required: true
                           schema:
                             type: string
