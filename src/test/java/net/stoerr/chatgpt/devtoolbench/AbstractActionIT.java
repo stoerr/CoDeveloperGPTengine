@@ -16,7 +16,9 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.ErrorCollector;
 
@@ -25,17 +27,17 @@ public abstract class AbstractActionIT {
     @Rule
     public ErrorCollector collector = new ErrorCollector();
 
-    int port = 7364;
+    static final int port = 7364;
 
-    @Before
-    public void setUp() {
+    @BeforeClass
+    public static void setUp() {
         DevToolbench.currentDir = Paths.get(".").resolve("src/test/resources/testdir").normalize()
                 .toAbsolutePath();
         DevToolbench.main(new String[]{String.valueOf(port)});
     }
 
-    @After
-    public void tearDown() {
+    @AfterClass
+    public static void tearDown() {
         DevToolbench.stop();
     }
 
