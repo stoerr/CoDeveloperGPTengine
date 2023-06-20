@@ -31,25 +31,27 @@ Description of /editFile in a code block:
             type: string
         - name: startLineRegex
           in: query
-          description: A regex matching the first line to replace in the file.
+          description: A regex matching the first line to replace in the file. If empty, we take the start of the file.
           required: false
           schema:
             type: string
         - name: startLineOffset
           in: query
-          description: An offset from the startLine.
+          description: An offset (number of lines) from the startLine. If negative and startLineRegex is empty, this 
+          counts from the end of the file.
           required: false
           schema:
             type: integer
         - name: stopLineRegex
           in: query
-          description: A regex matching the last line to replace in the file.
+          description: A regex matching the last line to replace in the file. If empty, we take the line the 
+          startLineRegex matches.
           required: false
           schema:
             type: string
         - name: stopLineOffset
           in: query
-          description: An offset from the stopLine.
+          description: An offset (number of lines) from the stopLine.
           required: false
           schema:
             type: integer
@@ -68,3 +70,23 @@ Description of /editFile in a code block:
         '400':
           description: Invalid parameter
 ```
+
+## Usecases
+
+Among others, there are the following usecases:
+
+1. insert text at the start of a file
+2. append text to the end of a file
+3. replace a complete file
+4. replace text from the start of a file until somewhere in the middle of a file (the beginning of a file)
+5. replace text from somewhere in the middle of a file until the end of a file (the end of a file)
+6. replace text somewhere in the middle of a file
+7. insert text somewhere in the middle of a file
+8. delete text somewhere in the middle of a file
+9. delete the start of a file
+10. delete the end of a file
+
+List which parameter settings are needed for each of those use cases and verify whether there are contradictions or 
+unclear points in the specification or whether there are missing features to fulfill some of them, or whether the 
+functionality is unambiguous. For brevity, just list parameters that are set for the usecase, omit parameters that are 
+not set. We only want to insert / replace / delete exactly one contiguous part of the file.
