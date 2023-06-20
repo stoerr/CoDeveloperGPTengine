@@ -4,11 +4,18 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Before;
@@ -36,18 +43,28 @@ public abstract class AbstractIT {
 
     protected void checkResponse(String path, String method, String requestBody, int expectedStatusCode, String expectFile) throws IOException {
         String result;
-        URL url = new URL("http://localhost:" + port + path);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod(method);
-        if (requestBody != null) {
-            conn.setDoOutput(true);
-            conn.getOutputStream().write(requestBody.getBytes(UTF_8));
-            conn.getOutputStream().close();
+        String url = "http://localhost:" + port + path;
+
+        CloseableHttpClient client = HttpClients.createDefault();
+        HttpResponse response;
+
+        if ("GET".equals(method)) {
+            HttpGet request = new HttpGet(url);
+            response = client.execute(request);
+        } else if ("POST".equals(method)) {
+            HttpPost request = new HttpPost(url);
+            if (requestBody != null) {
+                request.setEntity(new StringEntity(requestBody, UTF_8));
+            }
+            response = client.execute(request);
+        } else {
+            throw new IllegalArgumentException("Unsupported method: " + method);
         }
-        collector.checkThat(conn.getResponseCode(), CoreMatchers.is(expectedStatusCode));
-        try (InputStream inputStream = conn.getInputStream()) {
-            result = new String(inputStream.readAllBytes(), UTF_8);
-        }
+
+        collector.checkThat(response.getStatusLine().getStatusCode(), CoreMatchers.is(expectedStatusCode));
+
+        result = EntityUtils.toString(response.getEntity(), UTF_8);
+
         Files.createDirectories(Paths.get("target/test-actual"));
         Files.writeString(Paths.get("target/test-actual/" + expectFile), result, UTF_8);
         String expectedResponse = readFile("/test-expected/" + expectFile);
