@@ -3,7 +3,7 @@ package net.stoerr.chatgpt.devtoolbench;
 import org.junit.Test;
 import org.hamcrest.CoreMatchers;
 
-public class WriteFileOperationIT extends AbstractIT {
+public class WriteFileOperationActionIT extends AbstractActionIT {
 
     @Test
     public void testWriteFileOperation() throws Exception {

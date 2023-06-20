@@ -12,7 +12,7 @@ import io.undertow.server.HttpServerExchange;
  * an operation that writes the message into the file at path.
  */
 // curl -is http://localhost:3001/writeFile?path=testfile -d '{"content":"testcontent line one\nline two\n"}'
-public class WriteFileOperation extends AbstractPluginOperation {
+public class WriteFileAction extends AbstractPluginAction {
 
     private final Gson gson = new Gson();
 

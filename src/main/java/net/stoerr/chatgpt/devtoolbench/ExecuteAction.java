@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 import io.undertow.server.HttpServerExchange;
 
-public class ExecuteAction extends AbstractPluginOperation {
+public class ExecuteAction extends AbstractPluginAction {
 
     @Override
     public String getUrl() {

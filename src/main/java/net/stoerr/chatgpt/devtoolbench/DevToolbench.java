@@ -1,6 +1,6 @@
 package net.stoerr.chatgpt.devtoolbench;
 
-import static net.stoerr.chatgpt.devtoolbench.AbstractPluginOperation.sendError;
+import static net.stoerr.chatgpt.devtoolbench.AbstractPluginAction.sendError;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +26,7 @@ public class DevToolbench {
     static Path currentDir = Paths.get(".").normalize().toAbsolutePath();
 
     private static final Map<String, Supplier<String>> STATICFILES = new HashMap<>();
-    private static final Map<String, AbstractPluginOperation> HANDLERS = new HashMap<>();
+    private static final Map<String, AbstractPluginAction> HANDLERS = new HashMap<>();
 
     /**
      * Which files we always ignore.
@@ -48,16 +48,16 @@ public class DevToolbench {
 
     private static Undertow server;
 
-    private static void addHandler(AbstractPluginOperation handler) {
+    private static void addHandler(AbstractPluginAction handler) {
         HANDLERS.put(handler.getUrl(), handler);
     }
 
     static {
-        addHandler(new ListFilesOperation());
-        addHandler(new ReadFileOperation());
-        addHandler(new WriteFileOperation());
+        addHandler(new ListFilesAction());
+        addHandler(new ReadFileAction());
+        addHandler(new WriteFileAction());
         addHandler(new ExecuteAction());
-        addHandler(new GrepOperation());
+        addHandler(new GrepAction());
 
         STATICFILES.put("/.well-known/ai-plugin.json", () -> {
             try (InputStream in = DevToolbench.class.getResourceAsStream("/ai-plugin.json")) {
@@ -71,7 +71,7 @@ public class DevToolbench {
         });
         STATICFILES.put("/devtoolbench.yaml", () -> {
             StringBuilder pathDescriptions = new StringBuilder();
-            HANDLERS.values().stream().sorted(Comparator.comparing(AbstractPluginOperation::getUrl))
+            HANDLERS.values().stream().sorted(Comparator.comparing(AbstractPluginAction::getUrl))
                     .forEach(handler -> pathDescriptions.append(handler.openApiDescription()));
             return OPENAPI_DESCR_START.replace("THEPORT", "" + port) + pathDescriptions;
         });
@@ -126,7 +126,7 @@ public class DevToolbench {
         }
     }
 
-    private static void giveCORSResponse(HttpServerExchange exchange) throws IOException {
+    private static void giveCORSResponse(HttpServerExchange exchange) {
         // already there: exchange.getResponseHeaders().add(HttpString.tryFromString("Access-Control-Allow-Origin"), "*");
         exchange.getResponseHeaders().put(HttpString.tryFromString("Access-Control-Allow-Methods"), "GET, POST, PUT, DELETE");
         if (exchange.getRequestHeaders().contains("Access-control-request-headers")) {
