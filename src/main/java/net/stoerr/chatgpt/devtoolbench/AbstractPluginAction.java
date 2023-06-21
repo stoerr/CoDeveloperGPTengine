@@ -73,7 +73,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
                             return false;
                         }
                     }
-                });
+                }).sorted();
     }
 
     /**
