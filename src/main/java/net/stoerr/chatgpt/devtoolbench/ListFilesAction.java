@@ -75,7 +75,7 @@ public class ListFilesAction extends AbstractPluginAction {
         }
 
         if (Files.isDirectory(path)) {
-            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=utf-8");
+            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
             List<String> files = findMatchingFiles(exchange, path, filenamePattern, grepPattern)
                     .map(this::mappedFilename)
                     .toList();

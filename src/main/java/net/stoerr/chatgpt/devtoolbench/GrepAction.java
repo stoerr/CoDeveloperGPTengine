@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import io.undertow.server.HttpServerExchange;
+import io.undertow.util.Headers;
 
 public class GrepAction extends AbstractPluginAction {
 
@@ -109,6 +110,7 @@ public class GrepAction extends AbstractPluginAction {
                 throw new UncheckedIOException(e);
             }
         });
+        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
         exchange.getResponseSender().send(buf.toString());
     }
 

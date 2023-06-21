@@ -3,8 +3,8 @@ package net.stoerr.chatgpt.devtoolbench;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.apache.http.HttpResponse;
@@ -15,12 +15,12 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.hamcrest.CoreMatchers;
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.ErrorCollector;
+
+import io.undertow.util.Headers;
 
 public abstract class AbstractActionIT {
 
@@ -41,7 +41,7 @@ public abstract class AbstractActionIT {
         DevToolbench.stop();
     }
 
-    protected void checkResponse(String path, String method, String requestBody, int expectedStatusCode, String expectFile) throws IOException {
+    protected String checkResponse(String path, String method, String requestBody, int expectedStatusCode, String expectFile) throws IOException {
         String result;
         String url = "http://localhost:" + port + path;
 
@@ -65,20 +65,26 @@ public abstract class AbstractActionIT {
 
         if (expectedStatusCode == 204) {
             collector.checkThat(response.getEntity(), CoreMatchers.nullValue());
-            return;
+            collector.checkThat(expectFile, CoreMatchers.nullValue());
+            return null;
         }
+
+        collector.checkThat(response.getFirstHeader(Headers.CONTENT_TYPE.toString()).getValue(), CoreMatchers.is("text/plain; charset=UTF-8"));
+
         result = EntityUtils.toString(response.getEntity(), UTF_8);
 
-        Files.createDirectories(Paths.get("target/test-actual"));
-        Files.writeString(Paths.get("target/test-actual/" + expectFile), result, UTF_8);
-        String expectedResponse = readFile("/test-expected/" + expectFile);
-        collector.checkThat(result, CoreMatchers.is(expectedResponse));
+        if (expectFile != null) {
+            Files.createDirectories(Paths.get("target/test-actual"));
+            Files.writeString(Paths.get("target/test-actual/" + expectFile), result, UTF_8);
+            String expectedResponse = readFile("/test-expected/" + expectFile);
+            collector.checkThat(result, CoreMatchers.is(expectedResponse));
+        }
+        return result;
     }
 
     protected String readFile(String filepath) throws IOException {
-        InputStream resourceAsStream = getClass().getResourceAsStream(filepath);
-        collector.checkThat(filepath, resourceAsStream, CoreMatchers.notNullValue());
-        if (resourceAsStream == null) throw new RuntimeException("Could not find " + filepath);
-        return new String(resourceAsStream.readAllBytes(), UTF_8);
+        Path path = Paths.get("src/test/resources" + filepath);
+        if (!Files.exists(path)) throw new RuntimeException("Could not find " + path);
+        return Files.readString(path, UTF_8);
     }
 }

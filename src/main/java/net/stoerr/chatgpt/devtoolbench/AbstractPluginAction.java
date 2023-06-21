@@ -30,7 +30,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
     protected static ExecutionAbortedException sendError(HttpServerExchange exchange, int statusCode, String error) throws ExecutionAbortedException {
         System.out.println("Error " + statusCode + ": " + error);
         exchange.setStatusCode(statusCode);
-        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
+        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
         exchange.getResponseSender().send(error);
         throw new ExecutionAbortedException(error);
     }
@@ -132,6 +132,13 @@ public abstract class AbstractPluginAction implements HttpHandler {
 
     protected String mappedFilename(Path path) {
         return DevToolbench.currentDir.relativize(path).toString();
+    }
+
+    protected String abbreviate(String s, int max) {
+        if (s.length() <= max) {
+            return s;
+        }
+        return s.substring(0, max - 3) + "...";
     }
 
 }
