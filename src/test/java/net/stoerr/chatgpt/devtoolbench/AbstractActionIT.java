@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -69,7 +70,8 @@ public abstract class AbstractActionIT {
             return null;
         }
 
-        collector.checkThat(response.getFirstHeader(Headers.CONTENT_TYPE.toString()).getValue(), CoreMatchers.is("text/plain; charset=UTF-8"));
+        Header contentTypeHeader = response.getFirstHeader(Headers.CONTENT_TYPE.toString());
+        collector.checkThat(contentTypeHeader != null ? contentTypeHeader.getValue() : null, CoreMatchers.is("text/plain; charset=UTF-8"));
 
         result = EntityUtils.toString(response.getEntity(), UTF_8);
 

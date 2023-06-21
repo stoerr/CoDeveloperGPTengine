@@ -83,6 +83,8 @@ public class DevToolbench {
         server = Undertow.builder()
                 .addHttpListener(port, "localhost")
                 .setHandler(DevToolbench::handleRequest)
+                .setIoThreads(10)
+                .setWorkerThreads(10)
                 .build();
         server.start();
         System.out.println("Started on http://localhost:" + port);

@@ -19,7 +19,7 @@ public class ExecuteActionActionIT extends AbstractActionIT {
         }
         System.out.println(testinput.length());
         String actualResponse = checkResponse("/executeAction?actionName=helloworld", "POST", "{\"content\":\"" + testinput.toString() + "\"}", 200, null);
-        collector.checkThat(actualResponse.length(), CoreMatchers.is( prefix.length() + testinput.length() + 1)); // newliner
+        collector.checkThat(actualResponse.length(), CoreMatchers.is(prefix.length() + testinput.length() + 1)); // newliner
         collector.checkThat(actualResponse.replace(testinput, "(THETESTINPUT)"), CoreMatchers.is(prefix + "(THETESTINPUT)\n"));
     }
 
