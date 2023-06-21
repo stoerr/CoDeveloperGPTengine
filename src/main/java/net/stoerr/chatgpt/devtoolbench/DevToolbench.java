@@ -141,7 +141,7 @@ public class DevToolbench {
         String content = STATICFILES.get(path).get();
         if (content != null && !content.isBlank()) {
             exchange.setStatusCode(200);
-            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
+            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
             exchange.getResponseSender().send(content);
         } else {
             sendError(exchange, 404, "File not found");

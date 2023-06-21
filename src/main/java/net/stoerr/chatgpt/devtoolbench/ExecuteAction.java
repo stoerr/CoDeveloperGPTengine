@@ -1,15 +1,16 @@
 package net.stoerr.chatgpt.devtoolbench;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import io.undertow.server.HttpServerExchange;
+import io.undertow.util.Headers;
 
 public class ExecuteAction extends AbstractPluginAction {
 
@@ -61,6 +62,7 @@ public class ExecuteAction extends AbstractPluginAction {
     }
 
     private void handleBody(HttpServerExchange exchange, String json) {
+        Process process = null;
         try {
             String content = getMandatoryContentFromBody(exchange, json);
             String actionName = getMandatoryQueryParam(exchange, "actionName");
@@ -72,20 +74,34 @@ public class ExecuteAction extends AbstractPluginAction {
 
             ProcessBuilder pb = new ProcessBuilder("/bin/sh", path.toString());
             pb.redirectErrorStream(true);
-            System.out.println("Starting process: " + pb.command() + " with content: " + content);
-            Process process = pb.start();
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
-            writer.write(content);
-            writer.close();
+            System.out.println("Starting process: " + pb.command() + " with content: " + abbreviate(content, 40));
+            process = pb.start();
+
+            OutputStream out = process.getOutputStream();
+            exchange.getConnection().getWorker().execute(() -> {
+                try {
+                    try {
+                        out.write(content.getBytes(StandardCharsets.UTF_8));
+                    } finally {
+                        out.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
 
             InputStream inputStream = process.getInputStream();
             String output = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
-            int exitCode = process.waitFor();
-            System.out.println("Process finished with exit code " + exitCode + ": " + output);
+            if (!process.waitFor(1, TimeUnit.MINUTES)) {
+                sendError(exchange, 500, "Process did not finish within one minute");
+            }
+            int exitCode = process.exitValue();
+            System.out.println("Process finished with exit code " + exitCode + ": " + abbreviate(output, 200));
             output = output.replaceAll(Pattern.quote(DevToolbench.currentDir.toString() + "/"), "");
 
             if (exitCode == 0) {
                 exchange.setStatusCode(200);
+                exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
                 exchange.getResponseSender().send(output);
             } else {
                 String response = "Execution failed with exit code " + exitCode + ": " + output;
@@ -96,6 +112,10 @@ public class ExecuteAction extends AbstractPluginAction {
             Thread.currentThread().interrupt();
         } catch (IOException e) {
             sendError(exchange, 500, "Error executing action: " + e.getMessage());
+        } finally {
+            if (process != null) {
+                process.destroy();
+            }
         }
 
     }

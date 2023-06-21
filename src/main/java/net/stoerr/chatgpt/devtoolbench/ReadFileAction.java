@@ -46,11 +46,11 @@ public class ReadFileAction extends AbstractPluginAction {
         if (Files.exists(path)) {
             byte[] bytes = Files.readAllBytes(path);
             exchange.setResponseContentLength(bytes.length);
-            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=utf-8");
+            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
             exchange.setStatusCode(200);
             exchange.getResponseSender().send(new String(bytes));
         } else {
-            sendError(exchange, 404, "File not found");
+            sendError(exchange, 404, "File not found. Try to list files with /listFiles to find the right path.");
         }
     }
 }
