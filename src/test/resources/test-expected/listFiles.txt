@@ -1,4 +1,4 @@
-firstfile.txt
 filewritten.txt
+firstfile.txt
 secondfile.md
 subdir/fileinsubdir.md
