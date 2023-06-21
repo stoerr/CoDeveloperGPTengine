@@ -1,0 +1,78 @@
+#
+# Will build a Java project with Maven, but NOT cache/restore any dependencies to check with central repo
+name: Master - Test public build and generate and deploy site
+run-name: Master - Test public build and generate and deploy site on ${{ github.ref_name }}
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    env:
+      MVNCMD: mvn -B -ntp -s ${{ github.workspace }}/.github/settings-deploy.xml
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 3
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Dump event context for debugging
+      continue-on-error: true  # Debugging output only, and this annoyingly fails when the commit messge has a (
+      run: |
+        echo '${{ github.event_name }} for ${{ github.ref_type }} ${{ github.ref_name }} or ${{ github.event.ref }}'
+        # https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#push
+        echo 'github.event:'
+        echo '${{ toJSON(github.event) }}'
+
+    - name: Dump github context
+      continue-on-error: true  # Debugging output only, and this annoyingly fails when the commit message has a (
+      run: |
+          echo '${{ toJSON(github) }}'
+
+    - name: Git & Maven Status
+      run: |
+        git status --untracked-files --ignored
+        git log -3 --no-color
+        $MVNCMD -version
+
+    - name: Mvn Effective POM
+      run: $MVNCMD -N help:effective-pom
+
+    - name: Mvn Effective Settings
+      run: $MVNCMD -N help:effective-settings
+
+    - name: Check versioning
+      run: $MVNCMD org.apache.maven.plugins:maven-enforcer-plugin:3.0.0:enforce -Drules=requireReleaseVersion,requireReleaseDeps
+
+    - name: Check build with Maven
+      run: $MVNCMD verify
+
+    - name: Site with Maven
+      run: $MVNCMD install javadoc:aggregate site site:stage
+
+    - name: Show location(s) of site
+      # for determining the right path for
+      if: always()
+      run: |
+        find target/staging -type f -name index.html
+
+    - name: Deploy Site
+      uses: JamesIves/github-pages-deploy-action@v4.3.0
+      with:
+        branch: gh-pages
+        # This path is different for the repositories - check
+        folder: target/staging/parent-2/parent-2-public/composum-platform/composum-chatgpt-integration
+        git-config-name: ${{ vars.RELEASE_USERNAME  }}
+        git-config-email: ${{ vars.RELEASE_USEREMAIL  }}
