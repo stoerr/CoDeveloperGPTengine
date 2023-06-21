@@ -9,6 +9,8 @@ Create an action GrepAction that has parameters like fileRegex and grepRegex (li
 the lines with matches that were found, instead of listing the files. It should also have a parameter contextLines, 
 that isn't yet used.
 
+- Make an actual release.
+
 ## Next feature, not quite clear how to do.
 
 operation changeFile changes one part of a file (must be called multiple times for multiple changes)
