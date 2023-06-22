@@ -64,7 +64,7 @@ public class ExecuteAction extends AbstractPluginAction {
     private void handleBody(HttpServerExchange exchange, String json) {
         Process process = null;
         try {
-            String content = getMandatoryContentFromBody(exchange, json);
+            String content = getMandatoryContentFromBody(exchange, json, "The content seems truncated and be too large for this operation.");
             String actionName = getMandatoryQueryParam(exchange, "actionName");
             Path path = DevToolbench.currentDir.resolve(".cgptdevbench/" + actionName + ".sh");
 

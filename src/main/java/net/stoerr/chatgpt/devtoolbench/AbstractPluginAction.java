@@ -112,13 +112,16 @@ public abstract class AbstractPluginAction implements HttpHandler {
         return resolved;
     }
 
-    protected String getMandatoryContentFromBody(HttpServerExchange exchange, String json) {
+    protected String getMandatoryContentFromBody(HttpServerExchange exchange, String json, String truncateMessage) {
         String content = "";
         if (!json.isEmpty() && !"{}".equals(json)) {
             try {
                 Map<String, String> decoded = gson.fromJson(json, Map.class);
                 content = decoded.get("content") == null ? "" : decoded.get("content");
             } catch (Exception e) {
+                if (truncateMessage != null && json.length() > 300 && json.trim().startsWith("{") && !json.trim().endsWith("}")) {
+                    throw sendError(exchange, 400, truncateMessage);
+                }
                 String error = "Parse error for content: " + e;
                 throw sendError(exchange, 400, error);
             }

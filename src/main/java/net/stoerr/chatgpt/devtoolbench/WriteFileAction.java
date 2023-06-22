@@ -66,9 +66,12 @@ public class WriteFileAction extends AbstractPluginAction {
 
     private void handleBody(HttpServerExchange exchange, String json) {
         try {
-            String content = getMandatoryContentFromBody(exchange, json);
             String appendParam = getQueryParam(exchange, "append");
             boolean append = appendParam != null && appendParam.toLowerCase().contains("true");
+            String content = getMandatoryContentFromBody(exchange, json,
+                    "The content seems truncated because it is too large for this plugin call. " +
+                            (append ? "Please call append with smaller pieces." : "Please call writeFile once with append=false and a first part of the content, and then several times with append=true and parts of the rest of the content.")
+            );
             Path path = getPath(exchange);
             if (!Files.exists(path.getParent())) {
                 Files.createDirectories(path.getParent());
