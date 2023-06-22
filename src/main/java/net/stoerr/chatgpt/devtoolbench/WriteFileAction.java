@@ -3,6 +3,7 @@ package net.stoerr.chatgpt.devtoolbench;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 
 import com.google.gson.Gson;
 
@@ -27,7 +28,7 @@ public class WriteFileAction extends AbstractPluginAction {
                   /writeFile:
                     post:
                       operationId: writeFile
-                      summary: Write a file.
+                      summary: Overwrite a file.
                       parameters:
                         - name: path
                           in: query
@@ -35,6 +36,12 @@ public class WriteFileAction extends AbstractPluginAction {
                           required: true
                           schema:
                             type: string
+                        - name: append
+                          in: query
+                          description: If true, append to the file instead of overwriting. If false, you need to give the whole content at once.
+                          required: false
+                          schema:
+                            type: boolean
                       requestBody:
                         required: true
                         content:
@@ -60,12 +67,18 @@ public class WriteFileAction extends AbstractPluginAction {
     private void handleBody(HttpServerExchange exchange, String json) {
         try {
             String content = getMandatoryContentFromBody(exchange, json);
+            String appendParam = getQueryParam(exchange, "append");
+            boolean append = appendParam != null && appendParam.toLowerCase().contains("true");
             Path path = getPath(exchange);
             if (!Files.exists(path.getParent())) {
                 Files.createDirectories(path.getParent());
             }
+            if (append && !Files.exists(path)) {
+                throw sendError(exchange, 400, "File " + path + " does not exist, cannot append to it.");
+            }
+            StandardOpenOption appendOption = append ? StandardOpenOption.APPEND : StandardOpenOption.TRUNCATE_EXISTING;
             Files.write(path, content.getBytes(), java.nio.file.StandardOpenOption.CREATE,
-                    java.nio.file.StandardOpenOption.WRITE, java.nio.file.StandardOpenOption.TRUNCATE_EXISTING);
+                    java.nio.file.StandardOpenOption.WRITE, appendOption);
             exchange.setStatusCode(204);
         } catch (IOException e) {
             throw sendError(exchange, 500, "Error writing file: " + e);
