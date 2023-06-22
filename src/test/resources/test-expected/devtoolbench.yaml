@@ -132,7 +132,7 @@ paths:
   /writeFile:
     post:
       operationId: writeFile
-      summary: Write a file.
+      summary: Overwrite a file.
       parameters:
         - name: path
           in: query
@@ -140,6 +140,12 @@ paths:
           required: true
           schema:
             type: string
+        - name: append
+          in: query
+          description: If true, append to the file instead of overwriting. If false, you need to give the whole content at once.
+          required: false
+          schema:
+            type: boolean
       requestBody:
         required: true
         content:

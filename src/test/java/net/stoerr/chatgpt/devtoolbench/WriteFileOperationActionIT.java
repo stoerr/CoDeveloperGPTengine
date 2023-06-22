@@ -31,4 +31,19 @@ public class WriteFileOperationActionIT extends AbstractActionIT {
             Files.deleteIfExists(Paths.get("src/test/resources/testdir/largefile.txt"));
         }
     }
+
+    @Test
+    public void testAppendToFile() throws Exception {
+        String initialContent = "Initial content\n";
+        String appendedContent = "Appended content\n";
+        String expectedContent = initialContent + appendedContent;
+
+        checkResponse("/writeFile?path=appendtest.txt", "POST", "{\"content\":\"" + initialContent + "\"}", 204, null);
+        checkResponse("/writeFile?path=appendtest.txt&append=true", "POST", "{\"content\":\"" + appendedContent + "\"}", 204, null);
+
+        String actualContent = readFile("/testdir/appendtest.txt");
+        collector.checkThat(actualContent, CoreMatchers.is(expectedContent));
+
+        Files.deleteIfExists(Paths.get("src/test/resources/testdir/appendtest.txt"));
+    }
 }
