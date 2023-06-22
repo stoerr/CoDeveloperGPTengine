@@ -65,13 +65,13 @@ public class ListFilesAction extends AbstractPluginAction {
         try {
             filenamePattern = filenameRegex != null ? Pattern.compile(filenameRegex) : null;
         } catch (Exception e) {
-            throw sendError(exchange, 400, "Invalid filenameRegex: " + e.getMessage());
+            throw sendError(exchange, 400, "Invalid filenameRegex: " + e);
         }
         Pattern grepPattern;
         try {
             grepPattern = grepRegex != null ? Pattern.compile(grepRegex) : null;
         } catch (Exception e) {
-            throw sendError(exchange, 400, "Invalid grepRegex: " + e.getMessage());
+            throw sendError(exchange, 400, "Invalid grepRegex: " + e);
         }
 
         if (Files.isDirectory(path)) {
