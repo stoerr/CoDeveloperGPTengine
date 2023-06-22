@@ -68,7 +68,7 @@ public class WriteFileAction extends AbstractPluginAction {
                     java.nio.file.StandardOpenOption.WRITE, java.nio.file.StandardOpenOption.TRUNCATE_EXISTING);
             exchange.setStatusCode(204);
         } catch (IOException e) {
-            sendError(exchange, 500, "Error writing file: " + e.getMessage());
+            throw sendError(exchange, 500, "Error writing file: " + e);
         }
     }
 

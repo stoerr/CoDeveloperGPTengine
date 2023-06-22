@@ -50,7 +50,7 @@ public class ReadFileAction extends AbstractPluginAction {
             exchange.setStatusCode(200);
             exchange.getResponseSender().send(new String(bytes));
         } else {
-            sendError(exchange, 404, "File not found. Try to list files with /listFiles to find the right path.");
+            throw sendError(exchange, 404, "File not found. Try to list files with /listFiles to find the right path.");
         }
     }
 }

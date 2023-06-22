@@ -55,7 +55,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
                 }
             });
         } catch (IOException e) {
-            sendError(exchange, 500, "Error reading " + path + " : " + e.getMessage());
+            throw sendError(exchange, 500, "Error reading " + path + " : " + e);
         }
 
         return result.stream()
@@ -69,7 +69,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
                         try (Stream<String> lines = Files.lines(p)) {
                             return lines.anyMatch(line -> grepPattern.matcher(line).find());
                         } catch (Exception e) {
-                            System.out.println("Error reading " + p + " : " + e.getMessage());
+                            System.out.println("Error reading " + p + " : " + e);
                             return false;
                         }
                     }
@@ -95,7 +95,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
         String result = getQueryParam(exchange, name);
         if (null == result) {
             System.out.println("Missing query parameter " + name + " in " + exchange.getRequestURI());
-            sendError(exchange, 400, "Missing query parameter " + name);
+            throw sendError(exchange, 400, "Missing query parameter " + name);
         }
         return result;
     }
@@ -103,11 +103,11 @@ public abstract class AbstractPluginAction implements HttpHandler {
     protected Path getPath(HttpServerExchange exchange) {
         String path = getMandatoryQueryParam(exchange, "path");
         if (DevToolbench.IGNORE.matcher(path).matches()) {
-            sendError(exchange, 400, "Access to path " + path + " is not allowed! (matches " + DevToolbench.IGNORE.pattern() + ")");
+            throw sendError(exchange, 400, "Access to path " + path + " is not allowed! (matches " + DevToolbench.IGNORE.pattern() + ")");
         }
         Path resolved = DevToolbench.currentDir.resolve(path).normalize().toAbsolutePath();
         if (!resolved.startsWith(DevToolbench.currentDir)) {
-            sendError(exchange, 400, "Path " + path + " is outside of current directory!");
+            throw sendError(exchange, 400, "Path " + path + " is outside of current directory!");
         }
         return resolved;
     }
@@ -119,15 +119,15 @@ public abstract class AbstractPluginAction implements HttpHandler {
                 Map<String, String> decoded = gson.fromJson(json, Map.class);
                 content = decoded.get("content") == null ? "" : decoded.get("content");
             } catch (Exception e) {
-                String error = "Parse error for content: " + e.getMessage();
-                sendError(exchange, 400, error);
+                String error = "Parse error for content: " + e;
+                throw sendError(exchange, 400, error);
             }
         }
         return content;
     }
 
     protected void handleRequestBodyError(HttpServerExchange httpServerExchange, IOException e) {
-        sendError(httpServerExchange, 400, "Error reading request body: " + e.getMessage());
+        throw sendError(httpServerExchange, 400, "Error reading request body: " + e);
     }
 
     protected String mappedFilename(Path path) {

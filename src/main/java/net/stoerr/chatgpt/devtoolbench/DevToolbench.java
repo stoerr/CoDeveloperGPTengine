@@ -115,7 +115,7 @@ public class DevToolbench {
                     handler.handleRequest(exchange);
                     System.out.println("Response: " + exchange.getStatusCode() + " " + exchange.getResponseHeaders());
                 } else {
-                    sendError(exchange, 404, "Unknown request");
+                    throw sendError(exchange, 404, "Unknown request");
                 }
             }
         } catch (ExecutionAbortedException e) {
@@ -146,7 +146,7 @@ public class DevToolbench {
             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
             exchange.getResponseSender().send(content);
         } else {
-            sendError(exchange, 404, "File not found");
+            throw sendError(exchange, 404, "File not found");
         }
     }
 

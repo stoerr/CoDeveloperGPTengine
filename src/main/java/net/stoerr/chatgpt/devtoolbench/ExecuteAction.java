@@ -69,7 +69,7 @@ public class ExecuteAction extends AbstractPluginAction {
             Path path = DevToolbench.currentDir.resolve(".cgptdevbench/" + actionName + ".sh");
 
             if (!Files.exists(path)) {
-                sendError(exchange, 400, "Action " + actionName + " not found");
+                throw sendError(exchange, 400, "Action " + actionName + " not found");
             }
 
             ProcessBuilder pb = new ProcessBuilder("/bin/sh", path.toString());
@@ -86,6 +86,7 @@ public class ExecuteAction extends AbstractPluginAction {
                         out.close();
                     }
                 } catch (IOException e) {
+                    System.out.println("Error writing to process: " + e);
                     e.printStackTrace();
                 }
             });
@@ -93,7 +94,7 @@ public class ExecuteAction extends AbstractPluginAction {
             InputStream inputStream = process.getInputStream();
             String output = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
             if (!process.waitFor(1, TimeUnit.MINUTES)) {
-                sendError(exchange, 500, "Process did not finish within one minute");
+                throw sendError(exchange, 500, "Process did not finish within one minute");
             }
             int exitCode = process.exitValue();
             System.out.println("Process finished with exit code " + exitCode + ": " + abbreviate(output, 200));
@@ -105,13 +106,12 @@ public class ExecuteAction extends AbstractPluginAction {
                 exchange.getResponseSender().send(output);
             } else {
                 String response = "Execution failed with exit code " + exitCode + ": " + output;
-                sendError(exchange, 500, response);
+                throw sendError(exchange, 500, response);
             }
         } catch (InterruptedException e) {
-            sendError(exchange, 500, "Error executing action: " + e.getMessage());
-            Thread.currentThread().interrupt();
+            throw sendError(exchange, 500, "Error executing action: " + e);
         } catch (IOException e) {
-            sendError(exchange, 500, "Error executing action: " + e.getMessage());
+            throw sendError(exchange, 500, "Error executing action: " + e);
         } finally {
             if (process != null) {
                 process.destroy();

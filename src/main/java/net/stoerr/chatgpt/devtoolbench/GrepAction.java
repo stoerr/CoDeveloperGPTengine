@@ -79,7 +79,7 @@ public class GrepAction extends AbstractPluginAction {
             try {
                 contextLinesRaw = Integer.parseInt(contextLinesParam);
             } catch (NumberFormatException e) {
-                sendError(exchange, 400, "Invalid contextLines parameter: " + contextLinesParam);
+                throw sendError(exchange, 400, "Invalid contextLines parameter: " + contextLinesParam);
             }
         }
         final int contextLines = contextLinesRaw;

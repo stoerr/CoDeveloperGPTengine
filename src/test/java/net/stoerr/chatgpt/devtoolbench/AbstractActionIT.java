@@ -31,15 +31,18 @@ public abstract class AbstractActionIT {
     static final int port = 7364;
 
     @BeforeClass
-    public static void setUp() {
+    public static void setUp() throws InterruptedException {
         DevToolbench.currentDir = Paths.get(".").resolve("src/test/resources/testdir").normalize()
                 .toAbsolutePath();
         DevToolbench.main(new String[]{String.valueOf(port)});
+        Thread.sleep(500);
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDown() throws InterruptedException {
+        Thread.sleep(500);
         DevToolbench.stop();
+        Thread.sleep(500);
     }
 
     protected String checkResponse(String path, String method, String requestBody, int expectedStatusCode, String expectFile) throws IOException {
