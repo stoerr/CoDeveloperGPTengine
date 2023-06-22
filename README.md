@@ -46,6 +46,8 @@ to be touched and maven target folders tend to contain very much stuff.
 Use the writing features at your own risk. There will likely be problems with large files. A possible approach is
 have ChatGPT write things, but frequently make a git commit to easily inspect changes and be able to revert.
 
+If there is a file named .cgptdevbench/.requestlog.txt the requests are logged into that, to see what ChatGPT did.
+
 ## Examples
 
 Here are some examples of how to use the `Developers ChatGPT Toolbench`:
