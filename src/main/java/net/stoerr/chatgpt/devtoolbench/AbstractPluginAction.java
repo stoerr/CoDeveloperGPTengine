@@ -1,5 +1,8 @@
 package net.stoerr.chatgpt.devtoolbench;
 
+import static net.stoerr.chatgpt.devtoolbench.DevToolbench.log;
+import static net.stoerr.chatgpt.devtoolbench.DevToolbench.logBody;
+
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -28,7 +31,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
      * Use with pattern {@code thow sendError(...)} to let compiler know that.
      */
     protected static ExecutionAbortedException sendError(HttpServerExchange exchange, int statusCode, String error) throws ExecutionAbortedException {
-        System.out.println("Error " + statusCode + ": " + error);
+        log("Error " + statusCode + ": " + error);
         exchange.setStatusCode(statusCode);
         exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
         exchange.getResponseSender().send(error);
@@ -69,7 +72,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
                         try (Stream<String> lines = Files.lines(p)) {
                             return lines.anyMatch(line -> grepPattern.matcher(line).find());
                         } catch (Exception e) {
-                            System.out.println("Error reading " + p + " : " + e);
+                            log("Error reading " + p + " : " + e);
                             return false;
                         }
                     }
@@ -94,7 +97,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
     protected String getMandatoryQueryParam(HttpServerExchange exchange, String name) {
         String result = getQueryParam(exchange, name);
         if (null == result) {
-            System.out.println("Missing query parameter " + name + " in " + exchange.getRequestURI());
+            log("Missing query parameter " + name + " in " + exchange.getRequestURI());
             throw sendError(exchange, 400, "Missing query parameter " + name);
         }
         return result;
@@ -118,6 +121,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
             try {
                 Map<String, String> decoded = gson.fromJson(json, Map.class);
                 content = decoded.get("content") == null ? "" : decoded.get("content");
+                logBody(content);
             } catch (Exception e) {
                 if (truncateMessage != null && json.length() > 300 && json.trim().startsWith("{") && !json.trim().endsWith("}")) {
                     throw sendError(exchange, 400, truncateMessage);

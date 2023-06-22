@@ -35,14 +35,14 @@ public abstract class AbstractActionIT {
         DevToolbench.currentDir = Paths.get(".").resolve("src/test/resources/testdir").normalize()
                 .toAbsolutePath();
         DevToolbench.main(new String[]{String.valueOf(port)});
-        Thread.sleep(500);
+        Thread.sleep(200);
     }
 
     @AfterClass
     public static void tearDown() throws InterruptedException {
-        Thread.sleep(500);
+        Thread.sleep(100);
         DevToolbench.stop();
-        Thread.sleep(500);
+        Thread.sleep(200);
     }
 
     protected String checkResponse(String path, String method, String requestBody, int expectedStatusCode, String expectFile) throws IOException {

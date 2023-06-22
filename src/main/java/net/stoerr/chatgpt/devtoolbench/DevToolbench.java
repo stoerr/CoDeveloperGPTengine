@@ -4,13 +4,19 @@ import static net.stoerr.chatgpt.devtoolbench.AbstractPluginAction.sendError;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
@@ -24,6 +30,8 @@ import io.undertow.util.Methods;
 public class DevToolbench {
 
     static Path currentDir = Paths.get(".").normalize().toAbsolutePath();
+
+    static Path requestLog = currentDir.resolve(".cgptdevbench/.requestlog.txt");
 
     private static final Map<String, Supplier<String>> STATICFILES = new HashMap<>();
     private static final Map<String, AbstractPluginAction> HANDLERS = new HashMap<>();
@@ -61,12 +69,9 @@ public class DevToolbench {
 
         STATICFILES.put("/.well-known/ai-plugin.json", () -> {
             try (InputStream in = DevToolbench.class.getResourceAsStream("/ai-plugin.json")) {
-                if (in == null) {
-                    throw new RuntimeException("Could not find ai-plugin.json");
-                }
-                return new String(in.readAllBytes(), StandardCharsets.UTF_8).replaceAll("THEPORT", "" + port);
+                return new String(in.readAllBytes(), StandardCharsets.UTF_8).replace("THEPORT", "" + port);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new UncheckedIOException(e);
             }
         });
         STATICFILES.put("/devtoolbench.yaml", () -> {
@@ -79,6 +84,7 @@ public class DevToolbench {
     }
 
     public static void main(String[] args) {
+        logVersion();
         port = args.length > 0 ? Integer.parseInt(args[0]) : 3002;
         server = Undertow.builder()
                 .addHttpListener(port, "localhost")
@@ -87,7 +93,7 @@ public class DevToolbench {
                 .setWorkerThreads(10)
                 .build();
         server.start();
-        System.out.println("Started on http://localhost:" + port);
+        log("Started on http://localhost:" + port);
     }
 
     public static void stop() {
@@ -96,7 +102,8 @@ public class DevToolbench {
 
     private static void handleRequest(HttpServerExchange exchange) {
         try {
-            System.out.println("Request: " + exchange.getRequestURL());
+            log(exchange.getRequestMethod() + " " + exchange.getRequestURI() + "?" + exchange.getQueryString());
+            logRequest(exchange);
             String path = exchange.getRequestPath();
             exchange.getResponseHeaders().put(HttpString.tryFromString("Access-Control-Allow-Origin"), "*"); // TODO https://chat.openai.com
             if (exchange.getRequestMethod().equals(Methods.OPTIONS)) {
@@ -113,16 +120,16 @@ public class DevToolbench {
                 HttpHandler handler = HANDLERS.get(path);
                 if (handler != null) {
                     handler.handleRequest(exchange);
-                    System.out.println("Response: " + exchange.getStatusCode() + " " + exchange.getResponseHeaders());
+                    log("Response: " + exchange.getStatusCode() + " " + exchange.getResponseHeaders());
                 } else {
                     throw sendError(exchange, 404, "Unknown request");
                 }
             }
         } catch (ExecutionAbortedException e) {
-            System.out.println("Aborted and problem reported to ChatGPT: " + e.getMessage());
+            log("Aborted and problem reported to ChatGPT: " + e.getMessage());
         } catch (Exception e) {
-            System.err.println("Bug! Abort handling request " + exchange.getRequestURL());
-            e.printStackTrace(System.err);
+            logError("Bug! Abort handling request " + exchange.getRequestURL());
+            logStacktrace(e);
         } finally {
             exchange.endExchange();
         }
@@ -150,5 +157,65 @@ public class DevToolbench {
         }
     }
 
+    /**
+     * If there is a file named .cgptdevbench/.requestlog.txt, we append the request data to it.
+     */
+    protected static void logRequest(HttpServerExchange exchange) {
+        if (Files.exists(requestLog)) {
+            try {
+                String isoDate = DateTimeFormatter.ISO_INSTANT.format(Instant.now());
+                Files.writeString(requestLog, isoDate + "##### " + exchange.getRequestMethod() + " " + exchange.getRequestURI() + "?" + exchange.getQueryString() + "\n", StandardOpenOption.APPEND);
+            } catch (IOException e) { // not critical but strange - we'd want to know.
+                logError("Could not write to request log " + requestLog + ": " + e.getMessage());
+            }
+        }
+    }
+
+    protected static void logBody(String body) {
+        if (Files.exists(requestLog)) {
+            try {
+                Files.writeString(requestLog, body + "\n\n", StandardOpenOption.APPEND);
+            } catch (IOException e) { // not critical but strange - we'd want to know.
+                logError("Could not write to request log " + requestLog + ": " + e.getMessage());
+            }
+        }
+    }
+
+    static void logStacktrace(Exception e) {
+        e.printStackTrace(System.err);
+    }
+
+    static void logError(String msg) {
+        System.err.println(msg);
+    }
+
+    static void log(String msg) {
+        System.out.println(msg);
+    }
+
+    private static void logVersion() {
+        // read file /git.properties from classpath as property file
+        // content for example
+        /*
+        #Generated by Git-Commit-Id-Plugin
+        git.branch=develop
+        git.build.time=2023-06-22T14\:02\:38+0200
+        git.build.version=1.0-SNAPSHOT
+        git.commit.id.abbrev=fed7e88
+        git.commit.id.describe=fed7e88-dirty
+        git.commit.id.full=fed7e88564e8bfd773e42edfcdb9cd76768d761b
+        git.dirty=true
+         */
+        Properties properties = new Properties();
+        try {
+            properties.load(DevToolbench.class.getResourceAsStream("/git.properties"));
+            String versionInfo = "DevToolbench version: " + properties.getProperty("git.build.version") +
+                    properties.getProperty("git.commit.id.describe") + " from " + properties.getProperty("git.build.time");
+            log(versionInfo);
+            logBody(versionInfo);
+        } catch (IOException e) {
+            log("Version: unknown");
+        }
+    }
 
 }
