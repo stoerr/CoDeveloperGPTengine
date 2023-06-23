@@ -41,6 +41,7 @@ Servers
 build
 # Maven
 target
+
 # Groovy
 .groovy
 # some source repos
@@ -53,3 +54,7 @@ target
 .DS_*
 
 dependency-reduced-pom.xml
+hpsx*
+HpsX*
+.hpsx*
+

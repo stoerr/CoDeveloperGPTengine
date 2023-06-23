@@ -74,7 +74,6 @@ public abstract class AbstractActionIT {
         }
 
         Header contentTypeHeader = response.getFirstHeader(Headers.CONTENT_TYPE.toString());
-        collector.checkThat(contentTypeHeader != null ? contentTypeHeader.getValue() : null, CoreMatchers.is("text/plain; charset=UTF-8"));
 
         result = EntityUtils.toString(response.getEntity(), UTF_8);
 
@@ -83,6 +82,9 @@ public abstract class AbstractActionIT {
             Files.writeString(Paths.get("target/test-actual/" + expectFile), result, UTF_8);
             String expectedResponse = readFile("/test-expected/" + expectFile);
             collector.checkThat(result, CoreMatchers.is(expectedResponse));
+
+            String expectedContentType = expectedResponse.contains("<html>") ? "text/html; charset=UTF-8" : "text/plain; charset=UTF-8";
+            collector.checkThat(contentTypeHeader != null ? contentTypeHeader.getValue() : null, CoreMatchers.is(expectedContentType));
         }
         return result;
     }
