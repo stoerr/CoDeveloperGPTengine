@@ -48,3 +48,5 @@ Add excludeRegex to file list
 Add recursive (default = false) to file list. Ouch: then that should list directories, too!
 Refactor into an actual project as this becomes unmanageable. Perhaps integration of scripts like
     https://www.chatpc.ai/docs/macos/getting-started/
+
+Perhaps: use ctags somehow: https://aider.chat/docs/ctags.html

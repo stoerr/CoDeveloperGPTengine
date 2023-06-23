@@ -46,7 +46,7 @@ public class DevToolbench {
     private static final String OPENAPI_DESCR_START = """
             openapi: 3.0.1
             info:
-              title: FileManager ChatGPT Plugin
+              title: Developers Toolbench ChatGPT Plugin
               description: A plugin that allows the user to inspect a directory and read the contents of files using ChatGPT. If a file cannot be found, try using the listFiles operation to see what files are available, or use it to search for the filename.
               version: 1.0.0
             servers:
@@ -66,6 +66,7 @@ public class DevToolbench {
         addHandler(new WriteFileAction());
         addHandler(new ExecuteAction());
         addHandler(new GrepAction());
+        addHandler(new ReplaceAction());
 
         STATICFILES.put("/.well-known/ai-plugin.json", () -> {
             try (InputStream in = DevToolbench.class.getResourceAsStream("/ai-plugin.json")) {
@@ -80,7 +81,7 @@ public class DevToolbench {
                     .forEach(handler -> pathDescriptions.append(handler.openApiDescription()));
             return OPENAPI_DESCR_START.replace("THEPORT", "" + port) + pathDescriptions;
         });
-        STATICFILES.put("/", () -> "<html><body><h1>FileManagerPlugin</h1><p>See <a href=\"/.well-known/ai-plugin.json\">/.well-known/ai-plugin.json</a> for the plugin description.</p></body></html>\n");
+        STATICFILES.put("/", () -> "<html><body><h1>Developers Toolbench ChatGPT Plugin</h1><p>See <a href=\"/.well-known/ai-plugin.json\">/.well-known/ai-plugin.json</a> for the plugin description.</p></body></html>\n");
     }
 
     public static void main(String[] args) {
@@ -150,7 +151,11 @@ public class DevToolbench {
         String content = STATICFILES.get(path).get();
         if (content != null && !content.isBlank()) {
             exchange.setStatusCode(200);
-            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
+            if (content.contains("<html>")) {
+                exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/html; charset=UTF-8");
+            } else {
+                exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
+            }
             exchange.getResponseSender().send(content);
         } else {
             throw sendError(exchange, 404, "File not found");
@@ -212,7 +217,7 @@ public class DevToolbench {
             String versionInfo = "DevToolbench version: " + properties.getProperty("git.build.version") +
                     properties.getProperty("git.commit.id.describe") + " from " + properties.getProperty("git.build.time");
             log(versionInfo);
-            logBody(versionInfo);
+            logBody("\n\n" + versionInfo);
         } catch (IOException e) {
             log("Version: unknown");
         }
