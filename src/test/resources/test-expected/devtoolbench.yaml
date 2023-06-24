@@ -129,14 +129,14 @@ paths:
                 type: string
         '404':
           description: File not found
-/replace:
+  /replace:
     post:
       operationId: replace
       summary: Replace occurrences of a string in a file.
       parameters:
         - name: path
           in: query
-          description: Path of the file
+          description: relative path to file
           required: true
           schema:
             type: string
@@ -153,7 +153,7 @@ paths:
           schema:
             type: string
       requestBody:
-        required: false
+        required: true
         content:
           application/json:
             schema:
@@ -162,12 +162,13 @@ paths:
                 content:
                   type: string
       responses:
-        '200':
+        '204':
           description: File updated successfully
         '400':
           description: Invalid parameter
         '500':
-          description: Server error  /writeFile:
+          description: Server error
+  /writeFile:
     post:
       operationId: writeFile
       summary: Overwrite a file.

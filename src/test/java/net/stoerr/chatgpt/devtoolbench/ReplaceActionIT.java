@@ -14,10 +14,16 @@ public class ReplaceActionIT extends AbstractActionIT {
         try {
             String content = Files.readString(Paths.get("src/test/resources/testdir/secondfile.md"), UTF_8);
             Files.writeString(Paths.get("src/test/resources/testdir/replace.txt"), content, UTF_8);
-            checkResponse("/replace?path=replace.txt&searchString=duck&replacement=goose", "POST", null, 200, "replacedinfile.txt");
+            checkResponse("/replace?path=replace.txt&searchString=duck&replacement=goose", "POST", null, 204, null);
         } finally {
             Files.deleteIfExists(Paths.get("src/test/resources/testdir/replace.txt"));
         }
+    }
+
+    // file not found
+    @Test
+    public void testReplaceOperationFileNotFound() throws Exception {
+        checkResponse("/replace?path=notfound.txt&searchString=duck&replacement=goose", "POST", null, 404, "notfound.txt");
     }
 
 }
