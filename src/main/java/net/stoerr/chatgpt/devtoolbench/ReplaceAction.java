@@ -2,7 +2,10 @@ package net.stoerr.chatgpt.devtoolbench;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -51,16 +54,20 @@ public class ReplaceAction extends AbstractPluginAction {
                 "                content:\n" +
                 "                  type: string\n" +
                 "      responses:\n" +
-                "        '200':\n" +
+                "        ''204'':\n" +
                 "          description: File updated successfully\n" +
-                "        '400':\n" +
+                "        '404':\n" +
                 "          description: Invalid parameter\n" +
                 "        '500':\n" +
                 "          description: Server error";
     }
 
     @Override
-    public void handleRequest(HttpServerExchange exchange) throws Exception {
+    public void handleRequest(HttpServerExchange exchange) {
+        exchange.getRequestReceiver().receiveFullString(this::handleBody, this::handleRequestBodyError);
+    }
+
+    private void handleBody(HttpServerExchange exchange, String json) {
         exchange.startBlocking();
         String path = exchange.getQueryParameters().get("path").getFirst();
         String searchString = exchange.getQueryParameters().get("searchString").getFirst();
@@ -72,13 +79,19 @@ public class ReplaceAction extends AbstractPluginAction {
             return;
         }
 
-        Path filePath = Paths.get(path);
-        String content = new String(Files.readAllBytes(filePath), UTF_8);
-        content = content.replace(searchString, replacement);
-        Files.write(filePath, content.getBytes(UTF_8));
+        Path filePath = DevToolbench.currentDir.resolve(path);
+        try {
+            String content = new String(Files.readAllBytes(filePath), UTF_8);
+            content = content.replace(searchString, replacement);
+            Files.write(filePath, content.getBytes(UTF_8));
 
-        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
-        exchange.getResponseSender().send("File updated successfully");
+            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
+            exchange.getResponseSender().send("File updated successfully");
+        } catch (NoSuchFileException e) {
+            sendError(exchange, 404, "File not found");
+        } catch (IOException e) {
+            sendError(exchange, 500, "Error reading or writing file : " + e.toString());
+        }
     }
 
     @Override
