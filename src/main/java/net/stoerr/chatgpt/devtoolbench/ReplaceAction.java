@@ -20,26 +20,14 @@ public class ReplaceAction extends AbstractPluginAction {
     @Override
     public String openApiDescription() {
         return """
-                  /replace:
+                  /replaceInFile:
                     post:
-                      operationId: replace
-                      summary: Replace occurrences of a string in a file.
+                      operationId: replaceInFile
+                      summary: Replaces occurrences of a regular expression in a file. Remember the full power of regular expressions - there are some for start of input (the file), end of input (file), they can match multiple lines, there are reluctant quantifiers, zero with lookaheads / lookbehinds for insertions, ...
                       parameters:
                         - name: path
                           in: query
                           description: relative path to file
-                          required: true
-                          schema:
-                            type: string
-                        - name: searchString
-                          in: query
-                          description: String to be replaced
-                          required: true
-                          schema:
-                            type: string
-                        - name: replacement
-                          in: query
-                          description: Replacement string
                           required: true
                           schema:
                             type: string
@@ -50,10 +38,19 @@ public class ReplaceAction extends AbstractPluginAction {
                             schema:
                               type: object
                               properties:
-                                content:
+                                multiple:
+                                  type: boolean
+                                  description: if true, replace all occurrences, otherwise exactly one occurrence - it would be an error if there is no occurrence or several occurrences
+                                pattern:
+                                  required: true
                                   type: string
+                                  description: java Pattern to be replaced
+                                replacement:
+                                  required: true
+                                  type: string
+                                  description: will replace the regex; can contain group references as in Java Matcher.appendReplacement
                       responses:
-                        '204':
+                        '200':
                           description: File updated successfully
                         '400':
                           description: Invalid parameter
