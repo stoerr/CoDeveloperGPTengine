@@ -47,7 +47,7 @@ public class DevToolbench {
             openapi: 3.0.1
             info:
               title: Developers Toolbench ChatGPT Plugin
-              description: A plugin that allows the user to inspect a directory and read the contents of files using ChatGPT. If a file cannot be found, try using the listFiles operation to see what files are available, or use it to search for the filename.
+              description: A plugin that allows the user to inspect a directory and read the contents of files using ChatGPT. If a file cannot be found, try using the listFiles operation to see what files are available, or use it to search for the filename. (By the way: if you receive an `ApiSyntaxError: Could not parse API call kwargs as JSON: exception=Unterminated string ...` then that usually means that the request was too long.)
               version: 1.0.0
             servers:
               - url: http://localhost:THEPORT
