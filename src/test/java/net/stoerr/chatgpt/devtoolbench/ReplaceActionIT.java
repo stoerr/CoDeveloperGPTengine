@@ -16,7 +16,7 @@ public class ReplaceActionIT extends AbstractActionIT {
             Files.writeString(Paths.get("src/test/resources/testdir/replace.txt"), content, UTF_8);
             checkResponse("/replace?path=replace.txt", "POST",
                     "{\"pattern\":\"duck\",\"replacement\":\"goose\",\"multiple\":\"true\"}"
-                    , 204, null);
+                    , 200, "replace-successfulsingle.txt");
             checkResponse("/readFile?path=replace.txt", "GET", null, 200, "replaced.txt");
         } finally {
             Files.deleteIfExists(Paths.get("src/test/resources/testdir/replace.txt"));

@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.undertow.server.HttpServerExchange;
+import io.undertow.util.Headers;
 
 public class ReplaceAction extends AbstractPluginAction {
 
@@ -97,7 +98,9 @@ public class ReplaceAction extends AbstractPluginAction {
                 }
             }
             Files.writeString(filePath, content, UTF_8);
-            exchange.setStatusCode(204);
+            exchange.setStatusCode(200);
+            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
+            exchange.getResponseSender().send("Replaced " + replacementCount + " occurrences of pattern");
         } catch (NoSuchFileException e) {
             throw sendError(exchange, 404, "File not found: " + filePath);
         } catch (IOException e) {
