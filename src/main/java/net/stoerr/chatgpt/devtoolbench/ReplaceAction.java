@@ -7,8 +7,13 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import com.google.common.collect.Range;
 
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
@@ -83,13 +88,19 @@ public class ReplaceAction extends AbstractPluginAction {
         try {
             String content = Files.readString(filePath, UTF_8);
             Matcher m = Pattern.compile(pattern).matcher(content);
+            List<Range<Long>> modifiedLineNumbers = new ArrayList<>();
             int replacementCount = 0;
+
             StringBuffer sb = new StringBuffer();
             while (m.find()) {
-                m.appendReplacement(sb, "dog");
+                long startLine = lineNumberAfter(content.substring(0, m.start()));
+                long endLine = lineNumberAfter(content.substring(0, m.end()));
+                modifiedLineNumbers.add(Range.closed(startLine, endLine));
+                m.appendReplacement(sb, replacement);
                 replacementCount++;
             }
             m.appendTail(sb);
+
             if (!multiple && replacementCount != 1) {
                 if (replacementCount == 0) {
                     throw sendError(exchange, 400, "Found no occurrences of pattern.");
@@ -97,15 +108,54 @@ public class ReplaceAction extends AbstractPluginAction {
                     throw sendError(exchange, 400, "Found " + replacementCount + " occurrences, but expected exactly one because parameter multiple = false.");
                 }
             }
-            Files.writeString(filePath, content, UTF_8);
+
+            List<String> modifiedLineDescr = rangeDescription(modifiedLineNumbers);
+
+            Files.writeString(filePath, sb.toString(), UTF_8);
             exchange.setStatusCode(200);
             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
-            exchange.getResponseSender().send("Replaced " + replacementCount + " occurrences of pattern");
+            exchange.getResponseSender().send("Replaced " + replacementCount + " occurrences of pattern; modified lines "
+                    + modifiedLineDescr.stream().collect(Collectors.joining(", ")));
         } catch (NoSuchFileException e) {
-            throw sendError(exchange, 404, "File not found: " + filePath);
+            throw sendError(exchange, 404, "File not found: " + DevToolbench.currentDir.relativize(filePath));
         } catch (IOException e) {
             throw sendError(exchange, 500, "Error reading or writing file : " + e);
         }
+    }
+
+    protected long lineNumberAfter(String contentpart) {
+        return (contentpart + "x").lines().count();
+    }
+
+    private static List<String> rangeDescription(List<Range<Long>> modifiedLineNumbers) {
+        List<String> modifiedLineDescr = new ArrayList<>();
+        Range<Long> lastRange = null;
+        for (Range<Long> range : modifiedLineNumbers) {
+            if (lastRange != null) {
+                if (lastRange.upperEndpoint() >= range.lowerEndpoint() - 1) {
+                    lastRange = lastRange.span(range);
+                } else {
+                    modifiedLineDescr.add(rangeDescription(lastRange));
+                    lastRange = range;
+                }
+            } else {
+                lastRange = range;
+            }
+        }
+        if (lastRange != null) {
+            modifiedLineDescr.add(rangeDescription(lastRange));
+        }
+        return modifiedLineDescr;
+    }
+
+    private static String rangeDescription(Range<Long> lastRange) {
+        String rangeDescr;
+        if (lastRange.lowerEndpoint().equals(lastRange.upperEndpoint())) {
+            rangeDescr = String.valueOf(lastRange.lowerEndpoint());
+        } else {
+            rangeDescr = " " + lastRange.lowerEndpoint() + " - " + lastRange.upperEndpoint();
+        }
+        return rangeDescr;
     }
 
     @Override

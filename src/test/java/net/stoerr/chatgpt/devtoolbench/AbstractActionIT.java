@@ -31,7 +31,8 @@ public abstract class AbstractActionIT {
     static final int port = 7364;
 
     @BeforeClass
-    public static void setUp() throws InterruptedException {
+    public static void setUp() throws InterruptedException, IOException {
+        Files.createDirectories(Paths.get("target/test-actual"));
         DevToolbench.currentDir = Paths.get(".").resolve("src/test/resources/testdir").normalize()
                 .toAbsolutePath();
         DevToolbench.main(new String[]{String.valueOf(port)});
@@ -75,18 +76,24 @@ public abstract class AbstractActionIT {
             return null;
         }
 
-        Header contentTypeHeader = response.getFirstHeader(Headers.CONTENT_TYPE.toString());
-
         if (expectFile != null) {
-            Files.createDirectories(Paths.get("target/test-actual"));
-            Files.writeString(Paths.get("target/test-actual/" + expectFile), result, UTF_8);
-            String expectedResponse = readFile("/test-expected/" + expectFile);
-            collector.checkThat(result, CoreMatchers.is(expectedResponse));
-
-            String expectedContentType = expectedResponse.contains("<html>") ? "text/html; charset=UTF-8" : "text/plain; charset=UTF-8";
-            collector.checkThat(contentTypeHeader != null ? contentTypeHeader.getValue() : null, CoreMatchers.is(expectedContentType));
+            writeActualAndCompareExpected(response, expectFile, result);
         }
         return result;
+    }
+
+    protected void writeActualAndCompareExpected(HttpResponse response, String expectFilename, String result) throws IOException {
+        // our IDE adds a \n to each file, which is a often desirable convention
+        result = result.stripTrailing() + "\n";
+
+        Header contentTypeHeader = response.getFirstHeader(Headers.CONTENT_TYPE.toString());
+
+        Files.writeString(Paths.get("target/test-actual/" + expectFilename), result, UTF_8);
+        String expectedResponse = readFile("/test-expected/" + expectFilename);
+        collector.checkThat(result, CoreMatchers.is(expectedResponse));
+
+        String expectedContentType = expectedResponse.contains("<html>") ? "text/html; charset=UTF-8" : "text/plain; charset=UTF-8";
+        collector.checkThat(contentTypeHeader != null ? contentTypeHeader.getValue() : null, CoreMatchers.is(expectedContentType));
     }
 
     protected String readFile(String filepath) throws IOException {
