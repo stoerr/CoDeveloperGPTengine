@@ -70,7 +70,7 @@ public class DevToolbench {
 
         STATICFILES.put("/.well-known/ai-plugin.json", () -> {
             try (InputStream in = DevToolbench.class.getResourceAsStream("/ai-plugin.json")) {
-                return new String(in.readAllBytes(), StandardCharsets.UTF_8).replace("THEPORT", "" + port);
+                return new String(in.readAllBytes(), StandardCharsets.UTF_8).replace("THEPORT", String.valueOf(port));
             } catch (IOException e) {
                 throw new UncheckedIOException(e);
             }
@@ -79,7 +79,7 @@ public class DevToolbench {
             StringBuilder pathDescriptions = new StringBuilder();
             HANDLERS.values().stream().sorted(Comparator.comparing(AbstractPluginAction::getUrl))
                     .forEach(handler -> pathDescriptions.append(handler.openApiDescription()));
-            return OPENAPI_DESCR_START.replace("THEPORT", "" + port) + pathDescriptions;
+            return OPENAPI_DESCR_START.replace("THEPORT", String.valueOf(port)) + pathDescriptions;
         });
         STATICFILES.put("/", () -> "<html><body><h1>Developers Toolbench ChatGPT Plugin</h1><p>See <a href=\"/.well-known/ai-plugin.json\">/.well-known/ai-plugin.json</a> for the plugin description.</p></body></html>\n");
     }
@@ -219,7 +219,7 @@ public class DevToolbench {
             log(versionInfo);
             logBody("\n\n" + versionInfo);
         } catch (IOException e) {
-            log("Version: unknown");
+            logError("Version: unknown");
         }
     }
 
