@@ -35,14 +35,14 @@ public abstract class AbstractActionIT {
         DevToolbench.currentDir = Paths.get(".").resolve("src/test/resources/testdir").normalize()
                 .toAbsolutePath();
         DevToolbench.main(new String[]{String.valueOf(port)});
-        Thread.sleep(200);
+        Thread.sleep(20);
     }
 
     @AfterClass
     public static void tearDown() throws InterruptedException {
-        Thread.sleep(100);
+        Thread.sleep(10);
         DevToolbench.stop();
-        Thread.sleep(200);
+        Thread.sleep(20);
     }
 
     protected String checkResponse(String path, String method, String requestBody, int expectedStatusCode, String expectFile) throws IOException {
@@ -65,17 +65,17 @@ public abstract class AbstractActionIT {
             throw new IllegalArgumentException("Unsupported method: " + method);
         }
 
-        collector.checkThat(response.getStatusLine().getStatusCode(), CoreMatchers.is(expectedStatusCode));
+        result = response.getEntity() != null ? EntityUtils.toString(response.getEntity(), UTF_8) : null;
+
+        collector.checkThat(result, response.getStatusLine().getStatusCode(), CoreMatchers.is(expectedStatusCode));
 
         if (expectedStatusCode == 204) {
-            collector.checkThat(response.getEntity(), CoreMatchers.nullValue());
+            collector.checkThat(result, response.getEntity(), CoreMatchers.nullValue());
             collector.checkThat(expectFile, CoreMatchers.nullValue());
             return null;
         }
 
         Header contentTypeHeader = response.getFirstHeader(Headers.CONTENT_TYPE.toString());
-
-        result = EntityUtils.toString(response.getEntity(), UTF_8);
 
         if (expectFile != null) {
             Files.createDirectories(Paths.get("target/test-actual"));

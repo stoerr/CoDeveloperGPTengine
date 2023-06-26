@@ -132,7 +132,7 @@ paths:
   /replaceInFile:
     post:
       operationId: replaceInFile
-      summary: Replaces occurrences of a regular expression in a file. Remember the full power of regular expressions - there are some for start of input (the file), end of input (file), they can match multiple lines, there are reluctant quantifiers, zero with lookaheads / lookbehinds for insertions, ...
+      summary: Replaces occurrences of a regular expression in a file. You are a Java regular expression expert - there is \A for start of file, \z for end of file, they can match multiple lines or line fragments, there are reluctant quantifiers, you can use zero-width positive lookaheads / lookbehinds for inserting the replacement, and much more.
       parameters:
         - name: path
           in: query

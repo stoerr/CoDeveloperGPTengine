@@ -7,6 +7,8 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.undertow.server.HttpServerExchange;
 
@@ -23,7 +25,7 @@ public class ReplaceAction extends AbstractPluginAction {
                   /replaceInFile:
                     post:
                       operationId: replaceInFile
-                      summary: Replaces occurrences of a regular expression in a file. Remember the full power of regular expressions - there are some for start of input (the file), end of input (file), they can match multiple lines, there are reluctant quantifiers, zero with lookaheads / lookbehinds for insertions, ...
+                      summary: Replaces occurrences of a regular expression in a file. You are a Java regular expression expert - there is \\A for start of file, \\z for end of file, they can match multiple lines or line fragments, there are reluctant quantifiers, you can use zero-width positive lookaheads / lookbehinds for inserting the replacement, and much more.
                       parameters:
                         - name: path
                           in: query
@@ -66,10 +68,11 @@ public class ReplaceAction extends AbstractPluginAction {
 
     private void handleBody(HttpServerExchange exchange, String json) {
         String path = exchange.getQueryParameters().get("path").getFirst();
-        String searchString = exchange.getQueryParameters().get("searchString").getFirst();
-        String replacement = exchange.getQueryParameters().get("replacement").getFirst();
+        String pattern = getBodyParameter(exchange, json, "pattern", true);
+        String replacement = getBodyParameter(exchange, json, "replacement", true);
+        boolean multiple = getBodyParameter(exchange, json, "multiple", false).equalsIgnoreCase("true");
 
-        if (searchString == null || replacement == null) {
+        if (pattern == null || pattern.isEmpty() || replacement == null) {
             exchange.setStatusCode(400);
             exchange.getResponseSender().send("searchString and replacement parameters are required");
             return;
@@ -78,7 +81,21 @@ public class ReplaceAction extends AbstractPluginAction {
         Path filePath = DevToolbench.currentDir.resolve(path);
         try {
             String content = Files.readString(filePath, UTF_8);
-            content = content.replace(searchString, replacement);
+            Matcher m = Pattern.compile(pattern).matcher(content);
+            int replacementCount = 0;
+            StringBuffer sb = new StringBuffer();
+            while (m.find()) {
+                m.appendReplacement(sb, "dog");
+                replacementCount++;
+            }
+            m.appendTail(sb);
+            if (!multiple && replacementCount != 1) {
+                if (replacementCount == 0) {
+                    throw sendError(exchange, 400, "Found no occurrences of pattern.");
+                } else {
+                    throw sendError(exchange, 400, "Found " + replacementCount + " occurrences, but expected exactly one because parameter multiple = false.");
+                }
+            }
             Files.writeString(filePath, content, UTF_8);
             exchange.setStatusCode(204);
         } catch (NoSuchFileException e) {
