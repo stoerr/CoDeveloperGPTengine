@@ -1,6 +1,6 @@
-Also a test file, this time about ducks.
-A duck is a duck is a duck.
-duckduck.
+Also a test file, this time about gooses.
+A goose is a goose is a goose.
+goosegoose.
 
 now some stuff that is not about this animal.
 now some stuff that is not about this animal.
@@ -8,7 +8,11 @@ now some stuff that is not about this animal.
 now some stuff that is not about this animal.
 now some stuff that is not about this animal.
 this is a context line that could appear
-A duck again, to check grep with context lines.
-ducking a duck
-ducker duck
+A goose again, to check grep with context lines.
+gooseing a goose
+gooseer goose
 appearing context line too
+
+
+
+Oh well, let's have a goose again!

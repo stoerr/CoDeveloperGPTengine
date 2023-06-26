@@ -12,3 +12,5 @@ A duck again, to check grep with context lines.
 ducking a duck
 ducker duck
 appearing context line too
+
+Oh well, let's have a duck again!
