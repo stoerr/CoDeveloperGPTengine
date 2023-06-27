@@ -1,12 +1,18 @@
 # Todos
 
+## Refactoring
+
+### Clamp down on tokens
+
+- Name path "relativePath" and remove comments.
+
 ## Added functionality that makes sense
 
 - grep : fileregex and grepregex and context lines -> output file and line numbers
-- changeFile : 
+- changeFile :
 
-Create an action GrepAction that has parameters like fileRegex and grepRegex (like the ListFilesAction) but returns 
-the lines with matches that were found, instead of listing the files. It should also have a parameter contextLines, 
+Create an action GrepAction that has parameters like fileRegex and grepRegex (like the ListFilesAction) but returns
+the lines with matches that were found, instead of listing the files. It should also have a parameter contextLines,
 that isn't yet used.
 
 - Make an actual release.
@@ -15,7 +21,9 @@ that isn't yet used.
 
 operation changeFile changes one part of a file (must be called multiple times for multiple changes)
 parameters:
-- content : the replacement for the part of the file demarked by the other parameters. Optional - if empty the part of the file is deleted.
+
+- content : the replacement for the part of the file demarked by the other parameters. Optional - if empty the part of
+  the file is deleted.
 - startLineRegex (optional)
 - startLineOffset (optional, default 0, can be negative)
 - endLineRegex (optional)
@@ -47,6 +55,10 @@ rename file, delete file
 Add excludeRegex to file list
 Add recursive (default = false) to file list. Ouch: then that should list directories, too!
 Refactor into an actual project as this becomes unmanageable. Perhaps integration of scripts like
-    https://www.chatpc.ai/docs/macos/getting-started/
+https://www.chatpc.ai/docs/macos/getting-started/
 
 Perhaps: use ctags somehow: https://aider.chat/docs/ctags.html
+
+=======================
+
+https://discord.com/channels/974519864045756446/1070006915414900886/threads/1122836879067332660

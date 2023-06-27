@@ -22,7 +22,7 @@ public class ReplaceAction extends AbstractPluginAction {
 
     @Override
     public String getUrl() {
-        return "/replace";
+        return "/replaceInFile";
     }
 
     @Override
@@ -31,7 +31,7 @@ public class ReplaceAction extends AbstractPluginAction {
                   /replaceInFile:
                     post:
                       operationId: replaceInFile
-                      summary: Replaces occurrences of a regular expression in a file. You are a Java regular expression expert - there is \\A for start of file, \\z for end of file, they can match multiple lines or line fragments, there are reluctant quantifiers, you can use zero-width positive lookaheads / lookbehinds for inserting the replacement, and much more.
+                      summary: Replaces occurrences of a regular expression in a file. You are a Java regular expression expert and can use all advanced regex features - the whole file is matched, not line by line.
                       parameters:
                         - name: path
                           in: query
@@ -50,13 +50,14 @@ public class ReplaceAction extends AbstractPluginAction {
                                   type: boolean
                                   description: if true, replace all occurrences, otherwise exactly one occurrence - it would be an error if there is no occurrence or several occurrences
                                 pattern:
-                                  required: true
                                   type: string
                                   description: java Pattern to be replaced
                                 replacement:
-                                  required: true
                                   type: string
                                   description: will replace the regex; can contain group references as in Java Matcher.appendReplacement
+                              required:
+                                - pattern
+                                - replacement
                       responses:
                         '200':
                           description: File updated successfully

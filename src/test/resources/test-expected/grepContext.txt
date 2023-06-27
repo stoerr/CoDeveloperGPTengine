@@ -9,6 +9,5 @@ A duck again, to check grep with context lines.
 ducking a duck
 ducker duck
 appearing context line too
-======================== secondfile.md lines 17 to 18
-
+======================== secondfile.md line 16
 Oh well, let's have a duck again!

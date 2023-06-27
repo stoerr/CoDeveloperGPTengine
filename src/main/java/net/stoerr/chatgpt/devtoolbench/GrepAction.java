@@ -13,6 +13,8 @@ import io.undertow.util.Headers;
 
 public class GrepAction extends AbstractPluginAction {
 
+    public static final Pattern GREP_IGNORE_BINARIES_PATTERN = Pattern.compile("\\.(jar|class|png|jpg|gif|ico)$");
+
     @Override
     public String getUrl() {
         return "/grepFiles";
@@ -24,7 +26,7 @@ public class GrepAction extends AbstractPluginAction {
                   /grepFiles:
                     post:
                       operationId: grepAction
-                      summary: Search for lines in files matching the given regex.
+                      summary: Search for lines in text files matching the given regex.
                       parameters:
                         - name: path
                           in: query
@@ -86,30 +88,32 @@ public class GrepAction extends AbstractPluginAction {
 
         Stream<Path> matchingFiles = findMatchingFiles(exchange, getPath(exchange), filePattern, grepPattern);
         StringBuilder buf = new StringBuilder();
-        matchingFiles.forEachOrdered(path -> {
-            try {
-                List<String> lines = Files.readAllLines(path);
-                int lastEndLine = -1; // last match end line number
-                int blockStart = -1;  // start of current block of context lines
-                for (int i = 0; i < lines.size(); i++) {
-                    String line = lines.get(i);
-                    if (grepPattern.matcher(line).find()) {
-                        if (blockStart == -1) {  // start of a new block
-                            blockStart = Math.max(lastEndLine + 1, i - contextLines);
+        matchingFiles
+                .filter(f -> !GREP_IGNORE_BINARIES_PATTERN.matcher(f.toString()).find())
+                .forEachOrdered(path -> {
+                    try {
+                        List<String> lines = Files.readAllLines(path);
+                        int lastEndLine = -1; // last match end line number
+                        int blockStart = -1;  // start of current block of context lines
+                        for (int i = 0; i < lines.size(); i++) {
+                            String line = lines.get(i);
+                            if (grepPattern.matcher(line).find()) {
+                                if (blockStart == -1) {  // start of a new block
+                                    blockStart = Math.max(lastEndLine + 1, i - contextLines);
+                                }
+                                lastEndLine = Math.min(i + contextLines + 1, lines.size());
+                            } else if (blockStart != -1) {  // end of a block
+                                appendBlock(lines, buf, path, blockStart, lastEndLine);
+                                blockStart = -1;
+                            }
                         }
-                        lastEndLine = Math.min(i + contextLines + 1, lines.size());
-                    } else if (blockStart != -1) {  // end of a block
-                        appendBlock(lines, buf, path, blockStart, lastEndLine);
-                        blockStart = -1;
+                        if (blockStart != -1) {  // append the last block
+                            appendBlock(lines, buf, path, blockStart, lastEndLine);
+                        }
+                    } catch (IOException e) {
+                        throw new UncheckedIOException(e);
                     }
-                }
-                if (blockStart != -1) {  // append the last block
-                    appendBlock(lines, buf, path, blockStart, lastEndLine);
-                }
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
-        });
+                });
         exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
         exchange.getResponseSender().send(buf.toString());
     }

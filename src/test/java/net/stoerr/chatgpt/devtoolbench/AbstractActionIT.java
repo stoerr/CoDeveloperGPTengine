@@ -88,9 +88,9 @@ public abstract class AbstractActionIT {
 
         Header contentTypeHeader = response.getFirstHeader(Headers.CONTENT_TYPE.toString());
 
-        Files.writeString(Paths.get("target/test-actual/" + expectFilename), result, UTF_8);
+        Files.writeString(Paths.get("target/test-actual/" + Path.of(expectFilename).getFileName()), result, UTF_8);
         String expectedResponse = readFile("/test-expected/" + expectFilename);
-        collector.checkThat(result, CoreMatchers.is(expectedResponse));
+        collector.checkThat(expectFilename, result, CoreMatchers.is(expectedResponse));
 
         String expectedContentType = expectedResponse.contains("<html>") ? "text/html; charset=UTF-8" : "text/plain; charset=UTF-8";
         collector.checkThat(contentTypeHeader != null ? contentTypeHeader.getValue() : null, CoreMatchers.is(expectedContentType));
@@ -98,7 +98,10 @@ public abstract class AbstractActionIT {
 
     protected String readFile(String filepath) throws IOException {
         Path path = Paths.get("src/test/resources" + filepath);
-        if (!Files.exists(path)) throw new RuntimeException("Could not find " + path);
+        collector.checkThat("Does not exist yet: " + path, Files.exists(path), CoreMatchers.is(true));
+        if (!Files.exists(path)) {
+            return ""; // make sure the following code runs, so that any files are created
+        }
         return Files.readString(path, UTF_8);
     }
 }

@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Developers Toolbench ChatGPT Plugin
-  description: A plugin that allows the user to inspect a directory and read the contents of files using ChatGPT. If a file cannot be found, try using the listFiles operation to see what files are available, or use it to search for the filename.
+  description: "A plugin that allows the user to inspect a directory and read the contents of files using ChatGPT. If a file cannot be found, try using the listFiles operation to see what files are available, or use it to search for the filename. Small files can be overwritten with /writeFile, but to insert into / change existing files please prefer to use regex replacement with replaceInFile. (By the way, if you receive an `ApiSyntaxError: Could not parse API call kwargs as JSON: exception=Unterminated string ...` then that usually means that the request was too long.)"
   version: 1.0.0
 servers:
   - url: http://localhost:7364
@@ -13,7 +13,6 @@ paths:
       parameters:
         - name: actionName
           in: query
-          description: name of the action to be executed
           required: true
           schema:
             type: string
@@ -24,7 +23,7 @@ paths:
             schema:
               type: object
               properties:
-                content:
+                actionInput:
                   type: string
       responses:
         '200':
@@ -40,7 +39,7 @@ paths:
   /grepFiles:
     post:
       operationId: grepAction
-      summary: Search for lines in files matching the given regex.
+      summary: Search for lines in text files matching the given regex.
       parameters:
         - name: path
           in: query
@@ -132,7 +131,7 @@ paths:
   /replaceInFile:
     post:
       operationId: replaceInFile
-      summary: Replaces occurrences of a regular expression in a file. You are a Java regular expression expert - there is \A for start of file, \z for end of file, they can match multiple lines or line fragments, there are reluctant quantifiers, you can use zero-width positive lookaheads / lookbehinds for inserting the replacement, and much more.
+      summary: Replaces occurrences of a regular expression in a file. You are a Java regular expression expert and can use all advanced regex features - the whole file is matched, not line by line.
       parameters:
         - name: path
           in: query
@@ -151,13 +150,14 @@ paths:
                   type: boolean
                   description: if true, replace all occurrences, otherwise exactly one occurrence - it would be an error if there is no occurrence or several occurrences
                 pattern:
-                  required: true
                   type: string
                   description: java Pattern to be replaced
                 replacement:
-                  required: true
                   type: string
                   description: will replace the regex; can contain group references as in Java Matcher.appendReplacement
+              required:
+                - pattern
+                - replacement
       responses:
         '200':
           description: File updated successfully
@@ -168,7 +168,7 @@ paths:
   /writeFile:
     post:
       operationId: writeFile
-      summary: Overwrite a file.
+      summary: Overwrite a small file with the content given in full.
       parameters:
         - name: path
           in: query
@@ -176,12 +176,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: append
-          in: query
-          description: If true, append to the file instead of overwriting. If false, you need to give the whole content at once.
-          required: false
-          schema:
-            type: boolean
       requestBody:
         required: true
         content:

@@ -7,7 +7,7 @@ public class ExecuteActionActionIT extends AbstractActionIT {
 
     @Test
     public void testExecuteActionHelloWorld() throws Exception {
-        checkResponse("/executeAction?actionName=helloworld", "POST", "{\"content\":\"testinput\"}", 200, "action-helloworld.txt");
+        checkResponse("/executeAction?actionName=helloworld", "POST", "{\"actionInput\":\"testinput\"}", 200, "action-helloworld.txt");
     }
 
     @Test
@@ -18,18 +18,18 @@ public class ExecuteActionActionIT extends AbstractActionIT {
             testinput.append("test input");
         }
         System.out.println(testinput.length());
-        String actualResponse = checkResponse("/executeAction?actionName=helloworld", "POST", "{\"content\":\"" + testinput.toString() + "\"}", 200, null);
+        String actualResponse = checkResponse("/executeAction?actionName=helloworld", "POST", "{\"actionInput\":\"" + testinput + "\"}", 200, null);
         collector.checkThat(actualResponse.length(), CoreMatchers.is(prefix.length() + testinput.length() + 1)); // newliner
         collector.checkThat(actualResponse.replace(testinput, "(THETESTINPUT)"), CoreMatchers.is(prefix + "(THETESTINPUT)\n"));
     }
 
     @Test
     public void testExecuteActionNotThere() throws Exception {
-        checkResponse("/executeAction?actionName=notthere", "POST", "{\"content\":\"testinput\"}", 400, "action-notthere.txt");
+        checkResponse("/executeAction?actionName=notthere", "POST", "{\"actionInput\":\"testinput\"}", 400, "action-notthere.txt");
     }
 
     @Test
     public void testExecuteActionFail() throws Exception {
-        checkResponse("/executeAction?actionName=fail", "POST", "{\"content\":\"testinput\"}", 500, "action-fail.txt");
+        checkResponse("/executeAction?actionName=fail", "POST", "{\"actionInput\":\"testinput\"}", 500, "action-fail.txt");
     }
 }
