@@ -116,12 +116,12 @@ public abstract class AbstractPluginAction implements HttpHandler {
     }
 
     protected String getBodyParameter(HttpServerExchange exchange, String json, String parameterName, boolean mandatory) {
-        String content = "";
+        String parameterValue = "";
         if (!json.isEmpty() && !"{}".equals(json)) {
             try {
-                Map<String, String> decoded = gson.fromJson(json, Map.class);
-                content = decoded.getOrDefault(parameterName, "");
-                logBody(content);
+                Map<String, Object> decoded = gson.fromJson(json, Map.class);
+                parameterValue = String.valueOf(decoded.getOrDefault(parameterName, ""));
+                logBody(parameterName, parameterValue);
                 if (mandatory && !decoded.containsKey(parameterName)) {
                     throw sendError(exchange, 400, "Missing parameter " + parameterName);
                 }
@@ -130,7 +130,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
                 throw sendError(exchange, 400, error);
             }
         }
-        return content;
+        return parameterValue;
     }
 
     protected void handleRequestBodyError(HttpServerExchange httpServerExchange, IOException e) {

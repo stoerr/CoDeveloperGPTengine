@@ -180,13 +180,14 @@ public class DevToolbench {
         }
     }
 
-    protected static void logBody(String body) {
+    protected static void logBody(String parameterName, String parameterValue) {
         if (Files.exists(requestLog)) {
-            if (body.length() > 400) {
-                body = body.substring(0, 200) + "\n... (part omitted)\n" + body.substring(body.length() - 200);
+            if (parameterValue.length() > 400) {
+                parameterValue = parameterValue.substring(0, 200) + "\n... (part omitted)\n" + parameterValue.substring(parameterValue.length() - 200);
             }
             try {
-                Files.writeString(requestLog, body + "\n\n", StandardOpenOption.APPEND);
+                Files.writeString(requestLog, parameterName + ": " + parameterValue + "\n\n", StandardOpenOption.APPEND);
+                log(parameterName + ": " + parameterValue + "\n");
             } catch (IOException e) { // not critical but strange - we'd want to know.
                 logError("Could not write to request log " + requestLog + ": " + e.getMessage());
             }
@@ -213,8 +214,7 @@ public class DevToolbench {
                 properties.load(gitPropertiesStream);
                 String versionInfo = "DevToolbench version: " + properties.getProperty("git.build.version") +
                         properties.getProperty("git.commit.id.describe") + " from " + properties.getProperty("git.build.time");
-                log(versionInfo);
-                logBody("\n\n" + versionInfo);
+                logBody("\n\nversion: ", versionInfo);
             }
         } catch (IOException e) {
             logError("Version: unknown");
