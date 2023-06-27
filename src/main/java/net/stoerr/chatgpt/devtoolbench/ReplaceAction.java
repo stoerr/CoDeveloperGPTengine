@@ -48,7 +48,7 @@ public class ReplaceAction extends AbstractPluginAction {
                               properties:
                                 multiple:
                                   type: boolean
-                                  description: If multiple is true, replace all occurrences, otherwise exactly one occurrence - it would be an error if there is no occurrence or several occurrences. Default is false.
+                                  description: If multiple is true, replace all occurrences, otherwise exactly one occurrence - it would be an error if there is no occurrence or several occurrences. Default is false. Use true with care and only if there is a good reason to do so.
                                 pattern:
                                   type: string
                                   description: java Pattern to be replaced

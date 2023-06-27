@@ -43,6 +43,4 @@ public class ReplaceActionIT extends AbstractActionIT {
                 "{\"pattern\":\"duck\",\"replacement\":\"goose\"}", 404, "notfound.txt");
     }
 
-    // ChatGPT: check ReplaceAction.java and replace this line with additional tests that are missing, if there are some.
-
 }

@@ -17,6 +17,13 @@ that isn't yet used.
 
 - Make an actual release.
 
+## Perhaps
+
+- instead of search and replace: sed script on file? conflicted diff format? actual java code to make the
+  replacement? Annoying: huge amount of backslashes due to double and triple quoting.
+
+- Compare with https://github.com/e2b-dev/awesome-ai-agents references. Put there?
+
 ## Next feature, not quite clear how to do.
 
 operation changeFile changes one part of a file (must be called multiple times for multiple changes)
