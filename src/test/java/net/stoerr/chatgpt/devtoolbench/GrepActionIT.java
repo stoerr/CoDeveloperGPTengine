@@ -2,7 +2,7 @@ package net.stoerr.chatgpt.devtoolbench;
 
 import org.junit.Test;
 
-public class GrepOperationActionIT extends AbstractActionIT {
+public class GrepActionIT extends AbstractActionIT {
 
     @Test
     public void testGrepOperationFirstFile() throws Exception {

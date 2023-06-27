@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
-public class WriteFileOperationActionIT extends AbstractActionIT {
+public class WriteFileActionIT extends AbstractActionIT {
 
     @Test
     public void testWriteFileOperation() throws Exception {
