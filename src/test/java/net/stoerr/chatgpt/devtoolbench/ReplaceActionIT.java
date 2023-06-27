@@ -15,7 +15,7 @@ public class ReplaceActionIT extends AbstractActionIT {
             String content = Files.readString(Paths.get("src/test/resources/testdir/secondfile.md"), UTF_8);
             Files.writeString(Paths.get("src/test/resources/testdir/replace.txt"), content, UTF_8);
             checkResponse("/replaceInFile?path=replace.txt", "POST",
-                    "{\"pattern\":\"duck\",\"replacement\":\"goose\",\"multiple\":\"true\"}"
+                    "{\"pattern\":\"duck\",\"replacement\":\"goose\",\"multiple\":true}"
                     , 200, "replace-successfulmulti.txt");
             checkResponse("/readFile?path=replace.txt", "GET", null, 200, "replace-successfulmulti-replaced.txt");
         } finally {
@@ -42,5 +42,7 @@ public class ReplaceActionIT extends AbstractActionIT {
         checkResponse("/replaceInFile?path=notfound.txt", "POST",
                 "{\"pattern\":\"duck\",\"replacement\":\"goose\"}", 404, "notfound.txt");
     }
+
+    // ChatGPT: check ReplaceAction.java and replace this line with additional tests that are missing, if there are some.
 
 }
