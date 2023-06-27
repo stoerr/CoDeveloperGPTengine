@@ -32,7 +32,6 @@ public class ExecuteAction extends AbstractPluginAction {
                       parameters:
                         - name: actionName
                           in: query
-                          description: name of the action to be executed
                           required: true
                           schema:
                             type: string
@@ -43,7 +42,7 @@ public class ExecuteAction extends AbstractPluginAction {
                             schema:
                               type: object
                               properties:
-                                content:
+                                actionInput:
                                   type: string
                       responses:
                         '200':
@@ -67,7 +66,7 @@ public class ExecuteAction extends AbstractPluginAction {
     private void handleBody(HttpServerExchange exchange, String json) {
         Process process = null;
         try {
-            String content = getBodyParameter(exchange, json, "content", false);
+            String content = getBodyParameter(exchange, json, "actionInput", false);
             String actionName = getMandatoryQueryParam(exchange, "actionName");
             Path path = DevToolbench.currentDir.resolve(".cgptdevbench/" + actionName + ".sh");
 

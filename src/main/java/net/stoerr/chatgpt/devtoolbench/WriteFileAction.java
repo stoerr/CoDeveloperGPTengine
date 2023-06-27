@@ -28,7 +28,7 @@ public class WriteFileAction extends AbstractPluginAction {
                   /writeFile:
                     post:
                       operationId: writeFile
-                      summary: Overwrite a file.
+                      summary: Overwrite a small file with the content given in full.
                       parameters:
                         - name: path
                           in: query
@@ -36,12 +36,6 @@ public class WriteFileAction extends AbstractPluginAction {
                           required: true
                           schema:
                             type: string
-                        - name: append
-                          in: query
-                          description: If true, append to the file instead of overwriting. If false, you need to give the whole content at once.
-                          required: false
-                          schema:
-                            type: boolean
                       requestBody:
                         required: true
                         content:
@@ -58,6 +52,14 @@ public class WriteFileAction extends AbstractPluginAction {
                           description: Invalid parameter
                 """.stripIndent();
     }
+    // We remove the append parameter for now, because it is not transactional and the file might be half overwritten
+    // when ChatGPT aborts because of length constraints or other issues.
+    //                         - name: append
+    //                          in: query
+    //                          description: If true, append to the very end of the file instead of overwriting. If false, you need to give the whole content at once.
+    //                          required: false
+    //                          schema:
+    //                            type: boolean
 
     @Override
     public void handleRequest(HttpServerExchange exchange) {

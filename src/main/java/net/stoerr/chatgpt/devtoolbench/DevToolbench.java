@@ -47,7 +47,7 @@ public class DevToolbench {
             openapi: 3.0.1
             info:
               title: Developers Toolbench ChatGPT Plugin
-              description: A plugin that allows the user to inspect a directory and read the contents of files using ChatGPT. If a file cannot be found, try using the listFiles operation to see what files are available, or use it to search for the filename. (By the way: if you receive an `ApiSyntaxError: Could not parse API call kwargs as JSON: exception=Unterminated string ...` then that usually means that the request was too long.)
+              description: "A plugin that allows the user to inspect a directory and read the contents of files using ChatGPT. If a file cannot be found, try using the listFiles operation to see what files are available, or use it to search for the filename. Small files can be overwritten with /writeFile, but to insert into / change existing files please prefer to use regex replacement with replaceInFile. (By the way, if you receive an `ApiSyntaxError: Could not parse API call kwargs as JSON: exception=Unterminated string ...` then that usually means that the request was too long.)"
               version: 1.0.0
             servers:
               - url: http://localhost:THEPORT
@@ -103,10 +103,11 @@ public class DevToolbench {
 
     private static void handleRequest(HttpServerExchange exchange) {
         try {
-            log(exchange.getRequestMethod() + " " + exchange.getRequestURI() + "?" + exchange.getQueryString());
+            log(exchange.getRequestMethod() + " " + exchange.getRequestURI() +
+                    (exchange.getQueryString() != null && !exchange.getQueryString().isEmpty() ? "?" + exchange.getQueryString() : ""));
             logRequest(exchange);
             String path = exchange.getRequestPath();
-            exchange.getResponseHeaders().put(HttpString.tryFromString("Access-Control-Allow-Origin"), "*"); // TODO https://chat.openai.com
+            exchange.getResponseHeaders().put(HttpString.tryFromString("Access-Control-Allow-Origin"), "https://chat.openai.com");
             if (exchange.getRequestMethod().equals(Methods.OPTIONS)) {
                 giveCORSResponse(exchange);
             } else if (STATICFILES.containsKey(path)) {
@@ -127,7 +128,7 @@ public class DevToolbench {
                 }
             }
         } catch (ExecutionAbortedException e) {
-            log("Aborted and problem reported to ChatGPT: " + e.getMessage());
+            log("Aborted and problem reported to ChatGPT : " + e.getMessage());
         } catch (Exception e) {
             logError("Bug! Abort handling request " + exchange.getRequestURL());
             logStacktrace(e);
@@ -169,7 +170,10 @@ public class DevToolbench {
         if (Files.exists(requestLog)) {
             try {
                 String isoDate = DateTimeFormatter.ISO_INSTANT.format(Instant.now());
-                Files.writeString(requestLog, isoDate + "##### " + exchange.getRequestMethod() + " " + exchange.getRequestURI() + "?" + exchange.getQueryString() + "\n", StandardOpenOption.APPEND);
+                Files.writeString(requestLog, isoDate + "##### "
+                        + exchange.getRequestMethod() + " " + exchange.getRequestURI()
+                        + (exchange.getQueryString() != null && !exchange.getQueryString().isEmpty() ? "?" + exchange.getQueryString() : "")
+                        + "\n", StandardOpenOption.APPEND);
             } catch (IOException e) { // not critical but strange - we'd want to know.
                 logError("Could not write to request log " + requestLog + ": " + e.getMessage());
             }
@@ -178,6 +182,9 @@ public class DevToolbench {
 
     protected static void logBody(String body) {
         if (Files.exists(requestLog)) {
+            if (body.length() > 400) {
+                body = body.substring(0, 200) + "\n... (part omitted)\n" + body.substring(body.length() - 200);
+            }
             try {
                 Files.writeString(requestLog, body + "\n\n", StandardOpenOption.APPEND);
             } catch (IOException e) { // not critical but strange - we'd want to know.

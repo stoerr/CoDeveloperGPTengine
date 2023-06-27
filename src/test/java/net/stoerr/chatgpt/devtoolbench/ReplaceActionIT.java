@@ -14,10 +14,10 @@ public class ReplaceActionIT extends AbstractActionIT {
         try {
             String content = Files.readString(Paths.get("src/test/resources/testdir/secondfile.md"), UTF_8);
             Files.writeString(Paths.get("src/test/resources/testdir/replace.txt"), content, UTF_8);
-            checkResponse("/replace?path=replace.txt", "POST",
+            checkResponse("/replaceInFile?path=replace.txt", "POST",
                     "{\"pattern\":\"duck\",\"replacement\":\"goose\",\"multiple\":\"true\"}"
-                    , 200, "replace-successfulsingle.txt");
-            checkResponse("/readFile?path=replace.txt", "GET", null, 200, "replaced.txt");
+                    , 200, "replace-successfulmulti.txt");
+            checkResponse("/readFile?path=replace.txt", "GET", null, 200, "replace-successfulmulti-replaced.txt");
         } finally {
             Files.deleteIfExists(Paths.get("src/test/resources/testdir/replace.txt"));
         }
@@ -25,21 +25,21 @@ public class ReplaceActionIT extends AbstractActionIT {
 
     @Test
     public void testComplainAboutMultiplesSinceNoMatch() throws Exception {
-        checkResponse("/replace?path=secondfile.md", "POST",
+        checkResponse("/replaceInFile?path=secondfile.md", "POST",
                 "{\"pattern\":\"neverthereinthefile\",\"replacement\":\"goose\"}"
                 , 400, "replace-multiplenotrequested1.txt");
     }
 
     @Test
     public void testComplainAboutMultiplesSinceManyMatches() throws Exception {
-        checkResponse("/replace?path=secondfile.md", "POST",
+        checkResponse("/replaceInFile?path=secondfile.md", "POST",
                 "{\"pattern\":\"duck\",\"replacement\":\"goose\"}"
                 , 400, "replace-multiplenotrequested2.txt");
     }
 
     @Test
     public void testReplaceOperationFileNotFound() throws Exception {
-        checkResponse("/replace?path=notfound.txt", "POST",
+        checkResponse("/replaceInFile?path=notfound.txt", "POST",
                 "{\"pattern\":\"duck\",\"replacement\":\"goose\"}", 404, "notfound.txt");
     }
 
