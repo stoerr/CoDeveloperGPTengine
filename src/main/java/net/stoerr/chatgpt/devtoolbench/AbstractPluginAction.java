@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import org.wildfly.common.annotation.NotNull;
+
 import com.google.gson.Gson;
 
 import io.undertow.server.HttpHandler;
@@ -115,6 +117,10 @@ public abstract class AbstractPluginAction implements HttpHandler {
         return resolved;
     }
 
+    /**
+     * Returns a parameter encoded in JSON the request body; returns "" if that parameter isn't there.
+     */
+    @NotNull
     protected String getBodyParameter(HttpServerExchange exchange, String json, String parameterName, boolean mandatory) {
         String parameterValue = "";
         if (!json.isEmpty() && !"{}".equals(json)) {
@@ -146,6 +152,10 @@ public abstract class AbstractPluginAction implements HttpHandler {
             return s;
         }
         return s.substring(0, max - 3) + "...";
+    }
+
+    protected boolean isNotEmpty(String s) {
+        return null != s && !s.trim().isEmpty();
     }
 
 }
