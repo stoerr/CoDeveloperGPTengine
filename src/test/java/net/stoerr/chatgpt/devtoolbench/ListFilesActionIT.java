@@ -15,8 +15,8 @@ public class ListFilesActionIT extends AbstractActionIT {
     }
 
     @Test
-    public void testListFilesOperationFilenameRegex() throws Exception {
-        checkResponse("/listFiles?path=.&filenameRegex=.*%5C.txt", "GET", null, 200, "listFilesFilenameRegex.txt");
+    public void testListFilesOperationFilePathRegex() throws Exception {
+        checkResponse("/listFiles?path=.&filePathRegex=.*%5C.txt", "GET", null, 200, "listFilesFilePathRegex.txt");
     }
 
     @Test
@@ -26,6 +26,6 @@ public class ListFilesActionIT extends AbstractActionIT {
 
     @Test
     public void testListFilesOperationBothRegex() throws Exception {
-        checkResponse("/listFiles?path=.&filenameRegex=.*%5C.txt&grepRegex=testcontent", "GET", null, 200, "listFilesBothRegex.txt");
+        checkResponse("/listFiles?path=.&filePathRegex=.*%5C.txt&grepRegex=testcontent", "GET", null, 200, "listFilesBothRegex.txt");
     }
 }
