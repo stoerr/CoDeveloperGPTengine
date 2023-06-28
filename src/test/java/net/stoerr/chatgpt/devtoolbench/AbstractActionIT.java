@@ -46,6 +46,9 @@ public abstract class AbstractActionIT {
         Thread.sleep(20);
     }
 
+    /**
+     * Executes a call and does checks on it; if you want to compare the response yourself just set expectFile=null.
+     */
     protected String checkResponse(String path, String method, String requestBody, int expectedStatusCode, String expectFile) throws IOException {
         String result;
         String url = "http://localhost:" + port + path;
