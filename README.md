@@ -30,13 +30,14 @@ It's useable; I'll be likely making extensions to it since I'm using it quite of
 
 ## Usage
 
-To use the `Developers ChatGPT ToolBench`, you need to have registered as a plugin developer with ChatGPT. 
-Once you've done that, you can add the `Developers ChatGPT ToolBench` using the 
-"Develop your own plugin" option in the ChatGPT web interface with URL "localhost:3002". (You could also specify 
+To use the `Developers ChatGPT ToolBench`, you need to have registered as a plugin developer with ChatGPT.
+Once you've done that, you can add the `Developers ChatGPT ToolBench` using the
+"Develop your own plugin" option in the ChatGPT web interface with URL "localhost:3002". (You could also specify
 another port on the command line when starting it, if you like.)
 
-To start the plugin, navigate to the directory you want to access and run the `developersToolBenchPlugin` class. 
-The plugin will start a server on port 3002 (by default) and will be ready to accept requests from ChatGPT.
+To start the plugin, navigate to the directory you want to access and run the `developersToolBenchPlugin` class.
+The plugin will start a server on port 3002 (by default) and will be ready to accept requests from ChatGPT. If you
+want to give a port use option -p <portnumber> ; if you want to write files add option -w .
 
 The plugin is written so that it cannot be used to go outside of the directory ("../somefile" won't work) and also
 files starting with a dot or containg /target/ are invisible and not writeable. That prevents directories like .git
