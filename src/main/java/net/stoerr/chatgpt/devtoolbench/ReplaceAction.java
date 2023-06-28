@@ -59,9 +59,6 @@ public class ReplaceAction extends AbstractPluginAction {
                                   description: will replace the regex as in java.util.regex.Pattern.compile(pattern).matcher(fileContent).replaceAll(replacement) . Caution - you have to observe the escaping rules for replacement by java.util.regex.Matcher for backslashes and dollar signs, so use the alternative literalReplacement if there aren't any group references.
                               required:
                                 - pattern
-                                - replacement
-                                - literalReplacement
-                                - replacementWithGroupReferences
                       responses:
                         '200':
                           description: File updated successfully

@@ -31,7 +31,7 @@ public class DevToolbench {
 
     static Path currentDir = Paths.get(".").normalize().toAbsolutePath();
 
-    static Path requestLog = currentDir.resolve(".cgptdevbench/.requestlog.txt");
+    static final Path requestLog = currentDir.resolve(".cgptdevbench/.requestlog.txt");
 
     private static final Map<String, Supplier<String>> STATICFILES = new HashMap<>();
     private static final Map<String, AbstractPluginAction> HANDLERS = new HashMap<>();
