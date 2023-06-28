@@ -15,6 +15,13 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+
 import io.undertow.Undertow;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
@@ -85,7 +92,38 @@ public class DevToolBench {
 
     public static void main(String[] args) {
         TbUtils.logVersion();
-        port = args.length > 0 ? Integer.parseInt(args[0]) : 3002;
+
+        Options options = new Options();
+
+        options.addOption("p", "port", true, "Port number");
+        options.addOption("w", "write", false, "Permit file writes");
+        options.addOption("h", "help", false, "Display this help message");
+
+        CommandLineParser parser = new DefaultParser();
+
+        try {
+            CommandLine cmd = parser.parse(options, args);
+
+            if (cmd.hasOption("h")) {
+                HelpFormatter formatter = new HelpFormatter();
+                formatter.printHelp("DevToolBench", options);
+                System.exit(0);
+            }
+
+            if (cmd.hasOption("p")) {
+                port = Integer.parseInt(cmd.getOptionValue("p"));
+            } else {
+                port = 3002;
+            }
+
+            if (!cmd.hasOption("w")) {
+                HANDLERS.remove("/writeFile");
+                HANDLERS.remove("/grep");
+            }
+        } catch (ParseException e) {
+            System.out.println("Error parsing command line options: " + e.getMessage());
+            System.exit(1);
+        }
         server = Undertow.builder()
                 .addHttpListener(port, "localhost")
                 .setHandler(DevToolBench::handleRequest)
