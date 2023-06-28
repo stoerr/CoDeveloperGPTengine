@@ -169,7 +169,7 @@ public class DevToolbench {
         if (Files.exists(requestLog)) {
             try {
                 String isoDate = DateTimeFormatter.ISO_INSTANT.format(Instant.now());
-                Files.writeString(requestLog, isoDate + "##### "
+                Files.writeString(requestLog, isoDate + " ##### "
                         + exchange.getRequestMethod() + " " + exchange.getRequestURI()
                         + (exchange.getQueryString() != null && !exchange.getQueryString().isEmpty() ? "?" + exchange.getQueryString() : "")
                         + "\n", StandardOpenOption.APPEND);
