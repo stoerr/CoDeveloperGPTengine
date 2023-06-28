@@ -1,7 +1,7 @@
 package net.stoerr.chatgpt.devtoolbench;
 
-import static net.stoerr.chatgpt.devtoolbench.DevToolBench.log;
-import static net.stoerr.chatgpt.devtoolbench.DevToolBench.logBody;
+import static net.stoerr.chatgpt.devtoolbench.TbUtils.log;
+import static net.stoerr.chatgpt.devtoolbench.TbUtils.logBody;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
