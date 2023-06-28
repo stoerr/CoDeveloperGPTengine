@@ -30,7 +30,7 @@ public class ReplaceAction extends AbstractPluginAction {
                   /replaceInFile:
                     post:
                       operationId: replaceInFile
-                      summary: Replaces occurrences of a regular expression in a file. You are a Java regular expression expert and can use all advanced regex features - the whole file is matched, not line by line.
+                      summary: Replaces the single occurrence of a regular expression in a file. You are a Java regular expression expert and can use all advanced regex features - the whole file is matched, not line by line.
                       parameters:
                         - name: path
                           in: query
@@ -45,9 +45,6 @@ public class ReplaceAction extends AbstractPluginAction {
                             schema:
                               type: object
                               properties:
-                                multiple:
-                                  type: boolean
-                                  description: If multiple is true, replace all occurrences, otherwise exactly one occurrence - it would be an error if there is no occurrence or several occurrences. Default is false. Use true with care and only if there is a good reason to do so.
                                 pattern:
                                   type: string
                                   description: java Pattern to be replaced
@@ -67,6 +64,10 @@ public class ReplaceAction extends AbstractPluginAction {
                         '500':
                           description: Server error
                 """.stripIndent();
+        // Take out multiple for now, as it has been used wrongly several times
+        //                                 multiple:
+        //                                  type: boolean
+        //                                  description: If multiple is true, replace all occurrences, otherwise exactly one occurrence - it would be an error if there is no occurrence or several occurrences. Default is false. Use true with care and only if there is a good reason to do so.
     }
 
     @Override
@@ -116,7 +117,7 @@ public class ReplaceAction extends AbstractPluginAction {
                 if (replacementCount == 0) {
                     throw sendError(exchange, 400, "Found no occurrences of pattern.");
                 } else {
-                    throw sendError(exchange, 400, "Found " + replacementCount + " occurrences, but expected exactly one because parameter multiple = false.");
+                    throw sendError(exchange, 400, "Found " + replacementCount + " occurrences, but expected exactly one. Please make the pattern more specific so that it matches only one occurrence.");
                 }
             }
 
