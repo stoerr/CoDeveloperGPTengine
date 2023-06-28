@@ -1,7 +1,7 @@
 package net.stoerr.chatgpt.devtoolbench;
 
-import static net.stoerr.chatgpt.devtoolbench.DevToolbench.log;
-import static net.stoerr.chatgpt.devtoolbench.DevToolbench.logStacktrace;
+import static net.stoerr.chatgpt.devtoolbench.DevToolBench.log;
+import static net.stoerr.chatgpt.devtoolbench.DevToolBench.logStacktrace;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,7 +68,7 @@ public class ExecuteAction extends AbstractPluginAction {
         try {
             String content = getBodyParameter(exchange, json, "actionInput", false);
             String actionName = getMandatoryQueryParam(exchange, "actionName");
-            Path path = DevToolbench.currentDir.resolve(".cgptdevbench/" + actionName + ".sh");
+            Path path = DevToolBench.currentDir.resolve(".cgptdevbench/" + actionName + ".sh");
 
             if (!Files.exists(path)) {
                 throw sendError(exchange, 400, "Action " + actionName + " not found");
@@ -100,7 +100,7 @@ public class ExecuteAction extends AbstractPluginAction {
             }
             int exitCode = process.exitValue();
             log("Process finished with exit code " + exitCode + ": " + abbreviate(output, 200));
-            output = output.replaceAll(Pattern.quote(DevToolbench.currentDir + "/"), "");
+            output = output.replaceAll(Pattern.quote(DevToolBench.currentDir + "/"), "");
 
             if (exitCode == 0) {
                 exchange.setStatusCode(200);

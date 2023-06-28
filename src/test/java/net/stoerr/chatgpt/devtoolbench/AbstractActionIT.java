@@ -33,16 +33,16 @@ public abstract class AbstractActionIT {
     @BeforeClass
     public static void setUp() throws InterruptedException, IOException {
         Files.createDirectories(Paths.get("target/test-actual"));
-        DevToolbench.currentDir = Paths.get(".").resolve("src/test/resources/testdir").normalize()
+        DevToolBench.currentDir = Paths.get(".").resolve("src/test/resources/testdir").normalize()
                 .toAbsolutePath();
-        DevToolbench.main(new String[]{String.valueOf(port)});
+        DevToolBench.main(new String[]{String.valueOf(port)});
         Thread.sleep(20);
     }
 
     @AfterClass
     public static void tearDown() throws InterruptedException {
         Thread.sleep(10);
-        DevToolbench.stop();
+        DevToolBench.stop();
         Thread.sleep(20);
     }
 

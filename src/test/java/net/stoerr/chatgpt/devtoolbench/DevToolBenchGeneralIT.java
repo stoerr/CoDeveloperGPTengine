@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
-public class DevToolbenchGeneralIT extends AbstractActionIT {
+public class DevToolBenchGeneralIT extends AbstractActionIT {
 
     @Test
     public void testRoot() throws IOException {
@@ -24,7 +24,7 @@ public class DevToolbenchGeneralIT extends AbstractActionIT {
     }
 
     @Test
-    public void testDevToolbenchYaml() throws IOException {
+    public void testDevToolBenchYaml() throws IOException {
         checkResponse("/devtoolbench.yaml", "GET", null, 200, "devtoolbench.yaml");
         // read target/test-actual/devtoolbench.yaml and compare to src/test/resources/test-expected/devtoolbench.yaml
         // and overwrite that file if it is different

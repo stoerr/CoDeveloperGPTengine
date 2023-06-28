@@ -1,9 +1,9 @@
 {
   "schema_version": "v1",
-  "name_for_human": "Developers Toolbench",
-  "name_for_model": "Devtoolbench",
+  "name_for_human": "Developers Tool Bench",
+  "name_for_model": "DevToolBench",
   "description_for_human": "Manage current directory and its files.",
-  "description_for_model": "Devtoolbench allows to inspect a directory and read/write/modify the contents of files using ChatGPT. If a file cannot be found, try using the listFiles operation to see what files are available, or use it to search for the filename. Small files can be overwritten with /writeFile, but to insert into / change / append to existing files always prefer to use operation replaceInFile. (By the way, if you receive an `ApiSyntaxError: Could not parse API call kwargs as JSON: exception=Unterminated string ...` then that usually means that the request was too long. If that happens in a writeFile operation you could use replaceInFile instead to add / change file parts.)",
+  "description_for_model": "Developers Tool Bench allows to inspect a directory and read/write/modify the contents of files using ChatGPT. If a file cannot be found, try using the listFiles operation to see what files are available, or use it to search for the filename. Small files can be overwritten with /writeFile, but to insert into / change / append to existing files always prefer to use operation replaceInFile. (By the way, if you receive an `ApiSyntaxError: Could not parse API call kwargs as JSON: exception=Unterminated string ...` then that usually means that the request was too long. If that happens in a writeFile operation you could use replaceInFile instead to add / change file parts.)",
   "auth": {
     "type": "none"
   },

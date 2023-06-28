@@ -1,4 +1,4 @@
-# Developers ChatGPT Toolbench
+# Developers ChatGPT ToolBench
 
 This is a [https://chat.openai.com](ChatGPT) plugin for developers that allows reading / searching / writing files
 in the local directory it is started in, and to execute configured actions, e.g. a build and test run.
@@ -7,11 +7,11 @@ This is currently in development, but is already useable. (In fact I use it on i
 
 ## Purpose
 
-The `Developers ChatGPT Toolbench` is a Java application designed to provide a plugin for ChatGPT that allows the AI to 
+The `Developers ChatGPT ToolBench` is a Java application designed to provide a plugin for ChatGPT that allows the AI to 
 access, read, and write files in the directory where the plugin is started. The plugin is implemented as an 
 executable jar. If you check out and compile this Git repository, you can also use the script 
-[bin/developersToolbenchPlugin](bin/developersToolbenchPlugin) after building it with 
-[bin/developersToolbenchPlugin-buildStable](bin/developersToolbenchPlugin-buildStable).
+[bin/developersToolBenchPlugin](bin/developersToolBenchPlugin) after building it with 
+[bin/developersToolBenchPlugin-buildStable](bin/developersToolBenchPlugin-buildStable).
 
 The plugin provides several operations, including:
 
@@ -30,12 +30,12 @@ It's useable; I'll be likely making extensions to it since I'm using it quite of
 
 ## Usage
 
-To use the `Developers ChatGPT Toolbench`, you need to have registered as a plugin developer with ChatGPT. 
-Once you've done that, you can add the `Developers ChatGPT Toolbench` using the 
+To use the `Developers ChatGPT ToolBench`, you need to have registered as a plugin developer with ChatGPT. 
+Once you've done that, you can add the `Developers ChatGPT ToolBench` using the 
 "Develop your own plugin" option in the ChatGPT web interface with URL "localhost:3002". (You could also specify 
 another port on the command line when starting it, if you like.)
 
-To start the plugin, navigate to the directory you want to access and run the `developersToolbenchPlugin` class. 
+To start the plugin, navigate to the directory you want to access and run the `developersToolBenchPlugin` class. 
 The plugin will start a server on port 3002 (by default) and will be ready to accept requests from ChatGPT.
 
 The plugin is written so that it cannot be used to go outside of the directory ("../somefile" won't work) and also
@@ -50,7 +50,7 @@ If there is a file named .cgptdevbench/.requestlog.txt the requests are logged i
 
 ## Examples
 
-Here are some examples of how to use the `Developers ChatGPT Toolbench`:
+Here are some examples of how to use the `Developers ChatGPT ToolBench`:
 
 - **List Files**: To list the files in the current directory, you can use the `listFiles` operation. In ChatGPT, you
   would ask the AI to list the files in the directory, and it would send a request to the plugin to perform this
@@ -73,18 +73,18 @@ Here are some examples of how to use the `Developers ChatGPT Toolbench`:
   [src/test/resources/testdir/.cgptdevbench](src/test/resources/testdir/.cgptdevbench) .
   
 
-Remember, the `Developers ChatGPT Toolbench` operates on the directory where it was started, 
+Remember, the `Developers ChatGPT ToolBench` operates on the directory where it was started, 
 so be careful to start it in a  directory that contains the files you want to access.
 
 ## Configuring FileManagerPlugin for use in ChatGPT
 
-To use the `Developers ChatGPT Toolbench` with ChatGPT, you need to register it as a plugin in the ChatGPT interface. 
+To use the `Developers ChatGPT ToolBench` with ChatGPT, you need to register it as a plugin in the ChatGPT interface. 
 Here's a step-by-step guide on how to do this:
 
 1. **Register as a Plugin Developer**: If you haven't already, register as a plugin developer with ChatGPT. This will
    give you access to the plugin developer interface where you can add your own plugins.
 
-2. **Start the Plugin**: Navigate to the directory you want to access and run the `Developers ChatGPT Toolbench` 
+2. **Start the Plugin**: Navigate to the directory you want to access and run the `Developers ChatGPT ToolBench` 
    program. This will start a server on port 3002 (by default).
 
 3. **Add the Plugin**: In the ChatGPT interface, navigate to the plugin developer section and select "Develop your own
