@@ -12,9 +12,15 @@ import org.junit.Test;
 public class DevToolbenchGeneralIT extends AbstractActionIT {
 
     @Test
-    public void testGeneralOperations() throws IOException {
-        checkResponse("/.well-known/ai-plugin.json", "GET", null, 200, "ai-plugin.json");
+    public void testRoot() throws IOException {
         checkResponse("/", "GET", null, 200, "index.html");
+    }
+
+    @Test
+    public void testAiPluginJson() throws IOException {
+        String response = checkResponse("/.well-known/ai-plugin.json", "GET", null, 200, null);
+        String expected = readFile("/../../../src/main/resources/ai-plugin.json").replace("THEPORT", "" + port);
+        collector.checkThat(response, CoreMatchers.is(expected));
     }
 
     @Test
