@@ -27,7 +27,7 @@ import io.undertow.util.Headers;
 import io.undertow.util.HttpString;
 import io.undertow.util.Methods;
 
-public class DevToolbench {
+public class DevToolBench {
 
     static Path currentDir = Paths.get(".").normalize().toAbsolutePath();
 
@@ -46,7 +46,7 @@ public class DevToolbench {
     private static final String OPENAPI_DESCR_START = """
             openapi: 3.0.1
             info:
-              title: Developers Toolbench ChatGPT Plugin
+              title: Developers ToolBench ChatGPT Plugin
               version: 1.0.0
             servers:
               - url: http://localhost:THEPORT
@@ -68,7 +68,7 @@ public class DevToolbench {
         addHandler(new ReplaceAction());
 
         STATICFILES.put("/.well-known/ai-plugin.json", () -> {
-            try (InputStream in = DevToolbench.class.getResourceAsStream("/ai-plugin.json")) {
+            try (InputStream in = DevToolBench.class.getResourceAsStream("/ai-plugin.json")) {
                 return new String(in.readAllBytes(), StandardCharsets.UTF_8).replace("THEPORT", String.valueOf(port));
             } catch (IOException e) {
                 throw new UncheckedIOException(e);
@@ -80,7 +80,7 @@ public class DevToolbench {
                     .forEach(handler -> pathDescriptions.append(handler.openApiDescription()));
             return OPENAPI_DESCR_START.replace("THEPORT", String.valueOf(port)) + pathDescriptions;
         });
-        STATICFILES.put("/", () -> "<html><body><h1>Developers Toolbench ChatGPT Plugin</h1><p>See <a href=\"/.well-known/ai-plugin.json\">/.well-known/ai-plugin.json</a> for the plugin description.</p></body></html>\n");
+        STATICFILES.put("/", () -> "<html><body><h1>Developers ToolBench ChatGPT Plugin</h1><p>See <a href=\"/.well-known/ai-plugin.json\">/.well-known/ai-plugin.json</a> for the plugin description.</p></body></html>\n");
     }
 
     public static void main(String[] args) {
@@ -88,7 +88,7 @@ public class DevToolbench {
         port = args.length > 0 ? Integer.parseInt(args[0]) : 3002;
         server = Undertow.builder()
                 .addHttpListener(port, "localhost")
-                .setHandler(DevToolbench::handleRequest)
+                .setHandler(DevToolBench::handleRequest)
                 .setIoThreads(10)
                 .setWorkerThreads(10)
                 .build();
@@ -112,7 +112,7 @@ public class DevToolbench {
             } else if (STATICFILES.containsKey(path)) {
                 handleStaticFile(exchange, path);
             } else if (path.equals("/icon.png")) {
-                byte[] bytes = DevToolbench.class.getResourceAsStream("/icon.png").readAllBytes();
+                byte[] bytes = DevToolBench.class.getResourceAsStream("/icon.png").readAllBytes();
                 exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "image/png");
                 exchange.setStatusCode(200);
                 exchange.setResponseContentLength(bytes.length);
@@ -208,10 +208,10 @@ public class DevToolbench {
     private static void logVersion() {
         Properties properties = new Properties();
         try {
-            InputStream gitPropertiesStream = DevToolbench.class.getResourceAsStream("/git.properties");
+            InputStream gitPropertiesStream = DevToolBench.class.getResourceAsStream("/git.properties");
             if (gitPropertiesStream != null) {
                 properties.load(gitPropertiesStream);
-                String versionInfo = "DevToolbench version: " + properties.getProperty("git.build.version") +
+                String versionInfo = "DevToolBench version: " + properties.getProperty("git.build.version") +
                         properties.getProperty("git.commit.id.describe") + " from " + properties.getProperty("git.build.time");
                 logBody("\n\nversion: ", versionInfo);
             }

@@ -1,7 +1,7 @@
 package net.stoerr.chatgpt.devtoolbench;
 
-import static net.stoerr.chatgpt.devtoolbench.DevToolbench.log;
-import static net.stoerr.chatgpt.devtoolbench.DevToolbench.logBody;
+import static net.stoerr.chatgpt.devtoolbench.DevToolBench.log;
+import static net.stoerr.chatgpt.devtoolbench.DevToolBench.logBody;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -46,7 +46,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
             Files.walkFileTree(path, new SimpleFileVisitor<>() {
                 @Override
                 public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                    if (DevToolbench.IGNORE.matcher(dir.toString()).matches()) {
+                    if (DevToolBench.IGNORE.matcher(dir.toString()).matches()) {
                         return FileVisitResult.SKIP_SUBTREE;
                     }
                     return super.preVisitDirectory(dir, attrs);
@@ -65,7 +65,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
 
         return result.stream()
                 .filter(Files::isRegularFile)
-                .filter(p -> !DevToolbench.IGNORE.matcher(p.toString()).matches())
+                .filter(p -> !DevToolBench.IGNORE.matcher(p.toString()).matches())
                 .filter(p -> filePathPattern == null || filePathPattern.matcher(p.toString()).find())
                 .filter(p -> {
                     if (grepPattern == null) {
@@ -107,11 +107,11 @@ public abstract class AbstractPluginAction implements HttpHandler {
 
     protected Path getPath(HttpServerExchange exchange) {
         String path = getMandatoryQueryParam(exchange, "path");
-        if (DevToolbench.IGNORE.matcher(path).matches()) {
-            throw sendError(exchange, 400, "Access to path " + path + " is not allowed! (matches " + DevToolbench.IGNORE.pattern() + ")");
+        if (DevToolBench.IGNORE.matcher(path).matches()) {
+            throw sendError(exchange, 400, "Access to path " + path + " is not allowed! (matches " + DevToolBench.IGNORE.pattern() + ")");
         }
-        Path resolved = DevToolbench.currentDir.resolve(path).normalize().toAbsolutePath();
-        if (!resolved.startsWith(DevToolbench.currentDir)) {
+        Path resolved = DevToolBench.currentDir.resolve(path).normalize().toAbsolutePath();
+        if (!resolved.startsWith(DevToolBench.currentDir)) {
             throw sendError(exchange, 400, "Path " + path + " is outside of current directory!");
         }
         return resolved;
@@ -144,7 +144,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
     }
 
     protected String mappedFilename(Path path) {
-        return DevToolbench.currentDir.relativize(path).toString();
+        return DevToolBench.currentDir.relativize(path).toString();
     }
 
     protected String abbreviate(String s, int max) {

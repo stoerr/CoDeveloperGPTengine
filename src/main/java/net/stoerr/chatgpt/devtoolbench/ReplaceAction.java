@@ -92,7 +92,7 @@ public class ReplaceAction extends AbstractPluginAction {
             throw sendError(exchange, 400, "don't use replacementWithGroupReferences if there are no group references.");
         }
 
-        Path filePath = DevToolbench.currentDir.resolve(path);
+        Path filePath = DevToolBench.currentDir.resolve(path);
         try {
             String content = Files.readString(filePath, UTF_8);
             Matcher m = Pattern.compile(pattern).matcher(content);
@@ -129,7 +129,7 @@ public class ReplaceAction extends AbstractPluginAction {
             exchange.getResponseSender().send("Replaced " + replacementCount + " occurrences of pattern; modified lines "
                     + String.join(", ", modifiedLineDescr));
         } catch (NoSuchFileException e) {
-            throw sendError(exchange, 404, "File not found: " + DevToolbench.currentDir.relativize(filePath));
+            throw sendError(exchange, 404, "File not found: " + DevToolBench.currentDir.relativize(filePath));
         } catch (IOException e) {
             throw sendError(exchange, 500, "Error reading or writing file : " + e);
         }
