@@ -43,4 +43,40 @@ public class ReplaceActionIT extends AbstractActionIT {
                 "{\"pattern\":\"duck\",\"literalReplacement\":\"goose\"}", 404, "notfound.txt");
     }
 
+
+    @Test
+    public void testBothReplacementsGiven() throws Exception {
+        checkResponse("/replaceInFile?path=secondfile.md", "POST",
+                "{\"pattern\":\"duck\",\"literalReplacement\":\"goose\",\"replacementWithGroupReferences\":\"goose\",\"multiple\":true}"
+                , 400, "replace-both-replacements-given.txt");
+    }
+
+    @Test
+    public void testNoReplacementsGiven() throws Exception {
+        checkResponse("/replaceInFile?path=secondfile.md", "POST",
+                "{\"pattern\":\"duck\",\"multiple\":true}"
+                , 400, "replace-no-replacements-given.txt");
+    }
+
+    @Test
+    public void testReplacementWithGroupReferencesNoGroup() throws Exception {
+        checkResponse("/replaceInFile?path=secondfile.md", "POST",
+                "{\"pattern\":\"duck\",\"replacementWithGroupReferences\":\"goose\",\"multiple\":true}"
+                , 400, "replace-replacement-with-group-references-no-group.txt");
+    }
+
+    @Test
+    public void testReplacementWithGroupReferencesSuccessful() throws Exception {
+        try {
+            String content = Files.readString(Paths.get("src/test/resources/testdir/secondfile.md"), UTF_8);
+            Files.writeString(Paths.get("src/test/resources/testdir/replace.txt"), content, UTF_8);
+            checkResponse("/replaceInFile?path=replace.txt", "POST",
+                    "{\"pattern\":\"duck\",\"replacementWithGroupReferences\":\"goose\",\"multiple\":true}"
+                    , 200, "replace-successfulmulti.txt");
+            checkResponse("/readFile?path=replace.txt", "GET", null, 200, "replace-successfulmulti-replaced.txt");
+        } finally {
+            Files.deleteIfExists(Paths.get("src/test/resources/testdir/replace.txt"));
+        }
+    }
+
 }

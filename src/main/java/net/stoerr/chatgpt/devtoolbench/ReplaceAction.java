@@ -81,7 +81,7 @@ public class ReplaceAction extends AbstractPluginAction {
         String replacementWithGroupReferences = getBodyParameter(exchange, json, "replacementWithGroupReferences", false);
         boolean multiple = getBodyParameter(exchange, json, "multiple", false).equalsIgnoreCase("true");
 
-        if (!isNotEmpty(literalReplacement) && isNotEmpty(replacementWithGroupReferences)) {
+        if (!isNotEmpty(literalReplacement) && !isNotEmpty(replacementWithGroupReferences)) {
             throw sendError(exchange, 400, "Either literalReplacement or replacementWithGroupReferences must be given.");
         }
         if (isNotEmpty(literalReplacement) && isNotEmpty(replacementWithGroupReferences)) {
