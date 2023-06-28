@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import com.google.common.collect.Range;
 
@@ -52,12 +51,17 @@ public class ReplaceAction extends AbstractPluginAction {
                                 pattern:
                                   type: string
                                   description: java Pattern to be replaced
-                                replacement:
+                                literalReplacement:
                                   type: string
-                                  description: will replace the regex; can contain group references as in Java Matcher.appendReplacement
+                                  description: will replace the regex literally, as in java.util.regex.Pattern.compile(pattern).matcher(fileContent).replaceAll(java.util.regex.Matcher.quoteReplacement(literalReplacement)) . Alternative to replacementWithGroupReferences.
+                                replacementWithGroupReferences:
+                                  type: string
+                                  description: will replace the regex as in java.util.regex.Pattern.compile(pattern).matcher(fileContent).replaceAll(replacement) . Caution - you have to observe the escaping rules for replacement by java.util.regex.Matcher for backslashes and dollar signs, so use the alternative literalReplacement if there aren't any group references.
                               required:
                                 - pattern
                                 - replacement
+                                - literalReplacement
+                                - replacementWithGroupReferences
                       responses:
                         '200':
                           description: File updated successfully
@@ -76,13 +80,18 @@ public class ReplaceAction extends AbstractPluginAction {
     private void handleBody(HttpServerExchange exchange, String json) {
         String path = exchange.getQueryParameters().get("path").getFirst();
         String pattern = getBodyParameter(exchange, json, "pattern", true);
-        String replacement = getBodyParameter(exchange, json, "replacement", true);
+        String literalReplacement = getBodyParameter(exchange, json, "literalReplacement", false);
+        String replacementWithGroupReferences = getBodyParameter(exchange, json, "replacementWithGroupReferences", false);
         boolean multiple = getBodyParameter(exchange, json, "multiple", false).equalsIgnoreCase("true");
 
-        if (pattern == null || pattern.isEmpty() || replacement == null) {
-            exchange.setStatusCode(400);
-            exchange.getResponseSender().send("searchString and replacement parameters are required");
-            return;
+        if (!isNotEmpty(literalReplacement) && isNotEmpty(replacementWithGroupReferences)) {
+            throw sendError(exchange, 400, "Either literalReplacement or replacementWithGroupReferences must be given.");
+        }
+        if (isNotEmpty(literalReplacement) && isNotEmpty(replacementWithGroupReferences)) {
+            throw sendError(exchange, 400, "Either literalReplacement or replacementWithGroupReferences must be given, but not both.");
+        }
+        if (isNotEmpty(replacementWithGroupReferences) && !replacementWithGroupReferences.contains("$")) {
+            throw sendError(exchange, 400, "don't use replacementWithGroupReferences if there are no group references.");
         }
 
         Path filePath = DevToolbench.currentDir.resolve(path);
@@ -92,12 +101,16 @@ public class ReplaceAction extends AbstractPluginAction {
             List<Range<Long>> modifiedLineNumbers = new ArrayList<>();
             int replacementCount = 0;
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             while (m.find()) {
                 long startLine = lineNumberAfter(content.substring(0, m.start()));
                 long endLine = lineNumberAfter(content.substring(0, m.end()));
                 modifiedLineNumbers.add(Range.closed(startLine, endLine));
-                m.appendReplacement(sb, replacement);
+                if (isNotEmpty(literalReplacement)) {
+                    m.appendReplacement(sb, Matcher.quoteReplacement(literalReplacement));
+                } else {
+                    m.appendReplacement(sb, replacementWithGroupReferences);
+                }
                 replacementCount++;
             }
             m.appendTail(sb);
@@ -116,7 +129,7 @@ public class ReplaceAction extends AbstractPluginAction {
             exchange.setStatusCode(200);
             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
             exchange.getResponseSender().send("Replaced " + replacementCount + " occurrences of pattern; modified lines "
-                    + modifiedLineDescr.stream().collect(Collectors.joining(", ")));
+                    + String.join(", ", modifiedLineDescr));
         } catch (NoSuchFileException e) {
             throw sendError(exchange, 404, "File not found: " + DevToolbench.currentDir.relativize(filePath));
         } catch (IOException e) {

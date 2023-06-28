@@ -10,12 +10,12 @@ import org.junit.Test;
 public class ReplaceActionIT extends AbstractActionIT {
 
     @Test
-    public void testReplaceOperation() throws Exception {
+    public void testLiteralReplaceOperation() throws Exception {
         try {
             String content = Files.readString(Paths.get("src/test/resources/testdir/secondfile.md"), UTF_8);
             Files.writeString(Paths.get("src/test/resources/testdir/replace.txt"), content, UTF_8);
             checkResponse("/replaceInFile?path=replace.txt", "POST",
-                    "{\"pattern\":\"duck\",\"replacement\":\"goose\",\"multiple\":true}"
+                    "{\"pattern\":\"duck\",\"literalReplacement\":\"goose\",\"multiple\":true}"
                     , 200, "replace-successfulmulti.txt");
             checkResponse("/readFile?path=replace.txt", "GET", null, 200, "replace-successfulmulti-replaced.txt");
         } finally {
@@ -26,21 +26,21 @@ public class ReplaceActionIT extends AbstractActionIT {
     @Test
     public void testComplainAboutMultiplesSinceNoMatch() throws Exception {
         checkResponse("/replaceInFile?path=secondfile.md", "POST",
-                "{\"pattern\":\"neverthereinthefile\",\"replacement\":\"goose\"}"
+                "{\"pattern\":\"neverthereinthefile\",\"literalReplacement\":\"goose\"}"
                 , 400, "replace-multiplenotrequested1.txt");
     }
 
     @Test
     public void testComplainAboutMultiplesSinceManyMatches() throws Exception {
         checkResponse("/replaceInFile?path=secondfile.md", "POST",
-                "{\"pattern\":\"duck\",\"replacement\":\"goose\"}"
+                "{\"pattern\":\"duck\",\"literalReplacement\":\"goose\"}"
                 , 400, "replace-multiplenotrequested2.txt");
     }
 
     @Test
-    public void testReplaceOperationFileNotFound() throws Exception {
+    public void testLiteralReplaceOperationFileNotFound() throws Exception {
         checkResponse("/replaceInFile?path=notfound.txt", "POST",
-                "{\"pattern\":\"duck\",\"replacement\":\"goose\"}", 404, "notfound.txt");
+                "{\"pattern\":\"duck\",\"literalReplacement\":\"goose\"}", 404, "notfound.txt");
     }
 
 }

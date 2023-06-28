@@ -152,12 +152,17 @@ paths:
                 pattern:
                   type: string
                   description: java Pattern to be replaced
-                replacement:
+                literalReplacement:
                   type: string
-                  description: will replace the regex; can contain group references as in Java Matcher.appendReplacement
+                  description: will replace the regex literally, as in java.util.regex.Pattern.compile(pattern).matcher(fileContent).replaceAll(java.util.regex.Matcher.quoteReplacement(literalReplacement)) . Alternative to replacementWithGroupReferences.
+                replacementWithGroupReferences:
+                  type: string
+                  description: will replace the regex as in java.util.regex.Pattern.compile(pattern).matcher(fileContent).replaceAll(replacement) . Caution - you have to observe the escaping rules for replacement by java.util.regex.Matcher for backslashes and dollar signs, so use the alternative literalReplacement if there aren't any group references.
               required:
                 - pattern
                 - replacement
+                - literalReplacement
+                - replacementWithGroupReferences
       responses:
         '200':
           description: File updated successfully
