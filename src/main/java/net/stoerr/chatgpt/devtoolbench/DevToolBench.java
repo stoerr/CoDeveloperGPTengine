@@ -7,16 +7,11 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
@@ -30,8 +25,6 @@ import io.undertow.util.Methods;
 public class DevToolBench {
 
     static Path currentDir = Paths.get(".").normalize().toAbsolutePath();
-
-    static final Path requestLog = currentDir.resolve(".cgptdevbench/.requestlog.txt");
 
     private static final Map<String, Supplier<String>> STATICFILES = new HashMap<>();
     private static final Map<String, AbstractPluginAction> HANDLERS = new HashMap<>();
@@ -47,7 +40,7 @@ public class DevToolBench {
             openapi: 3.0.1
             info:
               title: Developers ToolBench ChatGPT Plugin
-              version: 1.0.0
+              version: THEVERSION
             servers:
               - url: http://localhost:THEPORT
             paths:
@@ -69,7 +62,9 @@ public class DevToolBench {
 
         STATICFILES.put("/.well-known/ai-plugin.json", () -> {
             try (InputStream in = DevToolBench.class.getResourceAsStream("/ai-plugin.json")) {
-                return new String(in.readAllBytes(), StandardCharsets.UTF_8).replace("THEPORT", String.valueOf(port));
+                return new String(in.readAllBytes(), StandardCharsets.UTF_8)
+                        .replace("THEPORT", String.valueOf(port))
+                        .replace("THEVERSION", TbUtils.getVersionString());
             } catch (IOException e) {
                 throw new UncheckedIOException(e);
             }
@@ -84,7 +79,7 @@ public class DevToolBench {
     }
 
     public static void main(String[] args) {
-        logVersion();
+        TbUtils.logVersion();
         port = args.length > 0 ? Integer.parseInt(args[0]) : 3002;
         server = Undertow.builder()
                 .addHttpListener(port, "localhost")
@@ -93,7 +88,7 @@ public class DevToolBench {
                 .setWorkerThreads(10)
                 .build();
         server.start();
-        log("Started on http://localhost:" + port);
+        TbUtils.log("Started on http://localhost:" + port);
     }
 
     public static void stop() {
@@ -102,9 +97,9 @@ public class DevToolBench {
 
     private static void handleRequest(HttpServerExchange exchange) {
         try {
-            log(exchange.getRequestMethod() + " " + exchange.getRequestURI() +
+            TbUtils.log(exchange.getRequestMethod() + " " + exchange.getRequestURI() +
                     (exchange.getQueryString() != null && !exchange.getQueryString().isEmpty() ? "?" + exchange.getQueryString() : ""));
-            logRequest(exchange);
+            TbUtils.logRequest(exchange);
             String path = exchange.getRequestPath();
             exchange.getResponseHeaders().put(HttpString.tryFromString("Access-Control-Allow-Origin"), "https://chat.openai.com");
             if (exchange.getRequestMethod().equals(Methods.OPTIONS)) {
@@ -121,16 +116,16 @@ public class DevToolBench {
                 HttpHandler handler = HANDLERS.get(path);
                 if (handler != null) {
                     handler.handleRequest(exchange);
-                    log("Response: " + exchange.getStatusCode() + " " + exchange.getResponseHeaders());
+                    TbUtils.log("Response: " + exchange.getStatusCode() + " " + exchange.getResponseHeaders());
                 } else {
                     throw sendError(exchange, 404, "Unknown request");
                 }
             }
         } catch (ExecutionAbortedException e) {
-            log("Aborted and problem reported to ChatGPT : " + e.getMessage());
+            TbUtils.log("Aborted and problem reported to ChatGPT : " + e.getMessage());
         } catch (Exception e) {
-            logError("Bug! Abort handling request " + exchange.getRequestURL());
-            logStacktrace(e);
+            TbUtils.logError("Bug! Abort handling request " + exchange.getRequestURL());
+            TbUtils.logStacktrace(e);
         } finally {
             exchange.endExchange();
         }
@@ -159,64 +154,6 @@ public class DevToolBench {
             exchange.getResponseSender().send(content);
         } else {
             throw sendError(exchange, 404, "File not found");
-        }
-    }
-
-    /**
-     * If there is a file named .cgptdevbench/.requestlog.txt, we append the request data to it.
-     */
-    protected static void logRequest(HttpServerExchange exchange) {
-        if (Files.exists(requestLog)) {
-            try {
-                String isoDate = DateTimeFormatter.ISO_INSTANT.format(Instant.now());
-                Files.writeString(requestLog, isoDate + " ##### "
-                        + exchange.getRequestMethod() + " " + exchange.getRequestURI()
-                        + (exchange.getQueryString() != null && !exchange.getQueryString().isEmpty() ? "?" + exchange.getQueryString() : "")
-                        + "\n", StandardOpenOption.APPEND);
-            } catch (IOException e) { // not critical but strange - we'd want to know.
-                logError("Could not write to request log " + requestLog + ": " + e.getMessage());
-            }
-        }
-    }
-
-    protected static void logBody(String parameterName, String parameterValue) {
-        if (Files.exists(requestLog)) {
-            if (parameterValue.length() > 400) {
-                parameterValue = parameterValue.substring(0, 200) + "\n... (part omitted)\n" + parameterValue.substring(parameterValue.length() - 200);
-            }
-            try {
-                Files.writeString(requestLog, parameterName + ": " + parameterValue + "\n\n", StandardOpenOption.APPEND);
-                log(parameterName + ": " + parameterValue + "\n");
-            } catch (IOException e) { // not critical but strange - we'd want to know.
-                logError("Could not write to request log " + requestLog + ": " + e.getMessage());
-            }
-        }
-    }
-
-    static void logStacktrace(Exception e) {
-        e.printStackTrace(System.err);
-    }
-
-    static void logError(String msg) {
-        System.err.println(msg);
-    }
-
-    static void log(String msg) {
-        System.out.println(msg);
-    }
-
-    private static void logVersion() {
-        Properties properties = new Properties();
-        try {
-            InputStream gitPropertiesStream = DevToolBench.class.getResourceAsStream("/git.properties");
-            if (gitPropertiesStream != null) {
-                properties.load(gitPropertiesStream);
-                String versionInfo = "DevToolBench version: " + properties.getProperty("git.build.version") +
-                        properties.getProperty("git.commit.id.describe") + " from " + properties.getProperty("git.build.time");
-                logBody("\n\nversion: ", versionInfo);
-            }
-        } catch (IOException e) {
-            logError("Version: unknown");
         }
     }
 
