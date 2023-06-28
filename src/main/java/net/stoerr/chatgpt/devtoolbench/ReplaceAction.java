@@ -47,7 +47,7 @@ public class ReplaceAction extends AbstractPluginAction {
                               properties:
                                 pattern:
                                   type: string
-                                  description: java Pattern to be replaced
+                                  description: "java Pattern to be replaced. Examples: \\\\z is end of file, (?s) makes dots match newlines, too." 
                                 literalReplacement:
                                   type: string
                                   description: will replace the regex literally, as in java.util.regex.Pattern.compile(pattern).matcher(fileContent).replaceAll(java.util.regex.Matcher.quoteReplacement(literalReplacement)) . Alternative to replacementWithGroupReferences.
