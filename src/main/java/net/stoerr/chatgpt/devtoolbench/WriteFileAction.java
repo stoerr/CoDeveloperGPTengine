@@ -5,8 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
-import com.google.gson.Gson;
-
 import io.undertow.server.HttpServerExchange;
 
 /**
@@ -14,8 +12,6 @@ import io.undertow.server.HttpServerExchange;
  */
 // curl -is http://localhost:3001/writeFile?path=testfile -d '{"content":"testcontent line one\nline two\n"}'
 public class WriteFileAction extends AbstractPluginAction {
-
-    private final Gson gson = new Gson();
 
     @Override
     public String getUrl() {

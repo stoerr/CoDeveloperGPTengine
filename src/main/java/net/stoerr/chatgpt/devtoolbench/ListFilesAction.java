@@ -57,7 +57,7 @@ public class ListFilesAction extends AbstractPluginAction {
     }
 
     @Override
-    public void handleRequest(HttpServerExchange exchange) throws Exception {
+    public void handleRequest(HttpServerExchange exchange) {
         Path path = getPath(exchange);
         String filePathRegex = getQueryParam(exchange, "filePathRegex");
         String grepRegex = getQueryParam(exchange, "grepRegex");

@@ -30,7 +30,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
 
     /**
      * Logs an error and sends it to ChatGPT, always throws {@link ExecutionAbortedException}.
-     * Use with pattern {@code thow sendError(...)} to let compiler know that.
+     * Use with pattern {@code throw sendError(...)} to let compiler know that.
      */
     protected static ExecutionAbortedException sendError(HttpServerExchange exchange, int statusCode, String error) throws ExecutionAbortedException {
         log("Error " + statusCode + ": " + error);
@@ -43,7 +43,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
     protected static Stream<Path> findMatchingFiles(HttpServerExchange exchange, Path path, Pattern filePathPattern, Pattern grepPattern) {
         List<Path> result = new ArrayList<>();
         try {
-            Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
+            Files.walkFileTree(path, new SimpleFileVisitor<>() {
                 @Override
                 public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
                     if (DevToolbench.IGNORE.matcher(dir.toString()).matches()) {

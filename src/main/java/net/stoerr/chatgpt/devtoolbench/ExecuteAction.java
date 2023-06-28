@@ -100,7 +100,7 @@ public class ExecuteAction extends AbstractPluginAction {
             }
             int exitCode = process.exitValue();
             log("Process finished with exit code " + exitCode + ": " + abbreviate(output, 200));
-            output = output.replaceAll(Pattern.quote(DevToolbench.currentDir.toString() + "/"), "");
+            output = output.replaceAll(Pattern.quote(DevToolbench.currentDir + "/"), "");
 
             if (exitCode == 0) {
                 exchange.setStatusCode(200);
@@ -110,9 +110,10 @@ public class ExecuteAction extends AbstractPluginAction {
                 String response = "Execution failed with exit code " + exitCode + ": " + output;
                 throw sendError(exchange, 500, response);
             }
-        } catch (InterruptedException e) {
-            throw sendError(exchange, 500, "Error executing action: " + e);
         } catch (IOException e) {
+            throw sendError(exchange, 500, "Error executing action: " + e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw sendError(exchange, 500, "Error executing action: " + e);
         } finally {
             if (process != null) {
