@@ -93,6 +93,18 @@ public class DevToolBench {
     public static void main(String[] args) {
         TbUtils.logVersion();
 
+        parseOptions(args);
+        server = Undertow.builder()
+                .addHttpListener(port, "localhost")
+                .setHandler(DevToolBench::handleRequest)
+                .setIoThreads(10)
+                .setWorkerThreads(10)
+                .build();
+        server.start();
+        TbUtils.log("Started on http://localhost:" + port);
+    }
+
+    private static void parseOptions(String[] args) {
         Options options = new Options();
 
         options.addOption("p", "port", true, "Port number");
@@ -124,14 +136,6 @@ public class DevToolBench {
             System.out.println("Error parsing command line options: " + e.getMessage());
             System.exit(1);
         }
-        server = Undertow.builder()
-                .addHttpListener(port, "localhost")
-                .setHandler(DevToolBench::handleRequest)
-                .setIoThreads(10)
-                .setWorkerThreads(10)
-                .build();
-        server.start();
-        TbUtils.log("Started on http://localhost:" + port);
     }
 
     public static void stop() {
