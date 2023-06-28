@@ -38,7 +38,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
         throw new ExecutionAbortedException(error);
     }
 
-    protected static Stream<Path> findMatchingFiles(HttpServerExchange exchange, Path path, Pattern filenamePattern, Pattern grepPattern) {
+    protected static Stream<Path> findMatchingFiles(HttpServerExchange exchange, Path path, Pattern filePathPattern, Pattern grepPattern) {
         List<Path> result = new ArrayList<>();
         try {
             Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
@@ -64,7 +64,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
         return result.stream()
                 .filter(Files::isRegularFile)
                 .filter(p -> !DevToolbench.IGNORE.matcher(p.toString()).matches())
-                .filter(p -> filenamePattern == null || filenamePattern.matcher(p.getFileName().toString()).find())
+                .filter(p -> filePathPattern == null || filePathPattern.matcher(p.toString()).find())
                 .filter(p -> {
                     if (grepPattern == null) {
                         return true;

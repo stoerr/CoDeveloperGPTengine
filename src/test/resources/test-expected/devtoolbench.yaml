@@ -87,9 +87,9 @@ paths:
           required: true
           schema:
             type: string
-        - name: filenameRegex
+        - name: filePathRegex
           in: query
-          description: regex to filter file names
+          description: regex to filter file paths
           required: false
           schema:
             type: string

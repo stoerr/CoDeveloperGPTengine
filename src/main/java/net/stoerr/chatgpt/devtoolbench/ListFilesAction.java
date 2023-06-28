@@ -32,9 +32,9 @@ public class ListFilesAction extends AbstractPluginAction {
                           required: true
                           schema:
                             type: string
-                        - name: filenameRegex
+                        - name: filePathRegex
                           in: query
-                          description: regex to filter file names
+                          description: regex to filter file paths
                           required: false
                           schema:
                             type: string
@@ -59,13 +59,13 @@ public class ListFilesAction extends AbstractPluginAction {
     @Override
     public void handleRequest(HttpServerExchange exchange) throws Exception {
         Path path = getPath(exchange);
-        String filenameRegex = getQueryParam(exchange, "filenameRegex");
+        String filePathRegex = getQueryParam(exchange, "filePathRegex");
         String grepRegex = getQueryParam(exchange, "grepRegex");
-        Pattern filenamePattern;
+        Pattern filePathPattern;
         try {
-            filenamePattern = filenameRegex != null ? Pattern.compile(filenameRegex) : null;
+            filePathPattern = filePathRegex != null ? Pattern.compile(filePathRegex) : null;
         } catch (Exception e) {
-            throw sendError(exchange, 400, "Invalid filenameRegex: " + e);
+            throw sendError(exchange, 400, "Invalid filePathRegex: " + e);
         }
         Pattern grepPattern;
         try {
@@ -76,7 +76,7 @@ public class ListFilesAction extends AbstractPluginAction {
 
         if (Files.isDirectory(path)) {
             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
-            List<String> files = findMatchingFiles(exchange, path, filenamePattern, grepPattern)
+            List<String> files = findMatchingFiles(exchange, path, filePathPattern, grepPattern)
                     .map(this::mappedFilename)
                     .toList();
             if (files.isEmpty()) {
