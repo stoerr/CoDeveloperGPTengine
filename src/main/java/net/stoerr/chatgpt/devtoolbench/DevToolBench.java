@@ -34,6 +34,11 @@ public class DevToolBench {
      */
     public static final Pattern IGNORE = Pattern.compile(".*/[.].*|.*/target/.*|.*/(Hpsx|hpsx).*");
 
+    /**
+     * Exceptions overriding {@link #IGNORE}.
+     */
+    public static final Pattern OVERRIDE_IGNORE = Pattern.compile(".github/.*");
+
     private static int port;
 
     private static final String OPENAPI_DESCR_START = """
