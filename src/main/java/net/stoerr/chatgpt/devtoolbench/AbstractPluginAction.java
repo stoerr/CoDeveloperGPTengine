@@ -65,7 +65,8 @@ public abstract class AbstractPluginAction implements HttpHandler {
 
         return result.stream()
                 .filter(Files::isRegularFile)
-                .filter(p -> !DevToolBench.IGNORE.matcher(p.toString()).matches())
+                .filter(p -> !DevToolBench.IGNORE.matcher(p.toString()).matches()
+                        || DevToolBench.OVERRIDE_IGNORE.matcher(p.toString()).matches())
                 .filter(p -> filePathPattern == null || filePathPattern.matcher(p.toString()).find())
                 .filter(p -> {
                     if (grepPattern == null) {
@@ -107,7 +108,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
 
     protected Path getPath(HttpServerExchange exchange) {
         String path = getMandatoryQueryParam(exchange, "path");
-        if (DevToolBench.IGNORE.matcher(path).matches()) {
+        if (DevToolBench.IGNORE.matcher(path).matches() && !DevToolBench.OVERRIDE_IGNORE.matcher(path).matches()) {
             throw sendError(exchange, 400, "Access to path " + path + " is not allowed! (matches " + DevToolBench.IGNORE.pattern() + ")");
         }
         Path resolved = DevToolBench.currentDir.resolve(path).normalize().toAbsolutePath();
