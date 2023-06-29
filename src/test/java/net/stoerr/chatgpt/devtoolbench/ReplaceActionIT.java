@@ -1,6 +1,7 @@
 package net.stoerr.chatgpt.devtoolbench;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 
 import java.nio.file.Files;
@@ -51,7 +52,7 @@ public class ReplaceActionIT extends AbstractActionIT {
         String response = checkResponse("/replaceInFile?path=secondfile.md", "POST",
                 "{\"pattern\":\"neverthereinthefile\",\"literalReplacement\":\"goose\"}"
                 , 400, null);
-        collector.checkThat(response, is("Found no occurrences of pattern."));
+        collector.checkThat(response, containsString("Found no occurrences of pattern."));
     }
 
     @Test

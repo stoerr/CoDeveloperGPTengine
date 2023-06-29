@@ -51,14 +51,14 @@ public abstract class AbstractActionIT {
 
     @Before
     public void setUp() throws InterruptedException {
-        Thread.sleep(1000);
+        Thread.sleep(100);
         System.out.flush();
         System.err.flush();
     }
 
     @After
     public void tearDown() throws InterruptedException {
-        Thread.sleep(1000);
+        Thread.sleep(100);
         System.out.flush();
         System.err.flush();
     }

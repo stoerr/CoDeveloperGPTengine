@@ -122,9 +122,17 @@ public class ReplaceAction extends AbstractPluginAction {
                     throw sendError(exchange, 400, "Found no occurrences of pattern. " +
                             "Re-read the file - it might be different than you think. " +
                             "Think out of the box and use a completely different pattern, match something else or use" +
-                            "a different way to reach your goal. Common errors:\n" +
-                            "- (.*) does not match newlines - ((?s).*?) does.\n" +
-                            "- replaceWithGroupReferences might have broken something because of backslash rules - think of how Matcher.appendReplacement works.");
+                            "a different way to reach your goal. You are a Java regular expression expert, so you can " +
+                            "use all advanced regex features to create a short but precise pattern.\n" +
+                            "Common errors:\n" +
+                            " - (.*) does not match newlines - ((?s).*?) does.\n" +
+                            " - replaceWithGroupReferences might have already broken something because of backslash rules - think of how Matcher.appendReplacement works.\n" +
+                            "Some ideas for advanced constructs for the pattern:\n" +
+                            " - \\A matches the start of the file" +
+                            " - \\z matches the end of the file" +
+                            " - (?<=something) matches the point after 'something', without matching 'something' itself - good for adding after a certain string" +
+                            " - (?=something) is the opposite of that, good for inserting before a certain string"
+                    );
                 } else {
                     throw sendError(exchange, 400, "Found " + replacementCount + " occurrences, but expected exactly one. Please make the pattern more specific so that it matches only one occurrence.");
                 }
