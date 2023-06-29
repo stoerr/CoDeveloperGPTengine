@@ -97,8 +97,9 @@ public class DevToolBench {
         server = Undertow.builder()
                 .addHttpListener(port, "localhost")
                 .setHandler(DevToolBench::handleRequest)
-                .setIoThreads(10)
-                .setWorkerThreads(10)
+                .setIoThreads(20)
+                .setWorkerThreads(20)
+                .setBufferSize(128000)
                 .build();
         server.start();
         TbUtils.log("Started on http://localhost:" + port);
@@ -154,7 +155,10 @@ public class DevToolBench {
             } else if (STATICFILES.containsKey(path)) {
                 handleStaticFile(exchange, path);
             } else if (path.equals("/icon.png")) {
-                byte[] bytes = DevToolBench.class.getResourceAsStream("/icon.png").readAllBytes();
+                byte[] bytes;
+                try (InputStream resourceAsStream = DevToolBench.class.getResourceAsStream("/icon.png")) {
+                    bytes = resourceAsStream.readAllBytes();
+                }
                 exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "image/png");
                 exchange.setStatusCode(200);
                 exchange.setResponseContentLength(bytes.length);

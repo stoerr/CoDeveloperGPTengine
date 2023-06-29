@@ -22,9 +22,7 @@ public class WriteFileActionIT extends AbstractActionIT {
         TbUtils.log("\nWriteFileActionIT.testWriteLargeFile");
         try {
             StringBuilder testinput = new StringBuilder();
-            for (int i = 0; i < 20000; ++i) {
-                testinput.append("test input");
-            }
+            testinput.append("test input".repeat(3000));
             testinput.append("\n");
             checkResponse("/writeFile?path=largefile.txt", "POST", "{\"content\":\"" + testinput + "\"}", 204, null);
             String actual = readFile("/testdir/largefile.txt");

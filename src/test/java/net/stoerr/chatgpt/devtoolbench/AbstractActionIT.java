@@ -1,6 +1,7 @@
 package net.stoerr.chatgpt.devtoolbench;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.hamcrest.CoreMatchers.nullValue;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,7 +17,9 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.hamcrest.CoreMatchers;
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.ErrorCollector;
@@ -31,7 +34,7 @@ public abstract class AbstractActionIT {
     static final int port = 7364;
 
     @BeforeClass
-    public static void setUp() throws InterruptedException, IOException {
+    public static void setUpClass() throws InterruptedException, IOException {
         Files.createDirectories(Paths.get("target/test-actual"));
         DevToolBench.currentDir = Paths.get(".").resolve("src/test/resources/testdir").normalize()
                 .toAbsolutePath();
@@ -40,10 +43,24 @@ public abstract class AbstractActionIT {
     }
 
     @AfterClass
-    public static void tearDown() throws InterruptedException {
+    public static void tearDownClass() throws InterruptedException {
         Thread.sleep(10);
         DevToolBench.stop();
         Thread.sleep(20);
+    }
+
+    @Before
+    public void setUp() throws InterruptedException {
+        Thread.sleep(1000);
+        System.out.flush();
+        System.err.flush();
+    }
+
+    @After
+    public void tearDown() throws InterruptedException {
+        Thread.sleep(1000);
+        System.out.flush();
+        System.err.flush();
     }
 
     /**
@@ -53,36 +70,40 @@ public abstract class AbstractActionIT {
         String result;
         String url = "http://localhost:" + port + path;
 
-        CloseableHttpClient client = HttpClients.createDefault();
-        HttpResponse response;
+        try (CloseableHttpClient client = HttpClients.createDefault()) {
+            HttpResponse response;
 
-        if ("GET".equals(method)) {
-            HttpGet request = new HttpGet(url);
-            response = client.execute(request);
-        } else if ("POST".equals(method)) {
-            HttpPost request = new HttpPost(url);
-            if (requestBody != null) {
-                request.setEntity(new StringEntity(requestBody, UTF_8));
+            if ("GET".equals(method)) {
+                HttpGet request = new HttpGet(url);
+                response = client.execute(request);
+            } else if ("POST".equals(method)) {
+                HttpPost request = new HttpPost(url);
+                if (requestBody != null) {
+                    request.setEntity(new StringEntity(requestBody, UTF_8));
+                }
+                response = client.execute(request);
+            } else {
+                throw new IllegalArgumentException("Unsupported method: " + method);
             }
-            response = client.execute(request);
-        } else {
-            throw new IllegalArgumentException("Unsupported method: " + method);
+
+            result = response.getEntity() != null ? EntityUtils.toString(response.getEntity(), UTF_8) : null;
+
+            collector.checkThat(result, response.getStatusLine().getStatusCode(), CoreMatchers.is(expectedStatusCode));
+
+            if (expectedStatusCode == 204) {
+                collector.checkThat(result, response.getEntity(), nullValue());
+                collector.checkThat(expectFile, nullValue());
+                if (response.getEntity() != null) {
+                    collector.checkThat(result, result, nullValue());
+                }
+                return null;
+            }
+
+            if (expectFile != null) {
+                writeActualAndCompareExpected(response, expectFile, result);
+            }
+            return result;
         }
-
-        result = response.getEntity() != null ? EntityUtils.toString(response.getEntity(), UTF_8) : null;
-
-        collector.checkThat(result, response.getStatusLine().getStatusCode(), CoreMatchers.is(expectedStatusCode));
-
-        if (expectedStatusCode == 204) {
-            collector.checkThat(result, response.getEntity(), CoreMatchers.nullValue());
-            collector.checkThat(expectFile, CoreMatchers.nullValue());
-            return null;
-        }
-
-        if (expectFile != null) {
-            writeActualAndCompareExpected(response, expectFile, result);
-        }
-        return result;
     }
 
     protected void writeActualAndCompareExpected(HttpResponse response, String expectFilename, String result) throws IOException {
