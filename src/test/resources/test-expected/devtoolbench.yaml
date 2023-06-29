@@ -147,7 +147,7 @@ paths:
               properties:
                 pattern:
                   type: string
-                  description: "java Pattern to be replaced. Examples: \\z is end of file, (?s) makes dots match newlines, too."
+                  description: "java Pattern to be replaced. Examples: \\z is end of file, ((?s).*?) matches any characters including line breaks non-greedily."
                 literalReplacement:
                   type: string
                   description: will replace the regex literally, as in java.util.regex.Pattern.compile(pattern).matcher(fileContent).replaceAll(java.util.regex.Matcher.quoteReplacement(literalReplacement)) . Alternative to replacementWithGroupReferences.
@@ -166,7 +166,7 @@ paths:
   /writeFile:
     post:
       operationId: writeFile
-      summary: Overwrite a small file with the content given in full.
+      summary: Overwrite a small file with the complete content given in one step. You cannot append to a file or write parts or write parts - use the replaceAction for inserting parts.
       parameters:
         - name: path
           in: query
