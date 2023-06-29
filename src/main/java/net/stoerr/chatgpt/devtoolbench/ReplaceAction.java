@@ -48,7 +48,7 @@ public class ReplaceAction extends AbstractPluginAction {
                               properties:
                                 pattern:
                                   type: string
-                                  description: "java Pattern to be replaced. Examples: \\\\z is end of file, (?s) makes dots match newlines, too."
+                                  description: "java Pattern to be replaced. Examples: \\\\z is end of file, ((?s).*?) matches any characters including line breaks non-greedily."
                                 literalReplacement:
                                   type: string
                                   description: will replace the regex literally, as in java.util.regex.Pattern.compile(pattern).matcher(fileContent).replaceAll(java.util.regex.Matcher.quoteReplacement(literalReplacement)) . Alternative to replacementWithGroupReferences.
@@ -119,7 +119,12 @@ public class ReplaceAction extends AbstractPluginAction {
 
             if (!multiple && replacementCount != 1) {
                 if (replacementCount == 0) {
-                    throw sendError(exchange, 400, "Found no occurrences of pattern.");
+                    throw sendError(exchange, 400, "Found no occurrences of pattern. " +
+                            "Re-read the file - it might be different than you think. " +
+                            "Think out of the box and use a completely different pattern, match something else or use" +
+                            "a different way to reach your goal. Common errors:\n" +
+                            "- (.*) does not match newlines - ((?s).*?) does.\n" +
+                            "- replaceWithGroupReferences might have broken something because of backslash rules - think of how Matcher.appendReplacement works.");
                 } else {
                     throw sendError(exchange, 400, "Found " + replacementCount + " occurrences, but expected exactly one. Please make the pattern more specific so that it matches only one occurrence.");
                 }
