@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 import com.google.common.collect.Range;
 
+import io.undertow.io.Receiver;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
 
@@ -47,7 +48,7 @@ public class ReplaceAction extends AbstractPluginAction {
                               properties:
                                 pattern:
                                   type: string
-                                  description: "java Pattern to be replaced. Examples: \\\\z is end of file, (?s) makes dots match newlines, too." 
+                                  description: "java Pattern to be replaced. Examples: \\\\z is end of file, (?s) makes dots match newlines, too."
                                 literalReplacement:
                                   type: string
                                   description: will replace the regex literally, as in java.util.regex.Pattern.compile(pattern).matcher(fileContent).replaceAll(java.util.regex.Matcher.quoteReplacement(literalReplacement)) . Alternative to replacementWithGroupReferences.
@@ -72,10 +73,13 @@ public class ReplaceAction extends AbstractPluginAction {
 
     @Override
     public void handleRequest(HttpServerExchange exchange) {
-        exchange.getRequestReceiver().receiveFullString(this::handleBody, this::handleRequestBodyError);
+        Receiver requestReceiver = exchange.getRequestReceiver();
+        requestReceiver.setMaxBufferSize(100000);
+        requestReceiver.receiveFullBytes(this::handleBody, this::handleRequestBodyError);
     }
 
-    private void handleBody(HttpServerExchange exchange, String json) {
+    private void handleBody(HttpServerExchange exchange, byte[] bytes) {
+        String json = new String(bytes, UTF_8);
         String path = exchange.getQueryParameters().get("path").getFirst();
         String pattern = getBodyParameter(exchange, json, "pattern", true);
         String literalReplacement = getBodyParameter(exchange, json, "literalReplacement", false);

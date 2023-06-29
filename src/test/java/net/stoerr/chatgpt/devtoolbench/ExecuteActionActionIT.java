@@ -16,9 +16,7 @@ public class ExecuteActionActionIT extends AbstractActionIT {
         TbUtils.log("\nExecuteActionActionIT.testHelloWorldWithLargeFile");
         String prefix = "Hello World! Your input was: ";
         StringBuilder testinput = new StringBuilder();
-        for (int i = 0; i < 20000; ++i) {
-            testinput.append("test input");
-        }
+        testinput.append("test input".repeat(3000));
         System.out.println(testinput.length());
         String actualResponse = checkResponse("/executeAction?actionName=helloworld", "POST", "{\"actionInput\":\"" + testinput + "\"}", 200, null);
         collector.checkThat(actualResponse.length(), CoreMatchers.is(prefix.length() + testinput.length() + 1)); // newliner

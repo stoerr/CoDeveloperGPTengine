@@ -1,10 +1,12 @@
 package net.stoerr.chatgpt.devtoolbench;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
+import io.undertow.io.Receiver;
 import io.undertow.server.HttpServerExchange;
 
 /**
@@ -59,10 +61,13 @@ public class WriteFileAction extends AbstractPluginAction {
 
     @Override
     public void handleRequest(HttpServerExchange exchange) {
-        exchange.getRequestReceiver().receiveFullString(this::handleBody, this::handleRequestBodyError);
+        Receiver requestReceiver = exchange.getRequestReceiver();
+        requestReceiver.setMaxBufferSize(100000);
+        requestReceiver.receiveFullBytes(this::handleBody, this::handleRequestBodyError);
     }
 
-    private void handleBody(HttpServerExchange exchange, String json) {
+    private void handleBody(HttpServerExchange exchange, byte[] bytes) {
+        String json = new String(bytes, StandardCharsets.UTF_8);
         try {
             String appendParam = getQueryParam(exchange, "append");
             boolean append = appendParam != null && appendParam.toLowerCase().contains("true");

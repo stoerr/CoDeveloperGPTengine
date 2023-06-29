@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
+import io.undertow.io.Receiver;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
 
@@ -60,10 +61,13 @@ public class ExecuteAction extends AbstractPluginAction {
 
     @Override
     public void handleRequest(HttpServerExchange exchange) {
-        exchange.getRequestReceiver().receiveFullString(this::handleBody, this::handleRequestBodyError);
+        Receiver requestReceiver = exchange.getRequestReceiver();
+        requestReceiver.setMaxBufferSize(100000);
+        requestReceiver.receiveFullBytes(this::handleBody, this::handleRequestBodyError);
     }
 
-    private void handleBody(HttpServerExchange exchange, String json) {
+    private void handleBody(HttpServerExchange exchange, byte[] bytes) {
+        String json = new String(bytes, StandardCharsets.UTF_8);
         Process process = null;
         try {
             String content = getBodyParameter(exchange, json, "actionInput", false);
@@ -93,10 +97,12 @@ public class ExecuteAction extends AbstractPluginAction {
                 }
             });
 
-            InputStream inputStream = process.getInputStream();
-            String output = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
-            if (!process.waitFor(1, TimeUnit.MINUTES)) {
-                throw sendError(exchange, 500, "Process did not finish within one minute");
+            String output;
+            try (InputStream inputStream = process.getInputStream()) {
+                output = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+                if (!process.waitFor(1, TimeUnit.MINUTES)) {
+                    throw sendError(exchange, 500, "Process did not finish within one minute");
+                }
             }
             int exitCode = process.exitValue();
             log("Process finished with exit code " + exitCode + ": " + abbreviate(output, 200));
