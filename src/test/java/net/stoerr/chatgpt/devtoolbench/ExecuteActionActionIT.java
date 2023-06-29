@@ -7,11 +7,13 @@ public class ExecuteActionActionIT extends AbstractActionIT {
 
     @Test
     public void testExecuteActionHelloWorld() throws Exception {
+        TbUtils.log("\nExecuteActionActionIT.testExecuteActionHelloWorld");
         checkResponse("/executeAction?actionName=helloworld", "POST", "{\"actionInput\":\"testinput\"}", 200, "action-helloworld.txt");
     }
 
     @Test
     public void testHelloWorldWithLargeFile() throws Exception {
+        TbUtils.log("\nExecuteActionActionIT.testHelloWorldWithLargeFile");
         String prefix = "Hello World! Your input was: ";
         StringBuilder testinput = new StringBuilder();
         for (int i = 0; i < 20000; ++i) {
@@ -25,11 +27,13 @@ public class ExecuteActionActionIT extends AbstractActionIT {
 
     @Test
     public void testExecuteActionNotThere() throws Exception {
+        TbUtils.log("\nExecuteActionActionIT.testExecuteActionNotThere");
         checkResponse("/executeAction?actionName=notthere", "POST", "{\"actionInput\":\"testinput\"}", 400, "action-notthere.txt");
     }
 
     @Test
     public void testExecuteActionFail() throws Exception {
+        TbUtils.log("\nExecuteActionActionIT.testExecuteActionFail");
         checkResponse("/executeAction?actionName=fail", "POST", "{\"actionInput\":\"testinput\"}", 500, "action-fail.txt");
     }
 }
