@@ -26,7 +26,7 @@ public class WriteFileAction extends AbstractPluginAction {
                   /writeFile:
                     post:
                       operationId: writeFile
-                      summary: Overwrite a small file with the content given in full.
+                      summary: Overwrite a small file with the complete content given in one step. You cannot append to a file or write parts or write parts - use the replaceAction for inserting parts.
                       parameters:
                         - name: path
                           in: query

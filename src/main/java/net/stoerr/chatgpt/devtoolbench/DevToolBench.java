@@ -130,6 +130,7 @@ public class DevToolBench {
             }
 
             if (!cmd.hasOption("w")) {
+                TbUtils.log("No -w option present - writing disabled!");
                 HANDLERS.remove("/writeFile");
                 HANDLERS.remove("/grep");
             }
