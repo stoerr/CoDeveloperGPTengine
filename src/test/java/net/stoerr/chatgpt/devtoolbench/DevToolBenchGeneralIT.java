@@ -13,11 +13,13 @@ public class DevToolBenchGeneralIT extends AbstractActionIT {
 
     @Test
     public void testRoot() throws IOException {
+        TbUtils.log("\nDevToolBenchGeneralIT.testRoot");
         checkResponse("/", "GET", null, 200, "index.html");
     }
 
     @Test
     public void testAiPluginJson() throws IOException {
+        TbUtils.log("\nDevToolBenchGeneralIT.testAiPluginJson");
         String response = checkResponse("/.well-known/ai-plugin.json", "GET", null, 200, null);
         String expected = readFile("/../../../src/main/resources/ai-plugin.json")
                 .replace("THEPORT", "" + port)
@@ -27,6 +29,7 @@ public class DevToolBenchGeneralIT extends AbstractActionIT {
 
     @Test
     public void testDevToolBenchYaml() throws IOException {
+        TbUtils.log("\nDevToolBenchGeneralIT.testDevToolBenchYaml");
         checkResponse("/devtoolbench.yaml", "GET", null, 200, "devtoolbench.yaml");
         // read target/test-actual/devtoolbench.yaml and compare to src/test/resources/test-expected/devtoolbench.yaml
         // and overwrite that file if it is different
@@ -40,6 +43,7 @@ public class DevToolBenchGeneralIT extends AbstractActionIT {
 
     @Test
     public void testUnknownRequest() throws Exception {
+        TbUtils.log("\nDevToolBenchGeneralIT.testUnknownRequest");
         checkResponse("/nothing", "GET", null, 404, "unknown");
     }
 }

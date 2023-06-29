@@ -10,6 +10,7 @@ public class WriteFileActionIT extends AbstractActionIT {
 
     @Test
     public void testWriteFileOperation() throws Exception {
+        TbUtils.log("\nWriteFileActionIT.testWriteFileOperation");
         checkResponse("/writeFile?path=filewritten.txt", "POST", "{\"content\":\"testcontent line one\\nline two \\\\\\n with quoted backslashing \\n\"}", 204, null);
         String expected = readFile("/test-expected/filewritten.txt");
         String actual = readFile("/testdir/filewritten.txt");
@@ -18,6 +19,7 @@ public class WriteFileActionIT extends AbstractActionIT {
 
     @Test
     public void testWriteLargeFile() throws Exception {
+        TbUtils.log("\nWriteFileActionIT.testWriteLargeFile");
         try {
             StringBuilder testinput = new StringBuilder();
             for (int i = 0; i < 20000; ++i) {
@@ -34,6 +36,7 @@ public class WriteFileActionIT extends AbstractActionIT {
 
     @Test
     public void testAppendToFile() throws Exception {
+        TbUtils.log("\nWriteFileActionIT.testAppendToFile");
         String initialContent = "Initial content\n";
         String appendedContent = "Appended content\n";
         String expectedContent = initialContent + appendedContent;
