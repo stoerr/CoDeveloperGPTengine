@@ -1,5 +1,7 @@
 package net.stoerr.chatgpt.devtoolbench;
 
+import static net.stoerr.chatgpt.devtoolbench.TbUtils.addShortContentReport;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -8,6 +10,7 @@ import java.nio.file.StandardOpenOption;
 
 import io.undertow.io.Receiver;
 import io.undertow.server.HttpServerExchange;
+import io.undertow.util.Headers;
 
 /**
  * an operation that writes the message into the file at path.
@@ -44,8 +47,8 @@ public class WriteFileAction extends AbstractPluginAction {
                                 content:
                                   type: string
                       responses:
-                        '204':
-                          description: File written
+                        '200':
+                          description: File overwritten
                         '400':
                           description: Invalid parameter
                 """.stripIndent();
@@ -82,7 +85,12 @@ public class WriteFileAction extends AbstractPluginAction {
             StandardOpenOption appendOption = append ? StandardOpenOption.APPEND : StandardOpenOption.TRUNCATE_EXISTING;
             Files.write(path, content.getBytes(), java.nio.file.StandardOpenOption.CREATE,
                     java.nio.file.StandardOpenOption.WRITE, appendOption);
-            exchange.setStatusCode(204);
+            exchange.setStatusCode(200);
+            StringBuilder output = new StringBuilder();
+            output.append("File completely overwritten with: ");
+            output.append(addShortContentReport(content, output));
+            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
+            exchange.getResponseSender().send(output.toString());
         } catch (IOException e) {
             throw sendError(exchange, 500, "Error writing file: " + e);
         }

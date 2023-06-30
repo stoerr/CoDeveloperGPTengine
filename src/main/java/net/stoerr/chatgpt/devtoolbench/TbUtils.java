@@ -2,12 +2,15 @@ package net.stoerr.chatgpt.devtoolbench;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.undertow.server.HttpServerExchange;
 
@@ -16,6 +19,8 @@ import io.undertow.server.HttpServerExchange;
  */
 public class TbUtils {
     static final Path requestLog = DevToolBench.currentDir.resolve(".cgptdevbench/.requestlog.txt");
+    public static final PrintStream ERRLOG = System.err;
+    public static final PrintStream LOG = System.out;
 
     /**
      * If there is a file named .cgptdevbench/.requestlog.txt, we append the request data to it.
@@ -49,15 +54,15 @@ public class TbUtils {
     }
 
     static void logStacktrace(Exception e) {
-        e.printStackTrace(System.err);
+        e.printStackTrace(ERRLOG);
     }
 
     static void logError(String msg) {
-        System.err.println(msg);
+        ERRLOG.println(msg);
     }
 
     static void log(String msg) {
-        System.out.println(msg);
+        LOG.println(msg);
     }
 
     static void logVersion() {
@@ -103,4 +108,35 @@ public class TbUtils {
         }
         return mainInfo + gitInfo;
     }
+
+    /**
+     * Transforms our simpler specification of replacement patterns
+     * (group references $0, $1, ..., $9 with the corresponding groups from the match; a literal $ must be given as $$)
+     * to what {@link Matcher#appendReplacement(StringBuffer, String)} expects. We want to simplify the backslash handling,
+     * as backslashes are pretty common in Java source code, while $ is not.
+     */
+    protected static String compileReplacement(HttpServerExchange exchange, String replacementWithGroupReferences) {
+        Matcher invalidGroupMatcher = Pattern.compile("\\$[^0-9$]").matcher(replacementWithGroupReferences);
+        if (invalidGroupMatcher.find()) {
+            throw AbstractPluginAction.sendError(exchange, 400, "Invalid replacement pattern " + invalidGroupMatcher.group());
+        }
+        String compiled = replacementWithGroupReferences.replace("$$", "$");
+        compiled = compiled.replace("\\", "\\\\");
+        return compiled;
+    }
+
+    protected static String addShortContentReport(String content, StringBuilder output) {
+        String[] lines = content.split("\n");
+        if (lines.length > 5) {
+            output.append("(abbreviated):\n");
+            output.append(lines[0]).append("\n").append(lines[1]).append("\n");
+            output.append("\n...\n");
+            output.append(lines[lines.length - 2]).append("\n").append(lines[lines.length - 1]).append("\n");
+        } else {
+            output.append(":\n");
+            output.append(content);
+        }
+        return output.toString();
+    }
+
 }

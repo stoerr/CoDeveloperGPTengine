@@ -135,7 +135,7 @@ public class DevToolBench {
                 HANDLERS.remove("/grep");
             }
         } catch (ParseException e) {
-            System.out.println("Error parsing command line options: " + e.getMessage());
+            TbUtils.logError("Error parsing command line options: " + e.getMessage());
             System.exit(1);
         }
     }
