@@ -120,8 +120,8 @@ public class TbUtils {
         if (invalidGroupMatcher.find()) {
             throw AbstractPluginAction.sendError(exchange, 400, "Invalid replacement pattern " + invalidGroupMatcher.group());
         }
-        String compiled = replacementWithGroupReferences.replace("$$", "$");
-        compiled = compiled.replace("\\", "\\\\");
+        String compiled = replacementWithGroupReferences.replace("\\", "\\\\");
+        compiled = compiled.replace("$$", "\\$");
         return compiled;
     }
 

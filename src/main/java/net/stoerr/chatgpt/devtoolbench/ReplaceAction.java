@@ -28,8 +28,9 @@ public class ReplaceAction extends AbstractPluginAction {
             Some ideas for advanced constructs for the pattern:
                 - \\A matches the start of the file
                 - \\z matches the end of the file
+                - you can match backslashes with . in the pattern, to avoid potential errors due to missed backslash escaping
                 - (?<=something) matches the point after 'something', without matching 'something' itself - good for adding after a certain string
-                - (?=something) is the opposite of that, good for inserting before a certain string
+                - (?=something) matches the point before 'something', good for inserting before a certain string
             """;
 
     @Override
