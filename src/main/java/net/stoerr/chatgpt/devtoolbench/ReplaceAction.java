@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import com.google.common.collect.Range;
 
@@ -100,12 +101,12 @@ public class ReplaceAction extends AbstractPluginAction {
         String pattern = getBodyParameter(exchange, json, "pattern", true);
         String literalReplacement = getBodyParameter(exchange, json, "literalReplacement", false);
         String replacementWithGroupReferences = getBodyParameter(exchange, json, "replacementWithGroupReferences", false);
-        boolean multiple = getBodyParameter(exchange, json, "multiple", false).equalsIgnoreCase("true");
+        boolean multiple = "true".equalsIgnoreCase(getBodyParameter(exchange, json, "multiple", false));
 
-        if (!isNotEmpty(literalReplacement) && !isNotEmpty(replacementWithGroupReferences)) {
+        if (literalReplacement == null && replacementWithGroupReferences == null) {
             throw sendError(exchange, 400, "Either literalReplacement or replacementWithGroupReferences must be given.");
         }
-        if (isNotEmpty(literalReplacement) && isNotEmpty(replacementWithGroupReferences)) {
+        if (literalReplacement != null && replacementWithGroupReferences != null) {
             throw sendError(exchange, 400, "Either literalReplacement or replacementWithGroupReferences must be given, but not both.");
         }
         if (isNotEmpty(replacementWithGroupReferences) && !replacementWithGroupReferences.contains("$")) {
@@ -152,6 +153,10 @@ public class ReplaceAction extends AbstractPluginAction {
             throw sendError(exchange, 404, "File not found: " + DevToolBench.currentDir.relativize(filePath));
         } catch (IOException e) {
             throw sendError(exchange, 500, "Error reading or writing file : " + e);
+        } catch (PatternSyntaxException e) {
+            throw sendError(exchange, 400, "Invalid pattern. You are a Javascript expert, analyze the following problem with the regular expression you used: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            throw sendError(exchange, 400, "Invalid replacement: " + e.getMessage());
         }
     }
 

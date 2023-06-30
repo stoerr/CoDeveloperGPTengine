@@ -41,7 +41,7 @@ public class TbUtils {
 
     protected static void logBody(String parameterName, String parameterValue) {
         if (Files.exists(requestLog)) {
-            if (parameterValue.length() > 400) {
+            if (parameterValue != null && parameterValue.length() > 400) {
                 parameterValue = parameterValue.substring(0, 200) + "\n... (part omitted)\n" + parameterValue.substring(parameterValue.length() - 200);
             }
             try {

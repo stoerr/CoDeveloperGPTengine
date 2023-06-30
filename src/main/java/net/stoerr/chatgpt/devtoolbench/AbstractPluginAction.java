@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import org.wildfly.common.annotation.NotNull;
+import org.wildfly.common.annotation.Nullable;
 
 import com.google.gson.Gson;
 
@@ -121,18 +121,20 @@ public abstract class AbstractPluginAction implements HttpHandler {
     /**
      * Returns a parameter encoded in JSON the request body; returns "" if that parameter isn't there.
      */
-    @NotNull
+    @Nullable
     protected String getBodyParameter(HttpServerExchange exchange, String json, String parameterName, boolean mandatory) {
-        String parameterValue = "";
+        String parameterValue = null;
         if (!json.isEmpty() && !"{}".equals(json)) {
             try {
                 Map<String, Object> decoded = gson.fromJson(json, Map.class);
-                parameterValue = String.valueOf(decoded.getOrDefault(parameterName, ""));
+                Object parameterObj = decoded.get(parameterName);
+                parameterValue = parameterObj != null ? parameterObj.toString() : null;
                 logBody(parameterName, parameterValue);
                 if (mandatory && !decoded.containsKey(parameterName)) {
                     throw sendError(exchange, 400, "Missing parameter " + parameterName);
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 String error = "Parse error for content: " + e;
                 throw sendError(exchange, 400, error);
             }
