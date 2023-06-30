@@ -20,6 +20,18 @@ import io.undertow.util.Headers;
 
 public class ReplaceAction extends AbstractPluginAction {
 
+    public static final String ERRORMESSAGE_PATTERNNOTFOUND = """
+            Found no occurrences of pattern. Re-read the file - it might be different than you think. Think out of the box and use a completely different pattern, match something else or use a different way to reach your goal. You are a Java regular expression expert, so you can use all advanced regex features to create a short but precise pattern.
+            Common errors:
+             - (.*) does not match newlines - ((?s).*?) does.
+             - replaceWithGroupReferences might have already broken something because of backslash escaping rules - think of how Matcher.appendReplacement works.
+            Some ideas for advanced constructs for the pattern:
+                - \\A matches the start of the file
+                - \\z matches the end of the file
+                - (?<=something) matches the point after 'something', without matching 'something' itself - good for adding after a certain string
+                - (?=something) is the opposite of that, good for inserting before a certain string
+            """;
+
     @Override
     public String getUrl() {
         return "/replaceInFile";
@@ -31,7 +43,7 @@ public class ReplaceAction extends AbstractPluginAction {
                   /replaceInFile:
                     post:
                       operationId: replaceInFile
-                      summary: Replaces the single occurrence of a regular expression in a file. You are a Java regular expression expert and can use all advanced regex features - the whole file is matched, not line by line.
+                      summary: Replaces the single occurrence of a regular expression in a file. You are a Java regular expression expert and can use all advanced regex features. The whole file is matched, not line by line. Use exactly one of literalReplacement and replacementWithGroupReferences.
                       parameters:
                         - name: path
                           in: query
@@ -48,13 +60,13 @@ public class ReplaceAction extends AbstractPluginAction {
                               properties:
                                 pattern:
                                   type: string
-                                  description: "java Pattern to be replaced. Examples: \\\\z is end of file, ((?s).*?) matches any characters including line breaks non-greedily."
+                                  description: "java.util.regex.Pattern to be replaced. Examples: \\\\z is end of file, ((?s).*?) matches any characters including line breaks non-greedily."
                                 literalReplacement:
                                   type: string
-                                  description: will replace the regex literally, as in java.util.regex.Pattern.compile(pattern).matcher(fileContent).replaceAll(java.util.regex.Matcher.quoteReplacement(literalReplacement)) . Alternative to replacementWithGroupReferences.
+                                  description: searches for the given Java pattern in the file content and replaces it with the literalReplacement as it is.
                                 replacementWithGroupReferences:
                                   type: string
-                                  description: will replace the regex as in java.util.regex.Pattern.compile(pattern).matcher(fileContent).replaceAll(replacement) . Caution - you have to observe the escaping rules for replacement by java.util.regex.Matcher for backslashes and dollar signs, so use the alternative literalReplacement if there aren't any group references.
+                                  description: replaces the finding of the pattern with the replacement and replaces group references $0, $1, ..., $9 with the corresponding groups from the match. A literal $ must be given as $$.
                               required:
                                 - pattern
                       responses:
@@ -77,6 +89,9 @@ public class ReplaceAction extends AbstractPluginAction {
         requestReceiver.setMaxBufferSize(100000);
         requestReceiver.receiveFullBytes(this::handleBody, this::handleRequestBodyError);
     }
+
+    // FIXME response cites actual content, token abbreviated
+    // Implement own placeholder mechanism
 
     private void handleBody(HttpServerExchange exchange, byte[] bytes) {
         String json = new String(bytes, UTF_8);
@@ -111,7 +126,7 @@ public class ReplaceAction extends AbstractPluginAction {
                 if (isNotEmpty(literalReplacement)) {
                     m.appendReplacement(sb, Matcher.quoteReplacement(literalReplacement));
                 } else {
-                    m.appendReplacement(sb, replacementWithGroupReferences);
+                    m.appendReplacement(sb, TbUtils.compileReplacement(exchange, replacementWithGroupReferences));
                 }
                 replacementCount++;
             }
@@ -119,20 +134,7 @@ public class ReplaceAction extends AbstractPluginAction {
 
             if (!multiple && replacementCount != 1) {
                 if (replacementCount == 0) {
-                    throw sendError(exchange, 400, "Found no occurrences of pattern. " +
-                            "Re-read the file - it might be different than you think. " +
-                            "Think out of the box and use a completely different pattern, match something else or use" +
-                            "a different way to reach your goal. You are a Java regular expression expert, so you can " +
-                            "use all advanced regex features to create a short but precise pattern.\n" +
-                            "Common errors:\n" +
-                            " - (.*) does not match newlines - ((?s).*?) does.\n" +
-                            " - replaceWithGroupReferences might have already broken something because of backslash rules - think of how Matcher.appendReplacement works.\n" +
-                            "Some ideas for advanced constructs for the pattern:\n" +
-                            " - \\A matches the start of the file" +
-                            " - \\z matches the end of the file" +
-                            " - (?<=something) matches the point after 'something', without matching 'something' itself - good for adding after a certain string" +
-                            " - (?=something) is the opposite of that, good for inserting before a certain string"
-                    );
+                    throw sendError(exchange, 400, ERRORMESSAGE_PATTERNNOTFOUND);
                 } else {
                     throw sendError(exchange, 400, "Found " + replacementCount + " occurrences, but expected exactly one. Please make the pattern more specific so that it matches only one occurrence.");
                 }

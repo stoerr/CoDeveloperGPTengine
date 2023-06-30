@@ -11,7 +11,8 @@ public class WriteFileActionIT extends AbstractActionIT {
     @Test
     public void testWriteFileOperation() throws Exception {
         TbUtils.log("\nWriteFileActionIT.testWriteFileOperation");
-        checkResponse("/writeFile?path=filewritten.txt", "POST", "{\"content\":\"testcontent line one\\nline two \\\\\\n with quoted backslashing \\n\"}", 204, null);
+        String response = checkResponse("/writeFile?path=filewritten.txt", "POST", "{\"content\":\"testcontent line one\\nline two \\\\\\n with quoted backslashing \\n\"}", 200, null);
+        collector.checkThat(response, CoreMatchers.containsString("File completely overwritten"));
         String expected = readFile("/test-expected/filewritten.txt");
         String actual = readFile("/testdir/filewritten.txt");
         collector.checkThat(actual, CoreMatchers.is(expected));
@@ -24,7 +25,8 @@ public class WriteFileActionIT extends AbstractActionIT {
             StringBuilder testinput = new StringBuilder();
             testinput.append("test input".repeat(3000));
             testinput.append("\n");
-            checkResponse("/writeFile?path=largefile.txt", "POST", "{\"content\":\"" + testinput + "\"}", 204, null);
+            String response = checkResponse("/writeFile?path=largefile.txt", "POST", "{\"content\":\"" + testinput + "\"}", 200, null);
+            collector.checkThat(response, CoreMatchers.containsString("File completely overwritten"));
             String actual = readFile("/testdir/largefile.txt");
             collector.checkThat(actual.replace(testinput, "(TESTINPUT)"), CoreMatchers.is("(TESTINPUT)"));
         } finally {
@@ -39,8 +41,11 @@ public class WriteFileActionIT extends AbstractActionIT {
         String appendedContent = "Appended content\n";
         String expectedContent = initialContent + appendedContent;
 
-        checkResponse("/writeFile?path=appendtest.txt", "POST", "{\"content\":\"" + initialContent + "\"}", 204, null);
-        checkResponse("/writeFile?path=appendtest.txt&append=true", "POST", "{\"content\":\"" + appendedContent + "\"}", 204, null);
+        String response = checkResponse("/writeFile?path=appendtest.txt", "POST", "{\"content\":\"" + initialContent + "\"}", 200, null);
+        collector.checkThat(response, CoreMatchers.containsString("File completely overwritten"));
+        response = checkResponse("/writeFile?path=appendtest.txt&append=true", "POST", "{\"content\":\"" + appendedContent + "\"}", 200, null);
+        // Caution : response is wrong, but currently append is not announced.
+        collector.checkThat(response, CoreMatchers.containsString("File completely overwritten"));
 
         String actualContent = readFile("/testdir/appendtest.txt");
         collector.checkThat(actualContent, CoreMatchers.is(expectedContent));
