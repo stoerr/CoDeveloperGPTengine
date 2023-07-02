@@ -133,4 +133,30 @@ public class ReplaceActionIT extends AbstractActionIT {
         }
     }
 
+    @Test
+    public void testLiteralSearchStringReplaceOperation() throws Exception {
+        TbUtils.log("\nReplaceActionIT.testLiteralSearchStringReplaceOperation");
+        try {
+            String content = Files.readString(Paths.get("src/test/resources/testdir/firstfile.txt"), UTF_8);
+            Files.writeString(Paths.get("src/test/resources/testdir/replaceLiteral.txt"), content, UTF_8);
+            String response = checkResponse("/replaceInFile?path=replaceLiteral.txt", "POST",
+                    "{\"literalSearchString\":\"test\",\"literalReplacement\":\"dingding\"}"
+                    , 200, null);
+            collector.checkThat(response, is("Replaced 1 occurrences of pattern; modified lines 2"));
+            response = checkResponse("/readFile?path=replaceLiteral.txt", "GET", null, 200, null);
+            collector.checkThat(response, is("Hello!\nJust a dingding.\n"));
+        } finally {
+            Files.deleteIfExists(Paths.get("src/test/resources/testdir/replaceLiteral.txt"));
+        }
+    }
+
+    @Test
+    public void testBothLiteralSearchStringAndPatternGiven() throws Exception {
+        TbUtils.log("\nReplaceActionIT.testBothLiteralSearchStringAndPatternGiven");
+        String response = checkResponse("/replaceInFile?path=secondfile.md", "POST",
+                "{\"literalSearchString\":\"duck\",\"pattern\":\"duck\",\"literalReplacement\":\"goose\"}"
+                , 400, null);
+        collector.checkThat(response, is("Either literalSearchString or pattern must be given, but not both."));
+    }
+
 }
