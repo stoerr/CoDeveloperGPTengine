@@ -154,7 +154,12 @@ public class ReplaceAction extends AbstractPluginAction {
         } catch (IOException e) {
             throw sendError(exchange, 500, "Error reading or writing file : " + e);
         } catch (PatternSyntaxException e) {
-            throw sendError(exchange, 400, "Invalid pattern. You are a Javascript expert, analyze the following problem with the regular expression you used: " + e.getMessage());
+            if (e.getMessage().contains("Unclosed character class") && pattern.contains("[^]")) {
+                throw sendError(exchange, 400, "Invalid pattern; [^] is invalid in Java regular expressions. To match characters including newline you can use ((?s).*?)\n" +
+                        "The error was: " + e.getMessage());
+            } else {
+                throw sendError(exchange, 400, "Invalid pattern. You are a Javascript expert, analyze the following problem with the regular expression you used: " + e.getMessage());
+            }
         } catch (IllegalArgumentException e) {
             throw sendError(exchange, 400, "Invalid replacement: " + e.getMessage());
         }
