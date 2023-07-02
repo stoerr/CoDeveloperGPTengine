@@ -22,7 +22,11 @@ import io.undertow.util.Headers;
 public class ReplaceAction extends AbstractPluginAction {
 
     public static final String ERRORMESSAGE_PATTERNNOTFOUND = """
-            Found no occurrences of pattern. Re-read the file - it might be different than you think. Think out of the box and use a completely different pattern, match something else or use a different way to reach your goal. You are a Java regular expression expert, so you can use all advanced regex features to create a short but precise pattern.
+            Found no occurrences of pattern. 
+            Possible actions to fix the problem:
+             - Re-read the file - it might be different than you think. 
+             - Use literalSearchString instead of specifying a pattern. That is less error prone.
+             - Think out of the box and use a completely different pattern, match something else or use a different way to reach your goal. You can use all advanced regex features to create a short but precise pattern.
             Common errors:
              - (.*) does not match newlines - ((?s).*?) does.
              - replaceWithGroupReferences might have already broken something because of backslash escaping rules - think of how Matcher.appendReplacement works.
@@ -45,7 +49,7 @@ public class ReplaceAction extends AbstractPluginAction {
                   /replaceInFile:
                     post:
                       operationId: replaceInFile
-                      summary: Replaces the single occurrence of a regular expression in a file. You are a Java regular expression expert and can use all advanced regex features. The whole file is matched, not line by line. Use exactly one of literalReplacement and replacementWithGroupReferences.
+                      summary: Replaces the single occurrence of a regular expression or a string in a file. You can use all advanced regex features. The whole file is matched, not line by line. Use exactly one of literalReplacement and replacementWithGroupReferences.
                       parameters:
                         - name: path
                           in: query
@@ -60,17 +64,18 @@ public class ReplaceAction extends AbstractPluginAction {
                             schema:
                               type: object
                               properties:
+                                literalSearchString:
+                                  type: string
+                                  description: "The string to be replaced - can contain many lines. Prefer this to pattern for simplicity."
                                 pattern:
                                   type: string
                                   description: "java.util.regex.Pattern to be replaced. Examples: \\\\z is end of file, ((?s).*?) matches any characters including line breaks non-greedily."
                                 literalReplacement:
                                   type: string
-                                  description: searches for the given Java pattern in the file content and replaces it with the literalReplacement as it is.
+                                  description: "searches for the given Java pattern in the file content and replaces it with the literalReplacement as it is."
                                 replacementWithGroupReferences:
                                   type: string
-                                  description: replaces the finding of the pattern with the replacement and replaces group references $0, $1, ..., $9 with the corresponding groups from the match. A literal $ must be given as $$.
-                              required:
-                                - pattern
+                                  description: "replaces the finding of the pattern with the replacement and replaces group references $0, $1, ..., $9 with the corresponding groups from the match. A literal $ must be given as $$."
                       responses:
                         '200':
                           description: File updated successfully
@@ -92,16 +97,23 @@ public class ReplaceAction extends AbstractPluginAction {
         requestReceiver.receiveFullBytes(this::handleBody, this::handleRequestBodyError);
     }
 
-    // FIXME response cites actual content, token abbreviated
-    // Implement own placeholder mechanism
+    // FIXME response cites should cite actual content, token abbreviated
 
     private void handleBody(HttpServerExchange exchange, byte[] bytes) {
         String json = new String(bytes, UTF_8);
         String path = exchange.getQueryParameters().get("path").getFirst();
-        String pattern = getBodyParameter(exchange, json, "pattern", true);
+        String pattern = getBodyParameter(exchange, json, "pattern", false);
+        String literalSearchString = getBodyParameter(exchange, json, "literalSearchString", false);
         String literalReplacement = getBodyParameter(exchange, json, "literalReplacement", false);
         String replacementWithGroupReferences = getBodyParameter(exchange, json, "replacementWithGroupReferences", false);
         boolean multiple = "true".equalsIgnoreCase(getBodyParameter(exchange, json, "multiple", false));
+
+        if (isNotEmpty(literalSearchString) && isNotEmpty(pattern)) {
+            throw sendError(exchange, 400, "Either literalSearchString or pattern must be given, but not both.");
+        }
+        if (!isNotEmpty(literalSearchString) && !isNotEmpty(pattern)) {
+            throw sendError(exchange, 400, "One of literalSearchString or pattern must be given.");
+        }
 
         if (literalReplacement == null && replacementWithGroupReferences == null) {
             throw sendError(exchange, 400, "Either literalReplacement or replacementWithGroupReferences must be given.");
@@ -111,6 +123,13 @@ public class ReplaceAction extends AbstractPluginAction {
         }
         if (isNotEmpty(replacementWithGroupReferences) && !replacementWithGroupReferences.contains("$")) {
             throw sendError(exchange, 400, "don't use replacementWithGroupReferences if there are no group references.");
+        }
+        if (isNotEmpty(literalSearchString) && isNotEmpty(replacementWithGroupReferences)) {
+            throw sendError(exchange, 400, "literalSearchString doesn't make sense with replacementWithGroupReferences.");
+        }
+
+        if (isNotEmpty(literalSearchString)) {
+            pattern = Pattern.quote(literalSearchString);
         }
 
         Path filePath = DevToolBench.currentDir.resolve(path);
