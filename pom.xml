@@ -8,6 +8,19 @@
 	<artifactId>developersChatGPTtoolbenchPlugin</artifactId>
 	<version>1.0-SNAPSHOT</version>
 
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>Github Packages for stoerr/DevelopersChatGPTToolBench</name>
+			<url>https://maven.pkg.github.com/stoerr/DevelopersChatGPTToolBench</url>
+		</repository>
+		<snapshotRepository>
+			<id>composum</id>
+			<name>Github Packages for stoerr/DevelopersChatGPTToolBench</name>
+			<url>https://maven.pkg.github.com/stoerr/DevelopersChatGPTToolBench</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>16</maven.compiler.source>
