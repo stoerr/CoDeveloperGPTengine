@@ -102,7 +102,7 @@ public class DevToolBench {
                 .setBufferSize(128000)
                 .build();
         server.start();
-        TbUtils.log("Started on http://localhost:" + port);
+        TbUtils.log("Started on http://localhost:" + port + " in directory " + currentDir);
     }
 
     private static void parseOptions(String[] args) {
