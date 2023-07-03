@@ -147,7 +147,7 @@ paths:
               properties:
                 literalSearchString:
                   type: string
-                  description: "The string to be replaced - can contain many lines. Prefer this to pattern for simplicity."
+                  description: "The string to be replaced - can contain many lines, but please take care to find a small number of lines to replace. Prefer this to pattern for simplicity."
                 pattern:
                   type: string
                   description: "java.util.regex.Pattern to be replaced. Examples: \\z is end of file, ((?s).*?) matches any characters including line breaks non-greedily."
