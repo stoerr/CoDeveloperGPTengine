@@ -15,7 +15,7 @@
 			<url>https://maven.pkg.github.com/stoerr/DevelopersChatGPTToolBench</url>
 		</repository>
 		<snapshotRepository>
-			<id>composum</id>
+			<id>github</id>
 			<name>Github Packages for stoerr/DevelopersChatGPTToolBench</name>
 			<url>https://maven.pkg.github.com/stoerr/DevelopersChatGPTToolBench</url>
 		</snapshotRepository>

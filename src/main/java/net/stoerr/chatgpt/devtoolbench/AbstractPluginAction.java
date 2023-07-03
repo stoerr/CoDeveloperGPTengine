@@ -151,7 +151,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
     }
 
     protected String abbreviate(String s, int max) {
-        if (s.length() <= max) {
+        if (s == null || s.length() <= max) {
             return s;
         }
         return s.substring(0, max - 3) + "...";
