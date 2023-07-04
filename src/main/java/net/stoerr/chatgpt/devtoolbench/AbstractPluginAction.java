@@ -1,7 +1,7 @@
 package net.stoerr.chatgpt.devtoolbench;
 
-import static net.stoerr.chatgpt.devtoolbench.TbUtils.log;
 import static net.stoerr.chatgpt.devtoolbench.TbUtils.logBody;
+import static net.stoerr.chatgpt.devtoolbench.TbUtils.logInfo;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -33,7 +33,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
      * Use with pattern {@code throw sendError(...)} to let compiler know that.
      */
     protected static ExecutionAbortedException sendError(HttpServerExchange exchange, int statusCode, String error) throws ExecutionAbortedException {
-        log("Error " + statusCode + ": " + error);
+        logInfo("Error " + statusCode + ": " + error);
         exchange.setStatusCode(statusCode);
         exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
         exchange.getResponseSender().send(error);
@@ -75,7 +75,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
                         try (Stream<String> lines = Files.lines(p)) {
                             return lines.anyMatch(line -> grepPattern.matcher(line).find());
                         } catch (Exception e) {
-                            log("Error reading " + p + " : " + e);
+                            logInfo("Error reading " + p + " : " + e);
                             return false;
                         }
                     }
@@ -100,7 +100,7 @@ public abstract class AbstractPluginAction implements HttpHandler {
     protected String getMandatoryQueryParam(HttpServerExchange exchange, String name) {
         String result = getQueryParam(exchange, name);
         if (null == result) {
-            log("Missing query parameter " + name + " in " + exchange.getRequestURI());
+            logInfo("Missing query parameter " + name + " in " + exchange.getRequestURI());
             throw sendError(exchange, 400, "Missing query parameter " + name);
         }
         return result;

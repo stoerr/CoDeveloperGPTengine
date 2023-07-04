@@ -1,6 +1,6 @@
 package net.stoerr.chatgpt.devtoolbench;
 
-import static net.stoerr.chatgpt.devtoolbench.TbUtils.log;
+import static net.stoerr.chatgpt.devtoolbench.TbUtils.logInfo;
 import static net.stoerr.chatgpt.devtoolbench.TbUtils.logStacktrace;
 
 import java.io.IOException;
@@ -80,7 +80,7 @@ public class ExecuteAction extends AbstractPluginAction {
 
             ProcessBuilder pb = new ProcessBuilder("/bin/sh", path.toString());
             pb.redirectErrorStream(true);
-            log("Starting process: " + pb.command() + " with content: " + abbreviate(content, 40));
+            logInfo("Starting process: " + pb.command() + " with content: " + abbreviate(content, 40));
             process = pb.start();
 
             OutputStream out = process.getOutputStream();
@@ -92,7 +92,7 @@ public class ExecuteAction extends AbstractPluginAction {
                         out.close();
                     }
                 } catch (IOException e) {
-                    log("Error writing to process: " + e);
+                    logInfo("Error writing to process: " + e);
                     logStacktrace(e);
                 }
             });
@@ -105,7 +105,7 @@ public class ExecuteAction extends AbstractPluginAction {
                 }
             }
             int exitCode = process.exitValue();
-            log("Process finished with exit code " + exitCode + ": " + abbreviate(output, 200));
+            logInfo("Process finished with exit code " + exitCode + ": " + abbreviate(output, 200));
             output = output.replaceAll(Pattern.quote(DevToolBench.currentDir + "/"), "");
 
             if (exitCode == 0) {

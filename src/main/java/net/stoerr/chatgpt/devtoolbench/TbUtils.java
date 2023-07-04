@@ -46,7 +46,7 @@ public class TbUtils {
             }
             try {
                 Files.writeString(requestLog, parameterName + ": " + parameterValue + "\n\n", StandardOpenOption.APPEND);
-                log(parameterName + ": " + parameterValue + "\n");
+                logInfo(parameterName + ": " + parameterValue + "\n");
             } catch (IOException e) { // not critical but strange - we'd want to know.
                 logError("Could not write to request log " + requestLog + ": " + e.getMessage());
             }
@@ -61,7 +61,7 @@ public class TbUtils {
         ERRLOG.println(msg);
     }
 
-    static void log(String msg) {
+    static void logInfo(String msg) {
         LOG.println(msg);
     }
 
