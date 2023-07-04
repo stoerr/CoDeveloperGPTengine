@@ -102,7 +102,7 @@ public class DevToolBench {
                 .setBufferSize(128000)
                 .build();
         server.start();
-        TbUtils.log("Started on http://localhost:" + port + " in directory " + currentDir);
+        TbUtils.logInfo("Started on http://localhost:" + port + " in directory " + currentDir);
     }
 
     private static void parseOptions(String[] args) {
@@ -130,7 +130,7 @@ public class DevToolBench {
             }
 
             if (!cmd.hasOption("w")) {
-                TbUtils.log("No -w option present - writing disabled!");
+                TbUtils.logInfo("No -w option present - writing disabled!");
                 HANDLERS.remove("/writeFile");
                 HANDLERS.remove("/grep");
             }
@@ -146,7 +146,7 @@ public class DevToolBench {
 
     private static void handleRequest(HttpServerExchange exchange) {
         try {
-            TbUtils.log(exchange.getRequestMethod() + " " + exchange.getRequestURI() +
+            TbUtils.logInfo(exchange.getRequestMethod() + " " + exchange.getRequestURI() +
                     (exchange.getQueryString() != null && !exchange.getQueryString().isEmpty() ? "?" + exchange.getQueryString() : ""));
             TbUtils.logRequest(exchange);
             String path = exchange.getRequestPath();
@@ -168,13 +168,13 @@ public class DevToolBench {
                 HttpHandler handler = HANDLERS.get(path);
                 if (handler != null) {
                     handler.handleRequest(exchange);
-                    TbUtils.log("Response: " + exchange.getStatusCode() + " " + exchange.getResponseHeaders());
+                    TbUtils.logInfo("Response: " + exchange.getStatusCode() + " " + exchange.getResponseHeaders());
                 } else {
                     throw sendError(exchange, 404, "Unknown request");
                 }
             }
         } catch (ExecutionAbortedException e) {
-            TbUtils.log("Aborted and problem reported to ChatGPT : " + e.getMessage());
+            TbUtils.logInfo("Aborted and problem reported to ChatGPT : " + e.getMessage());
         } catch (Exception e) {
             TbUtils.logError("Bug! Abort handling request " + exchange.getRequestURL());
             TbUtils.logStacktrace(e);

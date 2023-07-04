@@ -13,7 +13,7 @@ public class ReplaceActionIT extends AbstractActionIT {
 
     @Test
     public void testLiteralReplaceOperation() throws Exception {
-        TbUtils.log("\nReplaceActionIT.testLiteralReplaceOperation");
+        TbUtils.logInfo("\nReplaceActionIT.testLiteralReplaceOperation");
         try {
             String content = Files.readString(Paths.get("src/test/resources/testdir/firstfile.txt"), UTF_8);
             Files.writeString(Paths.get("src/test/resources/testdir/replace3.txt"), content, UTF_8);
@@ -31,7 +31,7 @@ public class ReplaceActionIT extends AbstractActionIT {
     @Deprecated
     @Test
     public void testLiteralReplaceOperationMulti() throws Exception {
-        TbUtils.log("\nReplaceActionIT.testLiteralReplaceOperationMulti");
+        TbUtils.logInfo("\nReplaceActionIT.testLiteralReplaceOperationMulti");
         try {
             String content = Files.readString(Paths.get("src/test/resources/testdir/secondfile.md"), UTF_8);
             Files.writeString(Paths.get("src/test/resources/testdir/replace.txt"), content, UTF_8);
@@ -48,7 +48,7 @@ public class ReplaceActionIT extends AbstractActionIT {
 
     @Test
     public void testComplainAboutMultiplesSinceNoMatch() throws Exception {
-        TbUtils.log("\nReplaceActionIT.testComplainAboutMultiplesSinceNoMatch");
+        TbUtils.logInfo("\nReplaceActionIT.testComplainAboutMultiplesSinceNoMatch");
         String response = checkResponse("/replaceInFile?path=secondfile.md", "POST",
                 "{\"pattern\":\"neverthereinthefile\",\"literalReplacement\":\"goose\"}"
                 , 400, null);
@@ -57,7 +57,7 @@ public class ReplaceActionIT extends AbstractActionIT {
 
     @Test
     public void testComplainAboutMultiplesSinceManyMatches() throws Exception {
-        TbUtils.log("\nReplaceActionIT.testComplainAboutMultiplesSinceManyMatches");
+        TbUtils.logInfo("\nReplaceActionIT.testComplainAboutMultiplesSinceManyMatches");
         String response = checkResponse("/replaceInFile?path=secondfile.md", "POST",
                 "{\"pattern\":\"duck\",\"literalReplacement\":\"goose\"}"
                 , 400, null);
@@ -66,7 +66,7 @@ public class ReplaceActionIT extends AbstractActionIT {
 
     @Test
     public void testLiteralReplaceOperationFileNotFound() throws Exception {
-        TbUtils.log("\nReplaceActionIT.testLiteralReplaceOperationFileNotFound");
+        TbUtils.logInfo("\nReplaceActionIT.testLiteralReplaceOperationFileNotFound");
         checkResponse("/replaceInFile?path=notfound.txt", "POST",
                 "{\"pattern\":\"duck\",\"literalReplacement\":\"goose\"}", 404, "notfound.txt");
     }
@@ -74,7 +74,7 @@ public class ReplaceActionIT extends AbstractActionIT {
 
     @Test
     public void testBothReplacementsGiven() throws Exception {
-        TbUtils.log("\nReplaceActionIT.testBothReplacementsGiven");
+        TbUtils.logInfo("\nReplaceActionIT.testBothReplacementsGiven");
         String response = checkResponse("/replaceInFile?path=secondfile.md", "POST",
                 "{\"pattern\":\"duck\",\"literalReplacement\":\"goose\",\"replacementWithGroupReferences\":\"goose\",\"multiple\":true}"
                 , 400, null);
@@ -83,7 +83,7 @@ public class ReplaceActionIT extends AbstractActionIT {
 
     @Test
     public void testNoReplacementsGiven() throws Exception {
-        TbUtils.log("\nReplaceActionIT.testNoReplacementsGiven");
+        TbUtils.logInfo("\nReplaceActionIT.testNoReplacementsGiven");
         String response = checkResponse("/replaceInFile?path=secondfile.md", "POST",
                 "{\"pattern\":\"duck\",\"multiple\":true}"
                 , 400, null);
@@ -92,7 +92,7 @@ public class ReplaceActionIT extends AbstractActionIT {
 
     @Test
     public void testReplacementWithGroupReferencesNoGroup() throws Exception {
-        TbUtils.log("\nReplaceActionIT.testReplacementWithGroupReferencesNoGroup");
+        TbUtils.logInfo("\nReplaceActionIT.testReplacementWithGroupReferencesNoGroup");
         String response = checkResponse("/replaceInFile?path=secondfile.md", "POST",
                 "{\"pattern\":\"duck\",\"replacementWithGroupReferences\":\"goose\",\"multiple\":true}"
                 , 400, null);
@@ -101,7 +101,7 @@ public class ReplaceActionIT extends AbstractActionIT {
 
     @Test
     public void testReplacementWithGroupReferencesSuccessful() throws Exception {
-        TbUtils.log("\nReplaceActionIT.testReplacementWithGroupReferencesSuccessful");
+        TbUtils.logInfo("\nReplaceActionIT.testReplacementWithGroupReferencesSuccessful");
         try {
             String content = Files.readString(Paths.get("src/test/resources/testdir/firstfile.txt"), UTF_8);
             Files.writeString(Paths.get("src/test/resources/testdir/replace4.txt"), content, UTF_8);
@@ -119,7 +119,7 @@ public class ReplaceActionIT extends AbstractActionIT {
     @Deprecated
     @Test
     public void testReplacementWithGroupReferencesSuccessfulWithMulti() throws Exception {
-        TbUtils.log("\nReplaceActionIT.testReplacementWithGroupReferencesSuccessfulWithMulti");
+        TbUtils.logInfo("\nReplaceActionIT.testReplacementWithGroupReferencesSuccessfulWithMulti");
         try {
             String content = Files.readString(Paths.get("src/test/resources/testdir/secondfile.md"), UTF_8);
             Files.writeString(Paths.get("src/test/resources/testdir/replace2.txt"), content, UTF_8);
@@ -135,7 +135,7 @@ public class ReplaceActionIT extends AbstractActionIT {
 
     @Test
     public void testLiteralSearchStringReplaceOperation() throws Exception {
-        TbUtils.log("\nReplaceActionIT.testLiteralSearchStringReplaceOperation");
+        TbUtils.logInfo("\nReplaceActionIT.testLiteralSearchStringReplaceOperation");
         try {
             String content = Files.readString(Paths.get("src/test/resources/testdir/firstfile.txt"), UTF_8);
             Files.writeString(Paths.get("src/test/resources/testdir/replaceLiteral.txt"), content, UTF_8);
@@ -152,7 +152,7 @@ public class ReplaceActionIT extends AbstractActionIT {
 
     @Test
     public void testBothLiteralSearchStringAndPatternGiven() throws Exception {
-        TbUtils.log("\nReplaceActionIT.testBothLiteralSearchStringAndPatternGiven");
+        TbUtils.logInfo("\nReplaceActionIT.testBothLiteralSearchStringAndPatternGiven");
         String response = checkResponse("/replaceInFile?path=secondfile.md", "POST",
                 "{\"literalSearchString\":\"duck\",\"pattern\":\"duck\",\"literalReplacement\":\"goose\"}"
                 , 400, null);
