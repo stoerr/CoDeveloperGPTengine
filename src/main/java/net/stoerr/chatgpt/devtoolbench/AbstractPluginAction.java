@@ -76,7 +76,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
                         try (Stream<String> lines = Files.lines(p)) {
                             return lines.anyMatch(line -> grepPattern.matcher(line).find());
                         } catch (Exception e) {
-                            log("Error reading " + p + " : " + e);
+                            logInfo("Error reading " + p + " : " + e);
                             return false;
                         }
                     }
@@ -101,7 +101,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
     protected String getMandatoryQueryParam(HttpServerExchange exchange, String name) {
         String result = getQueryParam(exchange, name);
         if (null == result) {
-            log("Missing query parameter " + name + " in " + exchange.getRequestURI());
+            logInfo("Missing query parameter " + name + " in " + exchange.getRequestURI());
             throw sendError(exchange, 400, "Missing query parameter " + name);
         }
         return result;
