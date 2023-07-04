@@ -22,6 +22,8 @@ jobs:
     env:
       SUBDIR: ${{ github.event.inputs.subdir }}
       MVNCMD: mvn -B -ntp
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_ACTOR: ${{ github.actor }}
 
     steps:
     - uses: actions/checkout@v3

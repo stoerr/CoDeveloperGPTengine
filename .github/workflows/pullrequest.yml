@@ -53,4 +53,4 @@ jobs:
       run: $MVNCMD -N help:effective-settings
 
     - name: Testbuild with Maven
-      run: $MVNCMD -P test verify
+      run: $MVNCMD verify
