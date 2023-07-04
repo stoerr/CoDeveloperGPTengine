@@ -1,7 +1,7 @@
 package net.stoerr.chatgpt.devtoolbench;
 
-import static net.stoerr.chatgpt.devtoolbench.TbUtils.log;
 import static net.stoerr.chatgpt.devtoolbench.TbUtils.logBody;
+import static net.stoerr.chatgpt.devtoolbench.TbUtils.logInfo;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -20,11 +20,12 @@ import org.wildfly.common.annotation.Nullable;
 
 import com.google.gson.Gson;
 
-import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletResponse;
 
-public abstract class AbstractPluginAction implements HttpHandler {
+public abstract class AbstractPluginAction extends HttpServlet {
 
     private final Gson gson = new Gson();
 
@@ -32,11 +33,11 @@ public abstract class AbstractPluginAction implements HttpHandler {
      * Logs an error and sends it to ChatGPT, always throws {@link ExecutionAbortedException}.
      * Use with pattern {@code throw sendError(...)} to let compiler know that.
      */
-    protected static ExecutionAbortedException sendError(HttpServerExchange exchange, int statusCode, String error) throws ExecutionAbortedException {
-        log("Error " + statusCode + ": " + error);
-        exchange.setStatusCode(statusCode);
-        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
-        exchange.getResponseSender().send(error);
+    protected static ExecutionAbortedException sendError(HttpServletResponse response, int statusCode, String error) throws ExecutionAbortedException {
+        logInfo("Error " + statusCode + ": " + error);
+        response.setStatus(statusCode);
+        response.addHeader(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
+        response.getResponseSender().send(error);
         throw new ExecutionAbortedException(error);
     }
 

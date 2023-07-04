@@ -8,14 +8,14 @@ public class ExecuteActionActionIT extends AbstractActionIT {
 
     @Test
     public void testExecuteActionHelloWorld() throws Exception {
-        TbUtils.log("\nExecuteActionActionIT.testExecuteActionHelloWorld");
+        TbUtils.logInfo("\nExecuteActionActionIT.testExecuteActionHelloWorld");
         checkResponse("/executeAction?actionName=helloworld", "POST", "{\"actionInput\":\"testinput\"}", 200, "action-helloworld.txt");
     }
 
     @Test
     @Ignore("FIXME currently fails on Github Actions. Possibly refactoring to use Jetty necessary.")
     public void testHelloWorldWithLargeFile() throws Exception {
-        TbUtils.log("\nExecuteActionActionIT.testHelloWorldWithLargeFile");
+        TbUtils.logInfo("\nExecuteActionActionIT.testHelloWorldWithLargeFile");
         String prefix = "Hello World! Your input was: ";
         StringBuilder testinput = new StringBuilder();
         testinput.append("test input".repeat(3000));
@@ -27,13 +27,13 @@ public class ExecuteActionActionIT extends AbstractActionIT {
 
     @Test
     public void testExecuteActionNotThere() throws Exception {
-        TbUtils.log("\nExecuteActionActionIT.testExecuteActionNotThere");
+        TbUtils.logInfo("\nExecuteActionActionIT.testExecuteActionNotThere");
         checkResponse("/executeAction?actionName=notthere", "POST", "{\"actionInput\":\"testinput\"}", 400, "action-notthere.txt");
     }
 
     @Test
     public void testExecuteActionFail() throws Exception {
-        TbUtils.log("\nExecuteActionActionIT.testExecuteActionFail");
+        TbUtils.logInfo("\nExecuteActionActionIT.testExecuteActionFail");
         checkResponse("/executeAction?actionName=fail", "POST", "{\"actionInput\":\"testinput\"}", 500, "action-fail.txt");
     }
 }

@@ -11,7 +11,7 @@ public class WriteFileActionIT extends AbstractActionIT {
 
     @Test
     public void testWriteFileOperation() throws Exception {
-        TbUtils.log("\nWriteFileActionIT.testWriteFileOperation");
+        TbUtils.logInfo("\nWriteFileActionIT.testWriteFileOperation");
         String response = checkResponse("/writeFile?path=filewritten.txt", "POST", "{\"content\":\"testcontent line one\\nline two \\\\\\n with quoted backslashing \\n\"}", 200, null);
         collector.checkThat(response, CoreMatchers.containsString("File completely overwritten"));
         String expected = readFile("/test-expected/filewritten.txt");
@@ -22,7 +22,7 @@ public class WriteFileActionIT extends AbstractActionIT {
     @Ignore("FIXME fails on Github for unknown reason. Perhaps we have to rewrite to use Jetty.")
     @Test
     public void testWriteLargeFile() throws Exception {
-        TbUtils.log("\nWriteFileActionIT.testWriteLargeFile");
+        TbUtils.logInfo("\nWriteFileActionIT.testWriteLargeFile");
         try {
             StringBuilder testinput = new StringBuilder();
             testinput.append("test input".repeat(3000));
@@ -38,7 +38,7 @@ public class WriteFileActionIT extends AbstractActionIT {
 
     @Test
     public void testAppendToFile() throws Exception {
-        TbUtils.log("\nWriteFileActionIT.testAppendToFile");
+        TbUtils.logInfo("\nWriteFileActionIT.testAppendToFile");
         String initialContent = "Initial content\n";
         String appendedContent = "Appended content\n";
         String expectedContent = initialContent + appendedContent;
