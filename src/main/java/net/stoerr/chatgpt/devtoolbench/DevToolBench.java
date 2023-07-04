@@ -4,13 +4,13 @@ import static net.stoerr.chatgpt.devtoolbench.AbstractPluginAction.sendError;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
@@ -21,21 +21,27 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.resource.Resource;
 
-import io.undertow.Undertow;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
 import io.undertow.util.HttpString;
 import io.undertow.util.Methods;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class DevToolBench {
 
     static Path currentDir = Paths.get(".").normalize().toAbsolutePath();
 
     private static final Map<String, Supplier<String>> STATICFILES = new HashMap<>();
-    private static final Map<String, AbstractPluginAction> HANDLERS = new HashMap<>();
-
     /**
      * Which files we always ignore.
      */
@@ -48,6 +54,8 @@ public class DevToolBench {
 
     private static int port;
 
+    private static final Map<String, AbstractPluginAction> HANDLERS = new LinkedHashMap<>();
+
     private static final String OPENAPI_DESCR_START = """
             openapi: 3.0.1
             info:
@@ -58,13 +66,20 @@ public class DevToolBench {
             paths:
             """.stripIndent();
 
-    private static Undertow server;
+    private static Server server;
+    private static ServletContextHandler context;
 
     private static void addHandler(AbstractPluginAction handler) {
         HANDLERS.put(handler.getUrl(), handler);
+        context.addServlet(new ServletHolder(handler), "/" + handler.getUrl());
     }
 
-    static {
+    protected static void initServlets() {
+        ResourceHandler resourceHandler = new ResourceHandler();
+        context.setHandler(resourceHandler);
+        Resource baseResource = Resource.newResource(DevToolBench.class.getResource("/static"));
+        resourceHandler.setBaseResource(baseResource);
+
         addHandler(new ListFilesAction());
         addHandler(new ReadFileAction());
         addHandler(new WriteFileAction());
@@ -72,37 +87,42 @@ public class DevToolBench {
         addHandler(new GrepAction());
         addHandler(new ReplaceAction());
 
-        STATICFILES.put("/.well-known/ai-plugin.json", () -> {
-            try (InputStream in = DevToolBench.class.getResourceAsStream("/ai-plugin.json")) {
-                return new String(in.readAllBytes(), StandardCharsets.UTF_8)
-                        .replace("THEPORT", String.valueOf(port))
-                        .replace("THEVERSION", TbUtils.getVersionString());
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
+        context.addServlet(new ServletHolder(new HttpServlet() {
+            @Override
+            protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                resp.setHeader("Content-Type", "application/json");
+                try (InputStream in = DevToolBench.class.getResourceAsStream("/ai-plugin.json")) {
+                    resp.getWriter().write(new String(in.readAllBytes(), StandardCharsets.UTF_8)
+                            .replace("THEPORT", String.valueOf(port))
+                            .replace("THEVERSION", TbUtils.getVersionString()));
+                }
             }
-        });
-        STATICFILES.put("/devtoolbench.yaml", () -> {
-            StringBuilder pathDescriptions = new StringBuilder();
-            HANDLERS.values().stream().sorted(Comparator.comparing(AbstractPluginAction::getUrl))
-                    .forEach(handler -> pathDescriptions.append(handler.openApiDescription()));
-            return OPENAPI_DESCR_START.replace("THEPORT", String.valueOf(port)) + pathDescriptions;
-        });
-        STATICFILES.put("/", () -> "<html><body><h1>Developers ToolBench ChatGPT Plugin</h1><p>See <a href=\"/.well-known/ai-plugin.json\">/.well-known/ai-plugin.json</a> for the plugin description.</p></body></html>\n");
+        }), "/ai-plugin.json");
+
+        context.addServlet(new ServletHolder(new HttpServlet() {
+            @Override
+            protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                resp.setHeader("Content-Type", "text/yaml");
+                StringBuilder pathDescriptions = new StringBuilder();
+                HANDLERS.values().stream().sorted(Comparator.comparing(AbstractPluginAction::getUrl))
+                        .forEach(handler -> pathDescriptions.append(handler.openApiDescription()));
+                resp.getWriter().write(OPENAPI_DESCR_START.replace("THEPORT", String.valueOf(port)) + pathDescriptions);
+            }
+        }), "/devtoolbench.yaml");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         TbUtils.logVersion();
 
         parseOptions(args);
-        server = Undertow.builder()
-                .addHttpListener(port, "localhost")
-                .setHandler(DevToolBench::handleRequest)
-                .setIoThreads(20)
-                .setWorkerThreads(20)
-                .setBufferSize(128000)
-                .build();
+        server = new Server(port);
+        context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
+        context.setContextPath("/");
+        initServlets();
+        server.setHandler(context);
         server.start();
-        TbUtils.log("Started on http://localhost:" + port + " in directory " + currentDir);
+        server.join();
+        TbUtils.logInfo("Started on http://localhost:" + port + " in directory " + currentDir);
     }
 
     private static void parseOptions(String[] args) {
@@ -130,7 +150,7 @@ public class DevToolBench {
             }
 
             if (!cmd.hasOption("w")) {
-                TbUtils.log("No -w option present - writing disabled!");
+                TbUtils.logInfo("No -w option present - writing disabled!");
                 HANDLERS.remove("/writeFile");
                 HANDLERS.remove("/grep");
             }
@@ -140,13 +160,13 @@ public class DevToolBench {
         }
     }
 
-    public static void stop() {
+    public static void stop() throws Exception {
         server.stop();
     }
 
     private static void handleRequest(HttpServerExchange exchange) {
         try {
-            TbUtils.log(exchange.getRequestMethod() + " " + exchange.getRequestURI() +
+            TbUtils.logInfo(exchange.getRequestMethod() + " " + exchange.getRequestURI() +
                     (exchange.getQueryString() != null && !exchange.getQueryString().isEmpty() ? "?" + exchange.getQueryString() : ""));
             TbUtils.logRequest(exchange);
             String path = exchange.getRequestPath();
@@ -168,13 +188,13 @@ public class DevToolBench {
                 HttpHandler handler = HANDLERS.get(path);
                 if (handler != null) {
                     handler.handleRequest(exchange);
-                    TbUtils.log("Response: " + exchange.getStatusCode() + " " + exchange.getResponseHeaders());
+                    TbUtils.logInfo("Response: " + exchange.getStatusCode() + " " + exchange.getResponseHeaders());
                 } else {
                     throw sendError(exchange, 404, "Unknown request");
                 }
             }
         } catch (ExecutionAbortedException e) {
-            TbUtils.log("Aborted and problem reported to ChatGPT : " + e.getMessage());
+            TbUtils.logInfo("Aborted and problem reported to ChatGPT : " + e.getMessage());
         } catch (Exception e) {
             TbUtils.logError("Bug! Abort handling request " + exchange.getRequestURL());
             TbUtils.logStacktrace(e);

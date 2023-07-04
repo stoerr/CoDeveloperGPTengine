@@ -34,7 +34,7 @@ public abstract class AbstractActionIT {
     static final int port = 7364;
 
     @BeforeClass
-    public static void setUpClass() throws InterruptedException, IOException {
+    public static void setUpClass() throws Exception {
         Files.createDirectories(Paths.get("target/test-actual"));
         DevToolBench.currentDir = Paths.get(".").resolve("src/test/resources/testdir").normalize()
                 .toAbsolutePath();
@@ -43,7 +43,7 @@ public abstract class AbstractActionIT {
     }
 
     @AfterClass
-    public static void tearDownClass() throws InterruptedException {
+    public static void tearDownClass() throws Exception {
         Thread.sleep(10);
         DevToolBench.stop();
         Thread.sleep(20);
