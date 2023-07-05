@@ -2,22 +2,23 @@ package net.stoerr.chatgpt.devtoolbench;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.Range;
 
-import io.undertow.io.Receiver;
-import io.undertow.server.HttpServerExchange;
-import io.undertow.util.Headers;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class ReplaceAction extends AbstractPluginAction {
 
@@ -90,51 +91,45 @@ public class ReplaceAction extends AbstractPluginAction {
         //                                  description: If multiple is true, replace all occurrences, otherwise exactly one occurrence - it would be an error if there is no occurrence or several occurrences. Default is false. Use true with care and only if there is a good reason to do so.
     }
 
-    @Override
-    public void handleRequest(HttpServerExchange exchange) {
-        Receiver requestReceiver = exchange.getRequestReceiver();
-        requestReceiver.setMaxBufferSize(100000);
-        requestReceiver.receiveFullBytes(this::handleBody, this::handleRequestBodyError);
-    }
-
     // FIXME response cites should cite actual content, token abbreviated
 
-    private void handleBody(HttpServerExchange exchange, byte[] bytes) {
-        String json = new String(bytes, UTF_8);
-        String path = exchange.getQueryParameters().get("path").getFirst();
-        String pattern = getBodyParameter(exchange, json, "pattern", false);
-        String literalSearchString = getBodyParameter(exchange, json, "literalSearchString", false);
-        String literalReplacement = getBodyParameter(exchange, json, "literalReplacement", false);
-        String replacementWithGroupReferences = getBodyParameter(exchange, json, "replacementWithGroupReferences", false);
-        boolean multiple = "true".equalsIgnoreCase(getBodyParameter(exchange, json, "multiple", false));
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        BufferedReader reader = req.getReader();
+        String json = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+        Path path = getPath(req, resp);
+        String pattern = getBodyParameter(resp, json, "pattern", false);
+        String literalSearchString = getBodyParameter(resp, json, "literalSearchString", false);
+        String literalReplacement = getBodyParameter(resp, json, "literalReplacement", false);
+        String replacementWithGroupReferences = getBodyParameter(resp, json, "replacementWithGroupReferences", false);
+        boolean multiple = "true".equalsIgnoreCase(getBodyParameter(resp, json, "multiple", false));
 
         if (isNotEmpty(literalSearchString) && isNotEmpty(pattern)) {
-            throw sendError(exchange, 400, "Either literalSearchString or pattern must be given, but not both.");
+            throw sendError(resp, 400, "Either literalSearchString or pattern must be given, but not both.");
         }
         if (!isNotEmpty(literalSearchString) && !isNotEmpty(pattern)) {
-            throw sendError(exchange, 400, "One of literalSearchString or pattern must be given.");
+            throw sendError(resp, 400, "One of literalSearchString or pattern must be given.");
         }
 
         if (literalReplacement == null && replacementWithGroupReferences == null) {
-            throw sendError(exchange, 400, "Either literalReplacement or replacementWithGroupReferences must be given.");
+            throw sendError(resp, 400, "Either literalReplacement or replacementWithGroupReferences must be given.");
         }
         if (literalReplacement != null && replacementWithGroupReferences != null) {
-            throw sendError(exchange, 400, "Either literalReplacement or replacementWithGroupReferences must be given, but not both.");
+            throw sendError(resp, 400, "Either literalReplacement or replacementWithGroupReferences must be given, but not both.");
         }
         if (isNotEmpty(replacementWithGroupReferences) && !replacementWithGroupReferences.contains("$")) {
-            throw sendError(exchange, 400, "don't use replacementWithGroupReferences if there are no group references.");
+            throw sendError(resp, 400, "don't use replacementWithGroupReferences if there are no group references.");
         }
         if (isNotEmpty(literalSearchString) && isNotEmpty(replacementWithGroupReferences)) {
-            throw sendError(exchange, 400, "literalSearchString doesn't make sense with replacementWithGroupReferences.");
+            throw sendError(resp, 400, "literalSearchString doesn't make sense with replacementWithGroupReferences.");
         }
 
         if (isNotEmpty(literalSearchString)) {
             pattern = Pattern.quote(literalSearchString);
         }
 
-        Path filePath = DevToolBench.currentDir.resolve(path);
         try {
-            String content = Files.readString(filePath, UTF_8);
+            String content = Files.readString(path, UTF_8);
             Matcher m = Pattern.compile(pattern).matcher(content);
             List<Range<Long>> modifiedLineNumbers = new ArrayList<>();
             int replacementCount = 0;
@@ -147,7 +142,7 @@ public class ReplaceAction extends AbstractPluginAction {
                 if (isNotEmpty(literalReplacement)) {
                     m.appendReplacement(sb, Matcher.quoteReplacement(literalReplacement));
                 } else {
-                    m.appendReplacement(sb, TbUtils.compileReplacement(exchange, replacementWithGroupReferences));
+                    m.appendReplacement(sb, TbUtils.compileReplacement(resp, replacementWithGroupReferences));
                 }
                 replacementCount++;
             }
@@ -155,32 +150,32 @@ public class ReplaceAction extends AbstractPluginAction {
 
             if (!multiple && replacementCount != 1) {
                 if (replacementCount == 0) {
-                    throw sendError(exchange, 400, ERRORMESSAGE_PATTERNNOTFOUND);
+                    throw sendError(resp, 400, ERRORMESSAGE_PATTERNNOTFOUND);
                 } else {
-                    throw sendError(exchange, 400, "Found " + replacementCount + " occurrences, but expected exactly one. Please make the pattern more specific so that it matches only one occurrence.");
+                    throw sendError(resp, 400, "Found " + replacementCount + " occurrences, but expected exactly one. Please make the pattern more specific so that it matches only one occurrence.");
                 }
             }
 
             List<String> modifiedLineDescr = rangeDescription(modifiedLineNumbers);
 
-            Files.writeString(filePath, sb.toString(), UTF_8);
-            exchange.setStatusCode(200);
-            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
-            exchange.getResponseSender().send("Replaced " + replacementCount + " occurrences of pattern; modified lines "
+            Files.writeString(path, sb.toString(), UTF_8);
+            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.setContentType("text/plain; charset=UTF-8");
+            resp.getWriter().write("Replaced " + replacementCount + " occurrences of pattern; modified lines "
                     + String.join(", ", modifiedLineDescr));
         } catch (NoSuchFileException e) {
-            throw sendError(exchange, 404, "File not found: " + DevToolBench.currentDir.relativize(filePath));
+            throw sendError(resp, 404, "File not found: " + DevToolBench.currentDir.relativize(path));
         } catch (IOException e) {
-            throw sendError(exchange, 500, "Error reading or writing file : " + e);
+            throw sendError(resp, 500, "Error reading or writing file : " + e);
         } catch (PatternSyntaxException e) {
             if (e.getMessage().contains("Unclosed character class") && pattern.contains("[^]")) {
-                throw sendError(exchange, 400, "Invalid pattern; [^] is invalid in Java regular expressions. To match characters including newline you can use ((?s).*?)\n" +
+                throw sendError(resp, 400, "Invalid pattern; [^] is invalid in Java regular expressions. To match characters including newline you can use ((?s).*?)\n" +
                         "The error was: " + e.getMessage());
             } else {
-                throw sendError(exchange, 400, "Invalid pattern. You are a Javascript expert, analyze the following problem with the regular expression you used: " + e.getMessage());
+                throw sendError(resp, 400, "Invalid pattern. You are a Javascript expert, analyze the following problem with the regular expression you used: " + e.getMessage());
             }
         } catch (IllegalArgumentException e) {
-            throw sendError(exchange, 400, "Invalid replacement: " + e.getMessage());
+            throw sendError(resp, 400, "Invalid replacement: " + e.getMessage());
         }
     }
 
@@ -217,12 +212,6 @@ public class ReplaceAction extends AbstractPluginAction {
             rangeDescr = " " + lastRange.lowerEndpoint() + " - " + lastRange.upperEndpoint();
         }
         return rangeDescr;
-    }
-
-    @Override
-    protected Path getPath(HttpServerExchange exchange) {
-        String path = exchange.getQueryParameters().get("path").getFirst();
-        return Paths.get(path);
     }
 
 }

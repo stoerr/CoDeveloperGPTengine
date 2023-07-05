@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import io.undertow.server.HttpServerExchange;
-import io.undertow.util.Headers;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class GrepAction extends AbstractPluginAction {
 
@@ -70,23 +71,23 @@ public class GrepAction extends AbstractPluginAction {
     // ======================== <filename> line uvw until xyz
     // matching lines with context lines
     @Override
-    public void handleRequest(HttpServerExchange exchange) {
-        String fileRegex = getQueryParam(exchange, "fileRegex");
-        String grepRegex = getMandatoryQueryParam(exchange, "grepRegex");
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String fileRegex = getQueryParam(req, "fileRegex");
+        String grepRegex = getMandatoryQueryParam(req, resp, "grepRegex");
         Pattern grepPattern = Pattern.compile(grepRegex);
         Pattern filePattern = fileRegex != null ? Pattern.compile(fileRegex) : Pattern.compile(".*");
         int contextLinesRaw = 0;
-        String contextLinesParam = getQueryParam(exchange, "contextLines");
+        String contextLinesParam = getQueryParam(req, "contextLines");
         if (contextLinesParam != null && !contextLinesParam.isBlank()) {
             try {
                 contextLinesRaw = Integer.parseInt(contextLinesParam);
             } catch (NumberFormatException e) {
-                throw sendError(exchange, 400, "Invalid contextLines parameter: " + contextLinesParam);
+                throw sendError(resp, 400, "Invalid contextLines parameter: " + contextLinesParam);
             }
         }
         final int contextLines = contextLinesRaw;
 
-        Stream<Path> matchingFiles = findMatchingFiles(exchange, getPath(exchange), filePattern, grepPattern);
+        Stream<Path> matchingFiles = findMatchingFiles(resp, getPath(req, resp), filePattern, grepPattern);
         StringBuilder buf = new StringBuilder();
         matchingFiles
                 .filter(f -> !GREP_IGNORE_BINARIES_PATTERN.matcher(f.toString()).find())
@@ -114,8 +115,8 @@ public class GrepAction extends AbstractPluginAction {
                         throw new UncheckedIOException(e);
                     }
                 });
-        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
-        exchange.getResponseSender().send(buf.toString());
+        resp.setContentType("text/plain; charset=UTF-8");
+        resp.getWriter().write(buf.toString());
     }
 
     private void appendBlock(List<String> lines, StringBuilder buf, Path path, int start, int end) {

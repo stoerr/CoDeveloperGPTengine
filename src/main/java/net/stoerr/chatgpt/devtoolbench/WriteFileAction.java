@@ -2,15 +2,17 @@ package net.stoerr.chatgpt.devtoolbench;
 
 import static net.stoerr.chatgpt.devtoolbench.TbUtils.addShortContentReport;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.stream.Collectors;
 
-import io.undertow.io.Receiver;
-import io.undertow.server.HttpServerExchange;
-import io.undertow.util.Headers;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * an operation that writes the message into the file at path.
@@ -63,36 +65,36 @@ public class WriteFileAction extends AbstractPluginAction {
     //                            type: boolean
 
     @Override
-    public void handleRequest(HttpServerExchange exchange) {
-        Receiver requestReceiver = exchange.getRequestReceiver();
-        requestReceiver.setMaxBufferSize(100000);
-        requestReceiver.receiveFullBytes(this::handleBody, this::handleRequestBodyError);
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        BufferedReader reader = req.getReader();
+        String body = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+        handleBody(req, resp, body.getBytes());
     }
 
-    private void handleBody(HttpServerExchange exchange, byte[] bytes) {
+    private void handleBody(HttpServletRequest req, HttpServletResponse resp, byte[] bytes) throws IOException {
         String json = new String(bytes, StandardCharsets.UTF_8);
         try {
-            String appendParam = getQueryParam(exchange, "append");
+            String appendParam = getQueryParam(req, "append");
             boolean append = appendParam != null && appendParam.toLowerCase().contains("true");
-            String content = getBodyParameter(exchange, json, "content", true);
-            Path path = getPath(exchange);
+            String content = getBodyParameter(resp, json, "content", true);
+            Path path = getPath(req, resp);
             if (!Files.exists(path.getParent())) {
                 Files.createDirectories(path.getParent());
             }
             if (append && !Files.exists(path)) {
-                throw sendError(exchange, 400, "File " + path + " does not exist, cannot append to it.");
+                throw sendError(resp, 400, "File " + path + " does not exist, cannot append to it.");
             }
             StandardOpenOption appendOption = append ? StandardOpenOption.APPEND : StandardOpenOption.TRUNCATE_EXISTING;
             Files.write(path, content.getBytes(), java.nio.file.StandardOpenOption.CREATE,
                     java.nio.file.StandardOpenOption.WRITE, appendOption);
-            exchange.setStatusCode(200);
+            resp.setStatus(HttpServletResponse.SC_OK);
             StringBuilder output = new StringBuilder();
             output.append("File completely overwritten with: ");
             output.append(addShortContentReport(content, output));
-            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
-            exchange.getResponseSender().send(output.toString());
+            resp.setContentType("text/plain; charset=UTF-8");
+            resp.getWriter().write(output.toString());
         } catch (IOException e) {
-            throw sendError(exchange, 500, "Error writing file: " + e);
+            throw sendError(resp, 500, "Error writing file: " + e);
         }
     }
 

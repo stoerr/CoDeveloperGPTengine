@@ -156,7 +156,7 @@ public class DevToolBench {
         initServlets();
         server.setHandler(context);
         server.start();
-        server.join();
+        // server.join();
         TbUtils.logInfo("Started on http://localhost:" + port + " in directory " + currentDir);
     }
 
@@ -197,6 +197,10 @@ public class DevToolBench {
 
     public static void stop() throws Exception {
         server.stop();
+    }
+
+    public static void execute(Runnable runnable) {
+        server.getThreadPool().execute(runnable);
     }
 
 }
