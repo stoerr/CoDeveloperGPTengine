@@ -10,6 +10,6 @@ cd "$progdir" || exit 1
 mvn -B install || exit 1
 
 echo Copying to bin
-mv -f bin/developersToolBenchPlugin.jar bin/developersToolBenchPlugin.bak.jar
-mv $progdir/target/developersChatGPTtoolbenchPlugin-*.jar bin/developersToolBenchPlugin.jar
+mv -f bin/developers-chatgpt-toolbench-plugin.jar bin/developers-chatgpt-toolbench-plugin.bak.jar
+mv $progdir/target/developers-chatgpt-toolbench-plugin-*.jar bin/developers-chatgpt-toolbench-plugin.jar
 ls -l bin
