@@ -3,6 +3,7 @@ package net.stoerr.chatgpt.devtoolbench;
 import static net.stoerr.chatgpt.devtoolbench.TbUtils.logInfo;
 import static net.stoerr.chatgpt.devtoolbench.TbUtils.logStacktrace;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -11,10 +12,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-import io.undertow.io.Receiver;
-import io.undertow.server.HttpServerExchange;
-import io.undertow.util.Headers;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class ExecuteAction extends AbstractPluginAction {
 
@@ -60,22 +62,17 @@ public class ExecuteAction extends AbstractPluginAction {
     }
 
     @Override
-    public void handleRequest(HttpServerExchange exchange) {
-        Receiver requestReceiver = exchange.getRequestReceiver();
-        requestReceiver.setMaxBufferSize(100000);
-        requestReceiver.receiveFullBytes(this::handleBody, this::handleRequestBodyError);
-    }
-
-    private void handleBody(HttpServerExchange exchange, byte[] bytes) {
-        String json = new String(bytes, StandardCharsets.UTF_8);
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        BufferedReader reader = req.getReader();
+        String json = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         Process process = null;
         try {
-            String content = getBodyParameter(exchange, json, "actionInput", false);
-            String actionName = getMandatoryQueryParam(exchange, "actionName");
+            String content = getBodyParameter(resp, json, "actionInput", false);
+            String actionName = getMandatoryQueryParam(req, resp, "actionName");
             Path path = DevToolBench.currentDir.resolve(".cgptdevbench/" + actionName + ".sh");
 
             if (!Files.exists(path)) {
-                throw sendError(exchange, 400, "Action " + actionName + " not found");
+                throw sendError(resp, 400, "Action " + actionName + " not found");
             }
 
             ProcessBuilder pb = new ProcessBuilder("/bin/sh", path.toString());
@@ -84,7 +81,7 @@ public class ExecuteAction extends AbstractPluginAction {
             process = pb.start();
 
             OutputStream out = process.getOutputStream();
-            exchange.getConnection().getWorker().execute(() -> {
+            DevToolBench.execute(() -> {
                 try {
                     try {
                         out.write(content.getBytes(StandardCharsets.UTF_8));
@@ -101,7 +98,7 @@ public class ExecuteAction extends AbstractPluginAction {
             try (InputStream inputStream = process.getInputStream()) {
                 output = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
                 if (!process.waitFor(1, TimeUnit.MINUTES)) {
-                    throw sendError(exchange, 500, "Process did not finish within one minute");
+                    throw sendError(resp, 500, "Process did not finish within one minute");
                 }
             }
             int exitCode = process.exitValue();
@@ -109,18 +106,18 @@ public class ExecuteAction extends AbstractPluginAction {
             output = output.replaceAll(Pattern.quote(DevToolBench.currentDir + "/"), "");
 
             if (exitCode == 0) {
-                exchange.setStatusCode(200);
-                exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
-                exchange.getResponseSender().send(output);
+                resp.setStatus(HttpServletResponse.SC_OK);
+                resp.setContentType("text/plain; charset=UTF-8");
+                resp.getWriter().write(output);
             } else {
                 String response = "Execution failed with exit code " + exitCode + ": " + output;
-                throw sendError(exchange, 500, response);
+                throw sendError(resp, 500, response);
             }
         } catch (IOException e) {
-            throw sendError(exchange, 500, "Error executing action: " + e);
+            throw sendError(resp, 500, "Error executing action: " + e);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw sendError(exchange, 500, "Error executing action: " + e);
+            throw sendError(resp, 500, "Error executing action: " + e);
         } finally {
             if (process != null) {
                 process.destroy();

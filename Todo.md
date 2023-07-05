@@ -1,5 +1,7 @@
 # Todos
 
+! Deny executing exactly the same request more than 3 times - kill loops!
+
 ## Refactoring
 
 ### Clamp down on tokens

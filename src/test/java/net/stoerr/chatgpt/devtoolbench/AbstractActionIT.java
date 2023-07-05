@@ -24,8 +24,6 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.ErrorCollector;
 
-import io.undertow.util.Headers;
-
 public abstract class AbstractActionIT {
 
     @Rule
@@ -110,7 +108,7 @@ public abstract class AbstractActionIT {
         // our IDE adds a \n to each file, which is a often desirable convention
         result = result.stripTrailing() + "\n";
 
-        Header contentTypeHeader = response.getFirstHeader(Headers.CONTENT_TYPE.toString());
+        Header contentTypeHeader = response.getFirstHeader("Content-Type");
 
         Files.writeString(Paths.get("target/test-actual/" + Path.of(expectFilename).getFileName()), result, UTF_8);
         String expectedResponse = readFile("/test-expected/" + expectFilename);
