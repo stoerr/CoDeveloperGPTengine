@@ -12,7 +12,8 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import io.undertow.server.HttpServerExchange;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Catch-all class for various utilities not related to a class.
@@ -25,14 +26,15 @@ public class TbUtils {
     /**
      * If there is a file named .cgptdevbench/.requestlog.txt, we append the request data to it.
      */
-    protected static void logRequest(HttpServerExchange exchange) {
+    protected static void logRequest(HttpServletRequest request) {
         if (Files.exists(requestLog)) {
             try {
                 String isoDate = DateTimeFormatter.ISO_INSTANT.format(Instant.now());
-                Files.writeString(requestLog, isoDate + " ##### "
-                        + exchange.getRequestMethod() + " " + exchange.getRequestURI()
-                        + (exchange.getQueryString() != null && !exchange.getQueryString().isEmpty() ? "?" + exchange.getQueryString() : "")
-                        + "\n", StandardOpenOption.APPEND);
+                String logmsg = isoDate + " ##### "
+                        + request.getMethod() + " " + request.getRequestURI()
+                        + (request.getQueryString() != null && !request.getQueryString().isEmpty() ? "?" + request.getQueryString() : "")
+                        + "\n";
+                Files.writeString(requestLog, logmsg, StandardOpenOption.APPEND);
             } catch (IOException e) { // not critical but strange - we'd want to know.
                 logError("Could not write to request log " + requestLog + ": " + e.getMessage());
             }
@@ -115,10 +117,10 @@ public class TbUtils {
      * to what {@link Matcher#appendReplacement(StringBuffer, String)} expects. We want to simplify the backslash handling,
      * as backslashes are pretty common in Java source code, while $ is not.
      */
-    protected static String compileReplacement(HttpServerExchange exchange, String replacementWithGroupReferences) {
+    protected static String compileReplacement(HttpServletResponse response, String replacementWithGroupReferences) {
         Matcher invalidGroupMatcher = Pattern.compile("\\$[^0-9$]").matcher(replacementWithGroupReferences);
         if (invalidGroupMatcher.find()) {
-            throw AbstractPluginAction.sendError(exchange, 400, "Invalid replacement pattern " + invalidGroupMatcher.group());
+            throw AbstractPluginAction.sendError(response, 400, "Invalid replacement pattern " + invalidGroupMatcher.group());
         }
         String compiled = replacementWithGroupReferences.replace("\\", "\\\\");
         compiled = compiled.replace("$$", "\\$");

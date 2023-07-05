@@ -1,14 +1,15 @@
 package net.stoerr.chatgpt.devtoolbench;
 
-import java.nio.ByteBuffer;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import io.undertow.server.HttpServerExchange;
-import io.undertow.util.Headers;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 // curl -is http://localhost:3001/listFiles?path=.
 public class ListFilesAction extends AbstractPluginAction {
@@ -56,38 +57,38 @@ public class ListFilesAction extends AbstractPluginAction {
                 """.stripIndent();
     }
 
+
     @Override
-    public void handleRequest(HttpServerExchange exchange) {
-        Path path = getPath(exchange);
-        String filePathRegex = getQueryParam(exchange, "filePathRegex");
-        String grepRegex = getQueryParam(exchange, "grepRegex");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Path path = getPath(req, resp);
+        String filePathRegex = getQueryParam(req, "filePathRegex");
+        String grepRegex = getQueryParam(req, "grepRegex");
         Pattern filePathPattern;
         try {
             filePathPattern = filePathRegex != null ? Pattern.compile(filePathRegex) : null;
         } catch (Exception e) {
-            throw sendError(exchange, 400, "Invalid filePathRegex: " + e);
+            throw sendError(resp, 400, "Invalid filePathRegex: " + e);
         }
         Pattern grepPattern;
         try {
             grepPattern = grepRegex != null ? Pattern.compile(grepRegex) : null;
         } catch (Exception e) {
-            throw sendError(exchange, 400, "Invalid grepRegex: " + e);
+            throw sendError(resp, 400, "Invalid grepRegex: " + e);
         }
 
         if (Files.isDirectory(path)) {
-            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
-            List<String> files = findMatchingFiles(exchange, path, filePathPattern, grepPattern)
+            resp.setContentType("text/plain; charset=UTF-8");
+            List<String> files = findMatchingFiles(resp, path, filePathPattern, grepPattern)
                     .map(this::mappedFilename)
                     .toList();
             if (files.isEmpty()) {
-                throw sendError(exchange, 404, "No files found");
+                throw sendError(resp, 404, "No files found");
             }
             byte[] response = (String.join("\n", files) + "\n").getBytes(StandardCharsets.UTF_8);
-            exchange.setStatusCode(200);
-            exchange.setResponseContentLength(response.length);
-            exchange.getResponseSender().send(ByteBuffer.wrap(response));
+            resp.setContentLength(response.length);
+            resp.getOutputStream().write(response);
         } else {
-            throw sendError(exchange, 404, "Directory not found");
+            throw sendError(resp, 404, "Directory not found");
         }
     }
 

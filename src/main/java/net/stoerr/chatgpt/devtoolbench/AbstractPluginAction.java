@@ -10,19 +10,17 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import org.wildfly.common.annotation.Nullable;
+import javax.annotation.Nullable;
 
 import com.google.gson.Gson;
 
-import io.undertow.server.HttpServerExchange;
-import io.undertow.util.Headers;
 import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public abstract class AbstractPluginAction extends HttpServlet {
@@ -36,12 +34,16 @@ public abstract class AbstractPluginAction extends HttpServlet {
     protected static ExecutionAbortedException sendError(HttpServletResponse response, int statusCode, String error) throws ExecutionAbortedException {
         logInfo("Error " + statusCode + ": " + error);
         response.setStatus(statusCode);
-        response.addHeader(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
-        response.getResponseSender().send(error);
+        response.setContentType("text/plain; charset=UTF-8");
+        try {
+            response.getWriter().write(error);
+        } catch (IOException e) {
+            logInfo("Error writing error: " + e);
+        }
         throw new ExecutionAbortedException(error);
     }
 
-    protected static Stream<Path> findMatchingFiles(HttpServerExchange exchange, Path path, Pattern filePathPattern, Pattern grepPattern) {
+    protected static Stream<Path> findMatchingFiles(HttpServletResponse response, Path path, Pattern filePathPattern, Pattern grepPattern) {
         List<Path> result = new ArrayList<>();
         try {
             Files.walkFileTree(path, new SimpleFileVisitor<>() {
@@ -61,7 +63,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
                 }
             });
         } catch (IOException e) {
-            throw sendError(exchange, 500, "Error reading " + path + " : " + e);
+            throw sendError(response, 500, "Error reading " + path + " : " + e);
         }
 
         return result.stream()
@@ -93,28 +95,27 @@ public abstract class AbstractPluginAction extends HttpServlet {
      */
     public abstract String openApiDescription();
 
-    protected String getQueryParam(HttpServerExchange exchange, String name) {
-        Deque<String> paramDeque = exchange.getQueryParameters().get(name);
-        return paramDeque != null ? paramDeque.peekFirst() : null;
+    protected String getQueryParam(HttpServletRequest request, String name) {
+        return request.getParameter(name);
     }
 
-    protected String getMandatoryQueryParam(HttpServerExchange exchange, String name) {
-        String result = getQueryParam(exchange, name);
+    protected String getMandatoryQueryParam(HttpServletRequest request, HttpServletResponse response, String name) {
+        String result = getQueryParam(request, name);
         if (null == result) {
-            logInfo("Missing query parameter " + name + " in " + exchange.getRequestURI());
-            throw sendError(exchange, 400, "Missing query parameter " + name);
+            logInfo("Missing query parameter " + name + " in " + request.getRequestURI());
+            throw sendError(response, 400, "Missing query parameter " + name);
         }
         return result;
     }
 
-    protected Path getPath(HttpServerExchange exchange) {
-        String path = getMandatoryQueryParam(exchange, "path");
+    protected Path getPath(HttpServletRequest request, HttpServletResponse response) {
+        String path = getMandatoryQueryParam(request, response, "path");
         if (DevToolBench.IGNORE.matcher(path).matches() && !DevToolBench.OVERRIDE_IGNORE.matcher(path).matches()) {
-            throw sendError(exchange, 400, "Access to path " + path + " is not allowed! (matches " + DevToolBench.IGNORE.pattern() + ")");
+            throw sendError(response, 400, "Access to path " + path + " is not allowed! (matches " + DevToolBench.IGNORE.pattern() + ")");
         }
         Path resolved = DevToolBench.currentDir.resolve(path).normalize().toAbsolutePath();
         if (!resolved.startsWith(DevToolBench.currentDir)) {
-            throw sendError(exchange, 400, "Path " + path + " is outside of current directory!");
+            throw sendError(response, 400, "Path " + path + " is outside of current directory!");
         }
         return resolved;
     }
@@ -123,7 +124,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
      * Returns a parameter encoded in JSON the request body; returns "" if that parameter isn't there.
      */
     @Nullable
-    protected String getBodyParameter(HttpServerExchange exchange, String json, String parameterName, boolean mandatory) {
+    protected String getBodyParameter(HttpServletResponse response, String json, String parameterName, boolean mandatory) {
         String parameterValue = null;
         if (!json.isEmpty() && !"{}".equals(json)) {
             try {
@@ -132,19 +133,19 @@ public abstract class AbstractPluginAction extends HttpServlet {
                 parameterValue = parameterObj != null ? parameterObj.toString() : null;
                 logBody(parameterName, parameterValue);
                 if (mandatory && !decoded.containsKey(parameterName)) {
-                    throw sendError(exchange, 400, "Missing parameter " + parameterName);
+                    throw sendError(response, 400, "Missing parameter " + parameterName);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 String error = "Parse error for content: " + e;
-                throw sendError(exchange, 400, error);
+                throw sendError(response, 400, error);
             }
         }
         return parameterValue;
     }
 
-    protected void handleRequestBodyError(HttpServerExchange httpServerExchange, IOException e) {
-        throw sendError(httpServerExchange, 400, "Error reading request body: " + e);
+    protected void handleRequestBodyError(HttpServletResponse response, IOException e) {
+        throw sendError(response, 400, "Error reading request body: " + e);
     }
 
     protected String mappedFilename(Path path) {
