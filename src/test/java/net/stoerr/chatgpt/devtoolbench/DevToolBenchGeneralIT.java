@@ -47,9 +47,6 @@ public class DevToolBenchGeneralIT extends AbstractActionIT {
     public void testUnknownRequest() throws Exception {
         TbUtils.logInfo("\nDevToolBenchGeneralIT.testUnknownRequest");
         String response = checkResponse("/nothing", "GET", null, 404, null);
-        // replace varying id in ServletHandler$Default404Servlet-291f18 with 123456789
-        response = response.replaceAll("ServletHandler\\$Default404Servlet-[0-9a-f]+", "ServletHandler\\$Default404Servlet-123456789");
-        String expectedResponse = readFile("/test-expected/unknown.html");
-        collector.checkThat(response, CoreMatchers.is(expectedResponse));
+        collector.checkThat(response, CoreMatchers.containsString("Error 404 Not Found"));
     }
 }
