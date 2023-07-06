@@ -144,10 +144,6 @@ public abstract class AbstractPluginAction extends HttpServlet {
         return parameterValue;
     }
 
-    protected void handleRequestBodyError(HttpServletResponse response, IOException e) {
-        throw sendError(response, 400, "Error reading request body: " + e);
-    }
-
     protected String mappedFilename(Path path) {
         return DevToolBench.currentDir.relativize(path).toString();
     }
