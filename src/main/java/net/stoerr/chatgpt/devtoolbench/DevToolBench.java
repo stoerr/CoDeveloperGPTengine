@@ -90,12 +90,12 @@ public class DevToolBench {
 
     private static void addHandler(AbstractPluginAction handler) {
         HANDLERS.put(handler.getUrl(), handler);
-        context.addServlet(new ServletHolder(handler), "/" + handler.getUrl());
+        context.addServlet(new ServletHolder(handler), handler.getUrl());
     }
 
     protected static void initServlets() {
         ResourceHandler resourceHandler = new ResourceHandler();
-        context.setHandler(resourceHandler);
+        context.insertHandler(resourceHandler);
         Resource baseResource = Resource.newResource(DevToolBench.class.getResource("/static"));
         resourceHandler.setBaseResource(baseResource);
 
@@ -116,7 +116,7 @@ public class DevToolBench {
                             .replace("THEVERSION", TbUtils.getVersionString()));
                 }
             }
-        }), "/ai-plugin.json");
+        }), "/.well-known/ai-plugin.json");
 
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
@@ -153,8 +153,8 @@ public class DevToolBench {
         server = new Server(port);
         context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         context.setContextPath("/");
+        server.insertHandler(context);
         initServlets();
-        server.setHandler(context);
         server.start();
         // server.join();
         TbUtils.logInfo("Started on http://localhost:" + port + " in directory " + currentDir);
