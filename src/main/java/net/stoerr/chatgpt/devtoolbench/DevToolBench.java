@@ -7,10 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 import org.apache.commons.cli.CommandLine;
@@ -29,7 +27,6 @@ import org.eclipse.jetty.util.resource.Resource;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServlet;
@@ -38,32 +35,25 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class DevToolBench {
 
-    public static final Filter CORSFILTER = new Filter() {
-        @Override
-        public void doFilter(ServletRequest rawRequest, ServletResponse rawResponse, FilterChain chain) throws IOException, ServletException {
-            // if it's an OPTIONS request, we need to give a CORS response like method giveCORSResponse below
-            if (rawRequest instanceof HttpServletRequest request && rawResponse instanceof HttpServletResponse response) {
-                if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-                    response.addHeader("Access-Control-Allow-Origin", "https://chat.openai.com");
-                    response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-                    if (request.getHeader("Access-Control-Request-Headers") != null) {
-                        response.addHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
-                    }
-                    response.addHeader("Access-Control-Max-Age", "3600");
-                    response.addHeader("Allow", "*");
-                    response.setStatus(200);
-                    return;
+    public static final Filter CORSFILTER = (rawRequest, rawResponse, chain) -> {
+        // if it's an OPTIONS request, we need to give a CORS response like method giveCORSResponse below
+        if (rawRequest instanceof HttpServletRequest request && rawResponse instanceof HttpServletResponse response) {
+            if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+                response.addHeader("Access-Control-Allow-Origin", "https://chat.openai.com");
+                response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+                if (request.getHeader("Access-Control-Request-Headers") != null) {
+                    response.addHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
                 }
+                response.addHeader("Access-Control-Max-Age", "3600");
+                response.addHeader("Allow", "*");
+                response.setStatus(200);
+                return;
             }
-            chain.doFilter(rawRequest, rawResponse);
         }
+        chain.doFilter(rawRequest, rawResponse);
     };
     static Path currentDir = Paths.get(".").normalize().toAbsolutePath();
 
-    private static final Map<String, Supplier<String>> STATICFILES = new HashMap<>();
-    /**
-     * Which files we always ignore.
-     */
     public static final Pattern IGNORE = Pattern.compile(".*/[.].*|.*/target/.*|.*/(Hpsx|hpsx).*");
 
     /**
@@ -108,7 +98,7 @@ public class DevToolBench {
 
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
-            protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+            protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
                 resp.setHeader("Content-Type", "application/json");
                 try (InputStream in = DevToolBench.class.getResourceAsStream("/ai-plugin.json")) {
                     resp.getWriter().write(new String(in.readAllBytes(), StandardCharsets.UTF_8)
@@ -120,7 +110,7 @@ public class DevToolBench {
 
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
-            protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+            protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
                 resp.setHeader("Content-Type", "text/yaml");
                 StringBuilder pathDescriptions = new StringBuilder();
                 HANDLERS.values().stream().sorted(Comparator.comparing(AbstractPluginAction::getUrl))

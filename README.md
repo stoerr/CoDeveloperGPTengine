@@ -1,6 +1,6 @@
 # Developers ChatGPT ToolBench
 
-This is a [https://chat.openai.com](ChatGPT) plugin for developers that allows reading / searching / writing files
+This is a [ChatGPT](https://chat.openai.com) plugin for developers that allows reading / searching / writing files
 in the local directory it is started in, and to execute configured actions, e.g. a build and test run.
 
 This is currently in development, but is already useable. (In fact I use it on itself while continuing to develop it.)

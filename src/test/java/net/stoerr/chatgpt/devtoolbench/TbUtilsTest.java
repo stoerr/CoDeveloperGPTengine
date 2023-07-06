@@ -22,7 +22,7 @@ public class TbUtilsTest {
 
         Pattern compiledPattern = Pattern.compile(pattern);
         Matcher matcher = compiledPattern.matcher(input);
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         while (matcher.find()) {
             matcher.appendReplacement(sb, TbUtils.compileReplacement(null, replacement));

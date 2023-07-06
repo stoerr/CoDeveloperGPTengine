@@ -5,4 +5,4 @@ if test -L "$progfile"; then
 fi
 progdir=$(dirname "$progfile")/..
 
-/usr/bin/java -jar $progdir/bin/developersToolBenchPlugin.jar "$@"
+/usr/bin/java -jar "$progdir/bin/developersToolBenchPlugin.jar" "$@"
