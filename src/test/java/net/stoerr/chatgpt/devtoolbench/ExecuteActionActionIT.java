@@ -34,4 +34,11 @@ public class ExecuteActionActionIT extends AbstractActionIT {
         TbUtils.logInfo("\nExecuteActionActionIT.testExecuteActionFail");
         checkResponse("/executeAction?actionName=fail", "POST", "{\"actionInput\":\"testinput\"}", 500, "action-fail.txt");
     }
+
+    @Test
+    public void testExecuteActionJsonError() throws Exception {
+        TbUtils.logInfo("\nExecuteActionActionIT.testExecuteActionFail");
+        checkResponse("/executeAction?actionName=fail", "POST", "{{", 400, "action-gsonerror.txt");
+    }
+
 }

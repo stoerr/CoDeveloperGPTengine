@@ -70,7 +70,7 @@ public class WriteFileAction extends AbstractPluginAction {
         handleBody(req, resp, body.getBytes());
     }
 
-    private void handleBody(HttpServletRequest req, HttpServletResponse resp, byte[] bytes) throws IOException {
+    private void handleBody(HttpServletRequest req, HttpServletResponse resp, byte[] bytes) {
         String json = new String(bytes, StandardCharsets.UTF_8);
         try {
             String appendParam = getQueryParam(req, "append");
