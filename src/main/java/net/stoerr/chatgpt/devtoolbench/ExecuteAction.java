@@ -106,7 +106,7 @@ public class ExecuteAction extends AbstractPluginAction {
 
             if (exitCode == 0) {
                 resp.setStatus(HttpServletResponse.SC_OK);
-                resp.setContentType("text/plain; charset=UTF-8");
+                resp.setContentType("text/plain;charset=UTF-8");
                 resp.getWriter().write(output);
             } else {
                 String response = "Execution failed with exit code " + exitCode + ": " + output;

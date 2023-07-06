@@ -76,7 +76,7 @@ public class ListFilesAction extends AbstractPluginAction {
         }
 
         if (Files.isDirectory(path)) {
-            resp.setContentType("text/plain; charset=UTF-8");
+            resp.setContentType("text/plain;charset=UTF-8");
             List<String> files = findMatchingFiles(resp, path, filePathPattern, grepPattern)
                     .map(this::mappedFilename)
                     .toList();

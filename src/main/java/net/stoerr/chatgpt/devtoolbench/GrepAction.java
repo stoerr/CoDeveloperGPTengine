@@ -70,7 +70,7 @@ public class GrepAction extends AbstractPluginAction {
     // ======================== <filename> line uvw until xyz
     // matching lines with context lines
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String fileRegex = getQueryParam(req, "fileRegex");
         String grepRegex = getMandatoryQueryParam(req, resp, "grepRegex");
         Pattern grepPattern = Pattern.compile(grepRegex);
@@ -114,7 +114,7 @@ public class GrepAction extends AbstractPluginAction {
                         throw new UncheckedIOException(e);
                     }
                 });
-        resp.setContentType("text/plain; charset=UTF-8");
+        resp.setContentType("text/plain;charset=UTF-8");
         resp.getWriter().write(buf.toString());
     }
 

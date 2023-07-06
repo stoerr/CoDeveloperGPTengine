@@ -114,7 +114,18 @@ public abstract class AbstractActionIT {
         String expectedResponse = readFile("/test-expected/" + expectFilename);
         collector.checkThat(expectFilename, result, CoreMatchers.is(expectedResponse));
 
-        String expectedContentType = expectedResponse.contains("<html>") ? "text/html; charset=UTF-8" : "text/plain; charset=UTF-8";
+        String expectedContentType;
+        if (expectedResponse.contains("<html>")) {
+            if (expectedResponse.contains("text/html;charset=ISO-8859-1")) {
+                expectedContentType = "text/html;charset=iso-8859-1";
+            } else {
+                expectedContentType = "text/html; charset=UTF-8";
+            }
+        } else if (expectedResponse.contains("openapi: 3.0")) {
+            expectedContentType = "text/yaml;charset=utf-8";
+        } else {
+            expectedContentType = "text/plain;charset=utf-8";
+        }
         collector.checkThat(contentTypeHeader != null ? contentTypeHeader.getValue() : null, CoreMatchers.is(expectedContentType));
     }
 

@@ -34,7 +34,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
     protected static ExecutionAbortedException sendError(HttpServletResponse response, int statusCode, String error) throws ExecutionAbortedException {
         logInfo("Error " + statusCode + ": " + error);
         response.setStatus(statusCode);
-        response.setContentType("text/plain; charset=UTF-8");
+        response.setContentType("text/plain;charset=UTF-8");
         try {
             response.getWriter().write(error);
         } catch (IOException e) {

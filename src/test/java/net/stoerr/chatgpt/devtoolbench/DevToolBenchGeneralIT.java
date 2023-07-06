@@ -14,7 +14,9 @@ public class DevToolBenchGeneralIT extends AbstractActionIT {
     @Test
     public void testRoot() throws IOException {
         TbUtils.logInfo("\nDevToolBenchGeneralIT.testRoot");
-        checkResponse("/", "GET", null, 200, "index.html");
+        String response = checkResponse("/", "GET", null, 200, null);
+        String expected = readFile("/../../../src/main/resources/static/index.html");
+        collector.checkThat(response, CoreMatchers.is(expected));
     }
 
     @Test
@@ -44,6 +46,10 @@ public class DevToolBenchGeneralIT extends AbstractActionIT {
     @Test
     public void testUnknownRequest() throws Exception {
         TbUtils.logInfo("\nDevToolBenchGeneralIT.testUnknownRequest");
-        checkResponse("/nothing", "GET", null, 404, "unknown");
+        String response = checkResponse("/nothing", "GET", null, 404, null);
+        // replace varying id in ServletHandler$Default404Servlet-291f18 with 123456789
+        response = response.replaceAll("ServletHandler\\$Default404Servlet-[0-9a-f]+", "ServletHandler\\$Default404Servlet-123456789");
+        String expectedResponse = readFile("/test-expected/unknown.html");
+        collector.checkThat(response, CoreMatchers.is(expectedResponse));
     }
 }

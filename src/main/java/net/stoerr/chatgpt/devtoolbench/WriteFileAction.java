@@ -90,7 +90,7 @@ public class WriteFileAction extends AbstractPluginAction {
             StringBuilder output = new StringBuilder();
             output.append("File completely overwritten with: ");
             output.append(addShortContentReport(content, output));
-            resp.setContentType("text/plain; charset=UTF-8");
+            resp.setContentType("text/plain;charset=UTF-8");
             resp.getWriter().write(output.toString());
         } catch (IOException e) {
             throw sendError(resp, 500, "Error writing file: " + e);

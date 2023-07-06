@@ -4,7 +4,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import org.hamcrest.CoreMatchers;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class WriteFileActionIT extends AbstractActionIT {
@@ -19,7 +18,6 @@ public class WriteFileActionIT extends AbstractActionIT {
         collector.checkThat(actual, CoreMatchers.is(expected));
     }
 
-    @Ignore("FIXME fails on Github for unknown reason. Perhaps we have to rewrite to use Jetty.")
     @Test
     public void testWriteLargeFile() throws Exception {
         TbUtils.logInfo("\nWriteFileActionIT.testWriteLargeFile");

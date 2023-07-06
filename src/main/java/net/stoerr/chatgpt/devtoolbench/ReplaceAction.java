@@ -159,7 +159,7 @@ public class ReplaceAction extends AbstractPluginAction {
 
             Files.writeString(path, sb.toString(), UTF_8);
             resp.setStatus(HttpServletResponse.SC_OK);
-            resp.setContentType("text/plain; charset=UTF-8");
+            resp.setContentType("text/plain;charset=UTF-8");
             resp.getWriter().write("Replaced " + replacementCount + " occurrences of pattern; modified lines "
                     + String.join(", ", modifiedLineDescr));
         } catch (NoSuchFileException e) {
