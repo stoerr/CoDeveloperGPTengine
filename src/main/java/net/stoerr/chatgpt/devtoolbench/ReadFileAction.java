@@ -47,7 +47,7 @@ public class ReadFileAction extends AbstractPluginAction {
         if (Files.exists(path)) {
             byte[] bytes = Files.readAllBytes(path);
             resp.setContentLength(bytes.length);
-            resp.setContentType("text/plain; charset=UTF-8");
+            resp.setContentType("text/plain;charset=UTF-8");
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.getOutputStream().write(bytes);
         } else {

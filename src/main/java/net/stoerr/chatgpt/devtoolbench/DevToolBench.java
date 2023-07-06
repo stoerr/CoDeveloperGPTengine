@@ -99,7 +99,8 @@ public class DevToolBench {
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
             protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-                resp.setHeader("Content-Type", "application/json");
+                resp.setContentType("application/json");
+                resp.setCharacterEncoding("UTF-8");
                 try (InputStream in = DevToolBench.class.getResourceAsStream("/ai-plugin.json")) {
                     resp.getWriter().write(new String(in.readAllBytes(), StandardCharsets.UTF_8)
                             .replace("THEPORT", String.valueOf(port))
@@ -111,7 +112,8 @@ public class DevToolBench {
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
             protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-                resp.setHeader("Content-Type", "text/yaml");
+                resp.setContentType("text/yaml");
+                resp.setCharacterEncoding("UTF-8");
                 StringBuilder pathDescriptions = new StringBuilder();
                 HANDLERS.values().stream().sorted(Comparator.comparing(AbstractPluginAction::getUrl))
                         .forEach(handler -> pathDescriptions.append(handler.openApiDescription()));
