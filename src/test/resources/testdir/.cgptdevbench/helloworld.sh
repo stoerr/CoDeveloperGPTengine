@@ -1,2 +1,2 @@
 #!/bin/bash
-echo Hello World! Your input was: $(cat)
+echo Hello World! Your input was: "$(cat)"

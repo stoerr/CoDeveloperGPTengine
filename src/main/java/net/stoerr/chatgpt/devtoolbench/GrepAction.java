@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -71,7 +70,7 @@ public class GrepAction extends AbstractPluginAction {
     // ======================== <filename> line uvw until xyz
     // matching lines with context lines
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String fileRegex = getQueryParam(req, "fileRegex");
         String grepRegex = getMandatoryQueryParam(req, resp, "grepRegex");
         Pattern grepPattern = Pattern.compile(grepRegex);

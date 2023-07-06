@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -59,7 +58,7 @@ public class ListFilesAction extends AbstractPluginAction {
 
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Path path = getPath(req, resp);
         String filePathRegex = getQueryParam(req, "filePathRegex");
         String grepRegex = getQueryParam(req, "grepRegex");

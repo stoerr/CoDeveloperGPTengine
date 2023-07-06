@@ -16,14 +16,13 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.Range;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class ReplaceAction extends AbstractPluginAction {
 
     public static final String ERRORMESSAGE_PATTERNNOTFOUND = """
-            Found no occurrences of pattern. 
+            Found no occurrences of pattern.
             Possible actions to fix the problem:
              - Re-read the file - it might be different than you think. 
              - Use literalSearchString instead of specifying a pattern. That is less error prone.
@@ -94,7 +93,7 @@ public class ReplaceAction extends AbstractPluginAction {
     // FIXME response cites should cite actual content, token abbreviated
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         BufferedReader reader = req.getReader();
         String json = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         Path path = getPath(req, resp);
