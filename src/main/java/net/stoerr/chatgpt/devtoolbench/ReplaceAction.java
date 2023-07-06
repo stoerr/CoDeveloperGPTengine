@@ -24,7 +24,7 @@ public class ReplaceAction extends AbstractPluginAction {
     public static final String ERRORMESSAGE_PATTERNNOTFOUND = """
             Found no occurrences of pattern.
             Possible actions to fix the problem:
-             - Re-read the file - it might be different than you think. 
+             - Re-read the file - it might be different than you think.
              - Use literalSearchString instead of specifying a pattern. That is less error prone.
              - Think out of the box and use a completely different pattern, match something else or use a different way to reach your goal. You can use all advanced regex features to create a short but precise pattern.
             Common errors:

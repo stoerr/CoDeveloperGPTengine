@@ -47,8 +47,11 @@ public class DevToolBench {
                 response.addHeader("Access-Control-Max-Age", "3600");
                 response.addHeader("Allow", "*");
                 response.setStatus(200);
-                return;
+            } else {
+                response.addHeader("Access-Control-Allow-Origin", "https://chat.openai.com");
+                chain.doFilter(rawRequest, rawResponse);
             }
+            return;
         }
         chain.doFilter(rawRequest, rawResponse);
     };
