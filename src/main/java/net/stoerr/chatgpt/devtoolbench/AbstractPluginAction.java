@@ -40,7 +40,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
         } catch (IOException e) {
             logInfo("Error writing error: " + e);
         }
-        throw new ExecutionAbortedException(error);
+        throw new ExecutionAbortedException();
     }
 
     protected static Stream<Path> findMatchingFiles(HttpServletResponse response, Path path, Pattern filePathPattern, Pattern grepPattern) {

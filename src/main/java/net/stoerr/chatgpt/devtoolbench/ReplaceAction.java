@@ -151,7 +151,7 @@ public class ReplaceAction extends AbstractPluginAction {
                 if (replacementCount == 0) {
                     throw sendError(resp, 400, ERRORMESSAGE_PATTERNNOTFOUND);
                 } else {
-                    throw sendError(resp, 400, "Found " + replacementCount + " occurrences, but expected exactly one. Please make the pattern more specific so that it matches only one occurrence.");
+                    throw sendError(resp, 400, "Found " + replacementCount + " occurrences, but expected exactly one. Please make the pattern more specific so that it matches only one occurrence. You can e.g. add the previous or following line to the search pattern and the replacement. ");
                 }
             }
 

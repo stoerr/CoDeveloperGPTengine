@@ -80,6 +80,7 @@ public class DevToolBench {
 
     private static Server server;
     private static ServletContextHandler context;
+    private static boolean writingEnabled;
 
     private static void addHandler(AbstractPluginAction handler) {
         HANDLERS.put(handler.getUrl(), handler);
@@ -94,10 +95,15 @@ public class DevToolBench {
 
         addHandler(new ListFilesAction());
         addHandler(new ReadFileAction());
-        addHandler(new WriteFileAction());
-        addHandler(new ExecuteAction());
         addHandler(new GrepAction());
-        addHandler(new ReplaceAction());
+        if (writingEnabled) {
+            addHandler(new WriteFileAction());
+            ExecuteAction executeAction = new ExecuteAction();
+            if (executeAction.hasActions()) { // not quite clear whether that is writing...
+                addHandler(executeAction);
+            }
+            addHandler(new ReplaceAction());
+        }
 
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
@@ -179,10 +185,9 @@ public class DevToolBench {
                 port = 3002;
             }
 
+            writingEnabled = cmd.hasOption("w");
             if (!cmd.hasOption("w")) {
-                TbUtils.logInfo("No -w option present - writing disabled!");
-                HANDLERS.remove("/writeFile");
-                HANDLERS.remove("/grep");
+                TbUtils.logInfo("No -w option present - writing and executing actions disabled!");
             }
         } catch (ParseException e) {
             TbUtils.logError("Error parsing command line options: " + e.getMessage());
