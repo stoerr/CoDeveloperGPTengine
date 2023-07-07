@@ -32,7 +32,7 @@ paths:
               schema:
                 type: string
   /grepFiles:
-    post:
+    get:
       operationId: grepAction
       summary: Search for lines in text files matching the given regex.
       parameters:

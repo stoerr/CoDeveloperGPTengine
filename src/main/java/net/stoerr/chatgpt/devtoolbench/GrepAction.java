@@ -24,7 +24,7 @@ public class GrepAction extends AbstractPluginAction {
     public String openApiDescription() {
         return """
                   /grepFiles:
-                    post:
+                    get:
                       operationId: grepAction
                       summary: Search for lines in text files matching the given regex.
                       parameters:
