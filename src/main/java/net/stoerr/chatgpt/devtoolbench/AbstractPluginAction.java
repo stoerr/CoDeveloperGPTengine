@@ -134,7 +134,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
             if (!files.isEmpty()) {
                 message += "\n\nDid you mean one of these files?\n" + String.join("\n", files);
             }
-            throw sendError(response, 400, message);
+            throw sendError(response, 404, message);
         }
         return resolved;
     }

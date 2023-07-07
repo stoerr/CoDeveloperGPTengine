@@ -1,5 +1,7 @@
 package net.stoerr.chatgpt.devtoolbench;
 
+import static org.hamcrest.CoreMatchers.is;
+
 import org.junit.Test;
 
 public class GrepActionIT extends AbstractActionIT {
@@ -14,5 +16,17 @@ public class GrepActionIT extends AbstractActionIT {
     public void testGrepOperationContext() throws Exception {
         TbUtils.logInfo("\nGrepActionIT.testGrepOperationContext");
         checkResponse("/grepFiles?path=.&grepRegex=duck&fileRegex=md&contextLines=1", "GET", null, 200, "grepContext.txt");
+    }
+
+    @Test
+    public void testWrongFilename() throws Exception {
+        TbUtils.logInfo("\nGrepActionIT.testWrongFilename");
+        String response = checkResponse("/grepFiles?path=secondddfile.md&grepRegex=Hello", "GET", null, 404, null);
+        collector.checkThat(response, is("Path secondddfile.md does not exist! Try to list files with /listFiles to find the right path.\n\n" +
+                "Did you mean one of these files?\n" +
+                "secondfile.md\n" +
+                "firstfile.txt\n" +
+                "subdir/fileinsubdir.md\n" +
+                "filewritten.txt"));
     }
 }
