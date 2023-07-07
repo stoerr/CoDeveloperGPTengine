@@ -1,6 +1,6 @@
 # Todos
 
-new Action SearchAndReplace /replaceInFile (rename other one to /replaceRegex) that does multiple replacements in
+new Action SearchAndReplace /replaceRegexInFile (rename other one to /replaceRegex) that does multiple replacements in
 one go, but literal search string and literal pattern.
 
 ## Refactoring
