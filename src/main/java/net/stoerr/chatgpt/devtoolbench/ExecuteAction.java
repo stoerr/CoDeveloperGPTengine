@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -125,4 +126,18 @@ public class ExecuteAction extends AbstractPluginAction {
 
     }
 
+    public boolean hasActions() {
+        // check whether there are any files that would be returned for DevToolBench.currentDir.resolve(".cgptdevbench/" + actionName + ".sh")
+        // check whether there are actually *.sh files there
+        Path dir = DevToolBench.currentDir.resolve(".cgptdevbench");
+        if (!Files.exists(dir)) {
+            return false;
+        }
+        try (Stream<Path> list = Files.list(dir)) {
+            return list.anyMatch(p -> p.toString().endsWith(".sh"));
+        } catch (IOException e) {
+            logInfo("Error checking for actions: " + e);
+            return false;
+        }
+    }
 }

@@ -62,6 +62,7 @@ public class ListFilesAction extends AbstractPluginAction {
         Path path = getPath(req, resp);
         String filePathRegex = getQueryParam(req, "filePathRegex");
         String grepRegex = getQueryParam(req, "grepRegex");
+        RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, path, filePathRegex, grepRegex);
         Pattern filePathPattern;
         try {
             filePathPattern = filePathRegex != null ? Pattern.compile(filePathRegex) : null;
