@@ -102,6 +102,8 @@ public class ReplaceAction extends AbstractPluginAction {
         String literalReplacement = getBodyParameter(resp, json, "literalReplacement", false);
         String replacementWithGroupReferences = getBodyParameter(resp, json, "replacementWithGroupReferences", false);
         boolean multiple = "true".equalsIgnoreCase(getBodyParameter(resp, json, "multiple", false));
+        RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, path, pattern, literalSearchString,
+                literalReplacement, replacementWithGroupReferences, multiple);
 
         if (isNotEmpty(literalSearchString) && isNotEmpty(pattern)) {
             throw sendError(resp, 400, "Either literalSearchString or pattern must be given, but not both.");
@@ -127,6 +129,10 @@ public class ReplaceAction extends AbstractPluginAction {
             pattern = Pattern.quote(literalSearchString);
         }
 
+        String compiledReplacement = literalReplacement != null ?
+                Matcher.quoteReplacement(literalReplacement) :
+                TbUtils.compileReplacement(resp, replacementWithGroupReferences);
+
         try {
             String content = Files.readString(path, UTF_8);
             Matcher m = Pattern.compile(pattern).matcher(content);
@@ -138,11 +144,7 @@ public class ReplaceAction extends AbstractPluginAction {
                 long startLine = lineNumberAfter(content.substring(0, m.start()));
                 long endLine = lineNumberAfter(content.substring(0, m.end()));
                 modifiedLineNumbers.add(Range.closed(startLine, endLine));
-                if (isNotEmpty(literalReplacement)) {
-                    m.appendReplacement(sb, Matcher.quoteReplacement(literalReplacement));
-                } else {
-                    m.appendReplacement(sb, TbUtils.compileReplacement(resp, replacementWithGroupReferences));
-                }
+                m.appendReplacement(sb, compiledReplacement);
                 replacementCount++;
             }
             m.appendTail(sb);

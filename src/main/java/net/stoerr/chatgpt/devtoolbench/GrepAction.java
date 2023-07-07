@@ -73,10 +73,11 @@ public class GrepAction extends AbstractPluginAction {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String fileRegex = getQueryParam(req, "fileRegex");
         String grepRegex = getMandatoryQueryParam(req, resp, "grepRegex");
+        String contextLinesParam = getQueryParam(req, "contextLines");
+        RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, fileRegex, grepRegex, contextLinesParam);
         Pattern grepPattern = Pattern.compile(grepRegex);
         Pattern filePattern = fileRegex != null ? Pattern.compile(fileRegex) : Pattern.compile(".*");
         int contextLinesRaw = 0;
-        String contextLinesParam = getQueryParam(req, "contextLines");
         if (contextLinesParam != null && !contextLinesParam.isBlank()) {
             try {
                 contextLinesRaw = Integer.parseInt(contextLinesParam);

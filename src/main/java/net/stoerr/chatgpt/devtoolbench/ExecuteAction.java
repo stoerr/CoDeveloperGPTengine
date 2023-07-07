@@ -69,6 +69,7 @@ public class ExecuteAction extends AbstractPluginAction {
         try {
             String content = getBodyParameter(resp, json, "actionInput", false);
             String actionName = getMandatoryQueryParam(req, resp, "actionName");
+            RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, content, actionName);
             Path path = DevToolBench.currentDir.resolve(".cgptdevbench/" + actionName + ".sh");
 
             if (!Files.exists(path)) {

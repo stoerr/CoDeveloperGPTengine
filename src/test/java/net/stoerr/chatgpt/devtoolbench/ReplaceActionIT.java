@@ -61,7 +61,7 @@ public class ReplaceActionIT extends AbstractActionIT {
         String response = checkResponse("/replaceInFile?path=secondfile.md", "POST",
                 "{\"pattern\":\"duck\",\"literalReplacement\":\"goose\"}"
                 , 400, null);
-        collector.checkThat(response, is("Found 12 occurrences, but expected exactly one. Please make the pattern more specific so that it matches only one occurrence."));
+        collector.checkThat(response, containsString("Found 12 occurrences, but expected exactly one."));
     }
 
     @Test

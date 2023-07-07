@@ -26,6 +26,8 @@ public class RepeatedRequestChecker {
                 key.add((String) parameter);
             } else if (parameter instanceof Path) {
                 key.add(parameter.toString());
+            } else if (parameter instanceof Boolean) {
+                key.add(parameter.toString());
             } else if (parameter == null) {
                 key.add("<null parameter>");
             } else {

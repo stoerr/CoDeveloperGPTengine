@@ -1,6 +1,7 @@
 # Todos
 
 ! Deny executing exactly the same request more than 3 times - kill loops!
+Remove exceptions from yaml, probably no point in that.
 
 ## Refactoring
 

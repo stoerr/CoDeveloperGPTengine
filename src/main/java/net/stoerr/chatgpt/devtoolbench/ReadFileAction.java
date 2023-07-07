@@ -44,6 +44,7 @@ public class ReadFileAction extends AbstractPluginAction {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Path path = getPath(req, resp);
+        RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, path);
         if (Files.exists(path)) {
             byte[] bytes = Files.readAllBytes(path);
             resp.setContentLength(bytes.length);
