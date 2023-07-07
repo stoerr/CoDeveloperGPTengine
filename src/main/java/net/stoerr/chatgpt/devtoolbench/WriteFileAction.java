@@ -77,6 +77,7 @@ public class WriteFileAction extends AbstractPluginAction {
             boolean append = appendParam != null && appendParam.toLowerCase().contains("true");
             String content = getBodyParameter(resp, json, "content", true);
             Path path = getPath(req, resp);
+            RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, path, appendParam, content);
             if (!Files.exists(path.getParent())) {
                 Files.createDirectories(path.getParent());
             }
