@@ -67,10 +67,11 @@ public class GrepAction extends AbstractPluginAction {
     // matching lines with context lines
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Path startPath = getPath(req, resp, true);
         String fileRegex = getQueryParam(req, "fileRegex");
         String grepRegex = getMandatoryQueryParam(req, resp, "grepRegex");
         String contextLinesParam = getQueryParam(req, "contextLines");
-        RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, fileRegex, grepRegex, contextLinesParam);
+        RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, startPath, fileRegex, grepRegex, contextLinesParam);
         Pattern grepPattern = Pattern.compile(grepRegex);
         Pattern filePattern = fileRegex != null ? Pattern.compile(fileRegex) : Pattern.compile(".*");
         int contextLinesRaw = 0;
@@ -83,7 +84,7 @@ public class GrepAction extends AbstractPluginAction {
         }
         final int contextLines = contextLinesRaw;
 
-        Stream<Path> matchingFiles = findMatchingFiles(resp, getPath(req, resp, true), filePattern, grepPattern);
+        Stream<Path> matchingFiles = findMatchingFiles(resp, startPath, filePattern, grepPattern);
         StringBuilder buf = new StringBuilder();
         matchingFiles
                 .filter(f -> !GREP_IGNORE_BINARIES_PATTERN.matcher(f.toString()).find())

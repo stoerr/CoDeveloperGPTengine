@@ -1,1 +1,7 @@
-File not found: notfound.txt
+Path notfound.txt does not exist! Try to list files with /listFiles to find the right path.
+
+Did you mean one of these files?
+firstfile.txt
+filewritten.txt
+secondfile.md
+subdir/fileinsubdir.md
