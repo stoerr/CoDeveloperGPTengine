@@ -47,7 +47,7 @@ public class TbUtils {
                 parameterValue = parameterValue.substring(0, 200) + "\n... (part omitted)\n" + parameterValue.substring(parameterValue.length() - 200);
             }
             try {
-                Files.writeString(requestLog, parameterName + ": " + parameterValue + "\n\n", StandardOpenOption.APPEND);
+                Files.writeString(requestLog, parameterName + ": " + parameterValue + "\n", StandardOpenOption.APPEND);
                 logInfo(parameterName + ": " + parameterValue + "\n");
             } catch (IOException e) { // not critical but strange - we'd want to know.
                 logError("Could not write to request log " + requestLog + ": " + e.getMessage());

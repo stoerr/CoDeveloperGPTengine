@@ -51,8 +51,6 @@ public class ListFilesAction extends AbstractPluginAction {
                             text/plain:
                               schema:
                                 type: string
-                        '404':
-                          description: Directory not found
                 """.stripIndent();
     }
 

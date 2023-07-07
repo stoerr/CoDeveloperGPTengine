@@ -79,10 +79,6 @@ public class ReplaceAction extends AbstractPluginAction {
                       responses:
                         '200':
                           description: File updated successfully
-                        '400':
-                          description: Invalid parameter
-                        '500':
-                          description: Server error
                 """.stripIndent();
         // Take out multiple for now, as it has been used wrongly several times
         //                                 multiple:

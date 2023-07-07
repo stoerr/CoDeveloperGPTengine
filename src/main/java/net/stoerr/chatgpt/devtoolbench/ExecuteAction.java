@@ -54,10 +54,6 @@ public class ExecuteAction extends AbstractPluginAction {
                             text/plain:
                               schema:
                                 type: string
-                        '400':
-                          description: Action not found
-                        '500':
-                          description: Action execution failed, output returned
                 """.stripIndent();
     }
 

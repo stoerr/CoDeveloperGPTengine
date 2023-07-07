@@ -50,8 +50,6 @@ public class WriteFileAction extends AbstractPluginAction {
                       responses:
                         '200':
                           description: File overwritten
-                        '400':
-                          description: Invalid parameter
                 """.stripIndent();
     }
     // We remove the append parameter for now, because it is not transactional and the file might be half overwritten

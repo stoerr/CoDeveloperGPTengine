@@ -31,10 +31,6 @@ paths:
             text/plain:
               schema:
                 type: string
-        '400':
-          description: Action not found
-        '500':
-          description: Action execution failed, output returned
   /grepFiles:
     post:
       operationId: grepAction
@@ -71,10 +67,6 @@ paths:
             text/plain:
               schema:
                 type: string
-        '400':
-          description: Invalid parameter
-        '500':
-          description: Error reading files
   /listFiles:
     get:
       operationId: listFiles
@@ -105,8 +97,6 @@ paths:
             text/plain:
               schema:
                 type: string
-        '404':
-          description: Directory not found
   /readFile:
     get:
       operationId: readFile
@@ -125,8 +115,6 @@ paths:
             text/plain:
               schema:
                 type: string
-        '404':
-          description: File not found
   /replaceInFile:
     post:
       operationId: replaceInFile
@@ -160,10 +148,6 @@ paths:
       responses:
         '200':
           description: File updated successfully
-        '400':
-          description: Invalid parameter
-        '500':
-          description: Server error
   /writeFile:
     post:
       operationId: writeFile
@@ -187,5 +171,3 @@ paths:
       responses:
         '200':
           description: File overwritten
-        '400':
-          description: Invalid parameter
