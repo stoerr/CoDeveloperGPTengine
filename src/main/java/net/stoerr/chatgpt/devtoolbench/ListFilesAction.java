@@ -57,7 +57,7 @@ public class ListFilesAction extends AbstractPluginAction {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Path path = getPath(req, resp);
+        Path path = getPath(req, resp, true);
         String filePathRegex = getQueryParam(req, "filePathRegex");
         String grepRegex = getQueryParam(req, "grepRegex");
         RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, path, filePathRegex, grepRegex);
@@ -86,7 +86,7 @@ public class ListFilesAction extends AbstractPluginAction {
             resp.setContentLength(response.length);
             resp.getOutputStream().write(response);
         } else {
-            throw sendError(resp, 404, "Directory not found");
+            throw sendError(resp, 404, "Is not a directory: " + path);
         }
     }
 

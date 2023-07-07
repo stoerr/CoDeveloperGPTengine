@@ -10,12 +10,16 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.gson.Gson;
 
@@ -108,7 +112,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
         return result;
     }
 
-    protected Path getPath(HttpServletRequest request, HttpServletResponse response) {
+    protected Path getPath(HttpServletRequest request, HttpServletResponse response, boolean mustExist) {
         String path = getMandatoryQueryParam(request, response, "path");
         if (DevToolBench.IGNORE.matcher(path).matches() && !DevToolBench.OVERRIDE_IGNORE.matcher(path).matches()) {
             throw sendError(response, 400, "Access to path " + path + " is not allowed! (matches " + DevToolBench.IGNORE.pattern() + ")");
@@ -116,6 +120,21 @@ public abstract class AbstractPluginAction extends HttpServlet {
         Path resolved = DevToolBench.currentDir.resolve(path).normalize().toAbsolutePath();
         if (!resolved.startsWith(DevToolBench.currentDir)) {
             throw sendError(response, 400, "Path " + path + " is outside of current directory!");
+        }
+        if (mustExist && !Files.exists(resolved)) {
+            String message = "Path " + path + " does not exist! Try to list files with /listFiles to find the right path.";
+            String filename = resolved.getFileName().toString();
+            List<String> files = findMatchingFiles(response, DevToolBench.currentDir, null, null)
+                    .map(p -> Pair.of(p, StringUtils.getLevenshteinDistance(p.getFileName().toString(), filename)))
+                    .sorted(Comparator.comparingInt(Pair::getRight))
+                    .limit(10)
+                    .map(Pair::getLeft)
+                    .map(p -> DevToolBench.currentDir.relativize(p).toString())
+                    .toList();
+            if (!files.isEmpty()) {
+                message += "\n\nDid you mean one of these files?\n" + String.join("\n", files);
+            }
+            throw sendError(response, 400, message);
         }
         return resolved;
     }
