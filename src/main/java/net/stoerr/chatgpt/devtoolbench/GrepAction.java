@@ -83,7 +83,7 @@ public class GrepAction extends AbstractPluginAction {
         }
         final int contextLines = contextLinesRaw;
 
-        Stream<Path> matchingFiles = findMatchingFiles(resp, getPath(req, resp), filePattern, grepPattern);
+        Stream<Path> matchingFiles = findMatchingFiles(resp, getPath(req, resp, true), filePattern, grepPattern);
         StringBuilder buf = new StringBuilder();
         matchingFiles
                 .filter(f -> !GREP_IGNORE_BINARIES_PATTERN.matcher(f.toString()).find())

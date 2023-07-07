@@ -1,7 +1,7 @@
 # Todos
 
-! Deny executing exactly the same request more than 3 times - kill loops!
-Remove exceptions from yaml, probably no point in that.
+new Action SearchAndReplace /replaceInFile (rename other one to /replaceRegex) that does multiple replacements in
+one go, but literal search string and literal pattern.
 
 ## Refactoring
 

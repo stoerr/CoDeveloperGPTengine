@@ -41,7 +41,7 @@ public class ReadFileAction extends AbstractPluginAction {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Path path = getPath(req, resp);
+        Path path = getPath(req, resp, true);
         RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, path);
         if (Files.exists(path)) {
             byte[] bytes = Files.readAllBytes(path);
@@ -49,8 +49,6 @@ public class ReadFileAction extends AbstractPluginAction {
             resp.setContentType("text/plain;charset=UTF-8");
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.getOutputStream().write(bytes);
-        } else {
-            throw sendError(resp, 404, "File not found. Try to list files with /listFiles to find the right path.");
         }
     }
 }

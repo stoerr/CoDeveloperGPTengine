@@ -92,7 +92,7 @@ public class ReplaceAction extends AbstractPluginAction {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         BufferedReader reader = req.getReader();
         String json = reader.lines().collect(Collectors.joining(System.lineSeparator()));
-        Path path = getPath(req, resp);
+        Path path = getPath(req, resp, true);
         String pattern = getBodyParameter(resp, json, "pattern", false);
         String literalSearchString = getBodyParameter(resp, json, "literalSearchString", false);
         String literalReplacement = getBodyParameter(resp, json, "literalReplacement", false);
