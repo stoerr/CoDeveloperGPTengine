@@ -19,7 +19,7 @@ import com.google.common.collect.Range;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class ReplaceAction extends AbstractPluginAction {
+public class ReplaceRegexAction extends AbstractPluginAction {
 
     public static final String ERRORMESSAGE_PATTERNNOTFOUND = """
             Found no occurrences of pattern.

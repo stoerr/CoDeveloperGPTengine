@@ -18,3 +18,5 @@
 - Print any explanations before executing the changes, and then change the code using the plugin. Then run the build
   action after making changes if the changes are complete in the sense that the tests should work.
 - At the end verify whether you have fulfilled your task.
+
+Please observe these rules during the whole chat, but there is no need to print them.

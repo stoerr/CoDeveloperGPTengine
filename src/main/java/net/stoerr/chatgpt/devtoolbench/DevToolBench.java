@@ -102,7 +102,7 @@ public class DevToolBench {
             if (executeAction.hasActions()) { // not quite clear whether that is writing...
                 addHandler(executeAction);
             }
-            addHandler(new ReplaceAction());
+            addHandler(new ReplaceRegexAction());
         }
 
         context.addServlet(new ServletHolder(new HttpServlet() {
