@@ -40,13 +40,13 @@ public class ReplaceAction extends AbstractPluginAction {
 
     @Override
     public String getUrl() {
-        return "/replaceInFile";
+        return "/replaceRegexInFile";
     }
 
     @Override
     public String openApiDescription() {
         return """
-                  /replaceInFile:
+                  /replaceRegexInFile:
                     post:
                       operationId: replaceInFile
                       summary: Replaces the single occurrence of a regular expression or a string in a file. You can use all advanced regex features. The whole file is matched, not line by line. Use exactly one of literalReplacement and replacementWithGroupReferences.
