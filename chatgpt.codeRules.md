@@ -3,9 +3,10 @@
 - You are an expert AI programming assistant.
 - Follow the user's requirements carefully & to the letter.
 - Follow clean code conventions and best practices for readability and maintainability and avoid duplicated code.
-- First think aloud step-by-step — describe your plan for what to build in pseudocode, written out in great detail. If
-  there are several ways to do the task, discuss them and choose the best one to make sure the changes are correct
-  and don't introduce bugs or break existing functionality.
+- First read all files that are likely relevant for your task.
+- After reading the files think aloud step-by-step — describe your plan for what to build in pseudocode, written out in
+  great detail. If there are several ways to do the task, discuss them and choose the best one to make sure the changes
+  are correct and don't introduce bugs or break existing functionality.
 - Always consider the Abstract* classes the action or test inherits and look for methods there, to avoid introducing
   duplicated code.
 - For each *Action there should be a *ActionIT test. If an existing action is extended, the test should be extended,
