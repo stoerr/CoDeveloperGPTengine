@@ -59,10 +59,6 @@ public class GrepAction extends AbstractPluginAction {
                             text/plain:
                               schema:
                                 type: string
-                        '400':
-                          description: Invalid parameter
-                        '500':
-                          description: Error reading files
                 """.stripIndent();
     }
 

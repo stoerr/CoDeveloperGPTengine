@@ -36,8 +36,6 @@ public class ReadFileAction extends AbstractPluginAction {
                             text/plain:
                               schema:
                                 type: string
-                        '404':
-                          description: File not found
                 """.stripIndent();
     }
 
