@@ -8,9 +8,13 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.google.common.collect.Range;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -141,4 +145,38 @@ public class TbUtils {
         return output.toString();
     }
 
+    protected static long lineNumberAfter(String contentpart) {
+        return (contentpart + "x").lines().count();
+    }
+
+    static List<String> rangeDescription(List<Range<Long>> modifiedLineNumbers) {
+        List<String> modifiedLineDescr = new ArrayList<>();
+        Range<Long> lastRange = null;
+        for (Range<Long> range : modifiedLineNumbers) {
+            if (lastRange != null) {
+                if (lastRange.upperEndpoint() >= range.lowerEndpoint() - 1) {
+                    lastRange = lastRange.span(range);
+                } else {
+                    modifiedLineDescr.add(rangeDescription(lastRange));
+                    lastRange = range;
+                }
+            } else {
+                lastRange = range;
+            }
+        }
+        if (lastRange != null) {
+            modifiedLineDescr.add(rangeDescription(lastRange));
+        }
+        return modifiedLineDescr;
+    }
+
+    private static String rangeDescription(Range<Long> lastRange) {
+        String rangeDescr;
+        if (lastRange.lowerEndpoint().equals(lastRange.upperEndpoint())) {
+            rangeDescr = String.valueOf(lastRange.lowerEndpoint());
+        } else {
+            rangeDescr = " " + lastRange.lowerEndpoint() + " - " + lastRange.upperEndpoint();
+        }
+        return rangeDescr;
+    }
 }

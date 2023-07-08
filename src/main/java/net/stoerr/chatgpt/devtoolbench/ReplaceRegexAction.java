@@ -137,8 +137,8 @@ public class ReplaceRegexAction extends AbstractPluginAction {
 
             StringBuilder sb = new StringBuilder();
             while (m.find()) {
-                long startLine = lineNumberAfter(content.substring(0, m.start()));
-                long endLine = lineNumberAfter(content.substring(0, m.end()));
+                long startLine = TbUtils.lineNumberAfter(content.substring(0, m.start()));
+                long endLine = TbUtils.lineNumberAfter(content.substring(0, m.end()));
                 modifiedLineNumbers.add(Range.closed(startLine, endLine));
                 m.appendReplacement(sb, compiledReplacement);
                 replacementCount++;
@@ -153,7 +153,7 @@ public class ReplaceRegexAction extends AbstractPluginAction {
                 }
             }
 
-            List<String> modifiedLineDescr = rangeDescription(modifiedLineNumbers);
+            List<String> modifiedLineDescr = TbUtils.rangeDescription(modifiedLineNumbers);
 
             Files.writeString(path, sb.toString(), UTF_8);
             resp.setStatus(HttpServletResponse.SC_OK);
@@ -174,41 +174,6 @@ public class ReplaceRegexAction extends AbstractPluginAction {
         } catch (IllegalArgumentException e) {
             throw sendError(resp, 400, "Invalid replacement: " + e.getMessage());
         }
-    }
-
-    protected long lineNumberAfter(String contentpart) {
-        return (contentpart + "x").lines().count();
-    }
-
-    private static List<String> rangeDescription(List<Range<Long>> modifiedLineNumbers) {
-        List<String> modifiedLineDescr = new ArrayList<>();
-        Range<Long> lastRange = null;
-        for (Range<Long> range : modifiedLineNumbers) {
-            if (lastRange != null) {
-                if (lastRange.upperEndpoint() >= range.lowerEndpoint() - 1) {
-                    lastRange = lastRange.span(range);
-                } else {
-                    modifiedLineDescr.add(rangeDescription(lastRange));
-                    lastRange = range;
-                }
-            } else {
-                lastRange = range;
-            }
-        }
-        if (lastRange != null) {
-            modifiedLineDescr.add(rangeDescription(lastRange));
-        }
-        return modifiedLineDescr;
-    }
-
-    private static String rangeDescription(Range<Long> lastRange) {
-        String rangeDescr;
-        if (lastRange.lowerEndpoint().equals(lastRange.upperEndpoint())) {
-            rangeDescr = String.valueOf(lastRange.lowerEndpoint());
-        } else {
-            rangeDescr = " " + lastRange.lowerEndpoint() + " - " + lastRange.upperEndpoint();
-        }
-        return rangeDescr;
     }
 
 }

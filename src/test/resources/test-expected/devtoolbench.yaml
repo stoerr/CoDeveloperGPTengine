@@ -115,6 +115,38 @@ paths:
             text/plain:
               schema:
                 type: string
+  /replaceInFile:
+    post:
+      operationId: replaceInFile
+      summary: Replaces the single occurrence of a regular expression or a string in a file. You can use all advanced regex features. The whole file is matched, not line by line. Use exactly one of literalReplacement and replacementWithGroupReferences.
+      parameters:
+        - name: path
+          in: query
+          description: relative path to file
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                replacements:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      search:
+                        type: string
+                        description: The string to be replaced - can contain many lines, but please take care to find a small number of lines to replace. Prefer this to pattern for simplicity.
+                      replace:
+                        type: string
+                        description: replaces the finding of the pattern with the replacement and replaces group references $0, $1, ..., $9 with the corresponding groups from the match. A literal $ must be given as $$.
+      responses:
+        '200':
+          description: File updated successfully
   /replaceRegexInFile:
     post:
       operationId: replaceInFile
@@ -171,32 +203,3 @@ paths:
       responses:
         '200':
           description: File overwritten
-  /replaceInFile:
-    post:
-      operationId: replaceInFile
-      summary: Perform several replacements in one file. If one of the replacements fails, the file is not changed.
-      parameters:
-        - name: path
-          in: query
-          description: relative path to file
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: object
-                properties:
-                  search:
-                    type: string
-                    description: The string to be replaced - can contain several lines, but please take care to find a small number of lines to replace, for instance 3. Must occur exactly once in the file.
-                  replace:
-                    type: string
-                    description: The string to replace with. Can contain several lines.
-      responses:
-        '200':
-          description: File updated successfully
