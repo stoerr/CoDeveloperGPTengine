@@ -103,6 +103,7 @@ public class DevToolBench {
                 addHandler(executeAction);
             }
             addHandler(new ReplaceRegexAction());
+            addHandler(new ReplaceAction());
         }
 
         context.addServlet(new ServletHolder(new HttpServlet() {
