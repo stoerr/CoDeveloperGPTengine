@@ -1,8 +1,11 @@
 package net.stoerr.chatgpt.devtoolbench;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,6 +32,18 @@ public class ReadFileAction extends AbstractPluginAction {
                           required: true
                           schema:
                             type: string
+                        - name: maxLines
+                          in: query
+                          description: maximum number of lines to read from the file
+                          required: false
+                          schema:
+                            type: integer
+                        - name: startLine
+                          in: query
+                          description: line number to start reading from
+                          required: false
+                          schema:
+                            type: integer
                       responses:
                         '200':
                           description: Content of the file
@@ -39,14 +54,23 @@ public class ReadFileAction extends AbstractPluginAction {
                 """.stripIndent();
     }
 
-    // ChatGPTTask: add optional parameter for maxLines and startLine and implement it. If these parameters have an effect, that should be mentioned at the start of the request.
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Path path = getPath(req, resp, true);
+        int maxLines = req.getParameter("maxLines") != null ? Integer.parseInt(req.getParameter("maxLines")) : Integer.MAX_VALUE;
+        int startLine = req.getParameter("startLine") != null ? Integer.parseInt(req.getParameter("startLine")) : 1;
         RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, path);
+        if (maxLines != Integer.MAX_VALUE || startLine != 1) {
+            resp.getWriter().write("Reading from line " + startLine + " to line " + (startLine + maxLines - 1) + "\n");
+        }
         if (Files.exists(path)) {
-            byte[] bytes = Files.readAllBytes(path);
+            List<String> lines = Files.lines(path)
+                    .skip(startLine - 1)
+                    .limit(maxLines)
+                    .collect(Collectors.toList());
+            String content = String.join("\n", lines);
+            byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
             resp.setContentLength(bytes.length);
             resp.setContentType("text/plain;charset=UTF-8");
             resp.setStatus(HttpServletResponse.SC_OK);
