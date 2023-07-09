@@ -27,11 +27,13 @@ public class TbUtils {
     public static final PrintStream ERRLOG = System.err;
     public static final PrintStream LOG = System.out;
 
+    static boolean isLoggingEnabled = true;
+
     /**
      * If there is a file named .cgptdevbench/.requestlog.txt, we append the request data to it.
      */
     protected static void logRequest(HttpServletRequest request) {
-        if (Files.exists(requestLog)) {
+        if (isLoggingEnabled && Files.exists(requestLog)) {
             try {
                 String isoDate = DateTimeFormatter.ISO_INSTANT.format(Instant.now());
                 String logmsg = isoDate + " ##### "
@@ -46,7 +48,7 @@ public class TbUtils {
     }
 
     protected static void logBody(String parameterName, String parameterValue) {
-        if (Files.exists(requestLog)) {
+        if (isLoggingEnabled && Files.exists(requestLog)) {
             if (parameterValue != null && parameterValue.length() > 400) {
                 parameterValue = parameterValue.substring(0, 200) + "\n... (part omitted)\n" + parameterValue.substring(parameterValue.length() - 200);
             }
@@ -68,7 +70,9 @@ public class TbUtils {
     }
 
     static void logInfo(String msg) {
-        LOG.println(msg);
+        if (isLoggingEnabled) {
+            LOG.println(msg);
+        }
     }
 
     static void logVersion() {

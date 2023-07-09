@@ -102,7 +102,7 @@ public class DevToolBench {
             if (executeAction.hasActions()) { // not quite clear whether that is writing...
                 addHandler(executeAction);
             }
-            addHandler(new ReplaceRegexAction());
+            // addHandler(new ReplaceRegexAction()); // too many mistakes when using that, look for alternatives
             addHandler(new ReplaceAction());
         }
 
