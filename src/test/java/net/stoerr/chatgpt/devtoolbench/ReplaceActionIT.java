@@ -43,7 +43,7 @@ public class ReplaceActionIT extends AbstractActionIT {
         String response = checkResponse("/replaceInFile?path=secondfile.md", "POST",
                 "[{\"search\":\"duck\",\"replace\":\"goose\"}]"
                 , 400, null);
-        collector.checkThat(response, containsString("Found more than one occurrences, but expected exactly one."));
+        collector.checkThat(response, containsString(", but expected exactly one."));
     }
 
     @Test

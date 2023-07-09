@@ -106,20 +106,20 @@ public class ReplaceAction extends AbstractPluginAction {
 
         try {
             String content = Files.readString(path, UTF_8);
-            StringBuilder sb = new StringBuilder(content);
+            StringBuilder sb = new StringBuilder();
             int totalReplacementCount = 0;
             List<Range<Long>> totalModifiedLineNumbers = new ArrayList<>();
 
             for (Map<String, String> replacement : replacements) {
                 String pattern = Pattern.quote(replacement.get("search"));
                 String compiledReplacement = Matcher.quoteReplacement(replacement.get("replace"));
-                Matcher m = Pattern.compile(pattern).matcher(sb);
+                Matcher m = Pattern.compile(pattern).matcher(content);
                 List<Range<Long>> modifiedLineNumbers = new ArrayList<>();
                 int replacementCount = 0;
 
                 while (m.find()) {
-                    long startLine = lineNumberAfter(sb.substring(0, m.start()));
-                    long endLine = lineNumberAfter(sb.substring(0, m.end()));
+                    long startLine = lineNumberAfter(content.substring(0, m.start()));
+                    long endLine = lineNumberAfter(content.substring(0, m.end()));
                     modifiedLineNumbers.add(Range.closed(startLine, endLine));
                     m.appendReplacement(sb, compiledReplacement);
                     replacementCount++;
