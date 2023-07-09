@@ -20,7 +20,7 @@ public class ReplaceActionIT extends AbstractActionIT {
             String response = checkResponse("/replaceInFile?path=replace3.txt", "POST",
                     "{\"replacements\":[{\"search\":\"test\",\"replace\":\"dingding\"}]}"
                     , 200, null);
-            collector.checkThat(response, is("Replaced 1 occurrences of pattern; modified lines 2"));
+            collector.checkThat(response, is("1 replacement; modified line(s) 2"));
             response = checkResponse("/readFile?path=replace3.txt", "GET", null, 200, null);
             collector.checkThat(response, is("Hello!\nJust a dingding.\n"));
         } finally {
@@ -51,6 +51,23 @@ public class ReplaceActionIT extends AbstractActionIT {
         TbUtils.logInfo("\nReplaceActionIT.testReplaceOperationFileNotFound");
         checkResponse("/replaceInFile?path=notfound.txt", "POST",
                 "{\"replacements\":[{\"search\":\"duck\",\"replace\":\"goose\"}]}", 404, "notfound.txt");
+    }
+
+    @Test
+    public void testMultipleReplacementsInOneRequest() throws Exception {
+        TbUtils.logInfo("\nReplaceActionIT.testMultipleReplacementsInOneRequest");
+        try {
+            String content = Files.readString(Paths.get("src/test/resources/testdir/firstfile.txt"), UTF_8);
+            Files.writeString(Paths.get("src/test/resources/testdir/replace4.txt"), content, UTF_8);
+            String response = checkResponse("/replaceInFile?path=replace4.txt", "POST",
+                    "{\"replacements\":[{\"search\":\"test\",\"replace\":\"dingding\"}, {\"search\":\"Hello\",\"replace\":\"Hi\"}]}",
+                    200, null);
+            collector.checkThat(response, is("2 replacement; modified line(s)  1 - 2"));
+            response = checkResponse("/readFile?path=replace4.txt", "GET", null, 200, null);
+            collector.checkThat(response, is("Hi!\nJust a dingding.\n"));
+        } finally {
+            Files.deleteIfExists(Paths.get("src/test/resources/testdir/replace4.txt"));
+        }
     }
 
 }

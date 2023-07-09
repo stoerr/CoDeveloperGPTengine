@@ -73,24 +73,28 @@ public class ReplaceAction extends AbstractPluginAction {
         String json = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         Path path = getPath(req, resp, true);
         ReplaceInFileRequest replacementRequest = gson.fromJson(json, ReplaceInFileRequest.class);
-
+        if (replacementRequest.getReplacements().isEmpty()) {
+            throw sendError(resp, 400, "No replacements given.");
+        }
 
         try {
             String content = Files.readString(path, UTF_8);
-            StringBuilder sb = new StringBuilder();
             int totalReplacementCount = 0;
             List<Range<Long>> totalModifiedLineNumbers = new ArrayList<>();
 
             for (Replacement replacement : replacementRequest.getReplacements()) {
+                StringBuilder sb = new StringBuilder();
                 String pattern = Pattern.quote(replacement.getSearch());
                 String compiledReplacement = Matcher.quoteReplacement(replacement.getReplace());
                 Matcher m = Pattern.compile(pattern).matcher(content);
+
                 List<Range<Long>> modifiedLineNumbers = new ArrayList<>();
                 int replacementCount = 0;
 
                 while (m.find()) {
                     long startLine = lineNumberAfter(content.substring(0, m.start()));
                     long endLine = lineNumberAfter(content.substring(0, m.end()));
+                    // That's not correct after the first replacement, but we don't care that much.
                     modifiedLineNumbers.add(Range.closed(startLine, endLine));
                     m.appendReplacement(sb, compiledReplacement);
                     replacementCount++;
@@ -107,14 +111,15 @@ public class ReplaceAction extends AbstractPluginAction {
 
                 totalModifiedLineNumbers.addAll(modifiedLineNumbers);
                 totalReplacementCount += replacementCount;
+                content = sb.toString();
             }
 
             List<String> modifiedLineDescr = rangeDescription(totalModifiedLineNumbers);
 
-            Files.writeString(path, sb.toString(), UTF_8);
+            Files.writeString(path, content, UTF_8);
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.setContentType("text/plain;charset=UTF-8");
-            resp.getWriter().write("Replaced " + totalReplacementCount + " occurrences of pattern; modified lines "
+            resp.getWriter().write(totalReplacementCount + " replacement; modified line(s) "
                     + String.join(", ", modifiedLineDescr));
         } catch (NoSuchFileException e) {
             throw sendError(resp, 404, "File not found: " + DevToolBench.currentDir.relativize(path));
