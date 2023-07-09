@@ -48,7 +48,7 @@ public class ReplaceRegexAction extends AbstractPluginAction {
         return """
                   /replaceRegexInFile:
                     post:
-                      operationId: replaceInFile
+                      operationId: replaceRegexInFile
                       summary: Replaces the single occurrence of a regular expression or a string in a file. You can use all advanced regex features. The whole file is matched, not line by line. Use exactly one of literalReplacement and replacementWithGroupReferences.
                       parameters:
                         - name: path

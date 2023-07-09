@@ -71,19 +71,16 @@ public class ReplaceAction extends AbstractPluginAction {
                         content:
                           application/json:
                             schema:
-                              type: object
-                              properties:
-                                replacements:
-                                  type: array
-                                  items:
-                                    type: object
-                                    properties:
-                                      search:
-                                        type: string
-                                        description: The string to be replaced - can contain many lines, but please take care to find a small number of lines to replace. Prefer this to pattern for simplicity.
-                                      replace:
-                                        type: string
-                                        description: replaces the finding of the pattern with the replacement and replaces group references $0, $1, ..., $9 with the corresponding groups from the match. A literal $ must be given as $$.
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  search:
+                                    type: string
+                                    description: The string to be replaced - can contain many lines, but please take care to find a small number of lines to replace. Prefer this to pattern for simplicity.
+                                  replace:
+                                    type: string
+                                    description: replaces the finding of the pattern with the replacement and replaces group references $0, $1, ..., $9 with the corresponding groups from the match. A literal $ must be given as $$.
                       responses:
                         '200':
                           description: File updated successfully
