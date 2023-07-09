@@ -27,6 +27,7 @@ public class GrepActionIT extends AbstractActionIT {
                 "secondfile.md\n" +
                 "firstfile.txt\n" +
                 "subdir/fileinsubdir.md\n" +
-                "filewritten.txt"));
+                "filewritten.txt\n\n" +
+                "(suggestion list truncated - there are more files)."));
     }
 }
