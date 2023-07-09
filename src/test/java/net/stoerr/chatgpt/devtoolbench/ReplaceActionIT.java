@@ -18,7 +18,7 @@ public class ReplaceActionIT extends AbstractActionIT {
             String content = Files.readString(Paths.get("src/test/resources/testdir/firstfile.txt"), UTF_8);
             Files.writeString(Paths.get("src/test/resources/testdir/replace3.txt"), content, UTF_8);
             String response = checkResponse("/replaceInFile?path=replace3.txt", "POST",
-                    "[{\"search\":\"test\",\"replace\":\"dingding\"}]"
+                    "{\"replacements\":[{\"search\":\"test\",\"replace\":\"dingding\"}]}"
                     , 200, null);
             collector.checkThat(response, is("Replaced 1 occurrences of pattern; modified lines 2"));
             response = checkResponse("/readFile?path=replace3.txt", "GET", null, 200, null);
@@ -32,16 +32,16 @@ public class ReplaceActionIT extends AbstractActionIT {
     public void testComplainAboutMultiplesSinceNoMatch() throws Exception {
         TbUtils.logInfo("\nReplaceActionIT.testComplainAboutMultiplesSinceNoMatch");
         String response = checkResponse("/replaceInFile?path=secondfile.md", "POST",
-                "[{\"search\":\"neverthereinthefile\",\"replace\":\"goose\"}]"
+                "{\"replacements\":[{\"search\":\"neverthereinthefile\",\"replace\":\"goose\"}]}"
                 , 400, null);
-        collector.checkThat(response, containsString("Found no occurrences of pattern."));
+        collector.checkThat(response, containsString("not found"));
     }
 
     @Test
     public void testComplainAboutMultiplesSinceManyMatches() throws Exception {
         TbUtils.logInfo("\nReplaceActionIT.testComplainAboutMultiplesSinceManyMatches");
         String response = checkResponse("/replaceInFile?path=secondfile.md", "POST",
-                "[{\"search\":\"duck\",\"replace\":\"goose\"}]"
+                "{\"replacements\":[{\"search\":\"duck\",\"replace\":\"goose\"}]}"
                 , 400, null);
         collector.checkThat(response, containsString(", but expected exactly one."));
     }
@@ -50,7 +50,7 @@ public class ReplaceActionIT extends AbstractActionIT {
     public void testReplaceOperationFileNotFound() throws Exception {
         TbUtils.logInfo("\nReplaceActionIT.testReplaceOperationFileNotFound");
         checkResponse("/replaceInFile?path=notfound.txt", "POST",
-                "[{\"search\":\"duck\",\"replace\":\"goose\"}]", 404, "notfound.txt");
+                "{\"replacements\":[{\"search\":\"duck\",\"replace\":\"goose\"}]}", 404, "notfound.txt");
     }
 
 }
