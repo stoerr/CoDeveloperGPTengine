@@ -88,6 +88,12 @@ public class ReplaceAction extends AbstractPluginAction {
                 String compiledReplacement = Matcher.quoteReplacement(replacement.getReplace());
                 Matcher m = Pattern.compile(pattern).matcher(content);
 
+                TbUtils.logInfo("<<<<<<<<< ORIGINAL");
+                TbUtils.logInfo(replacement.getSearch());
+                TbUtils.logInfo("=======");
+                TbUtils.logInfo(replacement.getReplace());
+                TbUtils.logInfo(">>>>>>> UPDATED");
+
                 List<Range<Long>> modifiedLineNumbers = new ArrayList<>();
                 int replacementCount = 0;
 
