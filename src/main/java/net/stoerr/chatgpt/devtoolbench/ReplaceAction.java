@@ -58,7 +58,7 @@ public class ReplaceAction extends AbstractPluginAction {
                                     properties:
                                       search:
                                         type: string
-                                        description: The string to be replaced - can contain many lines, but please take care to find a small number of lines to replace.
+                                        description: The string to be replaced - can contain many lines, but please take care to find a small number of lines to replace. Everything that is replaced must be here.
                                       replace:
                                         type: string
                                         description: Replacement, can contain several lines.

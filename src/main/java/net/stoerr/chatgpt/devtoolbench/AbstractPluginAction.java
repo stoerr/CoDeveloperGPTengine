@@ -132,7 +132,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
                     .map(p -> DevToolBench.currentDir.relativize(p).toString())
                     .toList();
             if (!files.isEmpty()) {
-                message += "\n\nDid you mean one of these files?\n" + String.join("\n", files);
+                message += "\n\nDid you mean one of these files?\n" + String.join("\n", files) + "\n\n(suggestion list truncated - there are more files).";
             }
             throw sendError(response, 404, message);
         }

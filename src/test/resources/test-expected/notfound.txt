@@ -5,3 +5,5 @@ firstfile.txt
 filewritten.txt
 secondfile.md
 subdir/fileinsubdir.md
+
+(suggestion list truncated - there are more files).

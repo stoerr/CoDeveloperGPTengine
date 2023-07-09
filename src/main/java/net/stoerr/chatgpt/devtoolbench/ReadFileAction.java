@@ -39,6 +39,8 @@ public class ReadFileAction extends AbstractPluginAction {
                 """.stripIndent();
     }
 
+    // ChatGPTTask: add optional parameter for maxLines and startLine and implement it. If these parameters have an effect, that should be mentioned at the start of the request.
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Path path = getPath(req, resp, true);

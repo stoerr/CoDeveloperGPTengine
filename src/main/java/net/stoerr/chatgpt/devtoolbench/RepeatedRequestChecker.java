@@ -34,7 +34,9 @@ public class RepeatedRequestChecker {
                 throw new IllegalArgumentException("BUG: unknown parameter type " + parameter.getClass());
             }
         }
+        TbUtils.logInfo("Repetition key: " + key);
         if (lastRequest.equals(key)) {
+            TbUtils.logError("REPEATED REQUEST: " + key);
             AbstractPluginAction.sendError(response, 400, ERRORMSG);
             throw new ExecutionAbortedException();
         }
