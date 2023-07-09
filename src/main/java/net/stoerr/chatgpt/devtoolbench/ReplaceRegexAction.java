@@ -19,6 +19,7 @@ import com.google.common.collect.Range;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+@Deprecated // "ChatGPT-4 made way too many mistakes when using that"
 public class ReplaceRegexAction extends AbstractPluginAction {
 
     public static final String ERRORMESSAGE_PATTERNNOTFOUND = """

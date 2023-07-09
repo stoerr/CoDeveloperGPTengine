@@ -33,6 +33,7 @@ public abstract class AbstractActionIT {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+        TbUtils.isLoggingEnabled = false;
         Files.createDirectories(Paths.get("target/test-actual"));
         DevToolBench.currentDir = Paths.get(".").resolve("src/test/resources/testdir").normalize()
                 .toAbsolutePath();

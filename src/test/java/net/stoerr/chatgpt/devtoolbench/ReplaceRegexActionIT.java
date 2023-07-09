@@ -7,8 +7,10 @@ import static org.hamcrest.CoreMatchers.is;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore("Disabled since ReplaceRegexAction isn't active because of too many errors.")
 public class ReplaceRegexActionIT extends AbstractActionIT {
 
     @Test
