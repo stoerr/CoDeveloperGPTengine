@@ -15,8 +15,10 @@ public class RepeatedRequestChecker {
     public static final String ERRORMSG = "ERROR: you are repeating the same request again and again, and you will get the same result. Stop what you are doing and consult the user immediately!";
 
     public static final RepeatedRequestChecker CHECKER = new RepeatedRequestChecker();
+    public static final int MAX_REPETITIONS = 3;
 
     private List<String> lastRequest = List.of();
+    private int repetitionCount = 0;
 
     public void checkRequestRepetition(HttpServletResponse response, HttpServlet servlet, Object... parameters) throws ExecutionAbortedException {
         List<String> key = new ArrayList<>();
@@ -36,11 +38,15 @@ public class RepeatedRequestChecker {
         }
         TbUtils.logInfo("Repetition key: " + key);
         if (lastRequest.equals(key)) {
-            TbUtils.logError("REPEATED REQUEST: " + key);
-            AbstractPluginAction.sendError(response, 400, ERRORMSG);
-            throw new ExecutionAbortedException();
+            repetitionCount++;
+            if (repetitionCount >= MAX_REPETITIONS) {
+                TbUtils.logError("REPEATED REQUEST: " + key);
+                AbstractPluginAction.sendError(response, 400, ERRORMSG);
+                throw new ExecutionAbortedException();
+            }
         }
         lastRequest = key;
+        repetitionCount = 0;
     }
 
 }

@@ -61,15 +61,15 @@ public class ReadFileAction extends AbstractPluginAction {
         int maxLines = req.getParameter("maxLines") != null ? Integer.parseInt(req.getParameter("maxLines")) : Integer.MAX_VALUE;
         int startLine = req.getParameter("startLine") != null ? Integer.parseInt(req.getParameter("startLine")) : 1;
         RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, path);
-        if (maxLines != Integer.MAX_VALUE || startLine != 1) {
-            resp.getWriter().write("Reading from line " + startLine + " to line " + (startLine + maxLines - 1) + "\n");
-        }
         if (Files.exists(path)) {
             List<String> lines = Files.lines(path)
                     .skip(startLine - 1)
                     .limit(maxLines)
                     .collect(Collectors.toList());
-            String content = String.join("\n", lines);
+            String content = String.join("\n", lines) + "\n";
+            if (maxLines != Integer.MAX_VALUE || startLine != 1) {
+                content = "File " + path + " lines " + startLine + " to line " + (startLine + lines.size() - 1) + "\n\n" + content;
+            }
             byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
             resp.setContentLength(bytes.length);
             resp.setContentType("text/plain;charset=UTF-8");
