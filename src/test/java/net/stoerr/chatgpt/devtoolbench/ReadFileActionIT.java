@@ -15,23 +15,26 @@ public class ReadFileActionIT extends AbstractActionIT {
 
     @Test
     public void testReadWithMaxLines() throws Exception {
-        String response = checkResponse("/readFile?path=firstfile.txt&maxLines=1", "GET", null, 200, null);
+        String response = checkResponse("/readFile?path=secondfile.md&maxLines=1", "GET", null, 200, null);
         String[] lines = response.split("\n");
-        assertEquals(1, lines.length);
+        assertEquals(3, lines.length);
     }
 
     @Test
     public void testReadWithStartLine() throws Exception {
-        String response = checkResponse("/readFile?path=firstfile.txt&startLine=2", "GET", null, 200, null);
-        String firstLine = response.split("\n")[0];
-        assertEquals("Just a test.", firstLine);
+        String response = checkResponse("/readFile?path=secondfile.md&startLine=14", "GET", null, 200, null);
+        assertEquals("File /Users/hps/dev/ml/developersChatGPTtoolbenchPlugin/src/test/resources/testdir/secondfile.md lines 14 to line 16\n" +
+                "\n" +
+                "appearing context line too\n" +
+                "\n" +
+                "Oh well, let's have a duck again!\n", response);
     }
 
     @Test
     public void testReadWithMaxLinesAndStartLine() throws Exception {
         String response = checkResponse("/readFile?path=firstfile.txt&maxLines=1&startLine=2", "GET", null, 200, null);
         String[] lines = response.split("\n");
-        assertEquals(1, lines.length);
-        assertEquals("Just a test.", lines[0]);
+        assertEquals(3, lines.length);
+        assertEquals("Just a test.", lines[2]);
     }
 }
