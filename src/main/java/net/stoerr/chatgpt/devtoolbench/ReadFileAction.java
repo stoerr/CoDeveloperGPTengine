@@ -68,7 +68,7 @@ public class ReadFileAction extends AbstractPluginAction {
                     .collect(Collectors.toList());
             String content = String.join("\n", lines) + "\n";
             if (maxLines != Integer.MAX_VALUE || startLine != 1) {
-                content = "File " + path + " lines " + startLine + " to line " + (startLine + lines.size() - 1) + "\n\n" + content;
+                content = "File " + DevToolBench.currentDir.relativize(path) + " lines " + startLine + " to line " + (startLine + lines.size() - 1) + "\n\n" + content;
             }
             byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
             resp.setContentLength(bytes.length);

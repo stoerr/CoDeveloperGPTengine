@@ -23,7 +23,7 @@ public class ReadFileActionIT extends AbstractActionIT {
     @Test
     public void testReadWithStartLine() throws Exception {
         String response = checkResponse("/readFile?path=secondfile.md&startLine=14", "GET", null, 200, null);
-        assertEquals("File /Users/hps/dev/ml/developersChatGPTtoolbenchPlugin/src/test/resources/testdir/secondfile.md lines 14 to line 16\n" +
+        assertEquals("File secondfile.md lines 14 to line 16\n" +
                 "\n" +
                 "appearing context line too\n" +
                 "\n" +
