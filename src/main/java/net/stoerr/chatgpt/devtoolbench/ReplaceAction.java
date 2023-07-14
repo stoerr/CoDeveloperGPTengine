@@ -58,10 +58,10 @@ public class ReplaceAction extends AbstractPluginAction {
                                     properties:
                                       search:
                                         type: string
-                                        description: The string to be replaced - can contain many lines, but please take care to find a small number of lines to replace. Everything that is replaced must be here.
+                                        description: The string to be replaced - can contain many lines, but please take care to find a small number of lines to replace. Everything that is replaced must be here. Prefer to match the whole line / several whole lines.
                                       replace:
                                         type: string
-                                        description: Replacement, can contain several lines.
+                                        description: Replacement, can contain several lines. Please observe the correct indentation.
                       responses:
                         '200':
                           description: File updated successfully
@@ -81,8 +81,10 @@ public class ReplaceAction extends AbstractPluginAction {
             String content = Files.readString(path, UTF_8);
             int totalReplacementCount = 0;
             List<Range<Long>> totalModifiedLineNumbers = new ArrayList<>();
+            int replacementNo = 0;
 
             for (Replacement replacement : replacementRequest.getReplacements()) {
+                replacementNo++;
                 StringBuilder sb = new StringBuilder();
                 String pattern = Pattern.quote(replacement.getSearch());
                 String compiledReplacement = Matcher.quoteReplacement(replacement.getReplace());
@@ -109,9 +111,11 @@ public class ReplaceAction extends AbstractPluginAction {
 
                 if (replacementCount != 1) {
                     if (replacementCount == 0) {
-                        throw sendError(resp, 400, "Search string not found. You might want to re-read the file to find out whether something is different from what you expected.");
+                        throw sendError(resp, 400, "Search string " + replacementNo + " not found. You might want to re-read the file to find out whether something is different from what you expected, or use grep with enough context lines if the file is long.");
                     } else {
-                        throw sendError(resp, 400, "Found " + replacementCount + " occurrences, but expected exactly one. You can e.g. add the previous or following line to the search string and pattern.");
+                        throw sendError(resp, 400, "Found " + replacementCount + " occurrences of search string " +
+                                replacementNo +
+                                ", but expected exactly one. You can e.g. add the previous or following line to the search string and pattern.");
                     }
                 }
 
