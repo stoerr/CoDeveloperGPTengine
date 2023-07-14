@@ -152,10 +152,10 @@ paths:
                     properties:
                       search:
                         type: string
-                        description: The string to be replaced - can contain many lines, but please take care to find a small number of lines to replace. Everything that is replaced must be here.
+                        description: The string to be replaced - can contain many lines, but please take care to find a small number of lines to replace. Everything that is replaced must be here. Prefer to match the whole line / several whole lines.
                       replace:
                         type: string
-                        description: Replacement, can contain several lines.
+                        description: Replacement, can contain several lines. Please observe the correct indentation.
       responses:
         '200':
           description: File updated successfully
