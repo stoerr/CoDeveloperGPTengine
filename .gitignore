@@ -54,7 +54,8 @@ target
 .DS_*
 
 dependency-reduced-pom.xml
+build.log
+
 hpsx*
 HpsX*
 .hpsx*
-

@@ -78,11 +78,23 @@
 			<artifactId>jsr305</artifactId>
 			<version>3.0.2</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+		<!-- SLF4J API -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>2.0.7</version>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.32</version>
+		</dependency>
+
+		<!-- Logback Core and Classic, which implements SLF4J -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>1.2.9</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.9</version>
 		</dependency>
 	</dependencies>
 
