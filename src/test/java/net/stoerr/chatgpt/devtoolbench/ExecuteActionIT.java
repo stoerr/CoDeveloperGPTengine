@@ -3,17 +3,17 @@ package net.stoerr.chatgpt.devtoolbench;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
-public class ExecuteActionActionIT extends AbstractActionIT {
+public class ExecuteActionIT extends AbstractActionIT {
 
     @Test
     public void testExecuteActionHelloWorld() throws Exception {
-        TbUtils.logInfo("\nExecuteActionActionIT.testExecuteActionHelloWorld");
+        TbUtils.logInfo("\nExecuteActionIT.testExecuteActionHelloWorld");
         checkResponse("/executeAction?actionName=helloworld", "POST", "{\"actionInput\":\"testinput\"}", 200, "action-helloworld.txt");
     }
 
     @Test
     public void testHelloWorldWithLargeFile() throws Exception {
-        TbUtils.logInfo("\nExecuteActionActionIT.testHelloWorldWithLargeFile");
+        TbUtils.logInfo("\nExecuteActionIT.testHelloWorldWithLargeFile");
         String prefix = "Hello World! Your input was: ";
         StringBuilder testinput = new StringBuilder();
         testinput.append("test input".repeat(3000));
@@ -25,19 +25,19 @@ public class ExecuteActionActionIT extends AbstractActionIT {
 
     @Test
     public void testExecuteActionNotThere() throws Exception {
-        TbUtils.logInfo("\nExecuteActionActionIT.testExecuteActionNotThere");
+        TbUtils.logInfo("\nExecuteActionIT.testExecuteActionNotThere");
         checkResponse("/executeAction?actionName=notthere", "POST", "{\"actionInput\":\"testinput\"}", 400, "action-notthere.txt");
     }
 
     @Test
     public void testExecuteActionFail() throws Exception {
-        TbUtils.logInfo("\nExecuteActionActionIT.testExecuteActionFail");
+        TbUtils.logInfo("\nExecuteActionIT.testExecuteActionFail");
         checkResponse("/executeAction?actionName=fail", "POST", "{\"actionInput\":\"testinput\"}", 500, "action-fail.txt");
     }
 
     @Test
     public void testExecuteActionJsonError() throws Exception {
-        TbUtils.logInfo("\nExecuteActionActionIT.testExecuteActionFail");
+        TbUtils.logInfo("\nExecuteActionIT.testExecuteActionFail");
         checkResponse("/executeAction?actionName=fail", "POST", "{{", 400, "action-gsonerror.txt");
     }
 

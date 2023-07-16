@@ -2,9 +2,9 @@
 echo executing mvn clean install
 mvn -B clean install > build.log 2>&1
 if [ $? -ne 0 ]; then
-  echo "mvn clean install failed, see build.log"
+  echo "mvn clean install failed, see build.log. You can use the grep action with some context lines to look for errors"
   exit 1
 else
-  echo "mvn clean install successful"
+  echo "successful"
   exit 0
 fi
