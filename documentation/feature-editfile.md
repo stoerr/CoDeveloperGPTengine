@@ -1,5 +1,7 @@
 # Operation edit file
 
+(Draft, not planned or implemented yet.)
+
 The operation /editFile (EditFileAction) can be used to edit parts of a file, unlike writeFile that overwrites
 the whole file. Since ChatGPT is not able to reliably generate line numbers or patch files we use distinctive lines
 as anchor, instead. It has the following query parameters:

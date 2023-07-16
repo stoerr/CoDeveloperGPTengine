@@ -1,7 +1,6 @@
 package net.stoerr.chatgpt.devtoolbench;
 
 import static net.stoerr.chatgpt.devtoolbench.TbUtils.logInfo;
-import static net.stoerr.chatgpt.devtoolbench.TbUtils.logStacktrace;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -87,7 +86,6 @@ public class ExecuteAction extends AbstractPluginAction {
                     }
                 } catch (IOException e) {
                     logInfo("Error writing to process: " + e);
-                    logStacktrace(e);
                 }
             });
 

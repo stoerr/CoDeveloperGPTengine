@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore("Disabled since ReplaceRegexAction isn't active because of too many errors.")
+@Ignore("ReplaceRegexActionIT is disabled since ReplaceRegexAction isn't active because of too many errors made by ChatGPT.")
 public class ReplaceRegexActionIT extends AbstractActionIT {
 
     @Test

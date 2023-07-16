@@ -155,7 +155,6 @@ public abstract class AbstractPluginAction extends HttpServlet {
                     throw sendError(response, 400, "Missing parameter " + parameterName);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
                 String error = "Parse error for content: " + e;
                 throw sendError(response, 400, error);
             }
