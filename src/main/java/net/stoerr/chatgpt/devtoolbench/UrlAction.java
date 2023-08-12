@@ -3,7 +3,6 @@ package net.stoerr.chatgpt.devtoolbench;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -50,12 +49,7 @@ public class UrlAction extends AbstractPluginAction {
 
         try {
             URL url = new URL(urlString);
-            Scanner scanner = new Scanner(url.openStream(), StandardCharsets.UTF_8);
-            StringBuilder content = new StringBuilder();
-            while (scanner.hasNextLine()) {
-                content.append(scanner.nextLine()).append("\n");
-            }
-            scanner.close();
+            String content = org.jsoup.Jsoup.parse(url, 10000).text();
 
             byte[] bytes = content.toString().getBytes(StandardCharsets.UTF_8);
             resp.setContentLength(bytes.length);
