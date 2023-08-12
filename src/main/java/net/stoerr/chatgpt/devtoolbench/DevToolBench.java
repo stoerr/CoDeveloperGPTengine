@@ -62,7 +62,7 @@ public class DevToolBench {
     /**
      * Exceptions overriding {@link #IGNORE}.
      */
-    public static final Pattern OVERRIDE_IGNORE = Pattern.compile(".github/.*");
+    public static final Pattern OVERRIDE_IGNORE = Pattern.compile(".*/.github/.*|.*/.content.xml");
 
     private static int port;
 
