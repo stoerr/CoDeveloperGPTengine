@@ -75,6 +75,6 @@ jobs:
       with:
         branch: gh-pages
         # This path is different for the repositories - check
-        folder: target/staging/parent-2/parent-2-public/composum-platform/composum-chatgpt-integration
+        folder: target/staging
         git-config-name: ${{ vars.RELEASE_USERNAME  }}
         git-config-email: ${{ vars.RELEASE_USEREMAIL  }}

@@ -135,7 +135,7 @@ public class TbUtils {
         return compiled;
     }
 
-    protected static String addShortContentReport(String content, StringBuilder output) {
+    protected static void addShortContentReport(String content, StringBuilder output) {
         String[] lines = content.split("\n");
         if (lines.length > 5) {
             output.append("(abbreviated):\n");
@@ -146,7 +146,6 @@ public class TbUtils {
             output.append(":\n");
             output.append(content);
         }
-        return output.toString();
     }
 
     protected static long lineNumberAfter(String contentpart) {
