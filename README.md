@@ -37,7 +37,7 @@ Once you've done that, you can add the `Developers ChatGPT ToolBench` using the
 "Develop your own plugin" option in the ChatGPT web interface with URL "localhost:3002". (You could also specify
 another port on the command line when starting it, if you like.)
 
-To start the plugin, navigate to the directory you want to access and run the `developersToolBenchPlugin` class.
+To start the plugin, navigate to the directory you want to access and run the `bin/developersToolBenchPlugin` script.
 The plugin will start a server on port 3002 (by default) and will be ready to accept requests from ChatGPT. If you
 want to give a port use option -p (portnumber) ; if you want to write files add option -w .
 
@@ -50,6 +50,13 @@ Use the writing features at your own risk. There will likely be problems with la
 have ChatGPT write things, but frequently make a git commit to easily inspect changes and be able to revert.
 
 If there is a file named .cgptdevbench/.requestlog.txt the requests are logged into that, to see what ChatGPT did.
+
+## Download
+
+You can run it from the source (build the program with bin/developersToolbenchPlugin-buildStable) and run it with
+bin/developersToolbenchPlugin, or [download a release](https://github.com/stoerr/DevelopersChatGPTToolBench/releases)
+and run the executable jar in whatever directory you want to access. You could use the script
+[bin/developersToolbenchPlugin](bin/developersToolbenchPlugin) as an example how to run that downloaded jar.
 
 ## Examples
 
@@ -75,7 +82,7 @@ Here are some examples of how to use the `Developers ChatGPT ToolBench`:
   are in [.cgptdevbench/](.cgptdevbench/) and
   [src/test/resources/testdir/.cgptdevbench](src/test/resources/testdir/.cgptdevbench) .
 
-- **Fetch the text content of an URL**: gives ChatGPT simple web access: this can perform a GET request and returns 
+- **Fetch the text content of an URL**: gives ChatGPT simple web access: this can perform a GET request and returns
   the text content of the URL (not the HTML) to ChatGPT.
 
 Remember, the `Developers ChatGPT ToolBench` operates on the directory where it was started,
