@@ -88,7 +88,7 @@ public class WriteFileAction extends AbstractPluginAction {
             resp.setStatus(HttpServletResponse.SC_OK);
             StringBuilder output = new StringBuilder();
             output.append("File completely overwritten with: ");
-            output.append(addShortContentReport(content, output));
+            addShortContentReport(content, output);
             resp.setContentType("text/plain;charset=UTF-8");
             resp.getWriter().write(output.toString());
         } catch (IOException e) {

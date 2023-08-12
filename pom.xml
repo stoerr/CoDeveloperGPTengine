@@ -5,6 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>net.stoerr.chatgpt</groupId>
+	<name>Developers ChatGPT ToolBench</name>
 	<artifactId>developers-chatgpt-toolbench-plugin</artifactId>
 	<version>1.0.0</version>
 
