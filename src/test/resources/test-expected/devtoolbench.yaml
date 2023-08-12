@@ -31,20 +31,18 @@ paths:
             text/plain:
               schema:
                 type: string
-  /fetchUrlContent:
+  /fetchUrlTextContent:
     get:
-      operationId: fetchUrlContent
-      summary: Fetch content from a given URL.
+      operationId: fetchUrlTextContent
+      summary: Fetch text content from a given URL.
       parameters:
         - name: url
           in: query
-          description: The URL to fetch content from
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: Content of the fetched URL
           content:
             text/plain:
               schema:

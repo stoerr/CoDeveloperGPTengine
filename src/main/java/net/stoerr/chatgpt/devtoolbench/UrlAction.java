@@ -15,26 +15,24 @@ public class UrlAction extends AbstractPluginAction {
 
     @Override
     public String getUrl() {
-        return "/fetchUrlContent";
+        return "/fetchUrlTextContent";
     }
 
     @Override
     public String openApiDescription() {
         return """
-                  /fetchUrlContent:
+                  /fetchUrlTextContent:
                     get:
-                      operationId: fetchUrlContent
-                      summary: Fetch content from a given URL.
+                      operationId: fetchUrlTextContent
+                      summary: Fetch text content from a given URL.
                       parameters:
                         - name: url
                           in: query
-                          description: The URL to fetch content from
                           required: true
                           schema:
                             type: string
                       responses:
                         '200':
-                          description: Content of the fetched URL
                           content:
                             text/plain:
                               schema:
@@ -67,7 +65,7 @@ public class UrlAction extends AbstractPluginAction {
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.getOutputStream().write(bytes);
         } catch (Exception e) {
-            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().write("Error fetching content from the URL: " + e.getMessage());
         }
     }
