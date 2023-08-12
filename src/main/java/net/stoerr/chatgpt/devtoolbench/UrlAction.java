@@ -1,8 +1,11 @@
 package net.stoerr.chatgpt.devtoolbench;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+
+import javax.net.ssl.SSLHandshakeException;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -50,8 +53,21 @@ public class UrlAction extends AbstractPluginAction {
         }
 
         try {
-            URL url = new URL(urlString);
-            Document document = Jsoup.parse(url, 10000);
+            Document document;
+            try {
+                document = Jsoup.parse(new URL(urlString), 10000);
+            } catch (MalformedURLException e) {
+                if (!urlString.startsWith("https://") && !urlString.startsWith("http://")) {
+                    try {
+                        document = Jsoup.parse(new URL("https://" + urlString), 10000);
+                    } catch (SSLHandshakeException e1) {
+                        document = Jsoup.parse(new URL("http://" + urlString), 10000);
+                    }
+                } else {
+                    throw e;
+                }
+            }
+
             // iterate through all tags in the document and collect text contents separated with \n
             // take care to only use the text of the current element and not of its children
             // but <p> hallo <b> you </b> here </p> should be "hallo\nyou\nhere"

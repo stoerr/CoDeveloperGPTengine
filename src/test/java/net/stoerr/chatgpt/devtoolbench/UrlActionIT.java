@@ -11,7 +11,14 @@ public class UrlActionIT extends AbstractActionIT {
         String validUrl = "https://www.example.com";
         String response = checkResponse("/fetchUrlTextContent?url=" + validUrl, "GET", null, 200, null);
         collector.checkThat(response, CoreMatchers.containsString("Example Domain"));
-        System.out.printf("Response: %s\n", response);
+    }
+
+    @Test
+    public void testUrlWithoutProtocol() throws Exception {
+        TbUtils.logInfo("\nUrlActionIT.testUrlWithoutProtocol");
+        String urlWithoutProtocol = "www.example.com";
+        String response = checkResponse("/fetchUrlTextContent?url=" + urlWithoutProtocol, "GET", null, 200, null);
+        collector.checkThat(response, CoreMatchers.containsString("Example Domain"));
     }
 
     @Test
