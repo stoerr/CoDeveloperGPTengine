@@ -72,6 +72,10 @@ public class UrlAction extends AbstractPluginAction {
             // take care to only use the text of the current element and not of its children
             // but <p> hallo <b> you </b> here </p> should be "hallo\nyou\nhere"
             StringBuilder content = new StringBuilder();
+            // append document title to content
+            if (document.title() != null && !document.title().isEmpty()) {
+                content.append(document.title()).append("\n\n");
+            }
             // iterate recursively over childNodes() and collect text of TextNodes into content
             appendChildText(document.body(), content);
 
