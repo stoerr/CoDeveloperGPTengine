@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -62,7 +64,7 @@ public class ExecuteAction extends AbstractPluginAction {
         String json = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         Process process = null;
         try {
-            String content = getBodyParameter(resp, json, "actionInput", false);
+            String content = StringUtils.defaultString(getBodyParameter(resp, json, "actionInput", false));
             String actionName = getMandatoryQueryParam(req, resp, "actionName");
             RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, content, actionName);
             Path path = DevToolBench.currentDir.resolve(".cgptdevbench/" + actionName + ".sh");

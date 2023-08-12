@@ -104,6 +104,7 @@ public class DevToolBench {
             }
             // addHandler(new ReplaceRegexAction()); // too many mistakes when using that, look for alternatives
             addHandler(new ReplaceAction());
+        addHandler(new UrlAction());
         }
 
         context.addServlet(new ServletHolder(new HttpServlet() {
