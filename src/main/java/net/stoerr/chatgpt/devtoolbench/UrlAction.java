@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Node;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -49,7 +53,13 @@ public class UrlAction extends AbstractPluginAction {
 
         try {
             URL url = new URL(urlString);
-            String content = org.jsoup.Jsoup.parse(url, 10000).text();
+            Document document = Jsoup.parse(url, 10000);
+            // iterate through all tags in the document and collect text contents separated with \n
+            // take care to only use the text of the current element and not of its children
+            // but <p> hallo <b> you </b> here </p> should be "hallo\nyou\nhere"
+            StringBuilder content = new StringBuilder();
+            // iterate recursively over childNodes() and collect text of TextNodes into content
+            appendChildText(document.body(), content);
 
             byte[] bytes = content.toString().getBytes(StandardCharsets.UTF_8);
             resp.setContentLength(bytes.length);
@@ -61,4 +71,15 @@ public class UrlAction extends AbstractPluginAction {
             resp.getWriter().write("Error fetching content from the URL: " + e.getMessage());
         }
     }
+
+    private void appendChildText(Node node, StringBuilder content) {
+        for (Node child : node.childNodes()) {
+            if (child instanceof org.jsoup.nodes.TextNode) {
+                content.append(child.toString()).append("\n");
+            } else {
+                appendChildText(child, content);
+            }
+        }
+    }
+
 }
