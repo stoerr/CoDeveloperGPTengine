@@ -9,6 +9,10 @@
 	<version>1.0.0</version>
 
 	<distributionManagement>
+		<site>
+			<id>site</id>
+			<url>file://${project.build.directory}/site</url>
+		</site>
 		<repository>
 			<id>github</id>
 			<name>Github Packages for stoerr/DevelopersChatGPTToolBench</name>
@@ -82,9 +86,9 @@
 
 		<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
 		<dependency>
-		    <groupId>org.jsoup</groupId>
-		    <artifactId>jsoup</artifactId>
-		    <version>1.16.1</version>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.16.1</version>
 		</dependency>
 
 		<dependency>
@@ -116,7 +120,25 @@
 		</resources>
 
 		<plugins>
+			<!-- Reports -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.9.1</version>
+				<configuration>
+					<markdownToHtml>
+						<doxiaModuleNames>
+							<doxiaModuleName>markdown</doxiaModuleName>
+						</doxiaModuleNames>
+					</markdownToHtml>
+				</configuration>
+			</plugin>
 			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.9.1</version>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -162,6 +184,40 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<!-- Reports -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>3.1.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.7</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.15.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>3.0.5</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.3.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>2.16.0</version>
+				<configuration>
+					<failOnMissingVersions>true</failOnMissingVersions>
+				</configuration>
 			</plugin>
 			<!-- https://mvnrepository.com/artifact/pl.project13.maven/git-commit-id-plugin -->
 			<plugin>
