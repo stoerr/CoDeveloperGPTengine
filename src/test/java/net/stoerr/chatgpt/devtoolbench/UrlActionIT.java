@@ -11,6 +11,7 @@ public class UrlActionIT extends AbstractActionIT {
         String validUrl = "https://www.example.com";
         String response = checkResponse("/fetchUrlContent?url=" + validUrl, "GET", null, 200, null);
         collector.checkThat(response, CoreMatchers.containsString("Example Domain"));
+        System.out.printf("Response: %s\n", response);
     }
 
     @Test
