@@ -57,7 +57,7 @@ public class DevToolBench {
     };
     static Path currentDir = Paths.get(".").normalize().toAbsolutePath();
 
-    public static final Pattern IGNORE = Pattern.compile(".*/[.].*|.*/target/.*|.*/(Hpsx|hpsx).*");
+    public static final Pattern IGNORE = Pattern.compile(".*/[.].*|.*/target/.*|.*/(Hpsx|hpsx).*|.*/node_modules/.*");
 
     /**
      * Exceptions overriding {@link #IGNORE}.
