@@ -41,6 +41,12 @@ paths:
           required: true
           schema:
             type: string
+        - name: raw
+          description: return raw html content without converting to markdown
+          in: query
+          required: false
+          schema:
+            type: boolean
       responses:
         '200':
           content:
