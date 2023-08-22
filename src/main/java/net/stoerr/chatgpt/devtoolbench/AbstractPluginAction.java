@@ -29,7 +29,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public abstract class AbstractPluginAction extends HttpServlet {
 
-    private final Gson gson = new Gson();
+    private final transient Gson gson = new Gson();
 
     /**
      * Logs an error and sends it to ChatGPT, always throws {@link ExecutionAbortedException}.
@@ -53,7 +53,8 @@ public abstract class AbstractPluginAction extends HttpServlet {
             Files.walkFileTree(path, new SimpleFileVisitor<>() {
                 @Override
                 public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                    if (DevToolBench.IGNORE.matcher(dir.toString()).matches()) {
+                    if (DevToolBench.IGNORE.matcher(dir.toString()).matches()
+                            && !DevToolBench.OVERRIDE_IGNORE.matcher(dir.toString()).matches()) {
                         return FileVisitResult.SKIP_SUBTREE;
                     }
                     return super.preVisitDirectory(dir, attrs);
