@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -62,10 +62,16 @@ public class ReadFileAction extends AbstractPluginAction {
         int startLine = req.getParameter("startLine") != null ? Integer.parseInt(req.getParameter("startLine")) : 1;
         RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, path);
         if (Files.exists(path)) {
-            List<String> lines = Files.lines(path)
-                    .skip(startLine - 1)
-                    .limit(maxLines)
-                    .collect(Collectors.toList());
+            if (Files.isDirectory(path)) {
+                throw sendError(resp, HttpServletResponse.SC_BAD_REQUEST, "Path is a directory - please use listFiles for listing directory contents: " + path);
+            }
+            List<String> lines;
+            try (Stream<String> linesStream = Files.lines(path)) {
+                lines = linesStream
+                        .skip(startLine - 1L)
+                        .limit(maxLines)
+                        .toList();
+            }
             String content = String.join("\n", lines) + "\n";
             if (maxLines != Integer.MAX_VALUE || startLine != 1) {
                 content = "File " + DevToolBench.currentDir.relativize(path) + " lines " + startLine + " to line " + (startLine + lines.size() - 1) + "\n\n" + content;
