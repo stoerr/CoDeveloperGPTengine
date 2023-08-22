@@ -1,5 +1,8 @@
 package net.stoerr.chatgpt.devtoolbench;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
+
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
@@ -11,7 +14,26 @@ public class UrlActionIT extends AbstractActionIT {
         String validUrl = "https://www.example.com";
         String response = checkResponse("/fetchUrlTextContent?url=" + validUrl, "GET", null, 200, null);
         collector.checkThat(response, CoreMatchers.containsString("Example Domain"));
+        collector.checkThat(response, is("markdown for text/html content of https://www.example.com\n" +
+                "\n" +
+                "Example Domain      \n" +
+                "\n" +
+                "# Example Domain\n" +
+                "\n" +
+                "This domain is for use in illustrative examples in documents. You may use this domain in literature without prior coordination or asking for permission.\n" +
+                "\n" +
+                "[More information...](https://www.iana.org/domains/example)"));
     }
+
+    // test as testValidUrl but with parameter raw=true
+    @Test
+    public void testValidUrlRaw() throws Exception {
+        TbUtils.logInfo("\nUrlActionIT.testValidUrlRaw");
+        String validUrl = "https://www.example.com";
+        String response = checkResponse("/fetchUrlTextContent?url=" + validUrl + "&raw=true", "GET", null, 200, null);
+        collector.checkThat(response, containsString("<h1>Example Domain</h1>"));
+    }
+
 
     @Test
     public void testUrlWithoutProtocol() throws Exception {
