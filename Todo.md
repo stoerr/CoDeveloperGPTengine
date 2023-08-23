@@ -2,11 +2,13 @@
 
 These are possible later plans, not urgent.
 
+## Improvements
+
+- As of 8/2023 ChatGPT regularily tries to split up long texts as "first line\n" + "second line \n" which the
+  ChatGPT internal API doesn't support. Possibly it'd be better to use string arrays of lines in the call, which
+  avoids the \n and lessens it's need to split things up. Seee also comment in ai-plugin.json .
+
 ## Refactoring
-
-### Clamp down on tokens
-
-- Name path "relativePath" and remove comments.
 
 ## Added functionality that makes sense
 
