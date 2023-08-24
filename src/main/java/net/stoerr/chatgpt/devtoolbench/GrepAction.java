@@ -95,18 +95,23 @@ public class GrepAction extends AbstractPluginAction {
                         int blockStart = -1;  // start of current block of context lines
                         for (int i = 0; i < lines.size(); i++) {
                             String line = lines.get(i);
-                            if (grepPattern.matcher(line).find()) {
+                            boolean isMatch = grepPattern.matcher(line).find();
+
+                            if (isMatch) {
                                 if (blockStart == -1) {  // start of a new block
                                     blockStart = Math.max(lastEndLine + 1, i - contextLines);
                                 }
-                                lastEndLine = Math.min(i + contextLines + 1, lines.size());
-                            } else if (blockStart != -1) {  // end of a block
-                                appendBlock(lines, buf, path, blockStart, lastEndLine);
-                                blockStart = -1;
+                                lastEndLine = Math.min(i + contextLines, lines.size() - 1);
+                            }
+
+                            // If we're beyond the context of the last match or at the end of the file, append the block.
+                            if ((i > lastEndLine && blockStart != -1) || (isMatch && i == lines.size() - 1)) {
+                                appendBlock(lines, buf, path, blockStart, lastEndLine + 1);  // +1 to include the last line of context
+                                blockStart = -1;  // reset block start
                             }
                         }
                         if (blockStart != -1) {  // append the last block
-                            appendBlock(lines, buf, path, blockStart, lastEndLine);
+                            appendBlock(lines, buf, path, blockStart, lastEndLine + 1);
                         }
                     } catch (IOException e) {
                         throw new UncheckedIOException(e);
