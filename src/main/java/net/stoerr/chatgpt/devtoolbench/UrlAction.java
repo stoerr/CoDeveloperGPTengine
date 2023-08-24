@@ -50,6 +50,7 @@ public class UrlAction extends AbstractPluginAction {
                             type: boolean
                       responses:
                         '200':
+                          description: fetch successful; content returned
                           content:
                             text/plain:
                               schema:
