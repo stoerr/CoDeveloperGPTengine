@@ -8,6 +8,15 @@ These are possible later plans, not urgent.
   ChatGPT internal API doesn't support. Possibly it'd be better to use string arrays of lines in the call, which
   avoids the \n and lessens it's need to split things up. Seee also comment in ai-plugin.json .
 
+- ignore stuff in .gitignore?
+- ??? How to be a regular plugin?
+- Compare with Kaguaya
+- Licencse?
+- announce somewhere. tinyurl.com/29e7g8co , https://github.com/taishi-i/awesome-ChatGPT-repositories
+- run in docker
+- Extend searh and replace message: if search string can be found with other indentation, report about that inc. the 
+  indentation.
+
 ## Refactoring
 
 ## Added functionality that makes sense

@@ -36,7 +36,7 @@ public class ReplaceAction extends AbstractPluginAction {
                   /replaceInFile:
                     post:
                       operationId: replaceInFile
-                      summary: Replaces the single occurrence of a string in a file. The whole file is matched, not line by line.
+                      summary: Replaces the single occurrence of one or more literal strings in a file. The whole file content is matched, not line by line.
                       parameters:
                         - name: path
                           in: query
@@ -58,10 +58,10 @@ public class ReplaceAction extends AbstractPluginAction {
                                     properties:
                                       search:
                                         type: string
-                                        description: The string to be replaced - can contain many lines, but please take care to find a small number of lines to replace. Everything that is replaced must be here. Prefer to match the whole line / several whole lines.
+                                        description: The literal string to be replaced - can contain many lines, but please take care to find a small number of lines to replace. Everything that is replaced must be here. Prefer to match the whole line / several whole lines.
                                       replace:
                                         type: string
-                                        description: Replacement, can contain several lines. Please observe the correct indentation.
+                                        description: Literal replacement, can contain several lines. Please observe the correct indentation.
                       responses:
                         '200':
                           description: File updated successfully
@@ -111,7 +111,11 @@ public class ReplaceAction extends AbstractPluginAction {
 
                 if (replacementCount != 1) {
                     if (replacementCount == 0) {
-                        throw sendError(resp, 400, "Search string " + replacementNo + " not found. You might want to re-read the file to find out whether something is different from what you expected, or use grep with enough context lines if the file is long.");
+                        throw sendError(resp, 400, "Search string " + replacementNo + " not found. " +
+                                "You might want to re-read the file to find out whether something is different from what you expected, or use grep with enough context lines if the file is long. " +
+                                "The search string is a literal string, not a regular expression." +
+                                "The search string that was not found is:\n" + replacement.getSearch()
+                        );
                     } else {
                         throw sendError(resp, 400, "Found " + replacementCount + " occurrences of search string " +
                                 replacementNo +

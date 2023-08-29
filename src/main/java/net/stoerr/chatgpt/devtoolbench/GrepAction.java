@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import java.util.stream.Stream;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -72,8 +73,17 @@ public class GrepAction extends AbstractPluginAction {
         String grepRegex = getMandatoryQueryParam(req, resp, "grepRegex");
         String contextLinesParam = getQueryParam(req, "contextLines");
         RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, startPath, fileRegex, grepRegex, contextLinesParam);
-        Pattern grepPattern = Pattern.compile(grepRegex);
-        Pattern filePattern = fileRegex != null ? Pattern.compile(fileRegex) : Pattern.compile(".*");
+        Pattern grepPattern; try {
+            grepPattern = Pattern.compile(grepRegex);
+        } catch (PatternSyntaxException e) {
+            throw sendError(resp, 400, "Invalid grepRegex parameter: " + grepRegex + "\n" + e.getMessage());
+        }
+        Pattern filePattern;
+        try {
+            filePattern = fileRegex != null ? Pattern.compile(fileRegex) : Pattern.compile(".*");
+        } catch (PatternSyntaxException e) {
+            throw sendError(resp, 400, "Invalid fileRegex parameter: " + fileRegex + "\n" + e.getMessage());
+        }
         int contextLinesRaw = 0;
         if (contextLinesParam != null && !contextLinesParam.isBlank()) {
             try {
