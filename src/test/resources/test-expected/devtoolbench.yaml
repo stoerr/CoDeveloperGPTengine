@@ -42,7 +42,7 @@ paths:
           schema:
             type: string
         - name: raw
-          description: return raw html content without converting to markdown
+          description: return raw html or pdf content without converting to markdown
           in: query
           required: false
           schema:
