@@ -44,6 +44,16 @@ public class UrlActionIT extends AbstractActionIT {
     }
 
     @Test
+    public void testPdfUrl() throws Exception {
+        TbUtils.logInfo("\nUrlActionIT.testPdfUrl");
+        String pdfUrl = "https://datatracker.ietf.org/doc/pdf/rfc791.pdf";
+        String response = checkResponse("/fetchUrlTextContent?url=" + pdfUrl, "GET", null, 200, null);
+        collector.checkThat(response, CoreMatchers.containsString("text content of "));
+        collector.checkThat(response, CoreMatchers.containsString("INTERNET PROTOCOL"));
+        collector.checkThat(response, CoreMatchers.containsString("September 1981"));
+    }
+
+    @Test
     public void testInvalidUrl() throws Exception {
         TbUtils.logInfo("\nUrlActionIT.testInvalidUrl");
         String invalidUrl = "https://invalid.url.that.does.not.exist";

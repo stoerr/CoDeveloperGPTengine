@@ -1,17 +1,19 @@
 package net.stoerr.chatgpt.devtoolbench;
 
-import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
-import java.util.stream.Collectors;
 
 import javax.net.ssl.SSLHandshakeException;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.pdfbox.io.IOUtils;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 
 import io.github.furstenheim.CodeBlockStyle;
 import io.github.furstenheim.CopyDown;
@@ -43,7 +45,7 @@ public class UrlAction extends AbstractPluginAction {
                           schema:
                             type: string
                         - name: raw
-                          description: return raw html content without converting to markdown
+                          description: return raw html or pdf content without converting to markdown
                           in: query
                           required: false
                           schema:
@@ -69,7 +71,7 @@ public class UrlAction extends AbstractPluginAction {
         boolean raw = Boolean.TRUE.toString().equalsIgnoreCase(req.getParameter("raw"));
 
         try {
-            Pair<String, String> contentinfo;
+            Pair<String, byte[]> contentinfo;
             try {
                 contentinfo = fetchContentFromUrl(urlString);
             } catch (MalformedURLException e) {
@@ -84,7 +86,7 @@ public class UrlAction extends AbstractPluginAction {
                 }
             }
 
-            String contentString = contentinfo.getRight();
+            String contentString = new String(contentinfo.getRight(), StandardCharsets.UTF_8);
             String contentType = contentinfo.getLeft();
             // remove trailing ;charset=... from content type
             int charsetIndex = contentType.indexOf(";");
@@ -96,7 +98,12 @@ public class UrlAction extends AbstractPluginAction {
                 contentString = htmlToMarkdown(contentString);
                 contentString = "markdown for " + contentType + " content of " + urlString + "\n\n" + contentString;
             } else {
-                contentString = contentType + " content of URL " + urlString + "\n\n" + contentString;
+                if (contentType.equals("application/pdf") && !raw) {
+                    contentString = "text content of " + contentType + " content of " + urlString + "\n\n"
+                            + convertPdfToText(contentinfo.getRight());
+                } else {
+                    contentString = contentType + " content of URL " + urlString + "\n\n" + contentString;
+                }
             }
 
             byte[] bytes = contentString.getBytes(StandardCharsets.UTF_8);
@@ -124,12 +131,23 @@ public class UrlAction extends AbstractPluginAction {
         return contentString;
     }
 
-    private Pair<String, String> fetchContentFromUrl(String urlString) throws IOException {
+    private String convertPdfToText(byte[] pdfContent) throws IOException {
+        try (PDDocument document = PDDocument.load(pdfContent)) {
+            PDFTextStripper pdfStripper = new PDFTextStripper();
+            return pdfStripper.getText(document);
+        } catch (Exception e) {
+            throw new IOException("Error processing PDF content: " + e.getMessage(), e);
+        }
+    }
+
+    private Pair<String, byte[]> fetchContentFromUrl(String urlString) throws IOException {
         URL url = new URL(urlString);
+        ByteArrayOutputStream contentOut = new ByteArrayOutputStream();
         URLConnection connection = url.openConnection();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+        try (InputStream inputStream = connection.getInputStream()) {
+            IOUtils.copy(inputStream, contentOut);
             String contentType = connection.getContentType();
-            return Pair.of(contentType, reader.lines().collect(Collectors.joining("\n")));
+            return Pair.of(contentType, contentOut.toByteArray());
         }
     }
 
