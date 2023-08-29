@@ -1,4 +1,4 @@
-# Plugin Action: maven build incl. running unit- and integrationtests
+# Plugin Action: maven build incl. running unit- and integrationtests and building the site, for testing site creation only.
 echo executing mvn clean install javadoc:aggregate site site:stage
 mvn -B clean install javadoc:aggregate site site:stage > build.log 2>&1
 if [ $? -ne 0 ]; then

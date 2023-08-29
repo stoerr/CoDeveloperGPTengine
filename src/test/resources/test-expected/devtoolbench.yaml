@@ -153,7 +153,7 @@ paths:
   /replaceInFile:
     post:
       operationId: replaceInFile
-      summary: Replaces the single occurrence of a string in a file. The whole file is matched, not line by line.
+      summary: Replaces the single occurrence of one or more literal strings in a file. The whole file content is matched, not line by line.
       parameters:
         - name: path
           in: query
@@ -175,10 +175,10 @@ paths:
                     properties:
                       search:
                         type: string
-                        description: The string to be replaced - can contain many lines, but please take care to find a small number of lines to replace. Everything that is replaced must be here. Prefer to match the whole line / several whole lines.
+                        description: The literal string to be replaced - can contain many lines, but please take care to find a small number of lines to replace. Everything that is replaced must be here. Prefer to match the whole line / several whole lines.
                       replace:
                         type: string
-                        description: Replacement, can contain several lines. Please observe the correct indentation.
+                        description: Literal replacement, can contain several lines. Please observe the correct indentation.
       responses:
         '200':
           description: File updated successfully
