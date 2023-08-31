@@ -275,4 +275,43 @@
             </plugin>
         </plugins>
     </reporting>
+
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <!-- https://mvnrepository.com/artifact/io.fabric8/docker-maven-plugin -->
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>0.43.4</version>
+                        <executions>
+                            <execution>
+                                <id>default</id>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <name>stoerr/developers-chatgpt-toolbench-plugin:${project.version}</name>
+                                    <build>
+                                        <dockerFile>Dockerfile</dockerFile>
+                                        <contextDir>${project.basedir}</contextDir>
+                                        <args>
+                                            <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                                        </args>
+                                    </build>
+                                </image>
+                            </images>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>
