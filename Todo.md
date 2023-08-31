@@ -4,9 +4,12 @@ These are possible later plans, not urgent.
 
 ## Improvements
 
+- ReadFile etc.: use jtokkit to limit number of tokens.
+
 - As of 8/2023 ChatGPT regularily tries to split up long texts as "first line\n" + "second line \n" which the
   ChatGPT internal API doesn't support. Possibly it'd be better to use string arrays of lines in the call, which
-  avoids the \n and lessens it's need to split things up. Seee also comment in ai-plugin.json .
+  avoids the \n and lessens it's need to split things up. Seee also comment in ai-plugin.json . ==> Tried, but that 
+  got us serious trouble with leading whitespace on the lines, so we just hope they get that fixed.
 
 - ignore stuff in .gitignore?
 - ??? How to be a regular plugin?

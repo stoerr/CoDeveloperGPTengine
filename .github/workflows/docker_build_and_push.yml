@@ -1,0 +1,66 @@
+name: Build and Deploy to Docker Hub
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      MVNCMD: mvn -B -ntp
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '16'
+        distribution: 'temurin'
+        cache: maven
+        maven-version: 3.8.7
+
+    - name: Mvn Effective POM
+      run: |
+        $MVNCMD -N help:effective-pom
+
+    - name: Mvn Effective Settings
+      run: |
+        $MVNCMD -N help:effective-settings
+
+    - name: Check docker status
+      run: |
+        docker info
+        docker version
+        docker images -a
+        docker ps -a
+
+    - name: Git & Maven Status
+      run: |
+        git status --untracked-files --ignored
+        git log -3 --no-color
+        $MVNCMD -version
+        git branch --show-current
+
+    - name: Build Docker image with Maven
+      run: $MVNCMD clean install -Pdocker
+
+    - name: Check docker status
+      run: |
+        docker info
+        docker version
+        docker images -a
+        docker ps -a
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    - name: Push Docker image to Docker Hub
+      run: docker push stoerr/developers-chatgpt-toolbench-plugin:1.1.0-SNAPSHOT
