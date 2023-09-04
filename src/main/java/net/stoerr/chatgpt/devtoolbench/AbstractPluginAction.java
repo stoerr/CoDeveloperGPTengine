@@ -12,6 +12,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -125,15 +126,20 @@ public abstract class AbstractPluginAction extends HttpServlet {
         if (mustExist && !Files.exists(resolved)) {
             String message = "Path " + path + " does not exist! Try to list files with /listFiles to find the right path.";
             String filename = resolved.getFileName().toString();
-            List<String> files = findMatchingFiles(response, DevToolBench.currentDir, null, null)
-                    .map(p -> Pair.of(p, StringUtils.getLevenshteinDistance(p.getFileName().toString(), filename)))
-                    .sorted(Comparator.comparingInt(Pair::getRight))
+            List<Path> matchingFiles = findMatchingFiles(response, DevToolBench.currentDir, null, null).toList();
+            List<String> files = matchingFiles.stream()
+                    .map(p -> DevToolBench.currentDir.relativize(p).toString())
+                    .map(p -> Pair.of(p, StringUtils.getFuzzyDistance(p, filename, Locale.getDefault())))
+                    .map(p -> Pair.of(p.getLeft(), -p.getRight()))
+                    .sorted(Comparator.comparingDouble(Pair::getRight))
                     .limit(10)
                     .map(Pair::getLeft)
-                    .map(p -> DevToolBench.currentDir.relativize(p).toString())
                     .toList();
             if (!files.isEmpty()) {
-                message += "\n\nDid you mean one of these files?\n" + String.join("\n", files) + "\n\n(suggestion list truncated - there are more files).";
+                message += "\n\nDid you mean one of these files?\n" + String.join("\n", files);
+                if (files.size() < matchingFiles.size()) {
+                    message += "\n\n(suggestion list truncated - there are " + matchingFiles.size() + " files; use listFiles to find more files).";
+                }
             }
             throw sendError(response, 404, message);
         }

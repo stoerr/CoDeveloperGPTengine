@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -80,7 +81,14 @@ public class ListFilesAction extends AbstractPluginAction {
                     .map(this::mappedFilename)
                     .toList();
             if (files.isEmpty()) {
-                throw sendError(resp, 404, "No files found");
+                long filePathFileCount = findMatchingFiles(resp, path, filePathPattern, null).count();
+                if (filePathFileCount > 0)
+                    throw sendError(resp, 404, "Found " + filePathFileCount + " files mat but none of them match grepRegex: " + grepRegex);
+                else if (Files.newDirectoryStream(path).iterator().hasNext()) {
+                    throw sendError(resp, 404, "No files found matching filePathRegex: " + filePathRegex);
+                } else {
+                    throw sendError(resp, 404, "No files found in directory: " + path);
+                }
             }
             byte[] response = (String.join("\n", files) + "\n").getBytes(StandardCharsets.UTF_8);
             resp.setContentLength(response.length);
