@@ -49,7 +49,7 @@ public class ReplaceActionIT extends AbstractActionIT {
     @Test
     public void testReplaceOperationFileNotFound() throws Exception {
         TbUtils.logInfo("\nReplaceActionIT.testReplaceOperationFileNotFound");
-        checkResponse("/replaceInFile?path=notfound.txt", "POST",
+        checkResponse("/replaceInFile?path=fileinsubdir", "POST",
                 "{\"replacements\":[{\"search\":\"duck\",\"replace\":\"goose\"}]}", 404, "notfound.txt");
     }
 

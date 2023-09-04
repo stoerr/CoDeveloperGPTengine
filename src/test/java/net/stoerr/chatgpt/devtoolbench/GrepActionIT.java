@@ -27,7 +27,38 @@ public class GrepActionIT extends AbstractActionIT {
                 "secondfile.md\n" +
                 "firstfile.txt\n" +
                 "subdir/fileinsubdir.md\n" +
-                "filewritten.txt\n\n" +
-                "(suggestion list truncated - there are more files)."));
+                "filewritten.txt"));
+    }
+
+    @Test
+    public void testNotExistingGrepRegex() throws Exception {
+        TbUtils.logInfo("\nGrepActionIT.testNotExistingGrepRegex");
+        String response = checkResponse("/grepFiles?path=firstfile.txt&grepRegex=ThisIsNowhere", "GET", null, 404, null);
+        collector.checkThat(response, is("Found 1 files mat but none of them match grepRegex: ThisIsNowhere"));
+    }
+
+    @Test
+    public void testFileRegexNotMatching() throws Exception {
+        TbUtils.logInfo("\nGrepActionIT.testFileRegexNotMatching");
+        String response = checkResponse("/grepFiles?path=.&grepRegex=Hello&fileRegex=notmatching", "GET", null, 404, null);
+        collector.checkThat(response, is("No files found matching filePathRegex: notmatching"));
+    }
+
+    @Test
+    public void testBrokenGrepRegex() throws Exception {
+        TbUtils.logInfo("\nGrepActionIT.testWrongGrepRegex");
+        String response = checkResponse("/grepFiles?path=firstfile.txt&grepRegex=Hello(", "GET", null, 400, null);
+        collector.checkThat(response, is("Invalid grepRegex parameter: Hello(\n" +
+                "Unclosed group near index 6\n" +
+                "Hello("));
+    }
+
+    @Test
+    public void testBrokenFilePathRegex() throws Exception {
+        TbUtils.logInfo("\nGrepActionIT.testWrongFilePathRegex");
+        String response = checkResponse("/grepFiles?path=firstfile.txt&grepRegex=Hello&fileRegex=Hello(", "GET", null, 400, null);
+        collector.checkThat(response, is("Invalid fileRegex parameter: Hello(\n" +
+                "Unclosed group near index 6\n" +
+                "Hello("));
     }
 }

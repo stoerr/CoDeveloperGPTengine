@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import java.util.stream.Stream;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -73,7 +72,8 @@ public class GrepAction extends AbstractPluginAction {
         String grepRegex = getMandatoryQueryParam(req, resp, "grepRegex");
         String contextLinesParam = getQueryParam(req, "contextLines");
         RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, startPath, fileRegex, grepRegex, contextLinesParam);
-        Pattern grepPattern; try {
+        Pattern grepPattern;
+        try {
             grepPattern = Pattern.compile(grepRegex);
         } catch (PatternSyntaxException e) {
             throw sendError(resp, 400, "Invalid grepRegex parameter: " + grepRegex + "\n" + e.getMessage());
@@ -94,41 +94,60 @@ public class GrepAction extends AbstractPluginAction {
         }
         final int contextLines = contextLinesRaw;
 
-        Stream<Path> matchingFiles = findMatchingFiles(resp, startPath, filePattern, grepPattern);
-        StringBuilder buf = new StringBuilder();
-        matchingFiles
-                .filter(f -> !GREP_IGNORE_BINARIES_PATTERN.matcher(f.toString()).find())
-                .forEachOrdered(path -> {
-                    try {
-                        List<String> lines = Files.readAllLines(path);
-                        int lastEndLine = -1; // last match end line number
-                        int blockStart = -1;  // start of current block of context lines
-                        for (int i = 0; i < lines.size(); i++) {
-                            String line = lines.get(i);
-                            boolean isMatch = grepPattern.matcher(line).find();
+        if (!Files.exists(startPath)) {
+            throw sendError(resp, 404, "Path does not exist: " + startPath);
+        } else if (!Files.isReadable(startPath)) {
+            throw sendError(resp, 404, "Path is not readable: " + startPath);
+        }
 
-                            if (isMatch) {
-                                if (blockStart == -1) {  // start of a new block
-                                    blockStart = Math.max(lastEndLine + 1, i - contextLines);
+        List<Path> matchingFiles = findMatchingFiles(resp, startPath, filePattern, grepPattern).toList();
+        if (!matchingFiles.isEmpty()) {
+            StringBuilder buf = new StringBuilder();
+            matchingFiles.stream()
+                    .filter(f -> !GREP_IGNORE_BINARIES_PATTERN.matcher(f.toString()).find())
+                    .forEachOrdered(path -> {
+                        try {
+                            List<String> lines = Files.readAllLines(path);
+                            int lastEndLine = -1; // last match end line number
+                            int blockStart = -1;  // start of current block of context lines
+                            for (int i = 0; i < lines.size(); i++) {
+                                String line = lines.get(i);
+                                boolean isMatch = grepPattern.matcher(line).find();
+
+                                if (isMatch) {
+                                    if (blockStart == -1) {  // start of a new block
+                                        blockStart = Math.max(lastEndLine + 1, i - contextLines);
+                                    }
+                                    lastEndLine = Math.min(i + contextLines, lines.size() - 1);
                                 }
-                                lastEndLine = Math.min(i + contextLines, lines.size() - 1);
-                            }
 
-                            // If we're beyond the context of the last match or at the end of the file, append the block.
-                            if ((i > lastEndLine && blockStart != -1) || (isMatch && i == lines.size() - 1)) {
-                                appendBlock(lines, buf, path, blockStart, lastEndLine + 1);  // +1 to include the last line of context
-                                blockStart = -1;  // reset block start
+                                // If we're beyond the context of the last match or at the end of the file, append the block.
+                                if ((i > lastEndLine && blockStart != -1) || (isMatch && i == lines.size() - 1)) {
+                                    appendBlock(lines, buf, path, blockStart, lastEndLine + 1);  // +1 to include the last line of context
+                                    blockStart = -1;  // reset block start
+                                }
                             }
+                            if (blockStart != -1) {  // append the last block
+                                appendBlock(lines, buf, path, blockStart, lastEndLine + 1);
+                            }
+                        } catch (IOException e) {
+                            throw new UncheckedIOException(e);
                         }
-                        if (blockStart != -1) {  // append the last block
-                            appendBlock(lines, buf, path, blockStart, lastEndLine + 1);
-                        }
-                    } catch (IOException e) {
-                        throw new UncheckedIOException(e);
-                    }
-                });
-        resp.setContentType("text/plain;charset=UTF-8");
-        resp.getWriter().write(buf.toString());
+                    });
+            resp.setContentType("text/plain;charset=UTF-8");
+            resp.getWriter().write(buf.toString());
+        } else {
+            long filePathFileCount = findMatchingFiles(resp, startPath, filePattern, null).count();
+            if (filePathFileCount > 0)
+                throw sendError(resp, 404, "Found " + filePathFileCount + " files mat but none of them match grepRegex: " + grepRegex);
+            else if (Files.isDirectory(startPath)) {
+                if (Files.newDirectoryStream(startPath).iterator().hasNext()) {
+                    throw sendError(resp, 404, "No files found matching filePathRegex: " + fileRegex);
+                } else {
+                    throw sendError(resp, 404, "No files found in directory: " + startPath);
+                }
+            }
+        }
     }
 
     private void appendBlock(List<String> lines, StringBuilder buf, Path path, int start, int end) {

@@ -1,9 +1,7 @@
-Path notfound.txt does not exist! Try to list files with /listFiles to find the right path.
+Path fileinsubdir does not exist! Try to list files with /listFiles to find the right path.
 
 Did you mean one of these files?
-firstfile.txt
+subdir/fileinsubdir.md
 filewritten.txt
 secondfile.md
-subdir/fileinsubdir.md
-
-(suggestion list truncated - there are more files).
+firstfile.txt

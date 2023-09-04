@@ -1,5 +1,7 @@
 package net.stoerr.chatgpt.devtoolbench;
 
+import static org.hamcrest.CoreMatchers.is;
+
 import org.junit.Test;
 
 public class ListFilesActionIT extends AbstractActionIT {
@@ -33,4 +35,48 @@ public class ListFilesActionIT extends AbstractActionIT {
         TbUtils.logInfo("\nListFilesActionIT.testListFilesOperationBothRegex");
         checkResponse("/listFiles?path=.&filePathRegex=.*%5C.txt&grepRegex=testcontent", "GET", null, 200, "listFilesBothRegex.txt");
     }
+
+    @Test
+    public void testBrokenFileRegex() throws Exception {
+        TbUtils.logInfo("\nListFilesActionIT.testBrokenFileRegex");
+        String response = checkResponse("/listFiles?path=.&filePathRegex=.*%5C.txt(", "GET", null, 400, null);
+        collector.checkThat(response, is("Invalid filePathRegex: java.util.regex.PatternSyntaxException: Unclosed group near index 8\n" +
+                ".*\\.txt("));
+    }
+
+    @Test
+    public void testBrokenGrepRegex() throws Exception {
+        TbUtils.logInfo("\nListFilesActionIT.testBrokenGrepRegex");
+        String response = checkResponse("/listFiles?path=.&grepRegex=.*%5C.txt(", "GET", null, 400, null);
+        collector.checkThat(response, is("Invalid grepRegex: java.util.regex.PatternSyntaxException: Unclosed group near index 8\n" +
+                ".*\\.txt("));
+    }
+
+    @Test
+    public void testInvalidPath() throws Exception {
+        TbUtils.logInfo("\nListFilesActionIT.testInvalidPath");
+        String response = checkResponse("/listFiles?path=notexisting", "GET", null, 404, null);
+        collector.checkThat(response, is("Path notexisting does not exist! Try to list files with /listFiles to find the right path.\n" +
+                "\n" +
+                "Did you mean one of these files?\n" +
+                "filewritten.txt\n" +
+                "secondfile.md\n" +
+                "subdir/fileinsubdir.md\n" +
+                "firstfile.txt"));
+    }
+
+    @Test
+    public void testFileRegexNotFound() throws Exception {
+        TbUtils.logInfo("\nListFilesActionIT.testFileRegexNotFound");
+        String response = checkResponse("/listFiles?path=.&filePathRegex=notexisting", "GET", null, 404, null);
+        collector.checkThat(response, is("No files found matching filePathRegex: notexisting"));
+    }
+
+    @Test
+    public void testGrepRegexNotFound() throws Exception {
+        TbUtils.logInfo("\nListFilesActionIT.testGrepRegexNotFound");
+        String response = checkResponse("/listFiles?path=.&grepRegex=notexisting", "GET", null, 404, null);
+        collector.checkThat(response, is("Found 4 files mat but none of them match grepRegex: notexisting"));
+    }
+
 }
