@@ -114,6 +114,8 @@ public class ReplaceAction extends AbstractPluginAction {
                         throw sendError(resp, 400, "Search string " + replacementNo + " not found. " +
                                 "You might want to re-read the file to find out whether something is different from what you expected, or use grep with enough context lines if the file is long. " +
                                 "The search string is a literal string, not a regular expression." +
+                                "No changes have been made because of this error" +
+                                (replacementRequest.getReplacements().size() > 1 ? " - the other replacements also haven't been performed" : "") + "." +
                                 "The search string that was not found is:\n" + replacement.getSearch()
                         );
                     } else {
