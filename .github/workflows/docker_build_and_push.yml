@@ -63,4 +63,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
     - name: Push Docker image to Docker Hub
-      run: docker push stoerr/developers-chatgpt-toolbench-plugin:1.1.0-SNAPSHOT
+      run: |
+        version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+        echo "version=$version"
+        docker push stoerr/developers-chatgpt-toolbench-plugin:$version
