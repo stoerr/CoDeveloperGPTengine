@@ -168,6 +168,7 @@ public class DevToolBench {
 
         options.addOption("p", "port", true, "Port number");
         options.addOption("w", "write", false, "Permit file writes");
+        // ChatGPTTask: make sure that --help also prints the help message and that it's displayed when there is an exception in parsing options.
         options.addOption("h", "help", false, "Display this help message");
 
         CommandLineParser parser = new DefaultParser();
