@@ -54,8 +54,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
             Files.walkFileTree(path, new SimpleFileVisitor<>() {
                 @Override
                 public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                    if (DevToolBench.IGNORE.matcher(dir.toString()).matches()
-                            && !DevToolBench.OVERRIDE_IGNORE.matcher(dir.toString()).matches()) {
+                    if (isIgnored(dir)) {
                         return FileVisitResult.SKIP_SUBTREE;
                     }
                     return super.preVisitDirectory(dir, attrs);
@@ -74,8 +73,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
 
         return result.stream()
                 .filter(Files::isRegularFile)
-                .filter(p -> !DevToolBench.IGNORE.matcher(p.toString()).matches()
-                        || DevToolBench.OVERRIDE_IGNORE.matcher(p.toString()).matches())
+                .filter(p -> !isIgnored(p))
                 .filter(p -> filePathPattern == null || filePathPattern.matcher(p.toString()).find())
                 .filter(p -> {
                     if (grepPattern == null) {
@@ -89,6 +87,11 @@ public abstract class AbstractPluginAction extends HttpServlet {
                         }
                     }
                 }).sorted();
+    }
+
+    protected static boolean isIgnored(Path path) {
+        return DevToolBench.IGNORE.matcher(path.toString()).matches()
+                && !DevToolBench.OVERRIDE_IGNORE.matcher(path.toString()).matches();
     }
 
     /**
