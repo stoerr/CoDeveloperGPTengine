@@ -113,6 +113,12 @@ paths:
           required: false
           schema:
             type: string
+        - name: listDirectories
+          in: query
+          description: if true, lists directories instead of files
+          required: false
+          schema:
+            type: boolean
       responses:
         '200':
           description: List of relative paths of the files
