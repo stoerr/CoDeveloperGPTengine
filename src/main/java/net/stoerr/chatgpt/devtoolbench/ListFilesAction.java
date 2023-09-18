@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -55,6 +54,7 @@ public class ListFilesAction extends AbstractPluginAction {
                 """.stripIndent();
     }
 
+    // TODO add option to list only directories.
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -77,7 +77,8 @@ public class ListFilesAction extends AbstractPluginAction {
 
         if (Files.isDirectory(path)) {
             resp.setContentType("text/plain;charset=UTF-8");
-            List<String> files = findMatchingFiles(resp, path, filePathPattern, grepPattern)
+            List<Path> paths = findMatchingFiles(resp, path, filePathPattern, grepPattern).toList();
+            List<String> files = paths.stream()
                     .map(this::mappedFilename)
                     .toList();
             if (files.isEmpty()) {
@@ -89,6 +90,9 @@ public class ListFilesAction extends AbstractPluginAction {
                 } else {
                     throw sendError(resp, 404, "No files found in directory: " + path);
                 }
+            } else if (files.size() > 100) {
+                long directoryCount = paths.stream().map(Path::getParent).distinct().count();
+                throw sendError(resp, 404, "Found " + files.size() + " files in " + directoryCount + " directories - please use a more specific path or filePathRegex");
             }
             byte[] response = (String.join("\n", files) + "\n").getBytes(StandardCharsets.UTF_8);
             resp.setContentLength(response.length);
