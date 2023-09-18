@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -44,6 +47,12 @@ public class ListFilesAction extends AbstractPluginAction {
                           required: false
                           schema:
                             type: string
+                        - name: listDirectories
+                          in: query
+                          description: if true, lists directories instead of files
+                          required: false
+                          schema:
+                            type: boolean
                       responses:
                         '200':
                           description: List of relative paths of the files
@@ -54,13 +63,12 @@ public class ListFilesAction extends AbstractPluginAction {
                 """.stripIndent();
     }
 
-    // TODO add option to list only directories.
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Path path = getPath(req, resp, true);
         String filePathRegex = getQueryParam(req, "filePathRegex");
         String grepRegex = getQueryParam(req, "grepRegex");
+        String listDirectories = getQueryParam(req, "listDirectories");
         RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, path, filePathRegex, grepRegex);
         Pattern filePathPattern;
         try {
@@ -90,6 +98,12 @@ public class ListFilesAction extends AbstractPluginAction {
                 } else {
                     throw sendError(resp, 404, "No files found in directory: " + path);
                 }
+            } else if ("TRUE".equalsIgnoreCase(listDirectories)) {
+                files = paths.stream().map(Path::getParent).distinct()
+                        .sorted(Comparator.comparing(Path::toString))
+                        .map(f -> mappedFilename(f))
+                        .map(f -> StringUtils.defaultIfEmpty(f, ".") + "/")
+                        .toList();
             } else if (files.size() > 100) {
                 long directoryCount = paths.stream().map(Path::getParent).distinct().count();
                 throw sendError(resp, 404, "Found " + files.size() + " files in " + directoryCount + " directories - please use a more specific path or filePathRegex");

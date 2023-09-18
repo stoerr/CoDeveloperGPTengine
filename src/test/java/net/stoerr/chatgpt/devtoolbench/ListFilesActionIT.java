@@ -79,4 +79,11 @@ public class ListFilesActionIT extends AbstractActionIT {
         collector.checkThat(response, is("Found 4 files mat but none of them match grepRegex: notexisting"));
     }
 
+    @Test
+    public void testDirectories() throws Exception {
+        TbUtils.logInfo("\nListFilesActionIT.testDirectories");
+        String directoriesResponse = checkResponse("/listFiles?path=.&listDirectories=true", "GET", null, 200, null);
+        collector.checkThat(directoriesResponse, is("./\nsubdir/\n"));
+    }
+
 }
