@@ -59,3 +59,5 @@ build.log
 hpsx*
 HpsX*
 .hpsx*
+
+.cgptdevbench/llmsearch.db
