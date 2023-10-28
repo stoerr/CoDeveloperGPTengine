@@ -1,9 +1,16 @@
 # Developers ChatGPT ToolBench
 
-This is a [ChatGPT](https://chat.openai.com) plugin for developers that allows reading / searching / writing files
+This is a [ChatGPT plugin](https://chat.openai.com) for developers that allows reading / searching / writing files
 in the local directory it is started in, and to execute configured actions, e.g. a build and test run.
+In contrast to other approaches like [AutoGPT](https://github.com/Significant-Gravitas/AutoGPT) this is not meant to
+autonomously execute extensive changes - which would require a lot of prompt engineering, but to enable the
+developer to flexibly use the AI within a ChatGPT chat session for various tasks both to analyze code and to make
+some changes.
 
-This is currently in development, but is already useable. (In fact I use it on itself while continuing to develop it.)
+The plugin is quite stable and useable. In fact I use it regularily in my own development - both on itself and on
+other projects. Using it does, however, require that you have a paid ChatGPT account that can use plugins.
+Also, the plugin runs locally on your machine to be able to read and write the files in it's working directory.
+To access a local plugin you have to register yourself as a [plugin developer](https://openai.com/waitlist/plugins).
 
 ## Purpose
 
