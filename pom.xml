@@ -50,6 +50,12 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.12.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.knuddels/jtokkit -->
+        <dependency>
+            <groupId>com.knuddels</groupId>
+            <artifactId>jtokkit</artifactId>
+            <version>0.6.1</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -211,7 +217,7 @@
                     <failOnMissingVersions>true</failOnMissingVersions>
                 </configuration>
             </plugin>
-			<!-- https://mvnrepository.com/artifact/pl.project13.maven/git-commit-id-plugin -->
+            <!-- https://mvnrepository.com/artifact/pl.project13.maven/git-commit-id-plugin -->
             <plugin>
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
