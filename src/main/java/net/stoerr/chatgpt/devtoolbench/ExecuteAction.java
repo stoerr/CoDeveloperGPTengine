@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -16,10 +17,27 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.knuddels.jtokkit.Encodings;
+import com.knuddels.jtokkit.api.Encoding;
+import com.knuddels.jtokkit.api.EncodingRegistry;
+import com.knuddels.jtokkit.api.EncodingType;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class ExecuteAction extends AbstractPluginAction {
+
+    /**
+     * The maximum number of ChatGPT tokes we output if there is no maxLines parameter given
+     */
+    private static final int MAXTOKENS_NOLIMIT = 2000;
+
+    protected final EncodingRegistry registry = Encodings.newDefaultEncodingRegistry();
+
+    /**
+     * Tokenizer used for GPT-3.5 and GPT-4.
+     */
+    protected final Encoding enc = registry.getEncoding(EncodingType.CL100K_BASE);
 
     @Override
     public String getUrl() {
@@ -101,6 +119,7 @@ public class ExecuteAction extends AbstractPluginAction {
             int exitCode = process.exitValue();
             logInfo("Process finished with exit code " + exitCode + ": " + abbreviate(output, 200));
             output = output.replaceAll(Pattern.quote(DevToolBench.currentDir + "/"), "");
+            output = limitOutput(output, 2000);
 
             if (exitCode == 0) {
                 resp.setStatus(HttpServletResponse.SC_OK);
@@ -121,6 +140,24 @@ public class ExecuteAction extends AbstractPluginAction {
             }
         }
 
+    }
+
+    protected final String MIDDLE_MARKER = "\n\n[... middle removed because of length restrictions ...]\n\n";
+
+    /**
+     * Turns output to tokens and replaces the middle by  if that's more than maxTokens.
+     */
+    protected String limitOutput(String output, int maxTokens) {
+        if (output.length() < maxTokens) { // tokens are longer than one char, no need to decode.
+            return output;
+        }
+        List<Integer> tokens = enc.encode(output);
+        if (tokens.size() < maxTokens) {
+            return output;
+        }
+        int startLimit = maxTokens / 2 - 10;
+        int endLimit = tokens.size() - maxTokens / 2 + 10;
+        return enc.decode(tokens.subList(0, startLimit)) + MIDDLE_MARKER + enc.decode(tokens.subList(endLimit, tokens.size()));
     }
 
     public boolean hasActions() {
