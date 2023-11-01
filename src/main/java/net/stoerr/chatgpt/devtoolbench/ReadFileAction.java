@@ -23,12 +23,12 @@ public class ReadFileAction extends AbstractPluginAction {
      */
     private static final int MAXTOKENS_NOLIMIT = 2000;
 
-    protected final EncodingRegistry registry = Encodings.newDefaultEncodingRegistry();
+    protected final transient EncodingRegistry registry = Encodings.newDefaultEncodingRegistry();
 
     /**
      * Tokenizer used for GPT-3.5 and GPT-4.
      */
-    protected final Encoding enc = registry.getEncoding(EncodingType.CL100K_BASE);
+    protected final transient Encoding enc = registry.getEncoding(EncodingType.CL100K_BASE);
 
     @Override
     public String getUrl() {
@@ -91,9 +91,9 @@ public class ReadFileAction extends AbstractPluginAction {
                         .toList();
             }
             String content = String.join("\n", lines) + "\n";
+            int dropped = 0;
             if (maxLines == Integer.MAX_VALUE) {
                 int numtokens = enc.encode(content).size();
-                int dropped = 0;
                 if (numtokens > MAXTOKENS_NOLIMIT) {
                     do {
                         // drop the 10% last lines of lines and try again
@@ -105,8 +105,9 @@ public class ReadFileAction extends AbstractPluginAction {
                     log("Dropped " + dropped + " lines to reduce token count from " + numtokens + " to " + enc.encode(content).size() + " in " + path);
                 }
             }
-            if (maxLines != Integer.MAX_VALUE || startLine != 1) {
-                content = "File " + DevToolBench.currentDir.relativize(path) + " lines " + startLine + " to line " + (startLine + lines.size() - 1) + " of " + fulllinecount + " lines\n\n" + content;
+            if (maxLines != Integer.MAX_VALUE || startLine != 1 || dropped != 0) {
+                content = "Lines " + startLine + " to " + (startLine + lines.size() - 1) + " of " + fulllinecount +
+                        " lines of file " + DevToolBench.currentDir.relativize(path) + " start now. To read the other lines use parameters startLine and maxLines.\n\n" + content;
             }
             byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
             resp.setContentLength(bytes.length);
