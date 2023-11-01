@@ -136,7 +136,7 @@ public class DevToolBench {
 
         context.addFilter(new FilterHolder((ServletRequest request, ServletResponse response, FilterChain chain) -> {
             HttpServletRequest req = (HttpServletRequest) request;
-            TbUtils.logInfo(req.getMethod() + " " + req.getRequestURI() + (req.getQueryString() != null && !req.getQueryString().isEmpty() ? "?" + req.getQueryString() : ""));
+            TbUtils.logInfo(req.getMethod() + " " + req.getRequestURL() + (req.getQueryString() != null && !req.getQueryString().isEmpty() ? "?" + req.getQueryString() : ""));
             try {
                 chain.doFilter(request, response);
             } catch (ExecutionAbortedException e) {
