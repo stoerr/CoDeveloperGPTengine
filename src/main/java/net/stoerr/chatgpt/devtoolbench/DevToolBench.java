@@ -7,7 +7,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.EnumSet;
+import java.util.Enumeration;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -17,6 +19,9 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.RequestLog;
+import org.eclipse.jetty.server.Response;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
@@ -35,11 +40,19 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class DevToolBench {
 
-    public static final Filter CORSFILTER = (rawRequest, rawResponse, chain) -> {
+    public static final String PATH_AI_PLUGIN_JSON = "/.well-known/ai-plugin.json";
+    public static final String PATH_SPEC = "/devtoolbench.yaml";
+    public static final List<String> UNPROTECTED_PATHS = List.of(PATH_AI_PLUGIN_JSON, PATH_SPEC);
+
+    private static final Filter CORSFILTER = (rawRequest, rawResponse, chain) -> {
         // if it's an OPTIONS request, we need to give a CORS response like method giveCORSResponse below
         if (rawRequest instanceof HttpServletRequest request && rawResponse instanceof HttpServletResponse response) {
+            String origin = request.getHeader("Origin");
+            if (origin == null) {
+                origin = "https://chat.openai.com";
+            }
             if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-                response.addHeader("Access-Control-Allow-Origin", "https://chat.openai.com");
+                response.addHeader("Access-Control-Allow-Origin", origin);
                 response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
                 if (request.getHeader("Access-Control-Request-Headers") != null) {
                     response.addHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
@@ -48,13 +61,35 @@ public class DevToolBench {
                 response.addHeader("Allow", "*");
                 response.setStatus(200);
             } else {
-                response.addHeader("Access-Control-Allow-Origin", "https://chat.openai.com");
+                response.addHeader("Access-Control-Allow-Origin", origin);
                 chain.doFilter(rawRequest, rawResponse);
             }
             return;
         }
+        TbUtils.logError("Unknown request type: " + rawRequest.getClass());
         chain.doFilter(rawRequest, rawResponse);
     };
+
+    private static RequestLog requestlog = new RequestLog() {
+        @Override
+        public void log(Request request, Response response) {
+            TbUtils.logInfo("Remote address: " + request.getRemoteAddr());
+            TbUtils.logInfo("Remote host: " + request.getRemoteHost());
+            TbUtils.logInfo("Remote port: " + request.getRemotePort());
+            TbUtils.logInfo("Requestlog: " + request.getMethod() + " " + request.getRequestURL() + (request.getQueryString() != null && !request.getQueryString().isEmpty() ? "?" + request.getQueryString() : "") + " " + response.getStatus());
+            // list all request headers
+            for (Enumeration<String> e = request.getHeaderNames(); e.hasMoreElements(); ) {
+                String header = e.nextElement();
+                TbUtils.logInfo("Request header: " + header + ": " + request.getHeader(header));
+            }
+            // list all response headers
+            for (String header : response.getHeaderNames()) {
+                TbUtils.logInfo("Response header: " + header + ": " + response.getHeader(header));
+            }
+            TbUtils.logInfo("");
+        }
+    };
+
     static Path currentDir = Paths.get(".").normalize().toAbsolutePath();
 
     public static final Pattern IGNORE = Pattern.compile(".*/[.].*|.*/target/.*|.*/(Hpsx|hpsx).*|.*/node_modules/.*");
@@ -69,22 +104,30 @@ public class DevToolBench {
     private static final Map<String, AbstractPluginAction> HANDLERS = new LinkedHashMap<>();
 
     private static final String OPENAPI_DESCR_START = """
+            # THESPECURL
+                        
             openapi: 3.0.1
             info:
               title: Developers ToolBench ChatGPT Plugin
               version: THEVERSION
             servers:
-              - url: http://localhost:THEPORT
+              - url: THEURL
             paths:
             """.stripIndent();
 
     private static Server server;
     private static ServletContextHandler context;
     private static boolean writingEnabled;
+    private static String mainUrl;
+
+    static boolean ignoreGlobalConfig;
+    private static String userGlobalConfigDir;
+    private static UserGlobalConfig userconfig;
 
     private static void addHandler(AbstractPluginAction handler) {
         HANDLERS.put(handler.getUrl(), handler);
-        context.addServlet(new ServletHolder(handler), handler.getUrl());
+        ServletHolder servlet = new ServletHolder(handler);
+        context.addServlet(servlet, handler.getUrl());
     }
 
     protected static void initServlets() {
@@ -104,7 +147,7 @@ public class DevToolBench {
             }
             // addHandler(new ReplaceRegexAction()); // too many mistakes when using that, look for alternatives
             addHandler(new ReplaceAction());
-        addHandler(new UrlAction());
+            addHandler(new UrlAction());
         }
 
         context.addServlet(new ServletHolder(new HttpServlet() {
@@ -114,11 +157,12 @@ public class DevToolBench {
                 resp.setCharacterEncoding("UTF-8");
                 try (InputStream in = DevToolBench.class.getResourceAsStream("/ai-plugin.json")) {
                     resp.getWriter().write(new String(in.readAllBytes(), StandardCharsets.UTF_8)
-                            .replace("THEPORT", String.valueOf(port))
+                            .replace("THEURL", mainUrl)
+                            .replace("THEOPENAITOKEN", userconfig.getOpenaiToken())
                             .replace("THEVERSION", TbUtils.getVersionString()));
                 }
             }
-        }), "/.well-known/ai-plugin.json");
+        }), PATH_AI_PLUGIN_JSON);
 
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
@@ -128,9 +172,11 @@ public class DevToolBench {
                 StringBuilder pathDescriptions = new StringBuilder();
                 HANDLERS.values().stream().sorted(Comparator.comparing(AbstractPluginAction::getUrl))
                         .forEach(handler -> pathDescriptions.append(handler.openApiDescription()));
-                resp.getWriter().write(OPENAPI_DESCR_START.replace("THEPORT", String.valueOf(port)) + pathDescriptions);
+                resp.getWriter().write(OPENAPI_DESCR_START.replace("THEURL", mainUrl)
+                        .replace("THESPECURL", mainUrl + PATH_SPEC)
+                        + pathDescriptions);
             }
-        }), "/devtoolbench.yaml");
+        }), PATH_SPEC);
 
         context.addFilter(new FilterHolder(CORSFILTER), "/*", EnumSet.of(DispatcherType.REQUEST));
 
@@ -157,10 +203,21 @@ public class DevToolBench {
         context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         context.setContextPath("/");
         server.insertHandler(context);
+
+        mainUrl = "http://localhost:" + port;
+        userconfig = new UserGlobalConfig();
+        if (!ignoreGlobalConfig && userconfig.readAndCheckConfiguration(userGlobalConfigDir)) {
+            userconfig.addHttpsConnector(server);
+            mainUrl = userconfig.getExternUrl();
+            context.addFilter(new FilterHolder(userconfig.getSecretFilter()), "/*", EnumSet.of(DispatcherType.REQUEST));
+        }
+
         initServlets();
+        // for debugging: server.setRequestLog(requestlog);
         server.start();
         // server.join();
         TbUtils.logInfo("Started on http://localhost:" + port + " in directory " + currentDir);
+        TbUtils.logInfo("OpenAPI: " + mainUrl + PATH_SPEC);
     }
 
     private static void parseOptions(String[] args) {
@@ -170,6 +227,8 @@ public class DevToolBench {
         options.addOption("w", "write", false, "Permit file writes");
         // ChatGPTTask: make sure that --help also prints the help message and that it's displayed when there is an exception in parsing options.
         options.addOption("h", "help", false, "Display this help message");
+        options.addOption("g", "globalconfigdir", true, "Directory for global configuration (default: ~/.cgptdevbenchglobal/");
+        options.addOption("l", "local", false, "Only use local configuriation - ignore global configuration (usually in ~/.cgptdevbenchglobal/ - se -g option)");
 
         CommandLineParser parser = new DefaultParser();
 
@@ -191,6 +250,15 @@ public class DevToolBench {
             writingEnabled = cmd.hasOption("w");
             if (!cmd.hasOption("w")) {
                 TbUtils.logInfo("No -w option present - writing and executing actions disabled!");
+            }
+
+            if (cmd.hasOption("g")) {
+                userGlobalConfigDir = cmd.getOptionValue("g");
+            }
+
+            if (cmd.hasOption("l")) {
+                userGlobalConfigDir = null;
+                ignoreGlobalConfig = true;
             }
         } catch (ParseException e) {
             TbUtils.logError("Error parsing command line options: " + e.getMessage());

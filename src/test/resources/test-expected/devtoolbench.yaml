@@ -1,3 +1,5 @@
+# http://localhost:7364/devtoolbench.yaml
+
 openapi: 3.0.1
 info:
   title: Developers ToolBench ChatGPT Plugin

@@ -37,6 +37,7 @@ public abstract class AbstractActionIT {
         Files.createDirectories(Paths.get("target/test-actual"));
         DevToolBench.currentDir = Paths.get(".").resolve("src/test/resources/testdir").normalize()
                 .toAbsolutePath();
+        DevToolBench.ignoreGlobalConfig = true;
         DevToolBench.main(new String[]{"-p", String.valueOf(port), "-w"});
         Thread.sleep(20);
     }
