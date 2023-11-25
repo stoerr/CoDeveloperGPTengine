@@ -24,7 +24,8 @@ public class DevToolBenchGeneralIT extends AbstractActionIT {
         TbUtils.logInfo("\nDevToolBenchGeneralIT.testAiPluginJson");
         String response = checkResponse("/.well-known/ai-plugin.json", "GET", null, 200, null);
         String expected = readFile("/../../../src/main/resources/ai-plugin.json")
-                .replace("THEPORT", "" + port)
+                .replace("THEURL", "http://localhost:7364")
+                .replace("THEOPENAITOKEN", "")
                 .replace("THEVERSION", TbUtils.getVersionString());
         collector.checkThat(response, CoreMatchers.is(expected));
     }
