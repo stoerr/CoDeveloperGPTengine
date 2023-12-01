@@ -42,7 +42,7 @@ public class DevToolBench {
 
     public static final String PATH_AI_PLUGIN_JSON = "/.well-known/ai-plugin.json";
     public static final String PATH_SPEC = "/devtoolbench.yaml";
-    public static final List<String> UNPROTECTED_PATHS = List.of(PATH_AI_PLUGIN_JSON, PATH_SPEC);
+    public static final List<String> UNPROTECTED_PATHS = List.of(PATH_AI_PLUGIN_JSON, PATH_SPEC, "/favicon.ico");
 
     private static final Filter CORSFILTER = (rawRequest, rawResponse, chain) -> {
         // if it's an OPTIONS request, we need to give a CORS response like method giveCORSResponse below
