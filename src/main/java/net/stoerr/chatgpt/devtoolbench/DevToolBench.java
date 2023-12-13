@@ -2,6 +2,7 @@ package net.stoerr.chatgpt.devtoolbench;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,6 +30,9 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -43,6 +47,8 @@ public class DevToolBench {
     public static final String PATH_AI_PLUGIN_JSON = "/.well-known/ai-plugin.json";
     public static final String PATH_SPEC = "/devtoolbench.yaml";
     public static final List<String> UNPROTECTED_PATHS = List.of(PATH_AI_PLUGIN_JSON, PATH_SPEC, "/favicon.ico");
+
+    private static final Gson GSON = new Gson();
 
     private static final Filter CORSFILTER = (rawRequest, rawResponse, chain) -> {
         // if it's an OPTIONS request, we need to give a CORS response like method giveCORSResponse below
@@ -119,6 +125,7 @@ public class DevToolBench {
     private static ServletContextHandler context;
     private static boolean writingEnabled;
     private static String mainUrl;
+    private static String localUrl;
 
     static boolean ignoreGlobalConfig;
     private static String userGlobalConfigDir;
@@ -156,10 +163,17 @@ public class DevToolBench {
                 resp.setContentType("application/json");
                 resp.setCharacterEncoding("UTF-8");
                 try (InputStream in = DevToolBench.class.getResourceAsStream("/ai-plugin.json")) {
-                    resp.getWriter().write(new String(in.readAllBytes(), StandardCharsets.UTF_8)
-                            .replace("THEURL", mainUrl)
+                    String json = new String(in.readAllBytes(), StandardCharsets.UTF_8)
+                            .replace("THEURL", getMainUrl(req))
                             .replace("THEOPENAITOKEN", userconfig.getOpenaiToken())
-                            .replace("THEVERSION", TbUtils.getVersionString()));
+                            .replace("THEVERSION", TbUtils.getVersionString());
+                    if (isLocal(req)) { // as local plugin development ChatGPT doesn't use authorization.
+                        Map<String, Object> map = GSON.fromJson(json, new TypeToken<Map<String, Object>>() {
+                        }.getType());
+                        map.put("auth", Map.of("type", "none", "comment", "authorization removed for localhost"));
+                        json = GSON.toJson(map);
+                    }
+                    resp.getWriter().write(json);
                 }
             }
         }), PATH_AI_PLUGIN_JSON);
@@ -172,8 +186,8 @@ public class DevToolBench {
                 StringBuilder pathDescriptions = new StringBuilder();
                 HANDLERS.values().stream().sorted(Comparator.comparing(AbstractPluginAction::getUrl))
                         .forEach(handler -> pathDescriptions.append(handler.openApiDescription()));
-                resp.getWriter().write(OPENAPI_DESCR_START.replace("THEURL", mainUrl)
-                        .replace("THESPECURL", mainUrl + PATH_SPEC)
+                resp.getWriter().write(OPENAPI_DESCR_START.replace("THEURL", getMainUrl(req))
+                        .replace("THESPECURL", getMainUrl(req) + PATH_SPEC)
                         + pathDescriptions);
             }
         }), PATH_SPEC);
@@ -195,16 +209,25 @@ public class DevToolBench {
         }), "/*", EnumSet.of(DispatcherType.REQUEST));
     }
 
+    private static String getMainUrl(HttpServletRequest request) {
+        return isLocal(request) ? localUrl : mainUrl;
+    }
+
+    private static boolean isLocal(HttpServletRequest request) {
+        return request.getRemoteAddr().equals("127.0.0.1") && !request.isSecure();
+    }
+
     public static void main(String[] args) throws Exception {
         TbUtils.logVersion();
 
         parseOptions(args);
-        server = new Server(port);
+        server = new Server(new InetSocketAddress("127.0.0.1", port));
         context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         context.setContextPath("/");
         server.insertHandler(context);
 
         mainUrl = "http://localhost:" + port;
+        localUrl = mainUrl;
         userconfig = new UserGlobalConfig();
         if (!ignoreGlobalConfig && userconfig.readAndCheckConfiguration(userGlobalConfigDir)) {
             userconfig.addHttpsConnector(server);
