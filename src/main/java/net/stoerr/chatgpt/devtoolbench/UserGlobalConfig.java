@@ -127,12 +127,13 @@ public class UserGlobalConfig {
         return (rawRequest, rawResponse, chain) -> {
             HttpServletRequest request = (HttpServletRequest) rawRequest;
             HttpServletResponse response = (HttpServletResponse) rawResponse;
+            boolean requestislocal = request.getRemoteAddr().equals("127.0.0.1") && !request.isSecure();
             String secret = request.getHeader("Authorization");
             boolean isPublicRequest = DevToolBench.UNPROTECTED_PATHS.contains(request.getRequestURI());
-            if (gptSecret != null && !isPublicRequest && (secret == null || !secret.contains(gptSecret))) {
+            if (!requestislocal && gptSecret != null && !isPublicRequest && (secret == null || !secret.contains(gptSecret))) {
                 TbUtils.logError("service access token missing. Request was " + request.getRequestURI() + " from " + request.getRemoteAddr() + " - wrong Authorization header " + secret);
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().println("service access token missing in Authorization header");
+                response.getWriter().println("service access token missing in Authorization header for " + request.getRequestURI());
                 return;
             }
             chain.doFilter(rawRequest, rawResponse);
@@ -147,6 +148,7 @@ public class UserGlobalConfig {
         ServerConnector httpsConnector = new ServerConnector(server,
                 new SslConnectionFactory(sslContextFactory, HttpVersion.HTTP_1_1.asString()),
                 new HttpConnectionFactory());
+        httpsConnector.setHost("0.0.0.0");
         httpsConnector.setPort(httpsPort);
 
         server.addConnector(httpsConnector);
