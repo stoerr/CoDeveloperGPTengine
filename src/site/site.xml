@@ -19,6 +19,12 @@
 
         <menu name="Overview">
             <item name="Introduction" href="index.html"/>
+            <item name="Local installation" href="installation.html"/>
+            <item name="Install into GPT" href="gpt.html"/>
+            <item name="Install as ChatGPT Plugin" href="plugin.html"/>
+            <item name="Access via HTTPS" href="https.html"/>
+            <item name="Configuration" href="configuration.html"/>
+            <item name="Usage" href="usage.html"/>
         </menu>
         <menu ref="modules" inherit="bottom"/>
         <menu ref="reports" inherit="bottom"/>
@@ -33,6 +39,10 @@
         <version>1.0.16</version>
     </skin>
     <custom>
+        <gitHub>
+            <organisation>stoerr</organisation>
+            <repository>DevelopersChatGPTToolBench</repository>
+        </gitHub>
         <bootstrapSkin>
             <bootswatchStyle>cerulean</bootswatchStyle>
             <footer>
