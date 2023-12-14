@@ -135,6 +135,27 @@
         </resources>
 
         <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-enforcer-plugin</artifactId>
+              <version>3.4.1</version>
+              <executions>
+                <execution>
+                  <id>enforce-maven</id>
+                  <goals>
+                    <goal>enforce</goal>
+                  </goals>
+                  <configuration>
+                    <rules>
+                      <requireMavenVersion>
+                        <version>3.3.9</version>
+                      </requireMavenVersion>
+                    </rules>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+
             <!-- Reports -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -192,7 +213,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.2.2</version>
+                <version>3.2.3</version>
                 <executions>
                     <execution>
                         <goals>
@@ -206,7 +227,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>3.2.2</version>
+                <version>3.2.3</version>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -216,7 +237,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.6.2</version>
+                <version>3.6.3</version>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

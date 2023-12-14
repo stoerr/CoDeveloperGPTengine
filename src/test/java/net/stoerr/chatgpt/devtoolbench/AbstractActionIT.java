@@ -46,7 +46,7 @@ public abstract class AbstractActionIT {
     public static void tearDownClass() throws Exception {
         Thread.sleep(10);
         DevToolBench.stop();
-        Thread.sleep(20);
+        Thread.sleep(200);
     }
 
     @Before

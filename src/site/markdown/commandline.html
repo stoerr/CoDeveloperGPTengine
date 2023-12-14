@@ -1,15 +1,48 @@
-# Command line
+# Command line and configuration
 
 I assume you have [installed](install.md) the program and created a script `developersToolbenchPlugin` in your path
 that starts it. With argument -h or --help you get a short help message with the options available.
 
     version: : DevToolBench version: 2.0
-
-    usage:
-     -g,--globalconfigdir <arg>   Directory for global configuration (default:
+    usage: options are
+     -g,--globalconfigdir {arg}   Directory for global configuration (default:
                                   ~/.cgptdevbenchglobal/
      -h,--help                    Display this help message
-     -l,--local                   Only use local configuration - ignore global configuration (usually in
-                                  ~/.cgptdevbenchglobal/ - se -g option)
-     -p,--port <arg>              Port number
-     -w,--write                   Permit file writes
+     -l,--local                   Only use local configuration via options -
+                                  ignore any global configuration
+     -p,--port {arg}              Port number
+     -w,--write                   Permit file writes and action executions
+
+## Global configuration file
+
+The global configuration file defines several properties that are important for the communication with ChatGPT.
+Normally it's put into the directory `~/.cgptdevbenchglobal/` and is named `config.properties`, for example:
+
+    gptsecret=examplesecret
+    openaitoken=exampletoken
+
+where:
+
+* `gptsecret` XXX
+* `openaitoken` XXX
+
+## Local configuration directory
+
+If you have a directory named .cgptdevbench/ in the directory where you start the program, a log file `.requestlog.txt`
+will be put there with the requests and responses to ChatGPT. This is useful for debugging or just to see what's going on.
+
+Second, you can put there a number of shell scripts *.sh that can be executed from the program. It's a good idea to
+also put a file listActions.sh there that lists the available actions:
+
+```bash
+# Plugin Action: list all available actions
+cd .cgptdevbench || exit 1
+for fil in *.sh; do
+  echo "${fil%.sh} :  " $(egrep -o "Plugin Action: .*" "$fil" | sed -e 's/Plugin Action: //')
+done
+```
+
+It requires a comment `# Plugin Action: ` to be present in each *.sh file that explains the function of the action.
+
+More examples can be found in the
+[.cgptdevbench directory of the project](https://github.com/stoerr/DevelopersChatGPTToolBench/tree/develop/.cgptdevbench) .
