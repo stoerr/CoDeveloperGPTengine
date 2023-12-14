@@ -20,6 +20,7 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.RequestLog;
 import org.eclipse.jetty.server.Response;
@@ -29,9 +30,6 @@ import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.Filter;
@@ -48,7 +46,7 @@ public class DevToolBench {
     public static final String PATH_SPEC = "/devtoolbench.yaml";
     public static final List<String> UNPROTECTED_PATHS = List.of(PATH_AI_PLUGIN_JSON, PATH_SPEC, "/favicon.ico");
 
-    private static final Gson GSON = new Gson();
+    // private static final Gson GSON = new Gson();
 
     private static final Filter CORSFILTER = (rawRequest, rawResponse, chain) -> {
         // if it's an OPTIONS request, we need to give a CORS response like method giveCORSResponse below
@@ -167,12 +165,13 @@ public class DevToolBench {
                             .replace("THEURL", getMainUrl(req))
                             .replace("THEOPENAITOKEN", userconfig.getOpenaiToken())
                             .replace("THEVERSION", TbUtils.getVersionString());
-                    if (isLocal(req)) { // as local plugin development ChatGPT doesn't use authorization.
-                        Map<String, Object> map = GSON.fromJson(json, new TypeToken<Map<String, Object>>() {
-                        }.getType());
-                        map.put("auth", Map.of("type", "none", "comment", "authorization removed for localhost"));
-                        json = GSON.toJson(map);
-                    }
+                    // disabled for now since plugin development is broken with ChatGPT for a while as of 2023-12-14
+                    //                    if (isLocal(req)) { // as local plugin development ChatGPT doesn't use authorization.
+                    //                        Map<String, Object> map = GSON.fromJson(json, new TypeToken<Map<String, Object>>() {
+                    //                        }.getType());
+                    //                        map.put("auth", Map.of("type", "none", "comment", "authorization removed for localhost"));
+                    //                        json = GSON.toJson(map);
+                    //                    }
                     resp.getWriter().write(json);
                 }
             }
@@ -210,11 +209,17 @@ public class DevToolBench {
     }
 
     private static String getMainUrl(HttpServletRequest request) {
-        return isLocal(request) ? localUrl : mainUrl;
-    }
-
-    private static boolean isLocal(HttpServletRequest request) {
-        return request.getRemoteAddr().equals("127.0.0.1") && !request.isSecure();
+        // cut off path part of request url
+        StringBuffer url = request.getRequestURL();
+        int pathpos = url.indexOf(request.getServletPath());
+        if (pathpos > 0) {
+            url.setLength(pathpos);
+        }
+        String protocol = request.getHeader("X-Forwarded-Proto");
+        if (protocol != null) { // replace protocol if we are behind a proxy
+            url.replace(0, url.indexOf(":"), protocol);
+        }
+        return url.toString();
     }
 
     public static void main(String[] args) throws Exception {
@@ -232,15 +237,15 @@ public class DevToolBench {
         if (!ignoreGlobalConfig && userconfig.readAndCheckConfiguration(userGlobalConfigDir)) {
             userconfig.addHttpsConnector(server);
             mainUrl = userconfig.getExternUrl();
-            context.addFilter(new FilterHolder(userconfig.getSecretFilter()), "/*", EnumSet.of(DispatcherType.REQUEST));
         }
+        context.addFilter(new FilterHolder(userconfig.getSecretFilter()), "/*", EnumSet.of(DispatcherType.REQUEST));
 
         initServlets();
         // for debugging: server.setRequestLog(requestlog);
         server.start();
         // server.join();
         TbUtils.logInfo("Started on http://localhost:" + port + " in directory " + currentDir);
-        TbUtils.logInfo("OpenAPI: " + mainUrl + PATH_SPEC);
+        TbUtils.logInfo("OpenAPI: " + StringUtils.defaultString(mainUrl, localUrl) + PATH_SPEC);
     }
 
     private static void parseOptions(String[] args) {
@@ -248,10 +253,9 @@ public class DevToolBench {
 
         options.addOption("p", "port", true, "Port number");
         options.addOption("w", "write", false, "Permit file writes");
-        // ChatGPTTask: make sure that --help also prints the help message and that it's displayed when there is an exception in parsing options.
         options.addOption("h", "help", false, "Display this help message");
         options.addOption("g", "globalconfigdir", true, "Directory for global configuration (default: ~/.cgptdevbenchglobal/");
-        options.addOption("l", "local", false, "Only use local configuriation - ignore global configuration (usually in ~/.cgptdevbenchglobal/ - se -g option)");
+        options.addOption("l", "local", false, "Only use local configuration via options - ignore any global configuration");
 
         CommandLineParser parser = new DefaultParser();
 
@@ -260,7 +264,7 @@ public class DevToolBench {
 
             if (cmd.hasOption("h")) {
                 HelpFormatter formatter = new HelpFormatter();
-                formatter.printHelp("DevToolBench", options);
+                formatter.printHelp("", options);
                 System.exit(0);
             }
 

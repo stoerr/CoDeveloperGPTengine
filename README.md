@@ -44,8 +44,9 @@ there are [several ways to do this](https.md).
 
 ## Getting started
 
-- First, you have to [install the program](install.md) locally.
+- First, you have to [install the program](install.md) locally
 - Second, you have to make it [reachable from OpenAI's servers](https.md).
-- Third, you have to [register it as a ChatGPT plugin](plugin.md) or [put it into a GPT](gpt.md).
+- Third, [run it](commandline.md) in the directory
+- Fourth, you have to [create a GPT with it as action](gpt.md), or [register it as a ChatGPT plugin](plugin.md). 
 
 Then you can [use it from ChatGPT](usage.md).
