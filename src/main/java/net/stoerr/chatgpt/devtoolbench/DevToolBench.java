@@ -252,7 +252,7 @@ public class DevToolBench {
         Options options = new Options();
 
         options.addOption("p", "port", true, "Port number");
-        options.addOption("w", "write", false, "Permit file writes");
+        options.addOption("w", "write", false, "Permit file writes and action executions");
         options.addOption("h", "help", false, "Display this help message");
         options.addOption("g", "globalconfigdir", true, "Directory for global configuration (default: ~/.cgptdevbenchglobal/");
         options.addOption("l", "local", false, "Only use local configuration via options - ignore any global configuration");
@@ -264,7 +264,7 @@ public class DevToolBench {
 
             if (cmd.hasOption("h")) {
                 HelpFormatter formatter = new HelpFormatter();
-                formatter.printHelp("", options);
+                formatter.printHelp("options are", options);
                 System.exit(0);
             }
 
