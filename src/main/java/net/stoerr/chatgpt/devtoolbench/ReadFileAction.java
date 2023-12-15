@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.knuddels.jtokkit.Encodings;
@@ -37,36 +38,37 @@ public class ReadFileAction extends AbstractPluginAction {
 
     @Override
     public String openApiDescription() {
-        return "/readFile:\n" +
-                "  get:\n" +
-                "    operationId: readFile\n" +
-                "    summary: Read a files content.\n" +
-                "    parameters:\n" +
-                "      - name: path\n" +
-                "        in: query\n" +
-                "        description: relative path to file\n" +
-                "        required: true\n" +
-                "        schema:\n" +
-                "          type: string\n" +
-                "      - name: maxLines\n" +
-                "        in: query\n" +
-                "        description: maximum number of lines to read from the file\n" +
-                "        required: false\n" +
-                "        schema:\n" +
-                "          type: integer\n" +
-                "      - name: startLine\n" +
-                "        in: query\n" +
-                "        description: line number to start reading from\n" +
-                "        required: false\n" +
-                "        schema:\n" +
-                "          type: integer\n" +
-                "    responses:\n" +
-                "      '200':\n" +
-                "        description: Content of the file\n" +
-                "        content:\n" +
-                "          text/plain:\n" +
-                "            schema:\n" +
-                "              type: string\n";
+        return "" +
+                "  /readFile:\n" +
+                "    get:\n" +
+                "      operationId: readFile\n" +
+                "      summary: Read a files content.\n" +
+                "      parameters:\n" +
+                "        - name: path\n" +
+                "          in: query\n" +
+                "          description: relative path to file\n" +
+                "          required: true\n" +
+                "          schema:\n" +
+                "            type: string\n" +
+                "        - name: maxLines\n" +
+                "          in: query\n" +
+                "          description: maximum number of lines to read from the file\n" +
+                "          required: false\n" +
+                "          schema:\n" +
+                "            type: integer\n" +
+                "        - name: startLine\n" +
+                "          in: query\n" +
+                "          description: line number to start reading from\n" +
+                "          required: false\n" +
+                "          schema:\n" +
+                "            type: integer\n" +
+                "      responses:\n" +
+                "        '200':\n" +
+                "          description: Content of the file\n" +
+                "          content:\n" +
+                "            text/plain:\n" +
+                "              schema:\n" +
+                "                type: string\n";
     }
 
     @Override
@@ -85,7 +87,7 @@ public class ReadFileAction extends AbstractPluginAction {
                 lines = linesStream
                         .skip(startLine - 1L)
                         .limit(maxLines)
-                        .toList();
+                        .collect(Collectors.toList());
             }
             String content = String.join("\n", lines) + "\n";
             int dropped = 0;

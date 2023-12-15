@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.pdfbox.io.IOUtils;
 
 import com.knuddels.jtokkit.Encodings;
 import com.knuddels.jtokkit.api.Encoding;
@@ -46,32 +47,33 @@ public class ExecuteAction extends AbstractPluginAction {
 
     @Override
     public String openApiDescription() {
-        return "/executeAction:\n" +
-                "  post:\n" +
-                "    operationId: executeAction\n" +
-                "    summary: Execute an action with given content as standard input. Only on explicit user request.\n" +
-                "    parameters:\n" +
-                "      - name: actionName\n" +
-                "        in: query\n" +
-                "        required: true\n" +
-                "        schema:\n" +
-                "          type: string\n" +
-                "    requestBody:\n" +
-                "      required: true\n" +
-                "      content:\n" +
-                "        application/json:\n" +
+        return "" +
+                "  /executeAction:\n" +
+                "    post:\n" +
+                "      operationId: executeAction\n" +
+                "      summary: Execute an action with given content as standard input. Only on explicit user request.\n" +
+                "      parameters:\n" +
+                "        - name: actionName\n" +
+                "          in: query\n" +
+                "          required: true\n" +
                 "          schema:\n" +
-                "            type: object\n" +
-                "            properties:\n" +
-                "              actionInput:\n" +
-                "                type: string\n" +
-                "    responses:\n" +
-                "      '200':\n" +
-                "        description: Action executed successfully, output returned\n" +
+                "            type: string\n" +
+                "      requestBody:\n" +
+                "        required: true\n" +
                 "        content:\n" +
-                "          text/plain:\n" +
+                "          application/json:\n" +
                 "            schema:\n" +
-                "              type: string\n";
+                "              type: object\n" +
+                "              properties:\n" +
+                "                actionInput:\n" +
+                "                  type: string\n" +
+                "      responses:\n" +
+                "        '200':\n" +
+                "          description: Action executed successfully, output returned\n" +
+                "          content:\n" +
+                "            text/plain:\n" +
+                "              schema:\n" +
+                "                type: string\n";
     }
 
     @Override
@@ -109,7 +111,7 @@ public class ExecuteAction extends AbstractPluginAction {
 
             String output;
             try (InputStream inputStream = process.getInputStream()) {
-                output = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+                output = new String(IOUtils.toByteArray(inputStream), StandardCharsets.UTF_8);
                 if (!process.waitFor(1, TimeUnit.MINUTES)) {
                     throw sendError(resp, 500, "Process did not finish within one minute");
                 }

@@ -6,6 +6,7 @@ import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.Enumeration;
@@ -21,6 +22,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.pdfbox.io.IOUtils;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.RequestLog;
 import org.eclipse.jetty.server.Response;
@@ -44,7 +46,7 @@ public class DevToolBench {
 
     public static final String PATH_AI_PLUGIN_JSON = "/.well-known/ai-plugin.json";
     public static final String PATH_SPEC = "/devtoolbench.yaml";
-    public static final List<String> UNPROTECTED_PATHS = List.of(PATH_AI_PLUGIN_JSON, PATH_SPEC, "/favicon.ico");
+    public static final List<String> UNPROTECTED_PATHS = Arrays.asList(PATH_AI_PLUGIN_JSON, PATH_SPEC, "/favicon.ico");
 
     // private static final Gson GSON = new Gson();
 
@@ -161,7 +163,7 @@ public class DevToolBench {
                 resp.setContentType("application/json");
                 resp.setCharacterEncoding("UTF-8");
                 try (InputStream in = DevToolBench.class.getResourceAsStream("/ai-plugin.json")) {
-                    String json = new String(in.readAllBytes(), StandardCharsets.UTF_8)
+                    String json = new String(IOUtils.toByteArray(in), StandardCharsets.UTF_8)
                             .replace("THEURL", getMainUrl(req))
                             .replace("THEOPENAITOKEN", userconfig.getOpenaiToken())
                             .replace("THEVERSION", TbUtils.getVersionString());

@@ -45,39 +45,40 @@ public class ReplaceRegexAction extends AbstractPluginAction {
 
     @Override
     public String openApiDescription() {
-        return "/replaceRegexInFile:\n" +
-                "  post:\n" +
-                "    operationId: replaceRegexInFile\n" +
-                "    summary: Replaces the single occurrence of a regular expression or a string in a file. You can use all advanced regex features. The whole file is matched, not line by line. Use exactly one of literalReplacement and replacementWithGroupReferences.\n" +
-                "    parameters:\n" +
-                "      - name: path\n" +
-                "        in: query\n" +
-                "        description: relative path to file\n" +
-                "        required: true\n" +
-                "        schema:\n" +
-                "          type: string\n" +
-                "    requestBody:\n" +
-                "      required: true\n" +
-                "      content:\n" +
-                "        application/json:\n" +
+        return "" +
+                "  /replaceRegexInFile:\n" +
+                "    post:\n" +
+                "      operationId: replaceRegexInFile\n" +
+                "      summary: Replaces the single occurrence of a regular expression or a string in a file. You can use all advanced regex features. The whole file is matched, not line by line. Use exactly one of literalReplacement and replacementWithGroupReferences.\n" +
+                "      parameters:\n" +
+                "        - name: path\n" +
+                "          in: query\n" +
+                "          description: relative path to file\n" +
+                "          required: true\n" +
                 "          schema:\n" +
-                "            type: object\n" +
-                "            properties:\n" +
-                "              literalSearchString:\n" +
-                "                type: string\n" +
-                "                description: \"The string to be replaced - can contain many lines, but please take care to find a small number of lines to replace. Prefer this to pattern for simplicity.\"\n" +
-                "              pattern:\n" +
-                "                type: string\n" +
-                "                description: \"java.util.regex.Pattern to be replaced. Examples: \\\\z is end of file, ((?s).*?) matches any characters including line breaks non-greedily.\"\n" +
-                "              literalReplacement:\n" +
-                "                type: string\n" +
-                "                description: \"searches for the given Java pattern in the file content and replaces it with the literalReplacement as it is.\"\n" +
-                "              replacementWithGroupReferences:\n" +
-                "                type: string\n" +
-                "                description: \"replaces the finding of the pattern with the replacement and replaces group references $0, $1, ..., $9 with the corresponding groups from the match. A literal $ must be given as $$.\"\n" +
-                "    responses:\n" +
-                "      '200':\n" +
-                "        description: File updated successfully\n";
+                "            type: string\n" +
+                "      requestBody:\n" +
+                "        required: true\n" +
+                "        content:\n" +
+                "          application/json:\n" +
+                "            schema:\n" +
+                "              type: object\n" +
+                "              properties:\n" +
+                "                literalSearchString:\n" +
+                "                  type: string\n" +
+                "                  description: \"The string to be replaced - can contain many lines, but please take care to find a small number of lines to replace. Prefer this to pattern for simplicity.\"\n" +
+                "                pattern:\n" +
+                "                  type: string\n" +
+                "                  description: \"java.util.regex.Pattern to be replaced. Examples: \\\\z is end of file, ((?s).*?) matches any characters including line breaks non-greedily.\"\n" +
+                "                literalReplacement:\n" +
+                "                  type: string\n" +
+                "                  description: \"searches for the given Java pattern in the file content and replaces it with the literalReplacement as it is.\"\n" +
+                "                replacementWithGroupReferences:\n" +
+                "                  type: string\n" +
+                "                  description: \"replaces the finding of the pattern with the replacement and replaces group references $0, $1, ..., $9 with the corresponding groups from the match. A literal $ must be given as $$.\"\n" +
+                "      responses:\n" +
+                "        '200':\n" +
+                "          description: File updated successfully\n";
         // Take out multiple for now, as it has been used wrongly several times
         //                                 multiple:
         //                                  type: boolean
@@ -128,12 +129,12 @@ public class ReplaceRegexAction extends AbstractPluginAction {
                 TbUtils.compileReplacement(resp, replacementWithGroupReferences);
 
         try {
-            String content = Files.readString(path, UTF_8);
+            String content = new String(Files.readAllBytes(path), UTF_8);
             Matcher m = Pattern.compile(pattern).matcher(content);
             List<Range<Long>> modifiedLineNumbers = new ArrayList<>();
             int replacementCount = 0;
 
-            StringBuilder sb = new StringBuilder();
+            StringBuffer sb = new StringBuffer();
             while (m.find()) {
                 long startLine = TbUtils.lineNumberAfter(content.substring(0, m.start()));
                 long endLine = TbUtils.lineNumberAfter(content.substring(0, m.end()));
@@ -153,7 +154,7 @@ public class ReplaceRegexAction extends AbstractPluginAction {
 
             List<String> modifiedLineDescr = TbUtils.rangeDescription(modifiedLineNumbers);
 
-            Files.writeString(path, sb.toString(), UTF_8);
+            Files.write(path, content.getBytes(UTF_8));
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.setContentType("text/plain;charset=UTF-8");
             resp.getWriter().write("Replaced " + replacementCount + " occurrences of pattern; modified lines "
