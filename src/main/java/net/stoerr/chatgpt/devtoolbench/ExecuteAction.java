@@ -46,34 +46,32 @@ public class ExecuteAction extends AbstractPluginAction {
 
     @Override
     public String openApiDescription() {
-        return """
-                  /executeAction:
-                    post:
-                      operationId: executeAction
-                      summary: Execute an action with given content as standard input. Only on explicit user request.
-                      parameters:
-                        - name: actionName
-                          in: query
-                          required: true
-                          schema:
-                            type: string
-                      requestBody:
-                        required: true
-                        content:
-                          application/json:
-                            schema:
-                              type: object
-                              properties:
-                                actionInput:
-                                  type: string
-                      responses:
-                        '200':
-                          description: Action executed successfully, output returned
-                          content:
-                            text/plain:
-                              schema:
-                                type: string
-                """.stripIndent();
+        return "/executeAction:\n" +
+                "  post:\n" +
+                "    operationId: executeAction\n" +
+                "    summary: Execute an action with given content as standard input. Only on explicit user request.\n" +
+                "    parameters:\n" +
+                "      - name: actionName\n" +
+                "        in: query\n" +
+                "        required: true\n" +
+                "        schema:\n" +
+                "          type: string\n" +
+                "    requestBody:\n" +
+                "      required: true\n" +
+                "      content:\n" +
+                "        application/json:\n" +
+                "          schema:\n" +
+                "            type: object\n" +
+                "            properties:\n" +
+                "              actionInput:\n" +
+                "                type: string\n" +
+                "    responses:\n" +
+                "      '200':\n" +
+                "        description: Action executed successfully, output returned\n" +
+                "        content:\n" +
+                "          text/plain:\n" +
+                "            schema:\n" +
+                "              type: string\n";
     }
 
     @Override

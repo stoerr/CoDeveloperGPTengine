@@ -23,44 +23,42 @@ public class ListFilesAction extends AbstractPluginAction {
 
     @Override
     public String openApiDescription() {
-        return """
-                  /listFiles:
-                    get:
-                      operationId: listFiles
-                      summary: Recursively lists files in a directory. Optionally filters by filename and content.
-                      parameters:
-                        - name: path
-                          in: query
-                          description: relative path to directory to list. root directory = '.'
-                          required: true
-                          schema:
-                            type: string
-                        - name: filePathRegex
-                          in: query
-                          description: regex to filter file paths
-                          required: false
-                          schema:
-                            type: string
-                        - name: grepRegex
-                          in: query
-                          description: an optional regex that lists only files with matching content
-                          required: false
-                          schema:
-                            type: string
-                        - name: listDirectories
-                          in: query
-                          description: if true, lists directories instead of files
-                          required: false
-                          schema:
-                            type: boolean
-                      responses:
-                        '200':
-                          description: List of relative paths of the files
-                          content:
-                            text/plain:
-                              schema:
-                                type: string
-                """.stripIndent();
+        return "/listFiles:\n" +
+                "  get:\n" +
+                "    operationId: listFiles\n" +
+                "    summary: Recursively lists files in a directory. Optionally filters by filename and content.\n" +
+                "    parameters:\n" +
+                "      - name: path\n" +
+                "        in: query\n" +
+                "        description: relative path to directory to list. root directory = '.'\n" +
+                "        required: true\n" +
+                "        schema:\n" +
+                "          type: string\n" +
+                "      - name: filePathRegex\n" +
+                "        in: query\n" +
+                "        description: regex to filter file paths\n" +
+                "        required: false\n" +
+                "        schema:\n" +
+                "          type: string\n" +
+                "      - name: grepRegex\n" +
+                "        in: query\n" +
+                "        description: an optional regex that lists only files with matching content\n" +
+                "        required: false\n" +
+                "        schema:\n" +
+                "          type: string\n" +
+                "      - name: listDirectories\n" +
+                "        in: query\n" +
+                "        description: if true, lists directories instead of files\n" +
+                "        required: false\n" +
+                "        schema:\n" +
+                "          type: boolean\n" +
+                "    responses:\n" +
+                "      '200':\n" +
+                "        description: List of relative paths of the files\n" +
+                "        content:\n" +
+                "          text/plain:\n" +
+                "            schema:\n" +
+                "              type: string\n";
     }
 
     @Override

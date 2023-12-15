@@ -22,44 +22,42 @@ public class GrepAction extends AbstractPluginAction {
 
     @Override
     public String openApiDescription() {
-        return """
-                  /grepFiles:
-                    get:
-                      operationId: grepAction
-                      summary: Search for lines in text files matching the given regex.
-                      parameters:
-                        - name: path
-                          in: query
-                          description: relative path to the directory to search in or the file to search. root directory = '.'
-                          required: true
-                          schema:
-                            type: string
-                        - name: fileRegex
-                          in: query
-                          description: optional regex to filter file names
-                          required: false
-                          schema:
-                            type: string
-                        - name: grepRegex
-                          in: query
-                          description: regex to filter lines in the files
-                          required: true
-                          schema:
-                            type: string
-                        - name: contextLines
-                          in: query
-                          description: number of context lines to include with each match (not yet used)
-                          required: false
-                          schema:
-                            type: integer
-                      responses:
-                        '200':
-                          description: Lines matching the regex
-                          content:
-                            text/plain:
-                              schema:
-                                type: string
-                """.stripIndent();
+        return "/grepFiles:\n" +
+                "  get:\n" +
+                "    operationId: grepAction\n" +
+                "    summary: Search for lines in text files matching the given regex.\n" +
+                "    parameters:\n" +
+                "      - name: path\n" +
+                "        in: query\n" +
+                "        description: relative path to the directory to search in or the file to search. root directory = '.'\n" +
+                "        required: true\n" +
+                "        schema:\n" +
+                "          type: string\n" +
+                "      - name: fileRegex\n" +
+                "        in: query\n" +
+                "        description: optional regex to filter file names\n" +
+                "        required: false\n" +
+                "        schema:\n" +
+                "          type: string\n" +
+                "      - name: grepRegex\n" +
+                "        in: query\n" +
+                "        description: regex to filter lines in the files\n" +
+                "        required: true\n" +
+                "        schema:\n" +
+                "          type: string\n" +
+                "      - name: contextLines\n" +
+                "        in: query\n" +
+                "        description: number of context lines to include with each match (not yet used)\n" +
+                "        required: false\n" +
+                "        schema:\n" +
+                "          type: integer\n" +
+                "    responses:\n" +
+                "      '200':\n" +
+                "        description: Lines matching the regex\n" +
+                "        content:\n" +
+                "          text/plain:\n" +
+                "            schema:\n" +
+                "              type: string\n";
     }
 
     // output format:

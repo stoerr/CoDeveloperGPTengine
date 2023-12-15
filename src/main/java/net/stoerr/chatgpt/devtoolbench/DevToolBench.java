@@ -50,7 +50,9 @@ public class DevToolBench {
 
     private static final Filter CORSFILTER = (rawRequest, rawResponse, chain) -> {
         // if it's an OPTIONS request, we need to give a CORS response like method giveCORSResponse below
-        if (rawRequest instanceof HttpServletRequest request && rawResponse instanceof HttpServletResponse response) {
+        if (rawRequest instanceof HttpServletRequest && rawResponse instanceof HttpServletResponse) {
+            HttpServletResponse response = (HttpServletResponse) rawResponse;
+            HttpServletRequest request = (HttpServletRequest) rawRequest;
             String origin = request.getHeader("Origin");
             if (origin == null) {
                 origin = "https://chat.openai.com";
@@ -107,17 +109,15 @@ public class DevToolBench {
 
     private static final Map<String, AbstractPluginAction> HANDLERS = new LinkedHashMap<>();
 
-    private static final String OPENAPI_DESCR_START = """
-            # THESPECURL
-                        
-            openapi: 3.0.1
-            info:
-              title: Developers ToolBench ChatGPT Plugin
-              version: THEVERSION
-            servers:
-              - url: THEURL
-            paths:
-            """.stripIndent();
+    private static final String OPENAPI_DESCR_START = "" +
+            "# THESPECURL\n\n" +
+            "openapi: 3.0.1\n" +
+            "info:\n" +
+            "  title: Developers ToolBench ChatGPT Plugin\n" +
+            "  version: THEVERSION\n" +
+            "servers:\n" +
+            "  - url: THEURL\n" +
+            "paths:\n";
 
     private static Server server;
     private static ServletContextHandler context;

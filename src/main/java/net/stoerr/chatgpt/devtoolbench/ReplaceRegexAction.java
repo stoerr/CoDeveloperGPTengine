@@ -22,22 +22,21 @@ import jakarta.servlet.http.HttpServletResponse;
 @Deprecated // "ChatGPT-4 made way too many mistakes when using that"
 public class ReplaceRegexAction extends AbstractPluginAction {
 
-    public static final String ERRORMESSAGE_PATTERNNOTFOUND = """
-            Found no occurrences of pattern.
-            Possible actions to fix the problem:
-             - Re-read the file - it might be different than you think.
-             - Use literalSearchString instead of specifying a pattern. That is less error prone.
-             - Think out of the box and use a completely different pattern, match something else or use a different way to reach your goal. You can use all advanced regex features to create a short but precise pattern.
-            Common errors:
-             - (.*) does not match newlines - ((?s).*?) does.
-             - replaceWithGroupReferences might have already broken something because of backslash escaping rules - think of how Matcher.appendReplacement works.
-            Some ideas for advanced constructs for the pattern:
-                - \\A matches the start of the file
-                - \\z matches the end of the file
-                - you can match backslashes with . in the pattern, to avoid potential errors due to missed backslash escaping
-                - (?<=something) matches the point after 'something', without matching 'something' itself - good for adding after a certain string
-                - (?=something) matches the point before 'something', good for inserting before a certain string
-            """;
+    public static final String ERRORMESSAGE_PATTERNNOTFOUND = "" +
+            "Found no occurrences of pattern.\n" +
+            "Possible actions to fix the problem:\n" +
+            " - Re-read the file - it might be different than you think.\n" +
+            " - Use literalSearchString instead of specifying a pattern. That is less error prone.\n" +
+            " - Think out of the box and use a completely different pattern, match something else or use a different way to reach your goal. You can use all advanced regex features to create a short but precise pattern.\n" +
+            "Common errors:\n" +
+            " - (.*) does not match newlines - ((?s).*?) does.\n" +
+            " - replaceWithGroupReferences might have already broken something because of backslash escaping rules - think of how Matcher.appendReplacement works.\n" +
+            "Some ideas for advanced constructs for the pattern:\n" +
+            "    - \\A matches the start of the file\n" +
+            "    - \\z matches the end of the file\n" +
+            "    - you can match backslashes with . in the pattern, to avoid potential errors due to missed backslash escaping\n" +
+            "    - (?<=something) matches the point after 'something', without matching 'something' itself - good for adding after a certain string\n" +
+            "    - (?=something) matches the point before 'something', good for inserting before a certain string";
 
     @Override
     public String getUrl() {
@@ -46,41 +45,39 @@ public class ReplaceRegexAction extends AbstractPluginAction {
 
     @Override
     public String openApiDescription() {
-        return """
-                  /replaceRegexInFile:
-                    post:
-                      operationId: replaceRegexInFile
-                      summary: Replaces the single occurrence of a regular expression or a string in a file. You can use all advanced regex features. The whole file is matched, not line by line. Use exactly one of literalReplacement and replacementWithGroupReferences.
-                      parameters:
-                        - name: path
-                          in: query
-                          description: relative path to file
-                          required: true
-                          schema:
-                            type: string
-                      requestBody:
-                        required: true
-                        content:
-                          application/json:
-                            schema:
-                              type: object
-                              properties:
-                                literalSearchString:
-                                  type: string
-                                  description: "The string to be replaced - can contain many lines, but please take care to find a small number of lines to replace. Prefer this to pattern for simplicity."
-                                pattern:
-                                  type: string
-                                  description: "java.util.regex.Pattern to be replaced. Examples: \\\\z is end of file, ((?s).*?) matches any characters including line breaks non-greedily."
-                                literalReplacement:
-                                  type: string
-                                  description: "searches for the given Java pattern in the file content and replaces it with the literalReplacement as it is."
-                                replacementWithGroupReferences:
-                                  type: string
-                                  description: "replaces the finding of the pattern with the replacement and replaces group references $0, $1, ..., $9 with the corresponding groups from the match. A literal $ must be given as $$."
-                      responses:
-                        '200':
-                          description: File updated successfully
-                """.stripIndent();
+        return "/replaceRegexInFile:\n" +
+                "  post:\n" +
+                "    operationId: replaceRegexInFile\n" +
+                "    summary: Replaces the single occurrence of a regular expression or a string in a file. You can use all advanced regex features. The whole file is matched, not line by line. Use exactly one of literalReplacement and replacementWithGroupReferences.\n" +
+                "    parameters:\n" +
+                "      - name: path\n" +
+                "        in: query\n" +
+                "        description: relative path to file\n" +
+                "        required: true\n" +
+                "        schema:\n" +
+                "          type: string\n" +
+                "    requestBody:\n" +
+                "      required: true\n" +
+                "      content:\n" +
+                "        application/json:\n" +
+                "          schema:\n" +
+                "            type: object\n" +
+                "            properties:\n" +
+                "              literalSearchString:\n" +
+                "                type: string\n" +
+                "                description: \"The string to be replaced - can contain many lines, but please take care to find a small number of lines to replace. Prefer this to pattern for simplicity.\"\n" +
+                "              pattern:\n" +
+                "                type: string\n" +
+                "                description: \"java.util.regex.Pattern to be replaced. Examples: \\\\z is end of file, ((?s).*?) matches any characters including line breaks non-greedily.\"\n" +
+                "              literalReplacement:\n" +
+                "                type: string\n" +
+                "                description: \"searches for the given Java pattern in the file content and replaces it with the literalReplacement as it is.\"\n" +
+                "              replacementWithGroupReferences:\n" +
+                "                type: string\n" +
+                "                description: \"replaces the finding of the pattern with the replacement and replaces group references $0, $1, ..., $9 with the corresponding groups from the match. A literal $ must be given as $$.\"\n" +
+                "    responses:\n" +
+                "      '200':\n" +
+                "        description: File updated successfully\n";
         // Take out multiple for now, as it has been used wrongly several times
         //                                 multiple:
         //                                  type: boolean
