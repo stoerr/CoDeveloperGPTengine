@@ -32,40 +32,38 @@ public class ReplaceAction extends AbstractPluginAction {
 
     @Override
     public String openApiDescription() {
-        return """
-                  /replaceInFile:
-                    post:
-                      operationId: replaceInFile
-                      summary: Replaces the single occurrence of one or more literal strings in a file. The whole file content is matched, not line by line.
-                      parameters:
-                        - name: path
-                          in: query
-                          description: relative path to file
-                          required: true
-                          schema:
-                            type: string
-                      requestBody:
-                        required: true
-                        content:
-                          application/json:
-                            schema:
-                              type: object
-                              properties:
-                                replacements:
-                                  type: array
-                                  items:
-                                    type: object
-                                    properties:
-                                      search:
-                                        type: string
-                                        description: The literal string to be replaced - can contain many lines, but please take care to find a small number of lines to replace. Everything that is replaced must be here. Prefer to match the whole line / several whole lines.
-                                      replace:
-                                        type: string
-                                        description: Literal replacement, can contain several lines. Please observe the correct indentation.
-                      responses:
-                        '200':
-                          description: File updated successfully
-                """.stripIndent();
+        return "/replaceInFile:\n" +
+                "  post:\n" +
+                "    operationId: replaceInFile\n" +
+                "    summary: Replaces the single occurrence of one or more literal strings in a file. The whole file content is matched, not line by line.\n" +
+                "    parameters:\n" +
+                "      - name: path\n" +
+                "        in: query\n" +
+                "        description: relative path to file\n" +
+                "        required: true\n" +
+                "        schema:\n" +
+                "          type: string\n" +
+                "    requestBody:\n" +
+                "      required: true\n" +
+                "      content:\n" +
+                "        application/json:\n" +
+                "          schema:\n" +
+                "            type: object\n" +
+                "            properties:\n" +
+                "              replacements:\n" +
+                "                type: array\n" +
+                "                items:\n" +
+                "                  type: object\n" +
+                "                  properties:\n" +
+                "                    search:\n" +
+                "                      type: string\n" +
+                "                      description: The literal string to be replaced - can contain many lines, but please take care to find a small number of lines to replace. Everything that is replaced must be here. Prefer to match the whole line / several whole lines.\n" +
+                "                    replace:\n" +
+                "                      type: string\n" +
+                "                      description: Literal replacement, can contain several lines. Please observe the correct indentation.\n" +
+                "    responses:\n" +
+                "      '200':\n" +
+                "        description: File updated successfully\n";
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {

@@ -37,40 +37,37 @@ public class ReadFileAction extends AbstractPluginAction {
 
     @Override
     public String openApiDescription() {
-        return """
-                  /readFile:
-                    get:
-                      operationId: readFile
-                      summary: Read a files content.
-                      parameters:
-                        - name: path
-                          in: query
-                          description: relative path to file
-                          required: true
-                          schema:
-                            type: string
-                        - name: maxLines
-                          in: query
-                          description: maximum number of lines to read from the file
-                          required: false
-                          schema:
-                            type: integer
-                        - name: startLine
-                          in: query
-                          description: line number to start reading from
-                          required: false
-                          schema:
-                            type: integer
-                      responses:
-                        '200':
-                          description: Content of the file
-                          content:
-                            text/plain:
-                              schema:
-                                type: string
-                """.stripIndent();
+        return "/readFile:\n" +
+                "  get:\n" +
+                "    operationId: readFile\n" +
+                "    summary: Read a files content.\n" +
+                "    parameters:\n" +
+                "      - name: path\n" +
+                "        in: query\n" +
+                "        description: relative path to file\n" +
+                "        required: true\n" +
+                "        schema:\n" +
+                "          type: string\n" +
+                "      - name: maxLines\n" +
+                "        in: query\n" +
+                "        description: maximum number of lines to read from the file\n" +
+                "        required: false\n" +
+                "        schema:\n" +
+                "          type: integer\n" +
+                "      - name: startLine\n" +
+                "        in: query\n" +
+                "        description: line number to start reading from\n" +
+                "        required: false\n" +
+                "        schema:\n" +
+                "          type: integer\n" +
+                "    responses:\n" +
+                "      '200':\n" +
+                "        description: Content of the file\n" +
+                "        content:\n" +
+                "          text/plain:\n" +
+                "            schema:\n" +
+                "              type: string\n";
     }
-
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

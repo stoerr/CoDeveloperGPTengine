@@ -33,31 +33,29 @@ public class UrlAction extends AbstractPluginAction {
     // also add an optional parameter raw that returns the raw content of the URL without converting to markdown
     @Override
     public String openApiDescription() {
-        return """
-                  /fetchUrlTextContent:
-                    get:
-                      operationId: fetchUrlTextContent
-                      summary: Fetch text content from a given URL.
-                      parameters:
-                        - name: url
-                          in: query
-                          required: true
-                          schema:
-                            type: string
-                        - name: raw
-                          description: return raw html or pdf content without converting to markdown
-                          in: query
-                          required: false
-                          schema:
-                            type: boolean
-                      responses:
-                        '200':
-                          description: fetch successful; content returned
-                          content:
-                            text/plain:
-                              schema:
-                                type: string
-                """.stripIndent();
+        return "/fetchUrlTextContent:\n" +
+                "  get:\n" +
+                "    operationId: fetchUrlTextContent\n" +
+                "    summary: Fetch text content from a given URL.\n" +
+                "    parameters:\n" +
+                "      - name: url\n" +
+                "        in: query\n" +
+                "        required: true\n" +
+                "        schema:\n" +
+                "          type: string\n" +
+                "      - name: raw\n" +
+                "        description: return raw html or pdf content without converting to markdown\n" +
+                "        in: query\n" +
+                "        required: false\n" +
+                "        schema:\n" +
+                "          type: boolean\n" +
+                "    responses:\n" +
+                "      '200':\n" +
+                "        description: fetch successful; content returned\n" +
+                "        content:\n" +
+                "          text/plain:\n" +
+                "            schema:\n" +
+                "              type: string\n";
     }
 
     @Override
