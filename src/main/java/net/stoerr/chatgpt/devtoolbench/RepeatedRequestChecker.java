@@ -2,6 +2,7 @@ package net.stoerr.chatgpt.devtoolbench;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import jakarta.servlet.http.HttpServlet;
@@ -17,7 +18,7 @@ public class RepeatedRequestChecker {
     public static final RepeatedRequestChecker CHECKER = new RepeatedRequestChecker();
     public static final int MAX_REPETITIONS = 3;
 
-    private List<String> lastRequest = List.of();
+    private List<String> lastRequest = Collections.emptyList();
     private int repetitionCount = 0;
 
     public void checkRequestRepetition(HttpServletResponse response, HttpServlet servlet, Object... parameters) throws ExecutionAbortedException {

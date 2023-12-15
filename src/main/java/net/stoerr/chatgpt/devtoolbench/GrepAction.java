@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import java.util.stream.Collectors;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,42 +23,43 @@ public class GrepAction extends AbstractPluginAction {
 
     @Override
     public String openApiDescription() {
-        return "/grepFiles:\n" +
-                "  get:\n" +
-                "    operationId: grepAction\n" +
-                "    summary: Search for lines in text files matching the given regex.\n" +
-                "    parameters:\n" +
-                "      - name: path\n" +
-                "        in: query\n" +
-                "        description: relative path to the directory to search in or the file to search. root directory = '.'\n" +
-                "        required: true\n" +
-                "        schema:\n" +
-                "          type: string\n" +
-                "      - name: fileRegex\n" +
-                "        in: query\n" +
-                "        description: optional regex to filter file names\n" +
-                "        required: false\n" +
-                "        schema:\n" +
-                "          type: string\n" +
-                "      - name: grepRegex\n" +
-                "        in: query\n" +
-                "        description: regex to filter lines in the files\n" +
-                "        required: true\n" +
-                "        schema:\n" +
-                "          type: string\n" +
-                "      - name: contextLines\n" +
-                "        in: query\n" +
-                "        description: number of context lines to include with each match (not yet used)\n" +
-                "        required: false\n" +
-                "        schema:\n" +
-                "          type: integer\n" +
-                "    responses:\n" +
-                "      '200':\n" +
-                "        description: Lines matching the regex\n" +
-                "        content:\n" +
-                "          text/plain:\n" +
-                "            schema:\n" +
-                "              type: string\n";
+        return "" +
+                "  /grepFiles:\n" +
+                "    get:\n" +
+                "      operationId: grepAction\n" +
+                "      summary: Search for lines in text files matching the given regex.\n" +
+                "      parameters:\n" +
+                "        - name: path\n" +
+                "          in: query\n" +
+                "          description: relative path to the directory to search in or the file to search. root directory = '.'\n" +
+                "          required: true\n" +
+                "          schema:\n" +
+                "            type: string\n" +
+                "        - name: fileRegex\n" +
+                "          in: query\n" +
+                "          description: optional regex to filter file names\n" +
+                "          required: false\n" +
+                "          schema:\n" +
+                "            type: string\n" +
+                "        - name: grepRegex\n" +
+                "          in: query\n" +
+                "          description: regex to filter lines in the files\n" +
+                "          required: true\n" +
+                "          schema:\n" +
+                "            type: string\n" +
+                "        - name: contextLines\n" +
+                "          in: query\n" +
+                "          description: number of context lines to include with each match (not yet used)\n" +
+                "          required: false\n" +
+                "          schema:\n" +
+                "            type: integer\n" +
+                "      responses:\n" +
+                "        '200':\n" +
+                "          description: Lines matching the regex\n" +
+                "          content:\n" +
+                "            text/plain:\n" +
+                "              schema:\n" +
+                "                type: string\n";
     }
 
     // output format:
@@ -83,7 +85,7 @@ public class GrepAction extends AbstractPluginAction {
             throw sendError(resp, 400, "Invalid fileRegex parameter: " + fileRegex + "\n" + e.getMessage());
         }
         int contextLinesRaw = 0;
-        if (contextLinesParam != null && !contextLinesParam.isBlank()) {
+        if (contextLinesParam != null && !contextLinesParam.trim().isEmpty()) {
             try {
                 contextLinesRaw = Integer.parseInt(contextLinesParam);
             } catch (NumberFormatException e) {
@@ -98,7 +100,8 @@ public class GrepAction extends AbstractPluginAction {
             throw sendError(resp, 404, "Path is not readable: " + startPath);
         }
 
-        List<Path> matchingFiles = findMatchingFiles(resp, startPath, filePattern, grepPattern).toList();
+        List<Path> matchingFiles = findMatchingFiles(resp, startPath, filePattern, grepPattern)
+                .collect(Collectors.toList());
         if (!matchingFiles.isEmpty()) {
             StringBuilder buf = new StringBuilder();
             matchingFiles.stream()

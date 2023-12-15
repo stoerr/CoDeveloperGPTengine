@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 import javax.annotation.Nullable;
@@ -29,7 +30,7 @@ public class UserGlobalConfig {
     /**
      * The users global configuration directory at ~/.cgptdevbenchglobal .
      */
-    Path configDir = Path.of(System.getProperty("user.home"), ".cgptdevbenchglobal");
+    Path configDir = Paths.get(System.getProperty("user.home"), ".cgptdevbenchglobal");
     Path configFile = configDir.resolve("https.properties");
 
     /**
@@ -70,8 +71,8 @@ public class UserGlobalConfig {
      * Reads the httpsConfigFile if it exists. Return true if configuration could be read completely.
      */
     public boolean readAndCheckConfiguration(@Nullable String globalConfigDir) throws IOException {
-        configDir = globalConfigDir != null ? Path.of(globalConfigDir) :
-                Path.of(System.getProperty("user.home"), ".cgptdevbenchglobal");
+        configDir = globalConfigDir != null ? Paths.get(globalConfigDir) :
+                Paths.get(System.getProperty("user.home"), ".cgptdevbenchglobal");
         configFile = configDir.resolve("config.properties");
         if (!configFile.toFile().exists()) {
             TbUtils.logError("Could not find global configuration file " + configFile + " - https disabled.");
@@ -113,7 +114,7 @@ public class UserGlobalConfig {
                 TbUtils.logError("keystorepasswordpath property in " + configFile + " is missing - https disabled.");
                 return false;
             }
-            keystorePassword = Files.readString(configDir.resolve(keystorePasswordPath), StandardCharsets.UTF_8);
+            keystorePassword = new String(Files.readAllBytes(configDir.resolve(keystorePasswordPath)), StandardCharsets.UTF_8);
             if (null == keystorePassword || keystorePassword.isEmpty()) {
                 TbUtils.logError("Could not read keystore password from " + keystorePasswordPath + " - https disabled.");
                 return false;

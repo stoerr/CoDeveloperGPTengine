@@ -26,29 +26,30 @@ public class WriteFileAction extends AbstractPluginAction {
 
     @Override
     public String openApiDescription() {
-        return "/writeFile:\n" +
-                "  post:\n" +
-                "    operationId: writeFile\n" +
-                "    summary: Overwrite a small file with the complete content given in one step. You cannot append to a file or write parts or write parts - use replaceInFile for inserting parts.\n" +
-                "    parameters:\n" +
-                "      - name: path\n" +
-                "        in: query\n" +
-                "        description: relative path to file\n" +
-                "        required: true\n" +
-                "        schema:\n" +
-                "          type: string\n" +
-                "    requestBody:\n" +
-                "      required: true\n" +
-                "      content:\n" +
-                "        application/json:\n" +
+        return "" +
+                "  /writeFile:\n" +
+                "    post:\n" +
+                "      operationId: writeFile\n" +
+                "      summary: Overwrite a small file with the complete content given in one step. You cannot append to a file or write parts or write parts - use replaceInFile for inserting parts.\n" +
+                "      parameters:\n" +
+                "        - name: path\n" +
+                "          in: query\n" +
+                "          description: relative path to file\n" +
+                "          required: true\n" +
                 "          schema:\n" +
-                "            type: object\n" +
-                "            properties:\n" +
-                "              content:\n" +
-                "                type: string\n" +
-                "    responses:\n" +
-                "      '200':\n" +
-                "        description: File overwritten\n";
+                "            type: string\n" +
+                "      requestBody:\n" +
+                "        required: true\n" +
+                "        content:\n" +
+                "          application/json:\n" +
+                "            schema:\n" +
+                "              type: object\n" +
+                "              properties:\n" +
+                "                content:\n" +
+                "                  type: string\n" +
+                "      responses:\n" +
+                "        '200':\n" +
+                "          description: File overwritten\n";
     }
     // We remove the append parameter for now, because it is not transactional and the file might be half overwritten
     // when ChatGPT aborts because of length constraints or other issues.

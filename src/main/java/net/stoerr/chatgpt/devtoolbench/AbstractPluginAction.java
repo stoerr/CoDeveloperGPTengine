@@ -1,5 +1,6 @@
 package net.stoerr.chatgpt.devtoolbench;
 
+import static java.util.stream.Collectors.toList;
 import static net.stoerr.chatgpt.devtoolbench.TbUtils.logBody;
 import static net.stoerr.chatgpt.devtoolbench.TbUtils.logInfo;
 
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
@@ -51,7 +53,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
     protected static Stream<Path> findMatchingFiles(HttpServletResponse response, Path path, Pattern filePathPattern, Pattern grepPattern) {
         List<Path> result = new ArrayList<>();
         try {
-            Files.walkFileTree(path, new SimpleFileVisitor<>() {
+            Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
                     if (isIgnored(dir)) {
@@ -129,7 +131,8 @@ public abstract class AbstractPluginAction extends HttpServlet {
         if (mustExist && !Files.exists(resolved)) {
             String message = "Path " + path + " does not exist! Try to list files with /listFiles to find the right path.";
             String filename = resolved.getFileName().toString();
-            List<Path> matchingFiles = findMatchingFiles(response, DevToolBench.currentDir, null, null).toList();
+            List<Path> matchingFiles = findMatchingFiles(response, DevToolBench.currentDir, null, null)
+                    .collect(toList());
             List<String> files = matchingFiles.stream()
                     .map(p -> DevToolBench.currentDir.relativize(p).toString())
                     .map(p -> Pair.of(p, StringUtils.getFuzzyDistance(p, filename, Locale.getDefault())))
@@ -137,7 +140,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
                     .sorted(Comparator.comparingDouble(Pair::getRight))
                     .limit(10)
                     .map(Pair::getLeft)
-                    .toList();
+                    .collect(toList());
             if (!files.isEmpty()) {
                 message += "\n\nDid you mean one of these files?\n" + String.join("\n", files);
                 if (files.size() < matchingFiles.size()) {
