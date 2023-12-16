@@ -10,7 +10,7 @@ The plugin will start a server on port 3002 (by default) and will be ready to ac
 want to give a port use option -p (portnumber) ; if you want to write files add option -w .
 
 The plugin is written so that it cannot be used to go outside of the directory ("../somefile" won't work) and also
-files starting with a dot or containg /target/ are invisible and not writeable. That prevents directories like .git
+files starting with a dot or containig /target/ are invisible and not writeable. That prevents directories like .git
 to be touched and maven target folders tend to contain very much stuff.
 (Compare regex IGNORE_FILE in the script).
 
