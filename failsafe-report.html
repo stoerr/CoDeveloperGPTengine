@@ -31,7 +31,14 @@
                <a class="nav-link dropdown-toggle" href="#" id="OverviewMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Overview <b class="caret"></b></a>
                <ul class="dropdown-menu" aria-labelledby="OverviewMenuDropdown">
                  <li class="nav-item dropdown-item" id="IntroductionDropdown">
-                   <a href="index.html" id="IntroductionDropdownLink" title="Introduction"  class="dropdown-item" >Introduction</a>                 </li>
+                   <a href="introduction.html" id="IntroductionDropdownLink" title="Introduction"  class="dropdown-item" >Introduction</a>                 </li>
+                 <li class="nav-item dropdown-item" id="FunctionalityDropdown">
+                   <a href="functionality.html" id="FunctionalityDropdownLink" title="Functionality"  class="dropdown-item" >Functionality</a>                 </li>
+               </ul>
+             </li>
+             <li class="nav-item dropdown">
+               <a class="nav-link dropdown-toggle" href="#" id="Installation / ConfigurationMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Installation / Configuration <b class="caret"></b></a>
+               <ul class="dropdown-menu" aria-labelledby="Installation / ConfigurationMenuDropdown">
                  <li class="nav-item dropdown-item" id="Local installationDropdown">
                    <a href="install.html" id="Local installationDropdownLink" title="Local installation"  class="dropdown-item" >Local installation</a>                 </li>
                  <li class="nav-item dropdown-item" id="Command lineDropdown">
@@ -44,8 +51,6 @@
                    <a href="https.html" id="Access via HTTPSDropdownLink" title="Access via HTTPS"  class="dropdown-item" >Access via HTTPS</a>                 </li>
                  <li class="nav-item dropdown-item" id="ConfigurationDropdown">
                    <a href="configuration.html" id="ConfigurationDropdownLink" title="Configuration"  class="dropdown-item" >Configuration</a>                 </li>
-                 <li class="nav-item dropdown-item" id="UsageDropdown">
-                   <a href="usage.html" id="UsageDropdownLink" title="Usage"  class="dropdown-item" >Usage</a>                 </li>
                </ul>
              </li>
              <li class="nav-item dropdown">
@@ -144,7 +149,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>1</td>
 <td>97.8%</td>
-<td>18.68 s</td></tr></table><br />
+<td>17.82 s</td></tr></table><br />
 <p>Note: failures are anticipated and checked for with assertions while errors are unanticipated.</p><br /></section><section><a id="Package_List"></a>
 <h1>Package List</h1>
 <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />
@@ -164,7 +169,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>1</td>
 <td>97.8%</td>
-<td>18.68 s</td></tr></table><br />
+<td>17.82 s</td></tr></table><br />
 <p>Note: package statistics are not computed recursively, they only sum up all of its testsuites numbers.</p><section><a id="net.stoerr.chatgpt.devtoolbench"></a>
 <h2>net.stoerr.chatgpt.devtoolbench</h2>
 <table class="table table-striped">
@@ -185,7 +190,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>1.430 s</td></tr>
+<td>1.358 s</td></tr>
 <tr class="a">
 <td style="text-align: left;"><a href="#net.stoerr.chatgpt.devtoolbench.ExecuteActionIT"><img src="images/icon_success_sml.gif" /></a></td>
 <td><a href="#net.stoerr.chatgpt.devtoolbench.ExecuteActionIT">ExecuteActionIT</a></td>
@@ -194,7 +199,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>2.636 s</td></tr>
+<td>2.398 s</td></tr>
 <tr class="b">
 <td style="text-align: left;"><a href="#net.stoerr.chatgpt.devtoolbench.ListFilesActionIT"><img src="images/icon_success_sml.gif" /></a></td>
 <td><a href="#net.stoerr.chatgpt.devtoolbench.ListFilesActionIT">ListFilesActionIT</a></td>
@@ -203,7 +208,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>3.061 s</td></tr>
+<td>3.012 s</td></tr>
 <tr class="a">
 <td style="text-align: left;"><a href="#net.stoerr.chatgpt.devtoolbench.UrlActionIT"><img src="images/icon_success_sml.gif" /></a></td>
 <td><a href="#net.stoerr.chatgpt.devtoolbench.UrlActionIT">UrlActionIT</a></td>
@@ -212,7 +217,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>4.066 s</td></tr>
+<td>3.731 s</td></tr>
 <tr class="b">
 <td style="text-align: left;"><a href="#net.stoerr.chatgpt.devtoolbench.ReadFileActionIT"><img src="images/icon_success_sml.gif" /></a></td>
 <td><a href="#net.stoerr.chatgpt.devtoolbench.ReadFileActionIT">ReadFileActionIT</a></td>
@@ -221,7 +226,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>1.662 s</td></tr>
+<td>1.560 s</td></tr>
 <tr class="a">
 <td style="text-align: left;"><a href="#net.stoerr.chatgpt.devtoolbench.ReplaceActionIT"><img src="images/icon_success_sml.gif" /></a></td>
 <td><a href="#net.stoerr.chatgpt.devtoolbench.ReplaceActionIT">ReplaceActionIT</a></td>
@@ -230,7 +235,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>1.910 s</td></tr>
+<td>1.845 s</td></tr>
 <tr class="b">
 <td style="text-align: left;"><a href="#net.stoerr.chatgpt.devtoolbench.GrepActionIT"><img src="images/icon_success_sml.gif" /></a></td>
 <td><a href="#net.stoerr.chatgpt.devtoolbench.GrepActionIT">GrepActionIT</a></td>
@@ -239,7 +244,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>2.245 s</td></tr>
+<td>2.201 s</td></tr>
 <tr class="a">
 <td style="text-align: left;"><a href="#net.stoerr.chatgpt.devtoolbench.DevToolBenchGeneralIT"><img src="images/icon_success_sml.gif" /></a></td>
 <td><a href="#net.stoerr.chatgpt.devtoolbench.DevToolBenchGeneralIT">DevToolBenchGeneralIT</a></td>
@@ -248,7 +253,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>1.635 s</td></tr>
+<td>1.676 s</td></tr>
 <tr class="b">
 <td style="text-align: left;"><a href="#net.stoerr.chatgpt.devtoolbench.ReplaceRegexActionIT"><img src="images/icon_warning_sml.gif" /></a></td>
 <td><a href="#net.stoerr.chatgpt.devtoolbench.ReplaceRegexActionIT">ReplaceRegexActionIT</a></td>
@@ -257,7 +262,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>1</td>
 <td>0%</td>
-<td>0.031 s</td></tr></table></section><br /></section><section><a id="Test_Cases"></a>
+<td>0.035 s</td></tr></table></section><br /></section><section><a id="Test_Cases"></a>
 <h1>Test Cases</h1>
 <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><section><a id="net.stoerr.chatgpt.devtoolbench.WriteFileActionIT"></a>
 <h2>WriteFileActionIT</h2>
@@ -279,7 +284,7 @@ function toggleDisplay(elementId) {
 <tr class="a">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ExecuteActionIT.testHelloWorldWithLargeFileAndCut"></a>testHelloWorldWithLargeFileAndCut</td>
-<td>0.617 s</td></tr>
+<td>0.603 s</td></tr>
 <tr class="b">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ExecuteActionIT.testExecuteActionFail"></a>testExecuteActionFail</td>
@@ -287,7 +292,7 @@ function toggleDisplay(elementId) {
 <tr class="a">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ExecuteActionIT.testHelloWorldWithLargeFile"></a>testHelloWorldWithLargeFile</td>
-<td>0.209 s</td></tr>
+<td>0.208 s</td></tr>
 <tr class="b">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ExecuteActionIT.testExecuteActionHelloWorld"></a>testExecuteActionHelloWorld</td>
@@ -299,13 +304,13 @@ function toggleDisplay(elementId) {
 <tr class="b">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ExecuteActionIT.testExecuteActionNotThere"></a>testExecuteActionNotThere</td>
-<td>0.205 s</td></tr></table></section><section><a id="net.stoerr.chatgpt.devtoolbench.ListFilesActionIT"></a>
+<td>0.204 s</td></tr></table></section><section><a id="net.stoerr.chatgpt.devtoolbench.ListFilesActionIT"></a>
 <h2>ListFilesActionIT</h2>
 <table class="table table-striped">
 <tr class="a">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ListFilesActionIT.testListFilesOperationBothRegex"></a>testListFilesOperationBothRegex</td>
-<td>0.216 s</td></tr>
+<td>0.213 s</td></tr>
 <tr class="b">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ListFilesActionIT.testListFilesOperationFilePathRegex"></a>testListFilesOperationFilePathRegex</td>
@@ -313,15 +318,15 @@ function toggleDisplay(elementId) {
 <tr class="a">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ListFilesActionIT.testInvalidPath"></a>testInvalidPath</td>
-<td>0.208 s</td></tr>
+<td>0.207 s</td></tr>
 <tr class="b">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ListFilesActionIT.testListFilesOperationGrepRegex"></a>testListFilesOperationGrepRegex</td>
-<td>0.205 s</td></tr>
+<td>0.206 s</td></tr>
 <tr class="a">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ListFilesActionIT.testFileRegexNotFound"></a>testFileRegexNotFound</td>
-<td>0.206 s</td></tr>
+<td>0.205 s</td></tr>
 <tr class="b">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ListFilesActionIT.testListFilesOperationSubdir"></a>testListFilesOperationSubdir</td>
@@ -333,7 +338,7 @@ function toggleDisplay(elementId) {
 <tr class="b">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ListFilesActionIT.testListFilesOperationRoot"></a>testListFilesOperationRoot</td>
-<td>0.205 s</td></tr>
+<td>0.204 s</td></tr>
 <tr class="a">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ListFilesActionIT.testBrokenGrepRegex"></a>testBrokenGrepRegex</td>
@@ -341,7 +346,7 @@ function toggleDisplay(elementId) {
 <tr class="b">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ListFilesActionIT.testBrokenFileRegex"></a>testBrokenFileRegex</td>
-<td>0.204 s</td></tr>
+<td>0.203 s</td></tr>
 <tr class="a">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ListFilesActionIT.testDirectories"></a>testDirectories</td>
@@ -351,29 +356,29 @@ function toggleDisplay(elementId) {
 <tr class="a">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.UrlActionIT.testValidUrl"></a>testValidUrl</td>
-<td>0.780 s</td></tr>
+<td>0.702 s</td></tr>
 <tr class="b">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.UrlActionIT.testUrlWithoutProtocol"></a>testUrlWithoutProtocol</td>
-<td>0.228 s</td></tr>
+<td>0.211 s</td></tr>
 <tr class="a">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.UrlActionIT.testPdfUrl"></a>testPdfUrl</td>
-<td>0.962 s</td></tr>
+<td>0.856 s</td></tr>
 <tr class="b">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.UrlActionIT.testInvalidUrl"></a>testInvalidUrl</td>
-<td>0.321 s</td></tr>
+<td>0.276 s</td></tr>
 <tr class="a">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.UrlActionIT.testValidUrlRaw"></a>testValidUrlRaw</td>
-<td>0.224 s</td></tr></table></section><section><a id="net.stoerr.chatgpt.devtoolbench.ReadFileActionIT"></a>
+<td>0.208 s</td></tr></table></section><section><a id="net.stoerr.chatgpt.devtoolbench.ReadFileActionIT"></a>
 <h2>ReadFileActionIT</h2>
 <table class="table table-striped">
 <tr class="a">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ReadFileActionIT.testReadWithStartLine"></a>testReadWithStartLine</td>
-<td>0.209 s</td></tr>
+<td>0.210 s</td></tr>
 <tr class="b">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ReadFileActionIT.testReadWithMaxLinesAndStartLine"></a>testReadWithMaxLinesAndStartLine</td>
@@ -381,7 +386,7 @@ function toggleDisplay(elementId) {
 <tr class="a">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ReadFileActionIT.testReadWithoutParameters"></a>testReadWithoutParameters</td>
-<td>0.204 s</td></tr>
+<td>0.203 s</td></tr>
 <tr class="b">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ReadFileActionIT.testReadWithMaxLines"></a>testReadWithMaxLines</td>
@@ -391,11 +396,11 @@ function toggleDisplay(elementId) {
 <tr class="a">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ReplaceActionIT.testComplainAboutMultiplesSinceManyMatches"></a>testComplainAboutMultiplesSinceManyMatches</td>
-<td>0.215 s</td></tr>
+<td>0.212 s</td></tr>
 <tr class="b">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ReplaceActionIT.testReplaceOperationFileNotFound"></a>testReplaceOperationFileNotFound</td>
-<td>0.205 s</td></tr>
+<td>0.204 s</td></tr>
 <tr class="a">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ReplaceActionIT.testReplaceOperation"></a>testReplaceOperation</td>
@@ -407,7 +412,7 @@ function toggleDisplay(elementId) {
 <tr class="a">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.ReplaceActionIT.testMultipleReplacementsInOneRequest"></a>testMultipleReplacementsInOneRequest</td>
-<td>0.206 s</td></tr></table></section><section><a id="net.stoerr.chatgpt.devtoolbench.GrepActionIT"></a>
+<td>0.205 s</td></tr></table></section><section><a id="net.stoerr.chatgpt.devtoolbench.GrepActionIT"></a>
 <h2>GrepActionIT</h2>
 <table class="table table-striped">
 <tr class="a">
@@ -417,11 +422,11 @@ function toggleDisplay(elementId) {
 <tr class="b">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.GrepActionIT.testGrepOperationContext"></a>testGrepOperationContext</td>
-<td>0.207 s</td></tr>
+<td>0.206 s</td></tr>
 <tr class="a">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.GrepActionIT.testNotExistingGrepRegex"></a>testNotExistingGrepRegex</td>
-<td>0.204 s</td></tr>
+<td>0.203 s</td></tr>
 <tr class="b">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.GrepActionIT.testWrongFilename"></a>testWrongFilename</td>
@@ -433,7 +438,7 @@ function toggleDisplay(elementId) {
 <tr class="b">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.GrepActionIT.testGrepOperationFirstFile"></a>testGrepOperationFirstFile</td>
-<td>0.206 s</td></tr>
+<td>0.203 s</td></tr>
 <tr class="a">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.GrepActionIT.testBrokenGrepRegex"></a>testBrokenGrepRegex</td>
@@ -447,11 +452,11 @@ function toggleDisplay(elementId) {
 <tr class="b">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.DevToolBenchGeneralIT.testRoot"></a>testRoot</td>
-<td>0.208 s</td></tr>
+<td>0.207 s</td></tr>
 <tr class="a">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.DevToolBenchGeneralIT.testUnknownRequest"></a>testUnknownRequest</td>
-<td>0.208 s</td></tr>
+<td>0.207 s</td></tr>
 <tr class="b">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.devtoolbench.DevToolBenchGeneralIT.testDevToolBenchYaml"></a>testDevToolBenchYaml</td>

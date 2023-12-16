@@ -31,7 +31,14 @@
                <a class="nav-link dropdown-toggle" href="#" id="OverviewMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Overview <b class="caret"></b></a>
                <ul class="dropdown-menu" aria-labelledby="OverviewMenuDropdown">
                  <li class="nav-item dropdown-item" id="IntroductionDropdown">
-                   <a href="index.html" id="IntroductionDropdownLink" title="Introduction"  class="dropdown-item" >Introduction</a>                 </li>
+                   <a href="introduction.html" id="IntroductionDropdownLink" title="Introduction"  class="dropdown-item" >Introduction</a>                 </li>
+                 <li class="nav-item dropdown-item" id="FunctionalityDropdown">
+                   <a title="Functionality" class="dropdown-item">Functionality</a>                 </li>
+               </ul>
+             </li>
+             <li class="nav-item dropdown">
+               <a class="nav-link dropdown-toggle" href="#" id="Installation / ConfigurationMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Installation / Configuration <b class="caret"></b></a>
+               <ul class="dropdown-menu" aria-labelledby="Installation / ConfigurationMenuDropdown">
                  <li class="nav-item dropdown-item" id="Local installationDropdown">
                    <a href="install.html" id="Local installationDropdownLink" title="Local installation"  class="dropdown-item" >Local installation</a>                 </li>
                  <li class="nav-item dropdown-item" id="Command lineDropdown">
@@ -44,8 +51,6 @@
                    <a href="https.html" id="Access via HTTPSDropdownLink" title="Access via HTTPS"  class="dropdown-item" >Access via HTTPS</a>                 </li>
                  <li class="nav-item dropdown-item" id="ConfigurationDropdown">
                    <a href="configuration.html" id="ConfigurationDropdownLink" title="Configuration"  class="dropdown-item" >Configuration</a>                 </li>
-                 <li class="nav-item dropdown-item" id="UsageDropdown">
-                   <a title="Usage" class="dropdown-item">Usage</a>                 </li>
                </ul>
              </li>
              <li class="nav-item dropdown">
@@ -120,7 +125,7 @@ another port on the command line when starting it, if you like.)</p>
 The plugin will start a server on port 3002 (by default) and will be ready to accept requests from ChatGPT. If you
 want to give a port use option -p (portnumber) ; if you want to write files add option -w .</p>
 <p>The plugin is written so that it cannot be used to go outside of the directory (&#x201c;../somefile&#x201d; won't work) and also
-files starting with a dot or containg /target/ are invisible and not writeable. That prevents directories like .git
+files starting with a dot or containig /target/ are invisible and not writeable. That prevents directories like .git
 to be touched and maven target folders tend to contain very much stuff.
 (Compare regex IGNORE_FILE in the script).</p>
 <p>Use the writing features at your own risk. There will likely be problems with large files. A possible approach is
