@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="generator" content="#generatedBy()" />
-    <title>Developers Toolbench ChatGPT Plugin – Command line and configuration</title>
+    <title>Developers Toolbench ChatGPT Plugin – Quickstart: the minimal and easiest setup</title>
     <link rel="icon" href="./img/favicons/favicon.ico">
     <!-- CSS Stylesheets, site.css is included so downstream projects can override them as appropriate. -->
     <link rel="stylesheet" href="./css/bootstrap.min.css" />
@@ -35,7 +35,7 @@
                  <li class="nav-item dropdown-item" id="FunctionalityDropdown">
                    <a href="functionality.html" id="FunctionalityDropdownLink" title="Functionality"  class="dropdown-item" >Functionality</a>                 </li>
                  <li class="nav-item dropdown-item" id="QuickstartDropdown">
-                   <a href="quickstart.html" id="QuickstartDropdownLink" title="Quickstart"  class="dropdown-item" >Quickstart</a>                 </li>
+                   <a title="Quickstart" class="dropdown-item">Quickstart</a>                 </li>
                </ul>
              </li>
              <li class="nav-item dropdown">
@@ -44,7 +44,7 @@
                  <li class="nav-item dropdown-item" id="Local installationDropdown">
                    <a href="install.html" id="Local installationDropdownLink" title="Local installation"  class="dropdown-item" >Local installation</a>                 </li>
                  <li class="nav-item dropdown-item" id="Command lineDropdown">
-                   <a title="Command line" class="dropdown-item">Command line</a>                 </li>
+                   <a href="commandline.html" id="Command lineDropdownLink" title="Command line"  class="dropdown-item" >Command line</a>                 </li>
                  <li class="nav-item dropdown-item" id="Install into a GPTDropdown">
                    <a href="gpt.html" id="Install into a GPTDropdownLink" title="Install into a GPT"  class="dropdown-item" >Install into a GPT</a>                 </li>
                  <li class="nav-item dropdown-item" id="Install as ChatGPT PluginDropdown">
@@ -118,82 +118,45 @@
     <main class="flex-shrink-0" role="main">
       <div class="container mt-3 rounded">
 <section>
-<h1>Command line and configuration</h1>
-<p>I assume you have <a href="install.html">installed</a> the program and created a script <code>developersToolbenchPlugin</code> in your path
-that starts it. With argument -h or &#x2013;help you get a short help message with the options available.</p>
+<h1>Quickstart: the minimal and easiest setup</h1>
+<p>Here is the fastest way to get you started - if you want to understand things, have more control / other options please
+see the detailed installation / configuration documentation. We use Serveo for HTTPS tunneling here and run it in a GPT
+and assume you are running on a Unix-like system like MacOS, Linux or possibly Windows with Cygwin (not tested).
+You need a paid ChatGPT account.</p>
+<ol style="list-style-type: decimal;">
+
+<li>Create a directory where the executable should be put and download the jar from the
+<a href="https://github.com/stoerr/DevelopersChatGPTToolBench/releases" class="externalLink">latest release</a>. Rename or symlink the jar
+to <code>developers-chatgpt-toolbench-plugin.jar</code>.</li>
+<li>Create a script <code>developersToolbenchPlugin</code> in the same directory with the content from
+<a href="https://github.com/stoerr/DevelopersChatGPTToolBench/blob/develop/bin/developersToolbenchPlugin" class="externalLink">here</a> and make it
+executable. Symlink it into a directory in your <code>PATH</code>. Alternatively, you can put both files into a directory in
+your <code>PATH</code>.</li>
+<li>Create a directory <code>$HOME/.cgptdevbenchglobal/</code> and a file config.properties in there with a content</li>
+</ol>
 
 <div class="verbatim">
-<pre><code>version: : DevToolBench version: 2.0
-usage: options are
-    -g,--globalconfigdir {arg}   Directory for global configuration (default:
-    ~/.cgptdevbenchglobal/
-    -h,--help                    Display this help message
-    -l,--local                   Only use local configuration via options -
-    ignore any global configuration
-    -p,--port {arg}              Port number
-    -w,--write                   Permit file writes and action executions
+<pre><code>gptsecret=somewildpassword
 </code></pre></div>
-<ul>
+<p>where you replace somewildpassword with a long password of your choice. It'll be used to authenticate the GPT requests.</p>
+<ol style="list-style-type: decimal;">
 
-<li><code>-p</code>: To specify the port number, include -p followed by a valid port number. If no -p option is given, the default
-port number 3002 is used.</li>
-<li><code>-w</code>: If you include -w, writing and executing actions will be enabled. If there's no -w option mentioned in the
-command, writing and executing actions are disabled by default.</li>
-<li><code>-h</code>: This option is to display the help message. It'll also be shown when there's an exception in parsing options.</li>
-<li><code>-g</code>: This option is used to specify the directory path for global configuration. If it's not mentioned, the default
-directory &#x201c;~/.cgptdevbenchglobal/&#x201d; is used.</li>
-<li><code>-l</code>: This option if present, is used to ensure that only command line configuration is used and global configuration
-is ignored.</li>
-</ul><section>
-<h2>Global configuration file</h2>
-<p>The global configuration file defines several properties that are important for the communication with ChatGPT.
-Normally it's put into the directory <code>~/.cgptdevbenchglobal/</code> and is named <code>config.properties</code>, for example:</p>
+<li>Create an executable file <code>$HOME/.cgptdevbenchglobal/tunnel.sh</code> with the content</li>
+</ol>
 
 <div class="verbatim">
-<pre><code>gptsecret=examplesecret
-openaitoken=exampletoken
+<pre><code class="language-bash">#!/bin/bash
+exec ssh -R yourtoolbenchdomain.serveo.net:80:localhost:3002 serveo.net
 </code></pre></div>
-<p>where:</p>
-<ul>
+<p>where you replace yourtoolbenchdomain with a prefix of your choice. It'll be used to access the toolbench from ChatGPT.</p>
+<ol style="list-style-type: decimal;">
 
-<li><code>gptsecret</code> A secret that is configured in both the GPT and locally to make sure only your own GPT can access the
-toolbench.</li>
-<li><code>openaitoken</code> A token OpenAI privides after entering the gptSecret when deploying as a plugin - used to identify
-OpenAI to the plugin. (Not needed for GPTs.)</li>
-</ul>
-<p>If you want to run it without a tunnel but to provide a HTTPS interface by itself (compare <a href="https.html">Access via HTTPS</a>)
-there can also be the following properties:</p>
-<ul>
-
-<li><code>httpsPort</code> The port the program should open for HTTPS (has to be reachable from the internet as port 443)</li>
-<li><code>keystorePath</code> The path to the keystore file.</li>
-<li><code>keystorePassword</code> The password for the keystore.</li>
-<li><code>domain</code> The external domain through which the application is accessible.</li>
-<li><code>externport</code> The external port through which the application is reachable (optional with default 443, something else
-than 443 probably won't work with ChatGPT)</li>
-</ul></section><section>
-<h2>Local configuration directory</h2>
-<p>If you have a directory named .cgptdevbench/ in the directory where you start the program, a log file <code>.requestlog.txt</code>
-will be put there with the requests and responses to ChatGPT. This is useful for debugging or just to see what's going
-on.</p>
-<p>Second, you can put there a number of shell scripts *.sh that can be executed from the program. It's a good idea to
-also put a file listActions.sh there that lists the available actions:</p>
-
-<div class="verbatim">
-<pre><code class="language-bash"># Plugin Action: list all available actions
-cd .cgptdevbench || exit 1
-for fil in *.sh; do
-echo &quot;${fil%.sh} :  &quot; $(egrep -o &quot;Plugin Action: .*&quot; &quot;$fil&quot; | sed -e 's/Plugin Action: //')
-done
-</code></pre></div>
-<p>It requires a comment <code># Plugin Action:</code> to be present in each *.sh file that explains the function of the action.</p>
-<p>More examples can be found in the
-<a href="https://github.com/stoerr/DevelopersChatGPTToolBench/tree/develop/.cgptdevbench" class="externalLink">.cgptdevbench directory of the project</a> .</p></section><section>
-<h2>Usage via docker image</h2>
-<p>If you want to make extra sure that the toolbench cannot access anything outside of the current directory and
-cannot access anything on your local machine and want to try dangerous things like executing actions that immediately
-run ChatGPT generated code , you can also use it from the docker image
-<a href="https://hub.docker.com/repository/docker/stoerr/developers-chatgpt-toolbench-plugin" class="externalLink">stoerr/developers-chatgpt-toolbench-plugin</a>.</p></section></section>
+<li>Start <code>developersToolbenchPlugin</code> in a directory you want to access with ChatGPT. It will start a webserver on
+port 3002 and a tunnel to it via serveo.net. You can check whether it works by calling <a href="https://yourtoolbenchdomain.serveo.net/" class="externalLink">https://yourtoolbenchdomain.serveo.net/</a>
+in a browser.</li>
+<li>Create a GPT according to the <a href="gpt.html">documentation</a>.</li>
+</ol>
+<p>Now you can use the toolbench from ChatGPT and enjoy exploring the capabilities of your assistant. :-)</p></section>
       </div>
     </main>
 

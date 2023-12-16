@@ -34,6 +34,8 @@
                    <a title="Introduction" class="dropdown-item">Introduction</a>                 </li>
                  <li class="nav-item dropdown-item" id="FunctionalityDropdown">
                    <a href="functionality.html" id="FunctionalityDropdownLink" title="Functionality"  class="dropdown-item" >Functionality</a>                 </li>
+                 <li class="nav-item dropdown-item" id="QuickstartDropdown">
+                   <a href="quickstart.html" id="QuickstartDropdownLink" title="Quickstart"  class="dropdown-item" >Quickstart</a>                 </li>
                </ul>
              </li>
              <li class="nav-item dropdown">
@@ -106,7 +108,7 @@
           <div id="projectBaDateVersionContainer" class="justify-content-start">
             <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2023-12-16</span>
             <span id="projectDateVersionSpacer" class="px-1 navbar-text">|</span>
-            <span id="projectVersion" class="px-1 navbar-text">Version: 2.0-SNAPSHOT</span>
+            <span id="projectVersion" class="px-1 navbar-text">Version: 2.0.0</span>
           </div>
           <div id="breadcrumbSpacer" ></div>
         </div>
@@ -126,8 +128,8 @@ OpenAI
 started in.</p>
 <p>In contrast to other approaches like <a href="https://github.com/Significant-Gravitas/AutoGPT" class="externalLink">AutoGPT</a> this is not meant to
 autonomously execute extensive changes (which would likely require a lot of prompt engineering), but to enable the
-developer to flexibly use the AI within a ChatGPT chat session for various tasks both to analyze code and to make
-some changes.</p>
+developer to flexibly use the AI within a ChatGPT chat session for various tasks both to analyze code or documentation
+and to make some changes.</p>
 <p>The project is quite stable and useable. In fact I use it regularily in my own development - both on itself and on
 my other projects. Using it does, however, require that you have a paid ChatGPT account that can use plugins / GPTs.
 There are three ways to use it within ChatGPT: run it as a localhost plugin if you are registered
@@ -149,10 +151,12 @@ is started. It provides ChatGPT with several operations that it can use on the f
 <h2>Preconditions</h2>
 <p>To use the <code>Developers ChatGPT ToolBench</code>, you need a <a href="https://openai.com/blog/chatgpt-plus" class="externalLink">ChatGPT Plus</a> account,
 since only then OpenAI will let you use plugins / GPTs.
-The program is an executable Java JAR, so you need a Java runtime environment (JRE) of at least version 16 to run it.
+The program is an executable Java JAR, so you need a Java runtime environment (JRE) of at least version 11 to run it.
 Also, you will have to make it reachable from OpenAI's servers via https -
 there are <a href="https.html">several ways to do this</a>.</p></section><section>
 <h2>Getting started</h2>
+<p>To start up quickly you can follow the steps in the <a href="quickstart.html">quickstart instructions</a>, or you can go into
+depth with the corresponding documentations:</p>
 <ul>
 
 <li>First, you have to <a href="install.html">install the program</a> locally</li>
@@ -160,7 +164,7 @@ there are <a href="https.html">several ways to do this</a>.</p></section><sectio
 <li>Third, <a href="commandline.html">run it</a> in a directory you want to access.</li>
 <li>Fourth, you have to <a href="gpt.html">create a GPT with it as action</a>, or <a href="plugin.html">register it as a ChatGPT plugin</a>.</li>
 </ul>
-<p>Then you can use it from ChatGPT.</p></section></section>
+<p>Then you can use it from ChatGPT and enjoy working with your newly found AI assistant.</p></section></section>
       </div>
     </main>
 
