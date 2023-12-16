@@ -1,21 +1,16 @@
-## Usage
+# Functionality: Operations of the GPT actions / plugin
 
-To use the `Developers ChatGPT ToolBench`, you need to have registered as a plugin developer with ChatGPT.
-Once you've done that, you can add the `Developers ChatGPT ToolBench` using the
-"Develop your own plugin" option in the ChatGPT web interface with URL "localhost:3002". (You could also specify
-another port on the command line when starting it, if you like.)
+The toolbench allows ChatGPT to access the files in the directory it is started in -
+it cannot be used to go outside of the directory ("../somefile" won't work) and also
+files starting with a dot or containing /target/ are invisible and not writeable. That prevents directories like .git
+to be touched, and maven target folders are ignored since they tend to contain very much stuff.
+(Compare regex IGNORE constant in
+[DevToolBench.java](https://github.com/stoerr/DevelopersChatGPTToolBench/blob/develop/src/main/java/net/stoerr/chatgpt/devtoolbench/DevToolBench.java)
+).
 
-To start the plugin, navigate to the directory you want to access and run the `bin/developersToolBenchPlugin` script.
-The plugin will start a server on port 3002 (by default) and will be ready to accept requests from ChatGPT. If you
-want to give a port use option -p (portnumber) ; if you want to write files add option -w .
-
-The plugin is written so that it cannot be used to go outside of the directory ("../somefile" won't work) and also
-files starting with a dot or containig /target/ are invisible and not writeable. That prevents directories like .git
-to be touched and maven target folders tend to contain very much stuff.
-(Compare regex IGNORE_FILE in the script).
-
-Use the writing features at your own risk. There will likely be problems with large files. A possible approach is
-have ChatGPT write things, but frequently make a git commit to easily inspect changes and be able to revert.
+You can start it [with or without writing ability](commandline.md) - use the writing features at your own risk.
+There will likely be problems with large files. An approach that is nicely working for me is to have ChatGPT write
+things, but frequently make a git commit to easily inspect changes and be able to revert.
 
 If there is a file named .cgptdevbench/.requestlog.txt the requests are logged into that, to see what ChatGPT did.
 
