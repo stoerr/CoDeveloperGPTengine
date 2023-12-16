@@ -19,7 +19,7 @@
 
         <menu name="Overview">
             <item name="Introduction" href="index.html"/>
-            <item name="Local installation" href="installation.html"/>
+            <item name="Local installation" href="install.html"/>
             <item name="Command line" href="commandline.html"/>
             <item name="Install into a GPT" href="gpt.html"/>
             <item name="Install as ChatGPT Plugin" href="plugin.html"/>
