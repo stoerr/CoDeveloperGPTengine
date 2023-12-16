@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="generator" content="#generatedBy()" />
-    <title>Developers Toolbench ChatGPT Plugin – About</title>
+    <title>Developers Toolbench ChatGPT Plugin – Developers ChatGPT ToolBench</title>
     <link rel="icon" href="./img/favicons/favicon.ico">
     <!-- CSS Stylesheets, site.css is included so downstream projects can override them as appropriate. -->
     <link rel="stylesheet" href="./css/bootstrap.min.css" />
@@ -31,7 +31,7 @@
                <a class="nav-link dropdown-toggle" href="#" id="OverviewMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Overview <b class="caret"></b></a>
                <ul class="dropdown-menu" aria-labelledby="OverviewMenuDropdown">
                  <li class="nav-item dropdown-item" id="IntroductionDropdown">
-                   <a href="introduction.html" id="IntroductionDropdownLink" title="Introduction"  class="dropdown-item" >Introduction</a>                 </li>
+                   <a title="Introduction" class="dropdown-item">Introduction</a>                 </li>
                  <li class="nav-item dropdown-item" id="FunctionalityDropdown">
                    <a href="functionality.html" id="FunctionalityDropdownLink" title="Functionality"  class="dropdown-item" >Functionality</a>                 </li>
                </ul>
@@ -116,8 +116,51 @@
     <main class="flex-shrink-0" role="main">
       <div class="container mt-3 rounded">
 <section>
-<h1>About Developers ChatGPT ToolBench</h1><a id="About_Developers_ChatGPT_ToolBench"></a>
-<p>There is currently no description associated with this project.</p></section>
+<h1>Developers ChatGPT ToolBench</h1><section>
+<h2>Introduction</h2>
+<p>Would you like to have ChatGPT list, search, read and modify your local files and have it execute (e.g. build and test)
+actions locally to support you in your development processes? Then this might be for you. The Developers ChatGPT
+ToolBench can either work as a <a href="https://openai.com/blog/chatgpt-plugins" class="externalLink">ChatGPT plugin</a> or provide the actions for a
+OpenAI
+<a href="https://openai.com/blog/introducing-gpts" class="externalLink">GPT</a> for read or even write access to the files in the local directory it is
+started in.</p>
+<p>In contrast to other approaches like <a href="https://github.com/Significant-Gravitas/AutoGPT" class="externalLink">AutoGPT</a> this is not meant to
+autonomously execute extensive changes (which would likely require a lot of prompt engineering), but to enable the
+developer to flexibly use the AI within a ChatGPT chat session for various tasks both to analyze code and to make
+some changes.</p>
+<p>The project is quite stable and useable. In fact I use it regularily in my own development - both on itself and on
+my other projects. Using it does, however, require that you have a paid ChatGPT account that can use plugins / GPTs.
+There are three ways to use it within ChatGPT: run it as a localhost plugin if you are registered
+as a <a href="https://openai.com/waitlist/plugins" class="externalLink">plugin developer</a>, register it as an unverified plugin or put it into a GPT.
+See the respective documentation for details.</p></section><section>
+<h2>Functionality</h2>
+<p>The <code>Developers ChatGPT ToolBench</code> provides ChatGPT with read and optionally write access to the directory in which it
+is started. It provides ChatGPT with several operations that it can use on the files in that directory, including:</p>
+<ul>
+
+<li>Listing the files in a directory</li>
+<li>Reading the contents of a file</li>
+<li>Writing content to a file / changing file content by search and replace</li>
+<li>searching for regular expressions in files</li>
+<li>Execute actions you can define yourself, possibly with additional input from ChatGPT</li>
+<li>fetch the text content of an URL in the internet</li>
+</ul>
+<p>More details about the functionality are <a href="functionality.html">here</a>.</p></section><section>
+<h2>Preconditions</h2>
+<p>To use the <code>Developers ChatGPT ToolBench</code>, you need a <a href="https://openai.com/blog/chatgpt-plus" class="externalLink">ChatGPT Plus</a> account,
+since only then OpenAI will let you use plugins / GPTs.
+The program is an executable Java JAR, so you need a Java runtime environment (JRE) of at least version 16 to run it.
+Also, you will have to make it reachable from OpenAI's servers via https -
+there are <a href="https.html">several ways to do this</a>.</p></section><section>
+<h2>Getting started</h2>
+<ul>
+
+<li>First, you have to <a href="install.html">install the program</a> locally</li>
+<li>Second, you have to make it <a href="https.html">reachable from OpenAI's servers</a>.</li>
+<li>Third, <a href="commandline.html">run it</a> in a directory you want to access.</li>
+<li>Fourth, you have to <a href="gpt.html">create a GPT with it as action</a>, or <a href="plugin.html">register it as a ChatGPT plugin</a>.</li>
+</ul>
+<p>Then you can use it from ChatGPT.</p></section></section>
       </div>
     </main>
 

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="generator" content="#generatedBy()" />
-    <title>Developers Toolbench ChatGPT Plugin – Usage</title>
+    <title>Developers Toolbench ChatGPT Plugin – Functionality: Operations of the GPT actions / plugin</title>
     <link rel="icon" href="./img/favicons/favicon.ico">
     <!-- CSS Stylesheets, site.css is included so downstream projects can override them as appropriate. -->
     <link rel="stylesheet" href="./css/bootstrap.min.css" />
@@ -31,7 +31,7 @@
                <a class="nav-link dropdown-toggle" href="#" id="OverviewMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Overview <b class="caret"></b></a>
                <ul class="dropdown-menu" aria-labelledby="OverviewMenuDropdown">
                  <li class="nav-item dropdown-item" id="IntroductionDropdown">
-                   <a href="introduction.html" id="IntroductionDropdownLink" title="Introduction"  class="dropdown-item" >Introduction</a>                 </li>
+                   <a href="index.html" id="IntroductionDropdownLink" title="Introduction"  class="dropdown-item" >Introduction</a>                 </li>
                  <li class="nav-item dropdown-item" id="FunctionalityDropdown">
                    <a title="Functionality" class="dropdown-item">Functionality</a>                 </li>
                </ul>
@@ -115,22 +115,19 @@
 
     <main class="flex-shrink-0" role="main">
       <div class="container mt-3 rounded">
-<section><section>
-<h2>Usage</h2>
-<p>To use the <code>Developers ChatGPT ToolBench</code>, you need to have registered as a plugin developer with ChatGPT.
-Once you've done that, you can add the <code>Developers ChatGPT ToolBench</code> using the
-&#x201c;Develop your own plugin&#x201d; option in the ChatGPT web interface with URL &#x201c;localhost:3002&#x201d;. (You could also specify
-another port on the command line when starting it, if you like.)</p>
-<p>To start the plugin, navigate to the directory you want to access and run the <code>bin/developersToolBenchPlugin</code> script.
-The plugin will start a server on port 3002 (by default) and will be ready to accept requests from ChatGPT. If you
-want to give a port use option -p (portnumber) ; if you want to write files add option -w .</p>
-<p>The plugin is written so that it cannot be used to go outside of the directory (&#x201c;../somefile&#x201d; won't work) and also
-files starting with a dot or containig /target/ are invisible and not writeable. That prevents directories like .git
-to be touched and maven target folders tend to contain very much stuff.
-(Compare regex IGNORE_FILE in the script).</p>
-<p>Use the writing features at your own risk. There will likely be problems with large files. A possible approach is
-have ChatGPT write things, but frequently make a git commit to easily inspect changes and be able to revert.</p>
-<p>If there is a file named .cgptdevbench/.requestlog.txt the requests are logged into that, to see what ChatGPT did.</p></section><section>
+<section>
+<h1>Functionality: Operations of the GPT actions / plugin</h1>
+<p>The toolbench allows ChatGPT to access the files in the directory it is started in -
+it cannot be used to go outside of the directory (&#x201c;../somefile&#x201d; won't work) and also
+files starting with a dot or containing /target/ are invisible and not writeable. That prevents directories like .git
+to be touched, and maven target folders are ignored since they tend to contain very much stuff.
+(Compare regex IGNORE constant in
+<a href="https://github.com/stoerr/DevelopersChatGPTToolBench/blob/develop/src/main/java/net/stoerr/chatgpt/devtoolbench/DevToolBench.java" class="externalLink">DevToolBench.java</a>
+).</p>
+<p>You can start it <a href="commandline.html">with or without writing ability</a> - use the writing features at your own risk.
+There will likely be problems with large files. An approach that is nicely working for me is to have ChatGPT write
+things, but frequently make a git commit to easily inspect changes and be able to revert.</p>
+<p>If there is a file named .cgptdevbench/.requestlog.txt the requests are logged into that, to see what ChatGPT did.</p><section>
 <h2>Operations of the plugin / GPT</h2>
 <p>Here are some examples of how to use the <code>Developers ChatGPT ToolBench</code>:</p>
 <ul>
