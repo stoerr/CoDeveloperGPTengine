@@ -10,6 +10,7 @@ import java.util.Properties;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.eclipse.jetty.http.HttpVersion;
 import org.eclipse.jetty.server.HttpConnectionFactory;
@@ -134,15 +135,25 @@ public class UserGlobalConfig {
         return (rawRequest, rawResponse, chain) -> {
             HttpServletRequest request = (HttpServletRequest) rawRequest;
             HttpServletResponse response = (HttpServletResponse) rawResponse;
-            boolean requestislocal = request.getHeader("X-Forwarded-Proto") == null && !request.isSecure();
+
+            boolean requestislocal = request.getHeader("X-Forwarded-Proto") == null && !request.isSecure()
+                    || request.getRequestURL().toString().startsWith("http://localhost");
+            if (!requestislocal && StringUtils.isBlank(gptSecret)) {
+                TbUtils.logError("No gptsecret configured in " + configFile + " and request is remote - refusing to serve for security reasons.");
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().println("No gptsecret configured in " + configFile + " and request is remote - refusing to serve for security reasons.");
+                return;
+            }
+
             String secret = request.getHeader("Authorization");
             boolean isPublicRequest = DevToolBench.UNPROTECTED_PATHS.contains(request.getRequestURI());
-            if (!requestislocal && gptSecret != null && !isPublicRequest && (secret == null || !secret.contains(gptSecret))) {
+            if (!requestislocal && !isPublicRequest && (secret == null || !secret.contains(gptSecret))) {
                 TbUtils.logError("service access token missing. Request was " + request.getRequestURI() + " from " + request.getRemoteAddr() + " - wrong Authorization header " + secret);
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().println("service access token missing in Authorization header for " + request.getRequestURI());
                 return;
             }
+
             chain.doFilter(rawRequest, rawResponse);
         };
     }
