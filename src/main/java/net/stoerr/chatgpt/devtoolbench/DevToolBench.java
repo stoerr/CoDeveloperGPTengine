@@ -2,9 +2,11 @@ package net.stoerr.chatgpt.devtoolbench;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.Enumeration;
@@ -19,6 +21,8 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.pdfbox.io.IOUtils;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.RequestLog;
 import org.eclipse.jetty.server.Response;
@@ -42,11 +46,49 @@ public class DevToolBench {
 
     public static final String PATH_AI_PLUGIN_JSON = "/.well-known/ai-plugin.json";
     public static final String PATH_SPEC = "/devtoolbench.yaml";
-    public static final List<String> UNPROTECTED_PATHS = List.of(PATH_AI_PLUGIN_JSON, PATH_SPEC, "/favicon.ico");
+    public static final List<String> UNPROTECTED_PATHS = Arrays.asList(PATH_AI_PLUGIN_JSON, PATH_SPEC, "/favicon.ico");
+
+    /** Files that are inaccessible to the toolbench. */
+    public static final Pattern IGNORE = Pattern.compile(".*/[.].*|.*/target/.*|.*/(Hpsx|hpsx).*|.*/node_modules/.*");
+
+    /**
+     * Exceptions overriding {@link #IGNORE}.
+     */
+    public static final Pattern OVERRIDE_IGNORE = Pattern.compile(".*/.github/.*|.*/.content.xml");
+
+    // private static final Gson GSON = new Gson();
+
+    static Path currentDir = Paths.get(".").normalize().toAbsolutePath();
+
+    private static int port;
+
+    private static final Map<String, AbstractPluginAction> HANDLERS = new LinkedHashMap<>();
+
+    private static final String OPENAPI_DESCR_START = "" +
+            "# THESPECURL\n\n" +
+            "openapi: 3.0.1\n" +
+            "info:\n" +
+            "  title: Developers ToolBench ChatGPT Plugin\n" +
+            "  version: THEVERSION\n" +
+            "servers:\n" +
+            "  - url: THEURL\n" +
+            "paths:\n";
+
+    private static Server server;
+    private static ServletContextHandler context;
+    private static boolean writingEnabled;
+    private static String mainUrl;
+    private static String localUrl;
+
+    static boolean ignoreGlobalConfig;
+    private static String userGlobalConfigDir;
+    private static UserGlobalConfig userconfig;
 
     private static final Filter CORSFILTER = (rawRequest, rawResponse, chain) -> {
         // if it's an OPTIONS request, we need to give a CORS response like method giveCORSResponse below
-        if (rawRequest instanceof HttpServletRequest request && rawResponse instanceof HttpServletResponse response) {
+        if (rawRequest instanceof HttpServletRequest && rawResponse instanceof HttpServletResponse) {
+            HttpServletResponse response = (HttpServletResponse) rawResponse;
+            HttpServletRequest request = (HttpServletRequest) rawRequest;
             String origin = request.getHeader("Origin");
             if (origin == null) {
                 origin = "https://chat.openai.com";
@@ -90,40 +132,6 @@ public class DevToolBench {
         }
     };
 
-    static Path currentDir = Paths.get(".").normalize().toAbsolutePath();
-
-    public static final Pattern IGNORE = Pattern.compile(".*/[.].*|.*/target/.*|.*/(Hpsx|hpsx).*|.*/node_modules/.*");
-
-    /**
-     * Exceptions overriding {@link #IGNORE}.
-     */
-    public static final Pattern OVERRIDE_IGNORE = Pattern.compile(".*/.github/.*|.*/.content.xml");
-
-    private static int port;
-
-    private static final Map<String, AbstractPluginAction> HANDLERS = new LinkedHashMap<>();
-
-    private static final String OPENAPI_DESCR_START = """
-            # THESPECURL
-                        
-            openapi: 3.0.1
-            info:
-              title: Developers ToolBench ChatGPT Plugin
-              version: THEVERSION
-            servers:
-              - url: THEURL
-            paths:
-            """.stripIndent();
-
-    private static Server server;
-    private static ServletContextHandler context;
-    private static boolean writingEnabled;
-    private static String mainUrl;
-
-    static boolean ignoreGlobalConfig;
-    private static String userGlobalConfigDir;
-    private static UserGlobalConfig userconfig;
-
     private static void addHandler(AbstractPluginAction handler) {
         HANDLERS.put(handler.getUrl(), handler);
         ServletHolder servlet = new ServletHolder(handler);
@@ -156,10 +164,18 @@ public class DevToolBench {
                 resp.setContentType("application/json");
                 resp.setCharacterEncoding("UTF-8");
                 try (InputStream in = DevToolBench.class.getResourceAsStream("/ai-plugin.json")) {
-                    resp.getWriter().write(new String(in.readAllBytes(), StandardCharsets.UTF_8)
-                            .replace("THEURL", mainUrl)
+                    String json = new String(IOUtils.toByteArray(in), StandardCharsets.UTF_8)
+                            .replace("THEURL", getMainUrl(req))
                             .replace("THEOPENAITOKEN", userconfig.getOpenaiToken())
-                            .replace("THEVERSION", TbUtils.getVersionString()));
+                            .replace("THEVERSION", TbUtils.getVersionString());
+                    // disabled for now since plugin development is broken with ChatGPT for a while as of 2023-12-14
+                    //                    if (isLocal(req)) { // as local plugin development ChatGPT doesn't use authorization.
+                    //                        Map<String, Object> map = GSON.fromJson(json, new TypeToken<Map<String, Object>>() {
+                    //                        }.getType());
+                    //                        map.put("auth", Map.of("type", "none", "comment", "authorization removed for localhost"));
+                    //                        json = GSON.toJson(map);
+                    //                    }
+                    resp.getWriter().write(json);
                 }
             }
         }), PATH_AI_PLUGIN_JSON);
@@ -172,8 +188,8 @@ public class DevToolBench {
                 StringBuilder pathDescriptions = new StringBuilder();
                 HANDLERS.values().stream().sorted(Comparator.comparing(AbstractPluginAction::getUrl))
                         .forEach(handler -> pathDescriptions.append(handler.openApiDescription()));
-                resp.getWriter().write(OPENAPI_DESCR_START.replace("THEURL", mainUrl)
-                        .replace("THESPECURL", mainUrl + PATH_SPEC)
+                resp.getWriter().write(OPENAPI_DESCR_START.replace("THEURL", getMainUrl(req))
+                        .replace("THESPECURL", getMainUrl(req) + PATH_SPEC)
                         + pathDescriptions);
             }
         }), PATH_SPEC);
@@ -195,40 +211,54 @@ public class DevToolBench {
         }), "/*", EnumSet.of(DispatcherType.REQUEST));
     }
 
+    private static String getMainUrl(HttpServletRequest request) {
+        // cut off path part of request url
+        StringBuffer url = request.getRequestURL();
+        int pathpos = url.indexOf(request.getServletPath());
+        if (pathpos > 0) {
+            url.setLength(pathpos);
+        }
+        String protocol = request.getHeader("X-Forwarded-Proto");
+        if (protocol != null) { // replace protocol if we are behind a proxy
+            url.replace(0, url.indexOf(":"), protocol);
+        }
+        return url.toString();
+    }
+
     public static void main(String[] args) throws Exception {
         TbUtils.logVersion();
 
         parseOptions(args);
-        server = new Server(port);
+        server = new Server(new InetSocketAddress("127.0.0.1", port));
         context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         context.setContextPath("/");
         server.insertHandler(context);
 
         mainUrl = "http://localhost:" + port;
+        localUrl = mainUrl;
         userconfig = new UserGlobalConfig();
         if (!ignoreGlobalConfig && userconfig.readAndCheckConfiguration(userGlobalConfigDir)) {
             userconfig.addHttpsConnector(server);
             mainUrl = userconfig.getExternUrl();
-            context.addFilter(new FilterHolder(userconfig.getSecretFilter()), "/*", EnumSet.of(DispatcherType.REQUEST));
         }
+        context.addFilter(new FilterHolder(userconfig.getSecretFilter()), "/*", EnumSet.of(DispatcherType.REQUEST));
 
         initServlets();
         // for debugging: server.setRequestLog(requestlog);
         server.start();
         // server.join();
         TbUtils.logInfo("Started on http://localhost:" + port + " in directory " + currentDir);
-        TbUtils.logInfo("OpenAPI: " + mainUrl + PATH_SPEC);
+        TbUtils.logInfo("OpenAPI: " + StringUtils.defaultString(mainUrl, localUrl) + PATH_SPEC);
     }
 
     private static void parseOptions(String[] args) {
         Options options = new Options();
 
-        options.addOption("p", "port", true, "Port number");
-        options.addOption("w", "write", false, "Permit file writes");
-        // ChatGPTTask: make sure that --help also prints the help message and that it's displayed when there is an exception in parsing options.
+        options.addOption("p", "port", true, "Port number, default 3002");
+        options.addOption("w", "write", false, "Permit file writes and action executions");
         options.addOption("h", "help", false, "Display this help message");
         options.addOption("g", "globalconfigdir", true, "Directory for global configuration (default: ~/.cgptdevbenchglobal/");
-        options.addOption("l", "local", false, "Only use local configuriation - ignore global configuration (usually in ~/.cgptdevbenchglobal/ - se -g option)");
+        options.addOption("l", "local", false, "Only use local configuration via options - ignore any global configuration");
 
         CommandLineParser parser = new DefaultParser();
 
@@ -237,7 +267,7 @@ public class DevToolBench {
 
             if (cmd.hasOption("h")) {
                 HelpFormatter formatter = new HelpFormatter();
-                formatter.printHelp("DevToolBench", options);
+                formatter.printHelp("options are", options);
                 System.exit(0);
             }
 

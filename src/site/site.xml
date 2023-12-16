@@ -12,27 +12,28 @@
     </bannerLeft> -->
 
     <body>
-        <!-- <links>
-            <item name="Composum" href="http://www.composum.com/"/>
-            <item name="IST Gmbh Dresden" href="https://www.ist-software.com/"/>
-        </links> -->
+        <links>
+            <item name="Hans-Peter Störr" href="http://www.stoerr.net/"/>
+            <item name="On Github" href="https://github.com/stoerr/DevelopersChatGPTToolBench"/>
+        </links>
 
         <menu name="Overview">
             <item name="Introduction" href="index.html"/>
+            <item name="Functionality" href="functionality.html"/>
+            <item name="Quickstart" href="quickstart.html"/>
+            <!-- <item name="Examples" href="examples.html"/> -->
+        </menu>
+        <menu name="Installation / Configuration">
+            <item name="Local installation" href="install.html"/>
+            <item name="Command line" href="commandline.html"/>
+            <item name="Install into a GPT" href="gpt.html"/>
+            <item name="Install as ChatGPT Plugin" href="plugin.html"/>
+            <item name="Access via HTTPS" href="https.html"/>
+            <item name="Configuration" href="configuration.html"/>
         </menu>
         <menu ref="modules" inherit="bottom"/>
         <menu ref="reports" inherit="bottom"/>
     </body>
-
-    <!-- Good for a start, but we should probably switch to reflow 2 , which is work, though. -->
-    <!-- https://mvnrepository.com/artifact/org.apache.maven.skins/maven-fluido-skin
-    https://maven.apache.org/skins/maven-fluido-skin/
-    -->
-    <!-- <skin>
-        <groupId>org.apache.maven.skins</groupId>
-        <artifactId>maven-fluido-skin</artifactId>
-        <version>1.8</version>
-    </skin> -->
 
     <!-- https://mvnrepository.com/artifact/io.github.stevecrox.maven.skins/bootstrap-site-skin
     Nice but is missing left sidebar and seems not too well supported.
@@ -43,6 +44,10 @@
         <version>1.0.16</version>
     </skin>
     <custom>
+        <gitHub>
+            <organisation>stoerr</organisation>
+            <repository>DevelopersChatGPTToolBench</repository>
+        </gitHub>
         <bootstrapSkin>
             <bootswatchStyle>cerulean</bootswatchStyle>
             <footer>
