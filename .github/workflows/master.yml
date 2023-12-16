@@ -59,7 +59,7 @@ jobs:
     #  run: $MVNCMD org.apache.maven.plugins:maven-enforcer-plugin:3.0.0:enforce -Drules=requireReleaseVersion,requireReleaseDeps
 
     - name: Check build with Maven
-      run: $MVNCMD verify
+      run: $MVNCMD clean verify
 
     - name: Site with Maven
       run: $MVNCMD install javadoc:aggregate site site:stage

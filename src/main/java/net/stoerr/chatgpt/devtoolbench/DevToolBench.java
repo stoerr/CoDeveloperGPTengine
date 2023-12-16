@@ -253,7 +253,7 @@ public class DevToolBench {
     private static void parseOptions(String[] args) {
         Options options = new Options();
 
-        options.addOption("p", "port", true, "Port number");
+        options.addOption("p", "port", true, "Port number, default 3002");
         options.addOption("w", "write", false, "Permit file writes and action executions");
         options.addOption("h", "help", false, "Display this help message");
         options.addOption("g", "globalconfigdir", true, "Directory for global configuration (default: ~/.cgptdevbenchglobal/");

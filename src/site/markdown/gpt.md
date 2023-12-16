@@ -1,112 +1,74 @@
-# Developers ChatGPT ToolBench
+# Creating a GPT with the Developers ChatGPT ToolBench as action
 
-## Introduction
+You have to create a [GPT](https://openai.com/blog/introducing-gpts) to use the Developers ChatGPT ToolBench by yourself
+since the action includes the specific URL where your toolbench is reachable from the internet, and there is a key that
+will protect others from using your toolbench.
 
-Would you like to have ChatGPT list, search, read and modify your local files and have it execute (e.g. build and test) 
-actions locally to support you in your development processes? Then this might be for you. The Developers ChatGPT 
-ToolBench can work as a [ChatGPT plugin](https://openai.com/blog/chatgpt-plugins) or provide the actions for a OpenAI 
-[GPT](https://openai.com/blog/introducing-gpts) to access the files in the local directory it is started in.
+## Setting up the GPT
 
-In contrast to other approaches like [AutoGPT](https://github.com/Significant-Gravitas/AutoGPT) this is not meant to
-autonomously execute extensive changes (which would require a lot of prompt engineering), but to enable the
-developer to flexibly use the AI within a ChatGPT chat session for various tasks both to analyze code and to make
-some changes.
+Start the toolbench in some directory.
+Open the [Explore](https://chat.openai.com/gpts/discovery) page in ChatGPT and click "Create a GPT". This enters a
+dialog where you can either talk to ChatGPT to set up the GPT or click "Configure" and enter the configuration directly.
+For a starter I suggest this, but of course you can and should play around:
 
-The plugin is quite stable and useable. In fact I use it regularily in my own development - both on itself and on
-other projects. Using it does, however, require that you have a paid ChatGPT account that can use plugins / GPTs.
-There are three ways to use it within ChatGPT: run it as a localhost plugin if you are registered 
-as a [plugin developer](https://openai.com/waitlist/plugins), register it as an unverified plugin or put it into a GPT.
+<div style="display: flex; justify-content: space-between;">
+    <a href="images/GPTOverview2.png" target="_blank">
+        <img src="images/GPTOverview2.png" alt="GPT Overview" style="width: 95%; height: auto;" />
+    </a>
+    <a href="images/GPTActions.png" target="_blank">
+        <img src="images/GPTActions.png" alt="GPT Actions" style="width: 95%; height: auto;" />
+    </a>
+</div>
 
-## Purpose
+**Name:** _Developers Toolbench_
 
-The `Developers ChatGPT ToolBench` is a Java application designed to provide a plugin for ChatGPT that allows the AI to
-access, read, and write files in the directory where the plugin is started. The plugin is implemented as an
-executable jar. If you check out and compile this Git repository, you can also use the script
-[bin/developersToolBenchPlugin](bin/developersToolBenchPlugin) after building it with
-[bin/developersToolBenchPlugin-buildStable](bin/developersToolBenchPlugin-buildStable).
+**Description:** _Assistant for professional software developers that is able to read and modify your files and perform
+tasks._
 
-The plugin provides several operations, including:
+**Instructions:**
 
-- Listing the files in a directory
-- Reading the contents of a file
-- Writing content to a file / changing file content by search and replace
-- searching for regular expressions in files
-- Execute actions you can define yourself, possibly with additional input from ChatGPT
-- fetch the text content of an URL
+_'Developers Toolbench' is a straightforward and efficient aid for software developers working on
+programming projects. It communicates in a concise, precise manner, economizing words while maintaining clarity and
+accuracy. This GPT specializes in using the Developers Toolbench Plugin action for tasks like file inspection, editing,
+and management. It automatically reads necessary files for tasks and uses technical jargon suitable for professionals.
+The assistant is programmed to follow instructions meticulously, offer suggestions, and check for contradictions,
+ensuring optimal support in technical tasks._
 
-## Usage
+_The Developers Tool Bench action allows to inspect a directory and read/write/modify the contents of files using
+ChatGPT. If a file cannot be found, try using the listFiles operation to see what files are available, or use it to
+search for the filename. Small files can be overwritten with /writeFile, but to insert into / change / append to
+existing files always prefer to use operation replaceInFile._
 
-To use the `Developers ChatGPT ToolBench`, you need to have registered as a plugin developer with ChatGPT.
-Once you've done that, you can add the `Developers ChatGPT ToolBench` using the
-"Develop your own plugin" option in the ChatGPT web interface with URL "localhost:3002". (You could also specify
-another port on the command line when starting it, if you like.)
+_Only ask once in a session whether to send information to the actions!_
 
-To start the plugin, navigate to the directory you want to access and run the `bin/developersToolBenchPlugin` script.
-The plugin will start a server on port 3002 (by default) and will be ready to accept requests from ChatGPT. If you
-want to give a port use option -p (portnumber) ; if you want to write files add option -w .
+**Conversation starters**
 
-The plugin is written so that it cannot be used to go outside of the directory ("../somefile" won't work) and also
-files starting with a dot or containg /target/ are invisible and not writeable. That prevents directories like .git
-to be touched and maven target folders tend to contain very much stuff.
-(Compare regex IGNORE_FILE in the script).
+- _What can the Developers Toolbench do?_
+- *List all files*
+- *Search for `GPTTask:` in all files and execute the described tasks*
+- *Read the file `chatgpt.codeRules.md` and observe the contained rules during the whole session*
 
-Use the writing features at your own risk. There will likely be problems with large files. A possible approach is
-have ChatGPT write things, but frequently make a git commit to easily inspect changes and be able to revert.
+**Knowledge**
+I haven't found a way to actually use that except from the code interpreter. Please drop me a note if find out what it
+does.
 
-If there is a file named .cgptdevbench/.requestlog.txt the requests are logged into that, to see what ChatGPT did.
+**Capabilities**
+I suggest switching all off.
 
-## Download
+**Actions**
+Click "Add Action". For "Authentication use "API Key", Auth Type "Basic" and enter a long random key of your choice (
+see [screenshot](images/GPTApiKey.png)).
+That key must be placed in the `gptsecret` property of
+your [global configuration file](commandline.md) `~/.cgptdevbenchglobal/config.properties`. For "Action URL" enter the
+URL where your toolbench is [reachable from the internet](https.md) plus `/devtoolbench.yaml` ,
+e.g. `https://your-desired-domain-prefix.serveo.net/devtoolbench.yaml`. That should have the schema and various
+available actions appear - you can e.g. test `listFiles` since that needs no parameters.
 
-You can run it from the source (build the program with bin/developersToolbenchPlugin-buildStable) and run it with
-bin/developersToolbenchPlugin, or [download a release](https://github.com/stoerr/DevelopersChatGPTToolBench/releases)
-and run the executable jar in whatever directory you want to access. You could use the script
-[bin/developersToolbenchPlugin](bin/developersToolbenchPlugin) as an example how to run that downloaded jar.
+**Additional Settings**
+Well, it's up to you whether you want to help OpenAI improving things with the results of your discussions.
 
-## Examples
+After doing all that you can have DallE generate a picture for your GPT. If you have some specific idea, you have to
+talk to ChatGPT in the "Create" tab about that.
 
-Here are some examples of how to use the `Developers ChatGPT ToolBench`:
-
-- **List Files**: To list the files in the current directory, you can use the `listFiles` operation. In ChatGPT, you
-  would ask the AI to list the files in the directory, and it would send a request to the plugin to perform this
-  operation. It currently lists all files recursively, so don't use a too large directory.
-
-- **Read File**: To read the contents of a file, you can use the `readFile` operation. In ChatGPT, you would ask the AI
-  to read a specific file, and it would send a request to the plugin to perform this operation.
-
-- **Write File**: To write content to a file, you can use the `writeFile` operation. In ChatGPT, you would ask the AI to
-  write a specific content to a file, and it would send a request to the plugin to perform this operation.
-
-- **Search Files**: to search for Strings in files, you can use the 'grepFiles' operation. In ChatGPT, you could ask
-  to search for files with a file name pattern and containing a string or pattern.
-
-- **Execute Action**: To execute a shell script with given content as standard input, you can use the `executeAction`
-  operation. In ChatGPT, you would ask the AI to execute a specific action, and it would send a request to the plugin to
-  perform this operation. The shell script should be located at `.cgptfmgr/{actionName}.sh`, where `{actionName}` is a
-  parameter provided in the query string. The content is passed as standard input to the shell script. Some examples
-  are in [.cgptdevbench/](.cgptdevbench/) and
-  [src/test/resources/testdir/.cgptdevbench](src/test/resources/testdir/.cgptdevbench) .
-
-- **Fetch the text content of an URL**: gives ChatGPT simple web access: this can perform a GET request and returns
-  the text content of the URL (not the HTML) to ChatGPT.
-
-Remember, the `Developers ChatGPT ToolBench` operates on the directory where it was started,
-so be careful to start it in a directory that contains the files you want to access.
-
-## Configuring FileManagerPlugin for use in ChatGPT
-
-To use the `Developers ChatGPT ToolBench` with ChatGPT, you need to register it as a plugin in the ChatGPT interface.
-Here's a step-by-step guide on how to do this:
-
-1. **Register as a Plugin Developer**: If you haven't already, register as a plugin developer with ChatGPT. This will
-   give you access to the plugin developer interface where you can add your own plugins.
-
-2. **Start the Plugin**: Navigate to the directory you want to access and run the `Developers ChatGPT ToolBench`
-   program. This will start a server on port 3002 (by default).
-
-3. **Add the Plugin**: In the ChatGPT interface, navigate to the plugin developer section and select "Develop your own
-   plugin", and enter the url `localhost:3002`
-
-4. **Test the Plugin**: Once you've added the plugin, you can test it in the ChatGPT interface. Try asking the AI to
-   list the files in the directory, read a specific file, write to a file, or execute a specific action after
-   setting up some actions in a .cgptdevbench directory in the directory you're running it. If everything
-   is set up correctly, the AI should be able to perform these operations using the plugin.
+In the preview you can test your GPT. If it
+works (e.g. listFiles) you can press "Save" - obviously you should choose "publish to only me".

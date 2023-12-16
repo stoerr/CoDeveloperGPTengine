@@ -16,7 +16,8 @@ Each time before using the toolbench you have to start the serveo tunnel:
 
     ssh -R your-desired-domain-prefix.serveo.net:80:localhost:3002 serveo.net
 
-Your toolbench URL for ChatGPT will be https://your-desired-domain-prefix.serveo.net/ in this example.
+Your toolbench URL for ChatGPT will be https://your-desired-domain-prefix.serveo.net/ in this example. To check whether
+it works you can call it up in a browser, after starting the developers toolbench.
 
 ### [LocalTunnel](https://theboroer.github.io/localtunnel-www/)
 
@@ -37,8 +38,8 @@ $19/month).
 
 The problem is here that you have to make the toolbench reachable via port 443, and the toolbench cannot be run as root.
 So you probably have to set up a reverse proxy or something like that that forwards the requests to the toolbench.
-Please [contact me](http://www.stoerr.net/contact.html) 
-if you found a solution I could publish here. Also, you have to create a certificate for your hostname. 
+Please [contact me](http://www.stoerr.net/contact.html)
+if you found a solution I could publish here. Also, you have to create a certificate for your hostname.
 If you don't have an easy solution for these topics, you can still use one of the other ways.
 
 ## Local Fritz.box using DSL or similar

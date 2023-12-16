@@ -6,4 +6,15 @@ if test -L "$progfile"; then
 fi
 progdir=$(dirname "$progfile")
 
+# if there is a ~/.cgptdevbenchglobal/tunnel.sh then run it and kill it when this script exits
+if test -f ~/.cgptdevbenchglobal/tunnel.sh; then
+  echo "Starting tunnel"
+  ~/.cgptdevbenchglobal/tunnel.sh &
+  tunnelpid=$!
+  trap "echo 'Killing tunnel $tunnelpid'; kill $tunnelpid" EXIT
+  echo "Tunnel pid: $tunnelpid"
+  sleep 1
+  echo
+fi
+
 exec java -jar "$progdir/developers-chatgpt-toolbench-plugin.jar" "$@"
