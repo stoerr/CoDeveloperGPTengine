@@ -1,8 +1,20 @@
 #!/usr/bin/env bash
+# start the developers-chatgpt-toolbench-plugin.jar in the directory this script is placed, following links
 progfile=$0
 if test -L "$progfile"; then
   progfile=$(readlink "$progfile")
 fi
-progdir=$(dirname "$progfile")/..
+progdir=$(dirname "$progfile")
 
-/usr/bin/java -jar "$progdir/bin/developers-chatgpt-toolbench-plugin.jar" "$@"
+# if there is a ~/.cgptdevbenchglobal/tunnel.sh then run it and kill it when this script exits
+if test -f ~/.cgptdevbenchglobal/tunnel.sh; then
+  echo "Starting tunnel"
+  ~/.cgptdevbenchglobal/tunnel.sh &
+  tunnelpid=$!
+  trap "echo 'Killing tunnel $tunnelpid'; kill $tunnelpid" EXIT
+  echo "Tunnel pid: $tunnelpid"
+  sleep 1
+  echo
+fi
+
+exec java -jar "$progdir/developers-chatgpt-toolbench-plugin.jar" "$@"

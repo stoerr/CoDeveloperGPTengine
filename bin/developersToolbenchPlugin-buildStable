@@ -7,7 +7,8 @@ if test -L "$progfile"; then
 fi
 progdir=$(dirname "$progfile")/..
 cd "$progdir" || exit 1
-mvn -B clean install || exit 1
+mvn -B clean test || exit 1
+mvn -B -Dmaven.test.skip.exec -DskipITs -Ddocker.skip.run install || exit 1
 
 echo Copying to bin
 mv -f bin/developers-chatgpt-toolbench-plugin.jar bin/developers-chatgpt-toolbench-plugin.bak.jar

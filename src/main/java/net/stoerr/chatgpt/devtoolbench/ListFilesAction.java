@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -23,44 +24,43 @@ public class ListFilesAction extends AbstractPluginAction {
 
     @Override
     public String openApiDescription() {
-        return """
-                  /listFiles:
-                    get:
-                      operationId: listFiles
-                      summary: Recursively lists files in a directory. Optionally filters by filename and content.
-                      parameters:
-                        - name: path
-                          in: query
-                          description: relative path to directory to list. root directory = '.'
-                          required: true
-                          schema:
-                            type: string
-                        - name: filePathRegex
-                          in: query
-                          description: regex to filter file paths
-                          required: false
-                          schema:
-                            type: string
-                        - name: grepRegex
-                          in: query
-                          description: an optional regex that lists only files with matching content
-                          required: false
-                          schema:
-                            type: string
-                        - name: listDirectories
-                          in: query
-                          description: if true, lists directories instead of files
-                          required: false
-                          schema:
-                            type: boolean
-                      responses:
-                        '200':
-                          description: List of relative paths of the files
-                          content:
-                            text/plain:
-                              schema:
-                                type: string
-                """.stripIndent();
+        return "" +
+                "  /listFiles:\n" +
+                "    get:\n" +
+                "      operationId: listFiles\n" +
+                "      summary: Recursively lists files in a directory. Optionally filters by filename and content.\n" +
+                "      parameters:\n" +
+                "        - name: path\n" +
+                "          in: query\n" +
+                "          description: relative path to directory to list. root directory = '.'\n" +
+                "          required: true\n" +
+                "          schema:\n" +
+                "            type: string\n" +
+                "        - name: filePathRegex\n" +
+                "          in: query\n" +
+                "          description: regex to filter file paths\n" +
+                "          required: false\n" +
+                "          schema:\n" +
+                "            type: string\n" +
+                "        - name: grepRegex\n" +
+                "          in: query\n" +
+                "          description: an optional regex that lists only files with matching content\n" +
+                "          required: false\n" +
+                "          schema:\n" +
+                "            type: string\n" +
+                "        - name: listDirectories\n" +
+                "          in: query\n" +
+                "          description: if true, lists directories instead of files\n" +
+                "          required: false\n" +
+                "          schema:\n" +
+                "            type: boolean\n" +
+                "      responses:\n" +
+                "        '200':\n" +
+                "          description: List of relative paths of the files\n" +
+                "          content:\n" +
+                "            text/plain:\n" +
+                "              schema:\n" +
+                "                type: string\n";
     }
 
     @Override
@@ -85,10 +85,11 @@ public class ListFilesAction extends AbstractPluginAction {
 
         if (Files.isDirectory(path)) {
             resp.setContentType("text/plain;charset=UTF-8");
-            List<Path> paths = findMatchingFiles(resp, path, filePathPattern, grepPattern).toList();
+            List<Path> paths = findMatchingFiles(resp, path, filePathPattern, grepPattern)
+                    .collect(Collectors.toList());
             List<String> files = paths.stream()
                     .map(this::mappedFilename)
-                    .toList();
+                    .collect(Collectors.toList());
             if (files.isEmpty()) {
                 long filePathFileCount = findMatchingFiles(resp, path, filePathPattern, null).count();
                 if (filePathFileCount > 0)
@@ -103,7 +104,7 @@ public class ListFilesAction extends AbstractPluginAction {
                         .sorted(Comparator.comparing(Path::toString))
                         .map(f -> mappedFilename(f))
                         .map(f -> StringUtils.defaultIfEmpty(f, ".") + "/")
-                        .toList();
+                        .collect(Collectors.toList());
             } else if (files.size() > 100) {
                 long directoryCount = paths.stream().map(Path::getParent).distinct().count();
                 throw sendError(resp, 404, "Found " + files.size() + " files in " + directoryCount + " directories - please use a more specific path or filePathRegex");
