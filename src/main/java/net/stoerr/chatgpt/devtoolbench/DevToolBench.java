@@ -48,7 +48,41 @@ public class DevToolBench {
     public static final String PATH_SPEC = "/devtoolbench.yaml";
     public static final List<String> UNPROTECTED_PATHS = Arrays.asList(PATH_AI_PLUGIN_JSON, PATH_SPEC, "/favicon.ico");
 
+    /** Files that are inaccessible to the toolbench. */
+    public static final Pattern IGNORE = Pattern.compile(".*/[.].*|.*/target/.*|.*/(Hpsx|hpsx).*|.*/node_modules/.*");
+
+    /**
+     * Exceptions overriding {@link #IGNORE}.
+     */
+    public static final Pattern OVERRIDE_IGNORE = Pattern.compile(".*/.github/.*|.*/.content.xml");
+
     // private static final Gson GSON = new Gson();
+
+    static Path currentDir = Paths.get(".").normalize().toAbsolutePath();
+
+    private static int port;
+
+    private static final Map<String, AbstractPluginAction> HANDLERS = new LinkedHashMap<>();
+
+    private static final String OPENAPI_DESCR_START = "" +
+            "# THESPECURL\n\n" +
+            "openapi: 3.0.1\n" +
+            "info:\n" +
+            "  title: Developers ToolBench ChatGPT Plugin\n" +
+            "  version: THEVERSION\n" +
+            "servers:\n" +
+            "  - url: THEURL\n" +
+            "paths:\n";
+
+    private static Server server;
+    private static ServletContextHandler context;
+    private static boolean writingEnabled;
+    private static String mainUrl;
+    private static String localUrl;
+
+    static boolean ignoreGlobalConfig;
+    private static String userGlobalConfigDir;
+    private static UserGlobalConfig userconfig;
 
     private static final Filter CORSFILTER = (rawRequest, rawResponse, chain) -> {
         // if it's an OPTIONS request, we need to give a CORS response like method giveCORSResponse below
@@ -97,39 +131,6 @@ public class DevToolBench {
             TbUtils.logInfo("");
         }
     };
-
-    static Path currentDir = Paths.get(".").normalize().toAbsolutePath();
-
-    public static final Pattern IGNORE = Pattern.compile(".*/[.].*|.*/target/.*|.*/(Hpsx|hpsx).*|.*/node_modules/.*");
-
-    /**
-     * Exceptions overriding {@link #IGNORE}.
-     */
-    public static final Pattern OVERRIDE_IGNORE = Pattern.compile(".*/.github/.*|.*/.content.xml");
-
-    private static int port;
-
-    private static final Map<String, AbstractPluginAction> HANDLERS = new LinkedHashMap<>();
-
-    private static final String OPENAPI_DESCR_START = "" +
-            "# THESPECURL\n\n" +
-            "openapi: 3.0.1\n" +
-            "info:\n" +
-            "  title: Developers ToolBench ChatGPT Plugin\n" +
-            "  version: THEVERSION\n" +
-            "servers:\n" +
-            "  - url: THEURL\n" +
-            "paths:\n";
-
-    private static Server server;
-    private static ServletContextHandler context;
-    private static boolean writingEnabled;
-    private static String mainUrl;
-    private static String localUrl;
-
-    static boolean ignoreGlobalConfig;
-    private static String userGlobalConfigDir;
-    private static UserGlobalConfig userconfig;
 
     private static void addHandler(AbstractPluginAction handler) {
         HANDLERS.put(handler.getUrl(), handler);
