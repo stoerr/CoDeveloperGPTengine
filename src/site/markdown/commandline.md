@@ -15,11 +15,15 @@ usage: options are
     -w,--write                   Permit file writes and action executions
 ```
 
-- `-p`: To specify the port number, include -p followed by a valid port number. If no -p option is given, the default port number 3002 is used.
-- `-w`: If you include -w, writing and executing actions will be enabled. If there's no -w option mentioned in the command, writing and executing actions are disabled by default.
+- `-p`: To specify the port number, include -p followed by a valid port number. If no -p option is given, the default
+  port number 3002 is used.
+- `-w`: If you include -w, writing and executing actions will be enabled. If there's no -w option mentioned in the
+  command, writing and executing actions are disabled by default.
 - `-h`: This option is to display the help message. It'll also be shown when there's an exception in parsing options.
-- `-g`: This option is used to specify the directory path for global configuration. If it's not mentioned, the default directory "~/.cgptdevbenchglobal/" is used.
-- `-l`: This option if present, is used to ensure that only command line configuration is used and global configuration is ignored.
+- `-g`: This option is used to specify the directory path for global configuration. If it's not mentioned, the default
+  directory "~/.cgptdevbenchglobal/" is used.
+- `-l`: This option if present, is used to ensure that only command line configuration is used and global configuration
+  is ignored.
 
 ## Global configuration file
 
@@ -33,8 +37,10 @@ openaitoken=exampletoken
 
 where:
 
-* `gptsecret` A secret the GPT has to share to access the devtoolbench as an action.
-* `openaitoken` The token OpenAI provides after entering the gptSecret when developing a plugin.
+* `gptsecret` A secret that is configured in both the GPT and locally to make sure only your own GPT can access the
+  toolbench.
+* `openaitoken` A token OpenAI privides after entering the gptSecret when deploying as a plugin - used to identify
+  OpenAI to the plugin. (Not needed for GPTs.)
 
 If you want to run it without a tunnel but to provide a HTTPS interface by itself (compare [Access via HTTPS](https.md))
 there can also be the following properties:
@@ -43,7 +49,8 @@ there can also be the following properties:
 * `keystorePath` The path to the keystore file.
 * `keystorePassword` The password for the keystore.
 * `domain` The external domain through which the application is accessible.
-* `externport` The external port through which the application is reachable (optional with default 443, something else than 443 probably won't work with ChatGPT)
+* `externport` The external port through which the application is reachable (optional with default 443, something else
+  than 443 probably won't work with ChatGPT)
 
 ## Local configuration directory
 
@@ -66,3 +73,10 @@ It requires a comment `# Plugin Action: ` to be present in each *.sh file that e
 
 More examples can be found in the
 [.cgptdevbench directory of the project](https://github.com/stoerr/DevelopersChatGPTToolBench/tree/develop/.cgptdevbench) .
+
+## Usage via docker image
+
+If you want to make extra sure that the toolbench cannot access anything outside of the current directory and
+cannot access anything on your local machine and want to try dangerous things like executing actions that immediately
+run ChatGPT generated code , you can also use it from the docker image 
+[stoerr/developers-chatgpt-toolbench-plugin](https://hub.docker.com/repository/docker/stoerr/developers-chatgpt-toolbench-plugin).

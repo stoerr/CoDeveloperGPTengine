@@ -11,8 +11,8 @@ started in.
 
 In contrast to other approaches like [AutoGPT](https://github.com/Significant-Gravitas/AutoGPT) this is not meant to
 autonomously execute extensive changes (which would likely require a lot of prompt engineering), but to enable the
-developer to flexibly use the AI within a ChatGPT chat session for various tasks both to analyze code and to make
-some changes.
+developer to flexibly use the AI within a ChatGPT chat session for various tasks both to analyze code or documentation
+and to make some changes.
 
 The project is quite stable and useable. In fact I use it regularily in my own development - both on itself and on
 my other projects. Using it does, however, require that you have a paid ChatGPT account that can use plugins / GPTs.
@@ -38,15 +38,18 @@ More details about the functionality are [here](functionality.md).
 
 To use the `Developers ChatGPT ToolBench`, you need a [ChatGPT Plus](https://openai.com/blog/chatgpt-plus) account,
 since only then OpenAI will let you use plugins / GPTs.
-The program is an executable Java JAR, so you need a Java runtime environment (JRE) of at least version 16 to run it.
+The program is an executable Java JAR, so you need a Java runtime environment (JRE) of at least version 11 to run it.
 Also, you will have to make it reachable from OpenAI's servers via https -
 there are [several ways to do this](https.md).
 
 ## Getting started
+
+To start up quickly you can follow the steps in the [quickstart instructions](quickstart.md), or you can go into
+depth with the corresponding documentations:
 
 - First, you have to [install the program](install.md) locally
 - Second, you have to make it [reachable from OpenAI's servers](https.md).
 - Third, [run it](commandline.md) in a directory you want to access.
 - Fourth, you have to [create a GPT with it as action](gpt.md), or [register it as a ChatGPT plugin](plugin.md). 
 
-Then you can use it from ChatGPT.
+Then you can use it from ChatGPT and enjoy working with your newly found AI assistant.
