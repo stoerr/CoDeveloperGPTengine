@@ -2,6 +2,10 @@
 
 ## Introduction
 
+<div style="float: right;">
+    <img src="images/dalle/joinedkeyboard1.png" alt="Joined Keyboard Image" style="width: 15em; height: auto;" />
+</div>
+
 Would you like to have ChatGPT list, search, read and modify your local files and have it execute (e.g. build and test)
 actions locally to support you in your development processes? Then this might be for you. The Developers ChatGPT
 ToolBench can either work as a [ChatGPT plugin](https://openai.com/blog/chatgpt-plugins) or provide the actions for a
@@ -16,8 +20,8 @@ and to make some changes.
 
 The project is quite stable and useable. In fact I use it regularily in my own development - both on itself and on
 my other projects. Using it does, however, require that you have a paid ChatGPT account that can use plugins / GPTs.
-There are three ways to use it within ChatGPT: run it as a localhost plugin if you are registered
-as a [plugin developer](https://openai.com/waitlist/plugins), register it as an unverified plugin or put it into a GPT.
+There are three ways to use it within ChatGPT: put it as actions into a GPT, register it as an unverified plugin or run
+it as a localhost plugin if you are registered as a plugin developer.
 See the respective documentation for details.
 
 ## Functionality
@@ -50,6 +54,6 @@ depth with the corresponding documentations:
 - First, you have to [install the program](install.md) locally
 - Second, you have to make it [reachable from OpenAI's servers](https.md).
 - Third, [run it](commandline.md) in a directory you want to access.
-- Fourth, you have to [create a GPT with it as action](gpt.md), or [register it as a ChatGPT plugin](plugin.md). 
+- Fourth, you have to [create a GPT with it as action](gpt.md), or [register it as a ChatGPT plugin](plugin.md).
 
 Then you can use it from ChatGPT and enjoy working with your newly found AI assistant.
