@@ -49,12 +49,12 @@ public class DevToolBench {
     public static final List<String> UNPROTECTED_PATHS = Arrays.asList(PATH_AI_PLUGIN_JSON, PATH_SPEC, "/favicon.ico");
 
     /** Files that are inaccessible to the toolbench. */
-    public static final Pattern IGNORE = Pattern.compile(".*/[.].*|.*/target/.*|.*/(Hpsx|hpsx).*|.*/node_modules/.*");
+    public static final Pattern IGNORE_FILES_PATTERN = Pattern.compile(".*/[.].*|.*/target/.*|.*/(Hpsx|hpsx).*|.*/node_modules/.*");
 
     /**
-     * Exceptions overriding {@link #IGNORE}.
+     * Exceptions overriding {@link #IGNORE_FILES_PATTERN}.
      */
-    public static final Pattern OVERRIDE_IGNORE = Pattern.compile(".*/.github/.*|.*/.content.xml");
+    public static final Pattern OVERRIDE_IGNORE_PATTERN = Pattern.compile(".*/.github/.*|.*/.content.xml|\\.chatgpt\\.codeRules\\.md");
 
     // private static final Gson GSON = new Gson();
 
@@ -64,8 +64,7 @@ public class DevToolBench {
 
     private static final Map<String, AbstractPluginAction> HANDLERS = new LinkedHashMap<>();
 
-    private static final String OPENAPI_DESCR_START = "" +
-            "# THESPECURL\n\n" +
+    private static final String OPENAPI_DESCR_START = "# THESPECURL\n\n" +
             "openapi: 3.0.1\n" +
             "info:\n" +
             "  title: Developers ToolBench ChatGPT Plugin\n" +
@@ -112,7 +111,7 @@ public class DevToolBench {
         chain.doFilter(rawRequest, rawResponse);
     };
 
-    private static RequestLog requestlog = new RequestLog() {
+    private static final RequestLog requestlog = new RequestLog() {
         @Override
         public void log(Request request, Response response) {
             TbUtils.logInfo("Remote address: " + request.getRemoteAddr());

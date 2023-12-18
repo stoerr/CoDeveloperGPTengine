@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
@@ -31,6 +30,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public abstract class AbstractPluginAction extends HttpServlet {
+
+    /**
+     * A pattern for filenames of binary files where grep would not work.
+     */
+    private static final Pattern BINARY_FILES_PATTERN = Pattern.compile("(?i).*\\.(gif|png|mov|jpg|jpeg|mp4|mp3|pdf|zip|gz|tgz|tar|jar|class|war|ear|exe|dll|so|o|a|lib|bin|dat|dmg|iso)");
 
     private final transient Gson gson = new Gson();
 
@@ -81,6 +85,9 @@ public abstract class AbstractPluginAction extends HttpServlet {
                     if (grepPattern == null) {
                         return true;
                     } else {
+                        if (BINARY_FILES_PATTERN.matcher(p.toString()).matches()) {
+                            return false;
+                        }
                         try (Stream<String> lines = Files.lines(p)) {
                             return lines.anyMatch(line -> grepPattern.matcher(line).find());
                         } catch (Exception e) {
@@ -92,8 +99,8 @@ public abstract class AbstractPluginAction extends HttpServlet {
     }
 
     protected static boolean isIgnored(Path path) {
-        return DevToolBench.IGNORE.matcher(path.toString()).matches()
-                && !DevToolBench.OVERRIDE_IGNORE.matcher(path.toString()).matches();
+        return DevToolBench.IGNORE_FILES_PATTERN.matcher(path.toString()).matches()
+                && !DevToolBench.OVERRIDE_IGNORE_PATTERN.matcher(path.toString()).matches();
     }
 
     /**
@@ -121,8 +128,8 @@ public abstract class AbstractPluginAction extends HttpServlet {
 
     protected Path getPath(HttpServletRequest request, HttpServletResponse response, boolean mustExist) {
         String path = getMandatoryQueryParam(request, response, "path");
-        if (DevToolBench.IGNORE.matcher(path).matches() && !DevToolBench.OVERRIDE_IGNORE.matcher(path).matches()) {
-            throw sendError(response, 400, "Access to path " + path + " is not allowed! (matches " + DevToolBench.IGNORE.pattern() + ")");
+        if (DevToolBench.IGNORE_FILES_PATTERN.matcher(path).matches() && !DevToolBench.OVERRIDE_IGNORE_PATTERN.matcher(path).matches()) {
+            throw sendError(response, 400, "Access to path " + path + " is not allowed! (matches " + DevToolBench.IGNORE_FILES_PATTERN.pattern() + ")");
         }
         Path resolved = DevToolBench.currentDir.resolve(path).normalize().toAbsolutePath();
         if (!resolved.startsWith(DevToolBench.currentDir)) {
