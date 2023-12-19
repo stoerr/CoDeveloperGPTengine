@@ -5,12 +5,6 @@
          name="Developers Toolbench ChatGPT Plugin">
     <!-- https://maven.apache.org/doxia/doxia-sitetools/doxia-site-model/site.html -->
 
-    <!-- <bannerLeft>
-        <name>Composum AI</name>
-        <src>https://repository-images.githubusercontent.com/623445535/e52f36c6-ddcc-4908-a9dd-97a917f7e59d</src>
-        <href>https://www.composum.com/</href>
-    </bannerLeft> -->
-
     <body>
         <links>
             <item name="Hans-Peter Störr" href="http://www.stoerr.net/"/>
