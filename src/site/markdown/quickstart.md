@@ -24,7 +24,7 @@ where you replace somewildpassword with a long password of your choice. It'll be
 
 ```bash
 #!/bin/bash
-exec ssh -R yourtoolbenchdomain.serveo.net:80:localhost:3002 serveo.net
+exec ssh -T -R yourtoolbenchdomain.serveo.net:80:localhost:3002 serveo.net
 ```
 
 where you replace yourtoolbenchdomain with a prefix of your choice. It'll be used to access the toolbench from ChatGPT.

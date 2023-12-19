@@ -14,7 +14,7 @@ The donation based https://serveo.net/ allows exporting a port to the internet a
 Pick a domain prefix that is not common since everybody can use it.
 Each time before using the toolbench you have to start the serveo tunnel:
 
-    ssh -R your-desired-domain-prefix.serveo.net:80:localhost:3002 serveo.net
+    ssh -T -R your-desired-domain-prefix.serveo.net:80:localhost:3002 serveo.net
 
 Your toolbench URL for ChatGPT will be https://your-desired-domain-prefix.serveo.net/ in this example. To check whether
 it works you can call it up in a browser, after starting the developers toolbench.
