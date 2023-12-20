@@ -201,7 +201,7 @@ public class DevToolBench {
             try {
                 chain.doFilter(request, response);
             } catch (ExecutionAbortedException e) {
-                TbUtils.logInfo("Aborted and problem reported to ChatGPT : " + e.getMessage());
+                TbUtils.logInfo("Aborted and problem reported to ChatGPT : " + e);
             } catch (Exception e) {
                 TbUtils.logError("Bug! Abort handling request " + ((HttpServletRequest) request).getRequestURI());
                 TbUtils.logStacktrace(e);
@@ -290,7 +290,7 @@ public class DevToolBench {
                 ignoreGlobalConfig = true;
             }
         } catch (ParseException e) {
-            TbUtils.logError("Error parsing command line options: " + e.getMessage());
+            TbUtils.logError("Error parsing command line options: " + e);
             System.exit(1);
         }
     }

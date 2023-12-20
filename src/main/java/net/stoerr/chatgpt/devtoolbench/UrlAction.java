@@ -112,7 +112,7 @@ public class UrlAction extends AbstractPluginAction {
             resp.getOutputStream().write(bytes);
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write("Error fetching content from the URL: " + e.getMessage());
+            resp.getWriter().write("Error fetching content from the URL: " + e);
         }
     }
 
@@ -135,7 +135,7 @@ public class UrlAction extends AbstractPluginAction {
             PDFTextStripper pdfStripper = new PDFTextStripper();
             return pdfStripper.getText(document);
         } catch (Exception e) {
-            throw new IOException("Error processing PDF content: " + e.getMessage(), e);
+            throw new IOException("Error processing PDF content: " + e, e);
         }
     }
 
