@@ -42,7 +42,7 @@ public class TbUtils {
                         + "\n";
                 Files.write(requestLog, logmsg.getBytes(), StandardOpenOption.APPEND);
             } catch (IOException e) { // not critical but strange - we'd want to know.
-                logError("Could not write to request log " + requestLog + ": " + e.getMessage());
+                logError("Could not write to request log " + requestLog + ": " + e);
             }
         }
     }
@@ -56,7 +56,7 @@ public class TbUtils {
                 Files.write(requestLog, (parameterName + ": " + parameterValue + "\n").getBytes(), StandardOpenOption.APPEND);
                 logInfo(parameterName + ": " + parameterValue + "\n");
             } catch (IOException e) { // not critical but strange - we'd want to know.
-                logError("Could not write to request log " + requestLog + ": " + e.getMessage());
+                logError("Could not write to request log " + requestLog + ": " + e);
             }
         }
     }
