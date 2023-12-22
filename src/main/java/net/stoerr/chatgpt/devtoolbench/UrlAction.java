@@ -37,6 +37,7 @@ public class UrlAction extends AbstractPluginAction {
                 "  /fetchUrlTextContent:\n" +
                 "    get:\n" +
                 "      operationId: fetchUrlTextContent\n" +
+                "      x-openai-isConsequential: false\n" +
                 "      summary: Fetch text content from a given URL.\n" +
                 "      parameters:\n" +
                 "        - name: url\n" +

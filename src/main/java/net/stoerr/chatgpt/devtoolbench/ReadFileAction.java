@@ -42,6 +42,7 @@ public class ReadFileAction extends AbstractPluginAction {
                 "  /readFile:\n" +
                 "    get:\n" +
                 "      operationId: readFile\n" +
+                "      x-openai-isConsequential: false\n" +
                 "      summary: Read a files content.\n" +
                 "      parameters:\n" +
                 "        - name: path\n" +

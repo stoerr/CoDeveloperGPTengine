@@ -30,6 +30,7 @@ public class WriteFileAction extends AbstractPluginAction {
                 "  /writeFile:\n" +
                 "    post:\n" +
                 "      operationId: writeFile\n" +
+                "      x-openai-isConsequential: false\n" +
                 "      summary: Overwrite a small file with the complete content given in one step. You cannot append to a file or write parts or write parts - use replaceInFile for inserting parts.\n" +
                 "      parameters:\n" +
                 "        - name: path\n" +
