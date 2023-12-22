@@ -27,6 +27,7 @@ public class GrepAction extends AbstractPluginAction {
                 "  /grepFiles:\n" +
                 "    get:\n" +
                 "      operationId: grepAction\n" +
+                "      x-openai-isConsequential: false\n" +
                 "      summary: Search for lines in text files matching the given regex.\n" +
                 "      parameters:\n" +
                 "        - name: path\n" +

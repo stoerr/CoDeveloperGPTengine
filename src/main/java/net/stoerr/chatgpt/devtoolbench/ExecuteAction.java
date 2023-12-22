@@ -51,6 +51,7 @@ public class ExecuteAction extends AbstractPluginAction {
                 "  /executeAction:\n" +
                 "    post:\n" +
                 "      operationId: executeAction\n" +
+                "      x-openai-isConsequential: false\n" +
                 "      summary: Execute an action with given content as standard input. Only on explicit user request.\n" +
                 "      parameters:\n" +
                 "        - name: actionName\n" +

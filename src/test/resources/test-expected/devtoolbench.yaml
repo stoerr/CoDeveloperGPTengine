@@ -10,6 +10,7 @@ paths:
   /executeAction:
     post:
       operationId: executeAction
+      x-openai-isConsequential: false
       summary: Execute an action with given content as standard input. Only on explicit user request.
       parameters:
         - name: actionName
@@ -36,6 +37,7 @@ paths:
   /fetchUrlTextContent:
     get:
       operationId: fetchUrlTextContent
+      x-openai-isConsequential: false
       summary: Fetch text content from a given URL.
       parameters:
         - name: url
@@ -59,6 +61,7 @@ paths:
   /grepFiles:
     get:
       operationId: grepAction
+      x-openai-isConsequential: false
       summary: Search for lines in text files matching the given regex.
       parameters:
         - name: path
@@ -95,6 +98,7 @@ paths:
   /listFiles:
     get:
       operationId: listFiles
+      x-openai-isConsequential: false
       summary: Recursively lists files in a directory. Optionally filters by filename and content.
       parameters:
         - name: path
@@ -131,6 +135,7 @@ paths:
   /readFile:
     get:
       operationId: readFile
+      x-openai-isConsequential: false
       summary: Read a files content.
       parameters:
         - name: path
@@ -161,6 +166,7 @@ paths:
   /replaceInFile:
     post:
       operationId: replaceInFile
+      x-openai-isConsequential: false
       summary: Replaces the single occurrence of one or more literal strings in a file. The whole file content is matched, not line by line.
       parameters:
         - name: path
@@ -193,6 +199,7 @@ paths:
   /writeFile:
     post:
       operationId: writeFile
+      x-openai-isConsequential: false
       summary: Overwrite a small file with the complete content given in one step. You cannot append to a file or write parts or write parts - use replaceInFile for inserting parts.
       parameters:
         - name: path

@@ -36,6 +36,7 @@ public class ReplaceAction extends AbstractPluginAction {
                 "  /replaceInFile:\n" +
                 "    post:\n" +
                 "      operationId: replaceInFile\n" +
+                "      x-openai-isConsequential: false\n" +
                 "      summary: Replaces the single occurrence of one or more literal strings in a file. The whole file content is matched, not line by line.\n" +
                 "      parameters:\n" +
                 "        - name: path\n" +

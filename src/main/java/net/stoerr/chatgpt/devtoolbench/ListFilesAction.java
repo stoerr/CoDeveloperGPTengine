@@ -28,6 +28,7 @@ public class ListFilesAction extends AbstractPluginAction {
                 "  /listFiles:\n" +
                 "    get:\n" +
                 "      operationId: listFiles\n" +
+                "      x-openai-isConsequential: false\n" +
                 "      summary: Recursively lists files in a directory. Optionally filters by filename and content.\n" +
                 "      parameters:\n" +
                 "        - name: path\n" +
