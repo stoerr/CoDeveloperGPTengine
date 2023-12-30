@@ -45,7 +45,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class DevToolBench {
 
     public static final String PATH_AI_PLUGIN_JSON = "/.well-known/ai-plugin.json";
-    public static final String PATH_SPEC = "/devtoolbench.yaml";
+    public static final String PATH_SPEC = "/codeveloperengine.yaml";
     public static final List<String> UNPROTECTED_PATHS = Arrays.asList(PATH_AI_PLUGIN_JSON, PATH_SPEC, "/favicon.ico");
 
     /** Files that are inaccessible to the toolbench. */

@@ -13,7 +13,7 @@
    },
   "api": {
     "type": "openapi",
-    "url": "THEURL/devtoolbench.yaml"
+    "url": "THEURL/codeveloperengine.yaml"
   },
   "logo_url": "THEURL/icon.png",
   "contact_email": "yu4cheem@techno.ms",

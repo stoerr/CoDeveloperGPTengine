@@ -33,14 +33,14 @@ public class DevToolBenchGeneralIT extends AbstractActionIT {
     @Test
     public void testDevToolBenchYaml() throws IOException {
         TbUtils.logInfo("\nDevToolBenchGeneralIT.testDevToolBenchYaml");
-        checkResponse("/devtoolbench.yaml", "GET", null, 200, "devtoolbench.yaml");
-        // read target/test-actual/devtoolbench.yaml and compare to src/test/resources/test-expected/devtoolbench.yaml
+        checkResponse("/codeveloperengine.yaml", "GET", null, 200, "codeveloperengine.yaml");
+        // read target/test-actual/codeveloperengine.yaml and compare to src/test/resources/test-expected/codeveloperengine.yaml
         // and overwrite that file if it is different
-        String expected = readFile("/test-expected/devtoolbench.yaml");
-        String actual = Files.readString(Paths.get("target/test-actual/devtoolbench.yaml"), UTF_8);
+        String expected = readFile("/test-expected/codeveloperengine.yaml");
+        String actual = Files.readString(Paths.get("target/test-actual/codeveloperengine.yaml"), UTF_8);
         collector.checkThat(actual, CoreMatchers.is(expected));
         if (!expected.equals(actual) && actual.contains("requestBody:")) {
-            Files.writeString(Paths.get("src/test/resources/test-expected/devtoolbench.yaml"), actual, UTF_8);
+            Files.writeString(Paths.get("src/test/resources/test-expected/codeveloperengine.yaml"), actual, UTF_8);
         }
     }
 
