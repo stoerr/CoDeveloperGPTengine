@@ -79,4 +79,4 @@ More examples can be found in the
 If you want to make extra sure that the toolbench cannot access anything outside of the current directory and
 cannot access anything on your local machine and want to try dangerous things like executing actions that immediately
 run ChatGPT generated code , you can also use it from the docker image 
-[stoerr/developers-chatgpt-toolbench-plugin](https://hub.docker.com/repository/docker/stoerr/developers-chatgpt-toolbench-plugin).
+[stoerr/co-developer-gpt-engine](https://hub.docker.com/repository/docker/stoerr/co-developer-gpt-engine).

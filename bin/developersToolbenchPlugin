@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# start the developers-chatgpt-toolbench-plugin.jar in the directory this script is placed, following links
+# start the co-developer-gpt-engine.jar in the directory this script is placed, following links
 progfile=$0
 if test -L "$progfile"; then
   progfile=$(readlink "$progfile")
@@ -17,4 +17,4 @@ if test -f ~/.cgptdevbenchglobal/tunnel.sh; then
   echo
 fi
 
-exec java -jar "$progdir/developers-chatgpt-toolbench-plugin.jar" "$@"
+exec java -jar "$progdir/co-developer-gpt-engine.jar" "$@"
