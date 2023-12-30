@@ -72,7 +72,7 @@ done
 It requires a comment `# Plugin Action: ` to be present in each *.sh file that explains the function of the action.
 
 More examples can be found in the
-[.cgptdevbench directory of the project](https://github.com/stoerr/DevelopersChatGPTToolBench/tree/develop/.cgptdevbench) .
+[.cgptdevbench directory of the project](https://github.com/stoerr/CoDeveloperGPTengine/tree/develop/.cgptdevbench) .
 
 ## Usage via docker image
 

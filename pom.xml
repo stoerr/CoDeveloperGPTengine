@@ -16,13 +16,13 @@
         </site>
         <repository>
             <id>github</id>
-            <name>Github Packages for stoerr/DevelopersChatGPTToolBench</name>
-            <url>https://maven.pkg.github.com/stoerr/DevelopersChatGPTToolBench</url>
+            <name>Github Packages for stoerr/CoDeveloperGPTengine</name>
+            <url>https://maven.pkg.github.com/stoerr/CoDeveloperGPTengine</url>
         </repository>
         <snapshotRepository>
             <id>github</id>
-            <name>Github Packages for stoerr/DevelopersChatGPTToolBench</name>
-            <url>https://maven.pkg.github.com/stoerr/DevelopersChatGPTToolBench</url>
+            <name>Github Packages for stoerr/CoDeveloperGPTengine</name>
+            <url>https://maven.pkg.github.com/stoerr/CoDeveloperGPTengine</url>
         </snapshotRepository>
     </distributionManagement>
 

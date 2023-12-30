@@ -5,7 +5,7 @@ it cannot be used to go outside of the directory ("../somefile" won't work) and 
 files starting with a dot or containing /target/ are invisible and not writeable. That prevents directories like .git
 to be touched, and maven target folders are ignored since they tend to contain very much stuff.
 (Compare regex IGNORE_FILES_PATTERN constant in
-[DevToolBench.java](https://github.com/stoerr/DevelopersChatGPTToolBench/blob/develop/src/main/java/net/stoerr/chatgpt/devtoolbench/DevToolBench.java)
+[DevToolBench.java](https://github.com/stoerr/CoDeveloperGPTengine/blob/develop/src/main/java/net/stoerr/chatgpt/devtoolbench/DevToolBench.java)
 ).
 
 You can start it [with or without writing ability](commandline.md) - use the writing features at your own risk.
