@@ -3,6 +3,7 @@ package net.stoerr.chatgpt.codevengine;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
@@ -23,7 +24,7 @@ public class WriteFileActionIT extends AbstractActionIT {
         TbUtils.logInfo("\nWriteFileActionIT.testWriteLargeFile");
         try {
             StringBuilder testinput = new StringBuilder();
-            testinput.append("test input".repeat(3000));
+            testinput.append(StringUtils.repeat("test input", 3000));
             testinput.append("\n");
             String response = checkResponse("/writeFile?path=largefile.txt", "POST", "{\"content\":\"" + testinput + "\"}", 200, null);
             collector.checkThat(response, CoreMatchers.containsString("File completely overwritten"));

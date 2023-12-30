@@ -3,6 +3,7 @@ package net.stoerr.chatgpt.codevengine;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
@@ -24,7 +25,7 @@ public class ExecuteActionIT extends AbstractActionIT {
         TbUtils.logInfo("\nExecuteActionIT.testHelloWorldWithLargeFile");
         String prefix = "Hello World! Your input was: ";
         StringBuilder testinput = new StringBuilder();
-        testinput.append("test input".repeat(500));
+        testinput.append(StringUtils.repeat("test input", 500));
         System.out.println(testinput.length());
         String actualResponse = checkResponse("/executeAction?actionName=helloworld", "POST", "{\"actionInput\":\"" + testinput + "\"}", 200, null);
         collector.checkThat(actualResponse.length(), is(prefix.length() + testinput.length() + 1)); // newliner
@@ -36,11 +37,11 @@ public class ExecuteActionIT extends AbstractActionIT {
         TbUtils.logInfo("\nExecuteActionIT.testHelloWorldWithLargeFileAndCut");
         String prefix = "Hello World! Your input was: ";
         StringBuilder testinput = new StringBuilder();
-        testinput.append("test input".repeat(3000));
+        testinput.append(StringUtils.repeat("test input", 3000));
         System.out.println(testinput.length());
         String actualResponse = checkResponse("/executeAction?actionName=helloworld", "POST", "{\"actionInput\":\"" + testinput + "\"}", 200, null);
         // check that it contains many "test input" and has the limiter and has < 2000 tokens.
-        collector.checkThat(actualResponse.contains("test input".repeat(300)), is(true));
+        collector.checkThat(actualResponse.contains(StringUtils.repeat("test input", 300)), is(true));
         collector.checkThat(actualResponse.replace(testinput, "(THETESTINPUT)"),
                 containsString("middle removed because of length restrictions"));
         EncodingRegistry registry = Encodings.newDefaultEncodingRegistry();
