@@ -1,8 +1,8 @@
-package net.stoerr.chatgpt.devtoolbench;
+package net.stoerr.chatgpt.codevengine;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static net.stoerr.chatgpt.devtoolbench.TbUtils.lineNumberAfter;
-import static net.stoerr.chatgpt.devtoolbench.TbUtils.rangeDescription;
+import static net.stoerr.chatgpt.codevengine.TbUtils.lineNumberAfter;
+import static net.stoerr.chatgpt.codevengine.TbUtils.rangeDescription;
 
 import java.io.BufferedReader;
 import java.io.IOException;

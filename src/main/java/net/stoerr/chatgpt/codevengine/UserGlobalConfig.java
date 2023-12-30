@@ -1,4 +1,4 @@
-package net.stoerr.chatgpt.devtoolbench;
+package net.stoerr.chatgpt.codevengine;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,7 +56,7 @@ public class UserGlobalConfig {
      */
     int externport;
     /**
-     * If given, a secret the GPT has to share to access the devtoolbench as action.
+     * If given, a secret the GPT has to share to access the codevengine as action.
      */
     String gptSecret;
     /**
