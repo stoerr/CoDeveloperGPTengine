@@ -38,7 +38,7 @@ $19/month).
 
 The problem is here that you have to make the toolbench reachable via port 443, and the toolbench cannot be run as root.
 So you probably have to set up a reverse proxy or something like that that forwards the requests to the toolbench.
-Please [contact me](http://www.stoerr.net/contact.html)
+Please [contact me](https://www.stoerr.net/contact.html)
 if you found a solution I could publish here. Also, you have to create a certificate for your hostname.
 If you don't have an easy solution for these topics, you can still use one of the other ways.
 

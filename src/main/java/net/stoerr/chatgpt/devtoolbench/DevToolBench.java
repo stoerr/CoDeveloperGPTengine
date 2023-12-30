@@ -54,7 +54,7 @@ public class DevToolBench {
     /**
      * Exceptions overriding {@link #IGNORE_FILES_PATTERN}.
      */
-    public static final Pattern OVERRIDE_IGNORE_PATTERN = Pattern.compile(".*/.github/.*|.*/.content.xml|\\.chatgpt\\.codeRules\\.md");
+    public static final Pattern OVERRIDE_IGNORE_PATTERN = Pattern.compile(".*/.github/.*|.*/.content.xml|\\.chatgpt\\.codeRules\\.md|\\.htaccess");
 
     // private static final Gson GSON = new Gson();
 
