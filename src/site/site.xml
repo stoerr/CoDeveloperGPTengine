@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/DECORATION/1.6.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/DECORATION/1.6.0 http://maven.apache.org/xsd/decoration-1.6.0.xsd"
-         name="Developers Toolbench ChatGPT Plugin">
+         name="CoDeveloperGPTengine">
     <!-- https://maven.apache.org/doxia/doxia-sitetools/doxia-site-model/site.html -->
 
     <body>
         <links>
             <item name="Hans-Peter Störr" href="http://www.stoerr.net/"/>
-            <item name="On Github" href="https://github.com/stoerr/DevelopersChatGPTToolBench"/>
+            <item name="On Github" href="https://github.com/stoerr/CoDeveloperGPTengine"/>
         </links>
 
         <menu name="Overview">
@@ -40,7 +40,7 @@
     <custom>
         <gitHub>
             <organisation>stoerr</organisation>
-            <repository>DevelopersChatGPTToolBench</repository>
+            <repository>CoDeveloperGPTengine</repository>
         </gitHub>
         <bootstrapSkin>
             <bootswatchStyle>cerulean</bootswatchStyle>
