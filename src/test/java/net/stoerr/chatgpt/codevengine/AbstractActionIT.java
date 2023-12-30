@@ -4,6 +4,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hamcrest.CoreMatchers.nullValue;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -108,11 +109,11 @@ public abstract class AbstractActionIT {
 
     protected void writeActualAndCompareExpected(HttpResponse response, String expectFilename, String result) throws IOException {
         // our IDE adds a \n to each file, which is a often desirable convention
-        result = result.stripTrailing() + "\n";
+        result = result.replaceAll("\\s$", "") + "\n";
 
         Header contentTypeHeader = response.getFirstHeader("Content-Type");
 
-        Files.writeString(Paths.get("target/test-actual/" + Path.of(expectFilename).getFileName()), result, UTF_8);
+        Files.write(Paths.get("target/test-actual/" + expectFilename), result.getBytes(UTF_8));
         String expectedResponse = readFile("/test-expected/" + expectFilename);
         collector.checkThat(expectFilename, result, CoreMatchers.is(expectedResponse));
 
@@ -128,7 +129,8 @@ public abstract class AbstractActionIT {
         } else {
             expectedContentType = "text/plain;charset=utf-8";
         }
-        collector.checkThat(contentTypeHeader != null ? contentTypeHeader.getValue() : null, CoreMatchers.is(expectedContentType));
+        collector.checkThat(contentTypeHeader != null ? contentTypeHeader.getValue() : null,
+                CoreMatchers.is(expectedContentType));
     }
 
     protected String readFile(String filepath) throws IOException {
@@ -137,6 +139,6 @@ public abstract class AbstractActionIT {
         if (!Files.exists(path)) {
             return ""; // make sure the following code runs, so that any files are created
         }
-        return Files.readString(path, UTF_8);
+        return new String(Files.readAllBytes(path), UTF_8);
     }
 }

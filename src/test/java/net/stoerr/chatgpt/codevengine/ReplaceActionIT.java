@@ -15,8 +15,8 @@ public class ReplaceActionIT extends AbstractActionIT {
     public void testReplaceOperation() throws Exception {
         TbUtils.logInfo("\nReplaceActionIT.testReplaceOperation");
         try {
-            String content = Files.readString(Paths.get("src/test/resources/testdir/firstfile.txt"), UTF_8);
-            Files.writeString(Paths.get("src/test/resources/testdir/replace3.txt"), content, UTF_8);
+            String content = new String(Files.readAllBytes(Paths.get("src/test/resources/testdir/firstfile.txt")), UTF_8);
+            Files.write(Paths.get("src/test/resources/testdir/replace3.txt"), content.getBytes( UTF_8));
             String response = checkResponse("/replaceInFile?path=replace3.txt", "POST",
                     "{\"replacements\":[{\"search\":\"test\",\"replace\":\"dingding\"}]}"
                     , 200, null);
@@ -57,8 +57,8 @@ public class ReplaceActionIT extends AbstractActionIT {
     public void testMultipleReplacementsInOneRequest() throws Exception {
         TbUtils.logInfo("\nReplaceActionIT.testMultipleReplacementsInOneRequest");
         try {
-            String content = Files.readString(Paths.get("src/test/resources/testdir/firstfile.txt"), UTF_8);
-            Files.writeString(Paths.get("src/test/resources/testdir/replace4.txt"), content, UTF_8);
+            String content = new String(Files.readAllBytes(Paths.get("src/test/resources/testdir/firstfile.txt")), UTF_8);
+            Files.write(Paths.get("src/test/resources/testdir/replace4.txt"), content.getBytes( UTF_8));
             String response = checkResponse("/replaceInFile?path=replace4.txt", "POST",
                     "{\"replacements\":[{\"search\":\"test\",\"replace\":\"dingding\"}, {\"search\":\"Hello\",\"replace\":\"Hi\"}]}",
                     200, null);

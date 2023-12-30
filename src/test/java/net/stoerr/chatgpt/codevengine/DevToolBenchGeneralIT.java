@@ -37,10 +37,10 @@ public class DevToolBenchGeneralIT extends AbstractActionIT {
         // read target/test-actual/codeveloperengine.yaml and compare to src/test/resources/test-expected/codeveloperengine.yaml
         // and overwrite that file if it is different
         String expected = readFile("/test-expected/codeveloperengine.yaml");
-        String actual = Files.readString(Paths.get("target/test-actual/codeveloperengine.yaml"), UTF_8);
+        String actual = new String(Files.readAllBytes(Paths.get("target/test-actual/codeveloperengine.yaml")), UTF_8);
         collector.checkThat(actual, CoreMatchers.is(expected));
         if (!expected.equals(actual) && actual.contains("requestBody:")) {
-            Files.writeString(Paths.get("src/test/resources/test-expected/codeveloperengine.yaml"), actual, UTF_8);
+            Files.write(Paths.get("src/test/resources/test-expected/codeveloperengine.yaml"), actual.getBytes( UTF_8));
         }
     }
 

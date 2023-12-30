@@ -17,8 +17,8 @@ public class ReplaceRegexActionIT extends AbstractActionIT {
     public void testLiteralReplaceOperation() throws Exception {
         TbUtils.logInfo("\nReplaceRegexActionIT.testLiteralReplaceOperation");
         try {
-            String content = Files.readString(Paths.get("src/test/resources/testdir/firstfile.txt"), UTF_8);
-            Files.writeString(Paths.get("src/test/resources/testdir/replace3.txt"), content, UTF_8);
+            String content = new String(Files.readAllBytes(Paths.get("src/test/resources/testdir/firstfile.txt")), UTF_8);
+            Files.write(Paths.get("src/test/resources/testdir/replace3.txt"), content.getBytes(UTF_8));
             String response = checkResponse("/replaceRegexInFile?path=replace3.txt", "POST",
                     "{\"pattern\":\"test\",\"literalReplacement\":\"dingding\"}"
                     , 200, null);
@@ -35,8 +35,8 @@ public class ReplaceRegexActionIT extends AbstractActionIT {
     public void testLiteralReplaceOperationMulti() throws Exception {
         TbUtils.logInfo("\nReplaceRegexActionIT.testLiteralReplaceOperationMulti");
         try {
-            String content = Files.readString(Paths.get("src/test/resources/testdir/secondfile.md"), UTF_8);
-            Files.writeString(Paths.get("src/test/resources/testdir/replace.txt"), content, UTF_8);
+            String content = new String(Files.readAllBytes(Paths.get("src/test/resources/testdir/secondfile.md")), UTF_8);
+            Files.write(Paths.get("src/test/resources/testdir/replace.txt"), content.getBytes(UTF_8));
             String response = checkResponse("/replaceRegexInFile?path=replace.txt", "POST",
                     "{\"pattern\":\"duck\",\"literalReplacement\":\"goose\",\"multiple\":true}"
                     , 200, null);
@@ -105,8 +105,8 @@ public class ReplaceRegexActionIT extends AbstractActionIT {
     public void testReplacementWithGroupReferencesSuccessful() throws Exception {
         TbUtils.logInfo("\nReplaceRegexActionIT.testReplacementWithGroupReferencesSuccessful");
         try {
-            String content = Files.readString(Paths.get("src/test/resources/testdir/firstfile.txt"), UTF_8);
-            Files.writeString(Paths.get("src/test/resources/testdir/replace4.txt"), content, UTF_8);
+            String content = new String(Files.readAllBytes(Paths.get("src/test/resources/testdir/firstfile.txt")), UTF_8);
+            Files.write(Paths.get("src/test/resources/testdir/replace4.txt"), content.getBytes(UTF_8));
             String response = checkResponse("/replaceRegexInFile?path=replace4.txt", "POST",
                     "{\"pattern\":\"(test)\",\"replacementWithGroupReferences\":\"repl$1\"}"
                     , 200, null);
@@ -123,8 +123,8 @@ public class ReplaceRegexActionIT extends AbstractActionIT {
     public void testReplacementWithGroupReferencesSuccessfulWithMulti() throws Exception {
         TbUtils.logInfo("\nReplaceRegexActionIT.testReplacementWithGroupReferencesSuccessfulWithMulti");
         try {
-            String content = Files.readString(Paths.get("src/test/resources/testdir/secondfile.md"), UTF_8);
-            Files.writeString(Paths.get("src/test/resources/testdir/replace2.txt"), content, UTF_8);
+            String content = new String(Files.readAllBytes(Paths.get("src/test/resources/testdir/secondfile.md")), UTF_8);
+            Files.write(Paths.get("src/test/resources/testdir/replace2.txt"), content.getBytes(UTF_8));
             String response = checkResponse("/replaceRegexInFile?path=replace2.txt", "POST",
                     "{\"pattern\":\"(duck)\",\"replacementWithGroupReferences\":\"goose$1\",\"multiple\":true}"
                     , 200, null);
@@ -139,8 +139,8 @@ public class ReplaceRegexActionIT extends AbstractActionIT {
     public void testLiteralSearchStringReplaceOperation() throws Exception {
         TbUtils.logInfo("\nReplaceRegexActionIT.testLiteralSearchStringReplaceOperation");
         try {
-            String content = Files.readString(Paths.get("src/test/resources/testdir/firstfile.txt"), UTF_8);
-            Files.writeString(Paths.get("src/test/resources/testdir/replaceLiteral.txt"), content, UTF_8);
+            String content = new String(Files.readAllBytes(Paths.get("src/test/resources/testdir/firstfile.txt")), UTF_8);
+            Files.write(Paths.get("src/test/resources/testdir/replaceLiteral.txt"), content.getBytes( UTF_8));
             String response = checkResponse("/replaceRegexInFile?path=replaceLiteral.txt", "POST",
                     "{\"literalSearchString\":\"test\",\"literalReplacement\":\"dingding\"}"
                     , 200, null);
