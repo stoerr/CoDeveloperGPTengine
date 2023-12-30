@@ -4,13 +4,16 @@ These are possible later plans, not urgent.
 
 ## Improvements
 
+- Meta-GPT that answers questions about it?
+- Is it possible to return images?
+
 - ignore stuff in .gitignore?
 - ??? How to be a regular plugin?
 - Compare with Kaguaya
-- Licencse?
+- License?
 - announce somewhere. tinyurl.com/29e7g8co , https://github.com/taishi-i/awesome-ChatGPT-repositories
 - run in docker
-- Extend searh and replace message: if search string can be found with other indentation, report about that inc. the 
+- Extend searh and replace message: if search string can be found with other indentation, report about that inc. the
   indentation.
 
 ## Refactoring
@@ -75,6 +78,67 @@ https://www.chatpc.ai/docs/macos/getting-started/
 
 Perhaps: use ctags somehow: https://aider.chat/docs/ctags.html
 
-=======================
+## Little improvements
 
-https://discord.com/channels/974519864045756446/1070006915414900886/threads/1122836879067332660
+Files not found etc. show up in GPT as an error, and that looks like a bug. Define extra return code / declare that
+in the OpenAPI spec?
+
+Feedback action.
+
+## Related
+
+https://github.com/smol-ai/developer - works on github creating PRs
+
+## Naming
+
+Aspekte: GPT, Co-Developer, Tools, major point: Local files
+portmanteau suggestions related to ChatGPT + Co-Developer
+
+Coding Companion? Co-Developer? Software Sidekick? Coding Sidekick? GPTCoDev? GPTCoDeveloper?
+
+GPTCoDev , GPTCoCoder, GPT CodeSmith
+
+AI LocalDev Tool
+Co-Developer Actions
+GPT Local DevAssistant
+CoDeveloperGPTengine
+GPT DevAction Lab
+GPT CoDeveloper tools
+CoDeveloper GPT tools
+
+https://medium.com/@guandika8/unleashing-chatgpt-plugin-kaguya-the-quantum-leap-in-the-coding-assistant-and-game-changer-weve-2e4fcd08de4d
+
+## Entries wanted for:
+
+https://github.com/taishi-i/awesome-ChatGPT-repositories
+https://github.com/e2b-dev/awesome-ai-agents
+https://github.com/formulahendry/awesome-gpt
+https://github.com/taranjeet/awesome-gpts
+
+## Struktur Eintrag:
+
+Short: Let a GPT collaborate with you as a co-developer on your local files and execute actions on your computer.
+
+Name: CoDeveloperGPTengine
+Make a GPT work together with you on your local files and run actions on your computer. Let ChatGPT explore your code,
+discuss it with you, and assign it flexible tasks: coding, documenting, testing, building and fixing your software,
+or even pair-programming with you!
+
+Details:
+
+- A command line tool that equips your personal OpenAI GPT with actions that operate on local files in the directory
+  where the tool is launched.
+- Capabilities include listing, searching, reading, and modifying textfiles within that directory.
+- Executes configured actions like builds and tests on your computer.
+- Provides examples of how to configure a GPT to use these actions, or allows you to add your own
+  instructions / knowledge.
+- Language-independent - works with any programming language ChatGPT knows.
+- Interactive development assistance: discussion, coding, documentation, testing, and building support, all powered by
+  AI.
+
+Links:
+Weblink: CoDeveloperGPTengine.stoerr.net , https://stoerr.github.io/DevelopersChatGPTToolBench/
+Githublink: https://github.com/stoerr/CoDeveloperGPTengine , https://github.com/stoerr/DevelopersChatGPTToolBench
+, ? Twitter, Linkedin, other
+
+Interactive Development Assistance: Get coding, documentation, testing, and building support from an AI-powered assist

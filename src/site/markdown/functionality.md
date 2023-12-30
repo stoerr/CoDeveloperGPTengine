@@ -4,7 +4,7 @@ The toolbench allows ChatGPT to access the files in the directory it is started 
 it cannot be used to go outside of the directory ("../somefile" won't work) and also
 files starting with a dot or containing /target/ are invisible and not writeable. That prevents directories like .git
 to be touched, and maven target folders are ignored since they tend to contain very much stuff.
-(Compare regex IGNORE constant in
+(Compare regex IGNORE_FILES_PATTERN constant in
 [DevToolBench.java](https://github.com/stoerr/DevelopersChatGPTToolBench/blob/develop/src/main/java/net/stoerr/chatgpt/devtoolbench/DevToolBench.java)
 ).
 
