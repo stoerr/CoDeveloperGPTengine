@@ -1,6 +1,6 @@
-package net.stoerr.chatgpt.devtoolbench;
+package net.stoerr.chatgpt.codevengine;
 
-import static net.stoerr.chatgpt.devtoolbench.TbUtils.addShortContentReport;
+import static net.stoerr.chatgpt.codevengine.TbUtils.addShortContentReport;
 
 import java.io.BufferedReader;
 import java.io.IOException;

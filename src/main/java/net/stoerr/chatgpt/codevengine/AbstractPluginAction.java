@@ -1,8 +1,8 @@
-package net.stoerr.chatgpt.devtoolbench;
+package net.stoerr.chatgpt.codevengine;
 
 import static java.util.stream.Collectors.toList;
-import static net.stoerr.chatgpt.devtoolbench.TbUtils.logBody;
-import static net.stoerr.chatgpt.devtoolbench.TbUtils.logInfo;
+import static net.stoerr.chatgpt.codevengine.TbUtils.logBody;
+import static net.stoerr.chatgpt.codevengine.TbUtils.logInfo;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
