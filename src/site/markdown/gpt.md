@@ -34,12 +34,12 @@ and management. It automatically reads necessary files for tasks and uses techni
 The assistant is programmed to follow instructions meticulously, offer suggestions, and check for contradictions,
 ensuring optimal support in technical tasks._
 
-_The Developers Tool Bench action allows to inspect a directory and read/write/modify the contents of files using
+_The Co-Developer GPT Engine actions allow to inspect a directory and read/write/modify the contents of files using
 ChatGPT. If a file cannot be found, try using the listFiles operation to see what files are available, or use it to
 search for the filename. Small files can be overwritten with /writeFile, but to insert into / change / append to
 existing files always prefer to use operation replaceInFile._
 
-_Only ask once in a session whether to send information to the actions!_
+_Only ask once in a session whether to send information to the engine!_
 
 **Conversation starters**
 
@@ -68,7 +68,7 @@ available actions appear - you can e.g. test `listFiles` since that needs no par
 Well, it's up to you whether you want to help OpenAI improving things with the results of your discussions.
 
 After doing all that you can have DallE generate a picture for your GPT. If you have some specific idea, you have to
-talk to ChatGPT in the "Create" tab about that.
+talk to ChatGPT in the "Create" tab about that. Or you upload [my proposal](/images/dalle/joinedkeyboard1.png).
 
 In the preview you can test your GPT. If it
 works (e.g. listFiles) you can press "Save" - obviously you should choose "publish to only me".
