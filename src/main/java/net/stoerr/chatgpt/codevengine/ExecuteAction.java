@@ -86,7 +86,7 @@ public class ExecuteAction extends AbstractPluginAction {
             String content = StringUtils.defaultString(getBodyParameter(resp, json, "actionInput", false));
             String actionName = getMandatoryQueryParam(req, resp, "actionName");
             RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, content, actionName);
-            Path path = CoDeveloperEngine.currentDir.resolve(".cgptdevbench/" + actionName + ".sh");
+            Path path = CoDeveloperEngine.currentDir.resolve(".cgptcodeveloper/" + actionName + ".sh");
 
             if (!Files.exists(path)) {
                 throw sendError(resp, 400, "Action " + actionName + " not found");
@@ -162,9 +162,9 @@ public class ExecuteAction extends AbstractPluginAction {
     }
 
     public boolean hasActions() {
-        // check whether there are any files that would be returned for CoDeveloperEngine.currentDir.resolve(".cgptdevbench/" + actionName + ".sh")
+        // check whether there are any files that would be returned for CoDeveloperEngine.currentDir.resolve(".cgptcodeveloper/" + actionName + ".sh")
         // check whether there are actually *.sh files there
-        Path dir = CoDeveloperEngine.currentDir.resolve(".cgptdevbench");
+        Path dir = CoDeveloperEngine.currentDir.resolve(".cgptcodeveloper");
         if (!Files.exists(dir)) {
             return false;
         }

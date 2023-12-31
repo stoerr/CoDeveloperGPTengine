@@ -59,7 +59,7 @@ I suggest switching all off.
 Click "Add Action". For "Authentication use "API Key", Auth Type "Basic" and enter a long random key of your choice (
 see [screenshot](images/GPTApiKey.png)).
 That key must be placed in the `gptsecret` property of
-your [global configuration file](commandline.md) `~/.cgptdevbenchglobal/config.properties`. For "Action URL" enter the
+your [global configuration file](commandline.md) `~/.cgptcodeveloperglobal/config.properties`. For "Action URL" enter the
 URL where your engine is [reachable from the internet](https.md) plus `/codeveloperengine.yaml` ,
 e.g. `https://your-desired-domain-prefix.serveo.net/codeveloperengine.yaml`. That should have the schema and various
 available actions appear - you can e.g. test `listFiles` since that needs no parameters.

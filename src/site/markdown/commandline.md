@@ -4,10 +4,10 @@ I assume you have [installed](install.md) the program and created a script `code
 that starts it. With argument -h or --help you get a short help message with the options available.
 
 ```
-version: : CoDeveloperEngine version: 2.0
+version: : CoDeveloperEngine version: 3.0
 usage: options are
     -g,--globalconfigdir {arg}   Directory for global configuration (default:
-                                 ~/.cgptdevbenchglobal/
+                                 ~/.cgptcodeveloperglobal/
     -h,--help                    Display this help message
     -l,--local                   Only use local configuration via options -
                                  ignore any global configuration
@@ -21,14 +21,14 @@ usage: options are
   command, writing and executing actions are disabled by default.
 - `-h`: This option is to display the help message. It'll also be shown when there's an exception in parsing options.
 - `-g`: This option is used to specify the directory path for global configuration. If it's not mentioned, the default
-  directory "~/.cgptdevbenchglobal/" is used.
+  directory "~/.cgptcodeveloperglobal/" is used.
 - `-l`: This option if present, is used to ensure that only command line configuration is used and global configuration
   is ignored.
 
 ## Global configuration file
 
 The global configuration file defines several properties that are important for the communication with ChatGPT.
-Normally it's put into the directory `~/.cgptdevbenchglobal/` and is named `config.properties`, for example:
+Normally it's put into the directory `~/.cgptcodeveloperglobal/` and is named `config.properties`, for example:
 
 ```
 gptsecret=examplesecret
@@ -54,7 +54,7 @@ there can also be the following properties:
 
 ## Local configuration directory
 
-If you have a directory named .cgptdevbench/ in the directory where you start the program, a log file `.requestlog.txt`
+If you have a directory named .cgptcodeveloper/ in the directory where you start the program, a log file `.requestlog.txt`
 will be put there with the requests and responses to ChatGPT. This is useful for debugging or just to see what's going
 on.
 
@@ -63,7 +63,7 @@ also put a file listActions.sh there that lists the available actions:
 
 ```bash
 # Plugin Action: list all available actions
-cd .cgptdevbench || exit 1
+cd .cgptcodeveloper || exit 1
 for fil in *.sh; do
 echo "${fil%.sh} :  " $(egrep -o "Plugin Action: .*" "$fil" | sed -e 's/Plugin Action: //')
 done
@@ -72,7 +72,7 @@ done
 It requires a comment `# Plugin Action: ` to be present in each *.sh file that explains the function of the action.
 
 More examples can be found in the
-[.cgptdevbench directory of the project](https://github.com/stoerr/CoDeveloperGPTengine/tree/develop/.cgptdevbench) .
+[.cgptcodeveloper directory of the project](https://github.com/stoerr/CoDeveloperGPTengine/tree/develop/.cgptcodeveloper) .
 
 ## Usage via docker image
 

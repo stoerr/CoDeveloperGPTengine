@@ -12,7 +12,7 @@ You can start it [with or without writing ability](commandline.md) - use the wri
 There will likely be problems with large files. An approach that is nicely working for me is to have ChatGPT write
 things, but frequently make a git commit to easily inspect changes and be able to revert.
 
-If there is a file named .cgptdevbench/.requestlog.txt the requests are logged into that, to see what ChatGPT did.
+If there is a file named .cgptcodeveloper/.requestlog.txt the requests are logged into that, to see what ChatGPT did.
 
 ## Operations of the plugin / GPT
 
@@ -35,8 +35,8 @@ Here are some examples of how to use the `Co-Developer GPT Engine`:
   operation. In ChatGPT, you would ask the AI to execute a specific action, and it would send a request to the plugin to
   perform this operation. The shell script should be located at `.cgptfmgr/{actionName}.sh`, where `{actionName}` is a
   parameter provided in the query string. The content is passed as standard input to the shell script. Some examples
-  are in [.cgptdevbench/](.cgptdevbench/) and
-  [src/test/resources/testdir/.cgptdevbench](src/test/resources/testdir/.cgptdevbench) .
+  are in [.cgptcodeveloper/](.cgptcodeveloper/) and
+  [src/test/resources/testdir/.cgptcodeveloper](src/test/resources/testdir/.cgptcodeveloper) .
 
 - **Fetch the text content of an URL**: gives ChatGPT simple web access: this can perform a GET request and returns
   the text content of the URL (not the HTML) to ChatGPT.
