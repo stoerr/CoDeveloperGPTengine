@@ -1,9 +1,9 @@
 {
   "schema_version": "v1",
-  "name_for_human": "Developers Tool Bench",
-  "name_for_model": "DevToolBench",
+  "name_for_human": "Co-Developer Engine",
+  "name_for_model": "CoDeveloperEngine",
   "description_for_human": "Manage current directory and its files.",
-  "description_for_model": "Developers Tool Bench allows to inspect a directory and read/write/modify the contents of files using ChatGPT. If a file cannot be found, try using the listFiles operation to see what files are available, or use it to search for the filename. Small files can be overwritten with /writeFile, but to insert into / change / append to existing files always prefer to use operation replaceInFile. (By the way, if you receive an `ApiSyntaxError: Could not parse API call kwargs as JSON: exception=Unterminated string ...` then that usually means that the request was too long. If that happens in a writeFile operation you could use replaceInFile instead to add / change file parts. Similarily, if you receive such an ApiSyntaxError but with `Expecting ',' delimiter`, that often means you tried to concatenate strings with + in the API call, which is not supported - just use a long string.)",
+  "description_for_model": "Co-Developer engine allows to inspect a directory and read/write/modify the contents of files using ChatGPT. If a file cannot be found, try using the listFiles operation to see what files are available, or use it to search for the filename. Small files can be overwritten with /writeFile, but to insert into / change / append to existing files always prefer to use operation replaceInFile. (By the way, if you receive an `ApiSyntaxError: Could not parse API call kwargs as JSON: exception=Unterminated string ...` then that usually means that the request was too long. If that happens in a writeFile operation you could use replaceInFile instead to add / change file parts. Similarily, if you receive such an ApiSyntaxError but with `Expecting ',' delimiter`, that often means you tried to concatenate strings with + in the API call, which is not supported - just use a long string.)",
   "auth": {
        "type": "service_http",
        "authorization_type": "bearer",
@@ -13,7 +13,7 @@
    },
   "api": {
     "type": "openapi",
-    "url": "THEURL/devtoolbench.yaml"
+    "url": "THEURL/codeveloperengine.yaml"
   },
   "logo_url": "THEURL/icon.png",
   "contact_email": "hans-peter+publicsoftware@stoerr.net",

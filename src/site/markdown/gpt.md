@@ -1,12 +1,12 @@
-# Creating a GPT with the Developers ChatGPT ToolBench as action
+# Creating a GPT with the Co-Developer GPT Engine as action
 
-You have to create a [GPT](https://openai.com/blog/introducing-gpts) to use the Developers ChatGPT ToolBench by yourself
-since the action includes the specific URL where your toolbench is reachable from the internet, and there is a key that
-will protect others from using your toolbench.
+You have to create a [GPT](https://openai.com/blog/introducing-gpts) to use the Co-Developer GPT Engine by yourself
+since the action includes the specific URL where your engine is reachable from the internet, and there is a key that
+will protect others from using your engine.
 
 ## Setting up the GPT
 
-Start the toolbench in some directory.
+Start the engine in some directory.
 Open the [Explore](https://chat.openai.com/gpts/discovery) page in ChatGPT and click "Create a GPT". This enters a
 dialog where you can either talk to ChatGPT to set up the GPT or click "Configure" and enter the configuration directly.
 For a starter I suggest this, but of course you can and should play around:
@@ -20,16 +20,16 @@ For a starter I suggest this, but of course you can and should play around:
     </a>
 </div>
 
-**Name:** _Developers Toolbench_
+**Name:** _Co-Developer_
 
 **Description:** _Assistant for professional software developers that is able to read and modify your files and perform
 tasks._
 
 **Instructions:**
 
-_'Developers Toolbench' is a straightforward and efficient aid for software developers working on
+_'Co-Developer' is a straightforward and efficient aid for software developers working on
 programming projects. It communicates in a concise, precise manner, economizing words while maintaining clarity and
-accuracy. This GPT specializes in using the Developers Toolbench Plugin action for tasks like file inspection, editing,
+accuracy. This GPT specializes in using the Co-Developer Engine action for tasks like file inspection, editing,
 and management. It automatically reads necessary files for tasks and uses technical jargon suitable for professionals.
 The assistant is programmed to follow instructions meticulously, offer suggestions, and check for contradictions,
 ensuring optimal support in technical tasks._
@@ -43,7 +43,7 @@ _Only ask once in a session whether to send information to the actions!_
 
 **Conversation starters**
 
-- _What can the Developers Toolbench do?_
+- _What can the Co-Developer do?_
 - *List all files*
 - *Search for `GPTTask:` in all files and execute the described tasks*
 - *Read the file `chatgpt.codeRules.md` and observe the contained rules during the whole session*
@@ -60,8 +60,8 @@ Click "Add Action". For "Authentication use "API Key", Auth Type "Basic" and ent
 see [screenshot](images/GPTApiKey.png)).
 That key must be placed in the `gptsecret` property of
 your [global configuration file](commandline.md) `~/.cgptdevbenchglobal/config.properties`. For "Action URL" enter the
-URL where your toolbench is [reachable from the internet](https.md) plus `/devtoolbench.yaml` ,
-e.g. `https://your-desired-domain-prefix.serveo.net/devtoolbench.yaml`. That should have the schema and various
+URL where your engine is [reachable from the internet](https.md) plus `/codeveloperengine.yaml` ,
+e.g. `https://your-desired-domain-prefix.serveo.net/codeveloperengine.yaml`. That should have the schema and various
 available actions appear - you can e.g. test `listFiles` since that needs no parameters.
 
 **Additional Settings**

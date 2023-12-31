@@ -1,4 +1,4 @@
-package net.stoerr.chatgpt.devtoolbench;
+package net.stoerr.chatgpt.codevengine;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,7 +56,7 @@ public class UserGlobalConfig {
      */
     int externport;
     /**
-     * If given, a secret the GPT has to share to access the devtoolbench as action.
+     * If given, a secret the GPT has to share to access the codevengine as action.
      */
     String gptSecret;
     /**
@@ -146,7 +146,7 @@ public class UserGlobalConfig {
             }
 
             String secret = request.getHeader("Authorization");
-            boolean isPublicRequest = DevToolBench.UNPROTECTED_PATHS.contains(request.getRequestURI());
+            boolean isPublicRequest = CoDeveloperEngine.UNPROTECTED_PATHS.contains(request.getRequestURI());
             if (!requestislocal && !isPublicRequest && (secret == null || !secret.contains(gptSecret))) {
                 TbUtils.logError("service access token missing. Request was " + request.getRequestURI() + " from " + request.getRemoteAddr() + " - wrong Authorization header " + secret);
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

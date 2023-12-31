@@ -1,4 +1,4 @@
-package net.stoerr.chatgpt.devtoolbench;
+package net.stoerr.chatgpt.codevengine;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,13 +42,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class DevToolBench {
+public class CoDeveloperEngine {
 
     public static final String PATH_AI_PLUGIN_JSON = "/.well-known/ai-plugin.json";
-    public static final String PATH_SPEC = "/devtoolbench.yaml";
+    public static final String PATH_SPEC = "/codeveloperengine.yaml";
     public static final List<String> UNPROTECTED_PATHS = Arrays.asList(PATH_AI_PLUGIN_JSON, PATH_SPEC, "/favicon.ico");
 
-    /** Files that are inaccessible to the toolbench. */
+    /** Files that are inaccessible to the program. */
     public static final Pattern IGNORE_FILES_PATTERN = Pattern.compile(".*/[.].*|.*/target/.*|.*/(Hpsx|hpsx).*|.*/node_modules/.*");
 
     /**
@@ -67,7 +67,7 @@ public class DevToolBench {
     private static final String OPENAPI_DESCR_START = "# THESPECURL\n\n" +
             "openapi: 3.0.1\n" +
             "info:\n" +
-            "  title: Developers ToolBench ChatGPT Plugin\n" +
+            "  title: Co-Developer GPT Engine\n" +
             "  version: THEVERSION\n" +
             "servers:\n" +
             "  - url: THEURL\n" +
@@ -140,7 +140,7 @@ public class DevToolBench {
     protected static void initServlets() {
         ResourceHandler resourceHandler = new ResourceHandler();
         context.insertHandler(resourceHandler);
-        Resource baseResource = Resource.newResource(DevToolBench.class.getResource("/static"));
+        Resource baseResource = Resource.newResource(CoDeveloperEngine.class.getResource("/static"));
         resourceHandler.setBaseResource(baseResource);
 
         addHandler(new ListFilesAction());
@@ -162,7 +162,7 @@ public class DevToolBench {
             protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
                 resp.setContentType("application/json");
                 resp.setCharacterEncoding("UTF-8");
-                try (InputStream in = DevToolBench.class.getResourceAsStream("/ai-plugin.json")) {
+                try (InputStream in = CoDeveloperEngine.class.getResourceAsStream("/ai-plugin.json")) {
                     String json = new String(IOUtils.toByteArray(in), StandardCharsets.UTF_8)
                             .replace("THEURL", getMainUrl(req))
                             .replace("THEOPENAITOKEN", userconfig.getOpenaiToken())
