@@ -1,4 +1,4 @@
-# Developers ChatGPT ToolBench
+# Co-Developer GPT engine
 
 ## Introduction
 
@@ -26,7 +26,7 @@ See the respective documentation for details.
 
 ## Functionality
 
-The `Developers ChatGPT ToolBench` provides ChatGPT with read and optionally write access to the directory in which it
+The `Co-Developer GPT engine` provides ChatGPT with read and optionally write access to the directory in which it
 is started. It provides ChatGPT with several operations that it can use on the files in that directory, including:
 
 - Listing the files in a directory
@@ -40,7 +40,7 @@ More details about the functionality are [here](functionality.md).
 
 ## Preconditions
 
-To use the `Developers ChatGPT ToolBench`, you need a [ChatGPT Plus](https://openai.com/blog/chatgpt-plus) account,
+To use the `Co-Developer GPT engine`, you need a [ChatGPT Plus](https://openai.com/blog/chatgpt-plus) account,
 since only then OpenAI will let you use plugins / GPTs.
 The program is an executable Java JAR, so you need a Java runtime environment (JRE) of at least version 11 to run it.
 Also, you will have to make it reachable from OpenAI's servers via https -

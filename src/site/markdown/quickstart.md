@@ -27,11 +27,11 @@ where you replace somewildpassword with a long password of your choice. It'll be
 exec ssh -T -R yourtoolbenchdomain.serveo.net:80:localhost:3002 serveo.net
 ```
 
-where you replace yourtoolbenchdomain with a prefix of your choice. It'll be used to access the toolbench from ChatGPT.
+where you replace yourtoolbenchdomain with a prefix of your choice. It'll be used to access the engine from ChatGPT.
 
 5. Start `developersToolbenchPlugin` in a directory you want to access with ChatGPT. It will start a webserver on
    port 3002 and a tunnel to it via serveo.net. You can check whether it works by calling https://yourtoolbenchdomain.serveo.net/
    in a browser.
 6. Create a GPT according to the [documentation](gpt.md).
 
-Now you can use the toolbench from ChatGPT and enjoy exploring the capabilities of your assistant. :-)
+Now you can use the engine from ChatGPT and enjoy exploring the capabilities of your assistant. :-)

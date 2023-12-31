@@ -38,7 +38,7 @@ openaitoken=exampletoken
 where:
 
 * `gptsecret` A secret that is configured in both the GPT and locally to make sure only your own GPT can access the
-  toolbench.
+  program.
 * `openaitoken` A token OpenAI privides after entering the gptSecret when deploying as a plugin - used to identify
   OpenAI to the plugin. (Not needed for GPTs.)
 
@@ -76,7 +76,7 @@ More examples can be found in the
 
 ## Usage via docker image
 
-If you want to make extra sure that the toolbench cannot access anything outside of the current directory and
+If you want to make extra sure that the program cannot access anything outside of the current directory and
 cannot access anything on your local machine and want to try dangerous things like executing actions that immediately
 run ChatGPT generated code , you can also use it from the docker image 
 [stoerr/co-developer-gpt-engine](https://hub.docker.com/repository/docker/stoerr/co-developer-gpt-engine).

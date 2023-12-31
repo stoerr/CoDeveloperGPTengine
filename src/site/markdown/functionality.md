@@ -1,6 +1,6 @@
 # Functionality: Operations of the GPT actions / plugin
 
-The toolbench allows ChatGPT to access the files in the directory it is started in -
+The program allows ChatGPT to access the files in the directory it is started in -
 it cannot be used to go outside of the directory ("../somefile" won't work) and also
 files starting with a dot or containing /target/ are invisible and not writeable. That prevents directories like .git
 to be touched, and maven target folders are ignored since they tend to contain very much stuff.
@@ -16,7 +16,7 @@ If there is a file named .cgptdevbench/.requestlog.txt the requests are logged i
 
 ## Operations of the plugin / GPT
 
-Here are some examples of how to use the `Developers ChatGPT ToolBench`:
+Here are some examples of how to use the `Co-Developer GPT engine`:
 
 - **List Files**: To list the files in the current directory, you can use the `listFiles` operation. In ChatGPT, you
   would ask the AI to list the files in the directory, and it would send a request to the plugin to perform this
@@ -41,5 +41,5 @@ Here are some examples of how to use the `Developers ChatGPT ToolBench`:
 - **Fetch the text content of an URL**: gives ChatGPT simple web access: this can perform a GET request and returns
   the text content of the URL (not the HTML) to ChatGPT.
 
-Remember, the `Developers ChatGPT ToolBench` operates on the directory where it was started,
+Remember, the `Co-Developer GPT engine` operates on the directory where it was started,
 so be careful to start it in a directory that contains the files you want to access.
