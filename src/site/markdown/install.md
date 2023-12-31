@@ -11,7 +11,7 @@ You will find the latest release on it's
 [release page on Github](https://github.com/stoerr/CoDeveloperGPTengine/releases) -
 the release description contains a link to the executable jar file.
 For starting it could the script
-[bin/developersToolbenchPlugin](https://github.com/stoerr/CoDeveloperGPTengine/blob/develop/bin/developersToolbenchPlugin)
+[bin/codeveloperengine](https://github.com/stoerr/CoDeveloperGPTengine/blob/develop/bin/codeveloperengine)
 as an example how to run that downloaded jar.
 It needs to be run in the directory you want to access, so you might want to put that into your `PATH`.
 
@@ -19,5 +19,5 @@ It needs to be run in the directory you want to access, so you might want to put
 
 As an alternative to downloading it, you can check out
 [the source](https://github.com/stoerr/CoDeveloperGPTengine)
-and build the program with `bin/developersToolbenchPlugin-buildStable` in that directory
-and run it with `bin/developersToolbenchPlugin` from the directory you want to access with ChatGPT.
+and build the program with `bin/codeveloperengine-buildStable` in that directory
+and run it with `bin/codeveloperengine` from the directory you want to access with ChatGPT.

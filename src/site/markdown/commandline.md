@@ -1,6 +1,6 @@
 # Command line and configuration
 
-I assume you have [installed](install.md) the program and created a script `developersToolbenchPlugin` in your path
+I assume you have [installed](install.md) the program and created a script `codeveloperengine` in your path
 that starts it. With argument -h or --help you get a short help message with the options available.
 
 ```
