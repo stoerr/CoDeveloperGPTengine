@@ -29,9 +29,9 @@ import jakarta.servlet.http.HttpServletResponse;
 public class UserGlobalConfig {
 
     /**
-     * The users global configuration directory at ~/.cgptdevbenchglobal .
+     * The users global configuration directory at ~/.cgptcodeveloperglobal .
      */
-    Path configDir = Paths.get(System.getProperty("user.home"), ".cgptdevbenchglobal");
+    Path configDir = Paths.get(System.getProperty("user.home"), ".cgptcodeveloperglobal");
     Path configFile = configDir.resolve("https.properties");
 
     /**
@@ -73,7 +73,7 @@ public class UserGlobalConfig {
      */
     public boolean readAndCheckConfiguration(@Nullable String globalConfigDir) throws IOException {
         configDir = globalConfigDir != null ? Paths.get(globalConfigDir) :
-                Paths.get(System.getProperty("user.home"), ".cgptdevbenchglobal");
+                Paths.get(System.getProperty("user.home"), ".cgptcodeveloperglobal");
         configFile = configDir.resolve("config.properties");
         if (!configFile.toFile().exists()) {
             TbUtils.logError("Could not find global configuration file " + configFile + " - https disabled.");

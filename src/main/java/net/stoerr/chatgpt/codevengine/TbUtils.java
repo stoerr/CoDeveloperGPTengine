@@ -23,14 +23,14 @@ import jakarta.servlet.http.HttpServletResponse;
  * Catch-all class for various utilities not related to a class.
  */
 public class TbUtils {
-    static final Path requestLog = CoDeveloperEngine.currentDir.resolve(".cgptdevbench/.requestlog.txt");
+    static final Path requestLog = CoDeveloperEngine.currentDir.resolve(".cgptcodeveloper/.requestlog.txt");
     public static final PrintStream ERRLOG = System.err;
     public static final PrintStream LOG = System.out;
 
     static boolean isLoggingEnabled = true;
 
     /**
-     * If there is a file named .cgptdevbench/.requestlog.txt, we append the request data to it.
+     * If there is a file named .cgptcodeveloper/.requestlog.txt, we append the request data to it.
      */
     protected static void logRequest(HttpServletRequest request) {
         if (isLoggingEnabled && Files.exists(requestLog)) {
@@ -83,9 +83,9 @@ public class TbUtils {
             InputStream gitPropertiesStream = CoDeveloperEngine.class.getResourceAsStream("/git.properties");
             if (gitPropertiesStream != null) {
                 properties.load(gitPropertiesStream);
-                String versionInfo = "CoDeveloperEngine version: " + properties.getProperty("git.build.version") +
+                String versionInfo = "CoDeveloperEngine version" + properties.getProperty("git.build.version") +
                         properties.getProperty("git.commit.id.describe") + " from " + properties.getProperty("git.build.time");
-                logBody("\n\nversion: ", versionInfo);
+                logBody("\n\nversion", versionInfo);
             }
         } catch (IOException e) {
             logError("Version: unknown");

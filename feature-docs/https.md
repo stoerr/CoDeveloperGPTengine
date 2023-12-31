@@ -14,7 +14,7 @@ accessible from the public internet or that there is port forwarding through a r
 reverse proxy or a firewhal etc.  In any case, the plugin is accessible from the public internet.
 
 Since the plugin is running on the local machine in various directories, yet the https configuration is specific to 
-the whole machine, we store the certificates and configuration in a directory ~/.cgptdevbenchglobal/https/ .
+the whole machine, we store the certificates and configuration in a directory ~/.cgptcodeveloperglobal/https/ .
 
 [HTTP-01](https://letsencrypt.org/docs/challenge-types/) challenge needs putting the challenge to
 http://<YOUR_DOMAIN>/.well-known/acme-challenge/<TOKEN>
@@ -34,13 +34,13 @@ certbot certonly --standalone --preferred-challenges http --http-01-port CERTBOT
 
 The certificates are stored in ~/.letsencrypt/certbot/config/live/YOURDOMAIN/ .
 
-For Jetty we need a keystore. This requires a password being in ~/.cgptdevbenchglobal/https/keystore.p12.password .
+For Jetty we need a keystore. This requires a password being in ~/.cgptcodeveloperglobal/https/keystore.p12.password .
 
 openssl pkcs12 -export -in ~/.letsencrypt/certbot/config/live/stoerr.freeddns.org/fullchain.pem \
     -inkey ~/.letsencrypt/certbot/config/live/stoerr.freeddns.org/privkey.pem \
-    -out ~/.cgptdevbenchglobal/https/keystore.p12 -name jetty \
+    -out ~/.cgptcodeveloperglobal/https/keystore.p12 -name jetty \
     -CAfile ~/.letsencrypt/certbot/config/live/stoerr.freeddns.org/chain.pem -caname root \
-    -password file:$HOME/.cgptdevbenchglobal/https/keystore.p12.password
+    -password file:$HOME/.cgptcodeveloperglobal/https/keystore.p12.password
 
 ## Security of the plugin
 
@@ -49,7 +49,7 @@ Since the plugin is now accessed from the internet, we need some kind of authent
 ## Extending the plugin for SSL
 
 We need a common storage place for the configuration that is accessible from all the directories where the plugin is 
-run - ~/.cgptdevbenchglobal/ . We read a https.properties from there that contains the following properties:
+run - ~/.cgptcodeveloperglobal/ . We read a https.properties from there that contains the following properties:
 httpsport=3003
 keystorepath=keystore.p12
 keystorepasswordpath=keystore.p12.password

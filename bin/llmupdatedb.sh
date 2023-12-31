@@ -8,7 +8,7 @@ fi
 progdir=$(dirname "$progfile")/..
 cd $progdir
 
-llm embed-multi til -d .cgptdevbench/llmsearch.db -m minilm --store --files . '*.md'
-llm embed-multi til -d .cgptdevbench/llmsearch.db -m minilm --store --files . 'documentation/**/*.md'
-llm embed-multi til -d .cgptdevbench/llmsearch.db -m minilm --store --files . 'src/*.java'
-llm embed-multi til -d .cgptdevbench/llmsearch.db -m minilm --store --files . 'src/*.json'
+llm embed-multi til -d .cgptcodeveloper/llmsearch.db -m minilm --store --files . '*.md'
+llm embed-multi til -d .cgptcodeveloper/llmsearch.db -m minilm --store --files . 'documentation/**/*.md'
+llm embed-multi til -d .cgptcodeveloper/llmsearch.db -m minilm --store --files . 'src/*.java'
+llm embed-multi til -d .cgptcodeveloper/llmsearch.db -m minilm --store --files . 'src/*.json'

@@ -256,7 +256,7 @@ public class CoDeveloperEngine {
         options.addOption("p", "port", true, "Port number, default 3002");
         options.addOption("w", "write", false, "Permit file writes and action executions");
         options.addOption("h", "help", false, "Display this help message");
-        options.addOption("g", "globalconfigdir", true, "Directory for global configuration (default: ~/.cgptdevbenchglobal/");
+        options.addOption("g", "globalconfigdir", true, "Directory for global configuration (default: ~/.cgptcodeveloperglobal/");
         options.addOption("l", "local", false, "Only use local configuration via options - ignore any global configuration");
 
         CommandLineParser parser = new DefaultParser();

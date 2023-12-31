@@ -12,7 +12,7 @@ You need a paid ChatGPT account.
    [here](https://github.com/stoerr/CoDeveloperGPTengine/blob/develop/bin/codeveloperengine) and make it
    executable. Symlink it into a directory in your `PATH`. Alternatively, you can put both files into a directory in
    your `PATH`.
-3. Create a directory `$HOME/.cgptdevbenchglobal/` and a file config.properties in there with a content
+3. Create a directory `$HOME/.cgptcodeveloperglobal/` and a file config.properties in there with a content
 
 ```
 gptsecret=somewildpassword
@@ -20,7 +20,7 @@ gptsecret=somewildpassword
 
 where you replace somewildpassword with a long password of your choice. It'll be used to authenticate the GPT requests.
 
-4. Create an executable file `$HOME/.cgptdevbenchglobal/tunnel.sh` with the content
+4. Create an executable file `$HOME/.cgptcodeveloperglobal/tunnel.sh` with the content
 
 ```bash
 #!/bin/bash

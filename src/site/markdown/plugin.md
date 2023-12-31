@@ -15,7 +15,7 @@ internet.
 
 Once you've added the plugin, you can test it in the ChatGPT interface. Try asking the AI to
 list the files in the directory, read a specific file, write to a file, or execute a specific action after
-setting up some actions in a .cgptdevbench directory in the directory you're running it. If everything
+setting up some actions in a .cgptcodeveloper directory in the directory you're running it. If everything
 is set up correctly, the AI should be able to perform these operations using the plugin.
 
 ## Run it locally as a plugin developer
