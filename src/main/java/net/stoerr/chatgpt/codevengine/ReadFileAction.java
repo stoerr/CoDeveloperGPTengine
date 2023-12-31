@@ -107,7 +107,7 @@ public class ReadFileAction extends AbstractPluginAction {
             }
             if (maxLines != Integer.MAX_VALUE || startLine != 1 || dropped != 0) {
                 content = "Lines " + startLine + " to " + (startLine + lines.size() - 1) + " of " + fulllinecount +
-                        " lines of file " + DevToolBench.currentDir.relativize(path) + " start now. To read the other lines use parameters startLine and maxLines.\n\n" + content;
+                        " lines of file " + CoDeveloperEngine.currentDir.relativize(path) + " start now. To read the other lines use parameters startLine and maxLines.\n\n" + content;
             }
             byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
             resp.setContentLength(bytes.length);

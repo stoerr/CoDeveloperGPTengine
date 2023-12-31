@@ -1,4 +1,4 @@
-# Local installation of the Co-Developer GPT engine
+# Local installation of the Co-Developer GPT Engine
 
 You can either grab a release from Github or build the tool locally. In addition to that you will have to register it
 with ChatGPT - either [as a ChatGPT plugin](plugin.md) or [as a GPT](gpt.md).

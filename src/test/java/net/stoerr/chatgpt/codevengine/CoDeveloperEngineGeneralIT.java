@@ -9,11 +9,11 @@ import java.nio.file.Paths;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
-public class DevToolBenchGeneralIT extends AbstractActionIT {
+public class CoDeveloperEngineGeneralIT extends AbstractActionIT {
 
     @Test
     public void testRoot() throws IOException {
-        TbUtils.logInfo("\nDevToolBenchGeneralIT.testRoot");
+        TbUtils.logInfo("\nCoDeveloperEngineGeneralIT.testRoot");
         String response = checkResponse("/", "GET", null, 200, null);
         String expected = readFile("/../../../src/main/resources/static/index.html");
         collector.checkThat(response, CoreMatchers.is(expected));
@@ -21,7 +21,7 @@ public class DevToolBenchGeneralIT extends AbstractActionIT {
 
     @Test
     public void testAiPluginJson() throws IOException {
-        TbUtils.logInfo("\nDevToolBenchGeneralIT.testAiPluginJson");
+        TbUtils.logInfo("\nCoDeveloperEngineGeneralIT.testAiPluginJson");
         String response = checkResponse("/.well-known/ai-plugin.json", "GET", null, 200, null);
         String expected = readFile("/../../../src/main/resources/ai-plugin.json")
                 .replace("THEURL", "http://localhost:7364")
@@ -31,8 +31,8 @@ public class DevToolBenchGeneralIT extends AbstractActionIT {
     }
 
     @Test
-    public void testDevToolBenchYaml() throws IOException {
-        TbUtils.logInfo("\nDevToolBenchGeneralIT.testDevToolBenchYaml");
+    public void testCoDeveloperEngineYaml() throws IOException {
+        TbUtils.logInfo("\nCoDeveloperEngineGeneralIT.testCoDeveloperEngineYaml");
         checkResponse("/codeveloperengine.yaml", "GET", null, 200, "codeveloperengine.yaml");
         // read target/test-actual/codeveloperengine.yaml and compare to src/test/resources/test-expected/codeveloperengine.yaml
         // and overwrite that file if it is different
@@ -46,7 +46,7 @@ public class DevToolBenchGeneralIT extends AbstractActionIT {
 
     @Test
     public void testUnknownRequest() throws Exception {
-        TbUtils.logInfo("\nDevToolBenchGeneralIT.testUnknownRequest");
+        TbUtils.logInfo("\nCoDeveloperEngineGeneralIT.testUnknownRequest");
         String response = checkResponse("/nothing", "GET", null, 404, null);
         collector.checkThat(response, CoreMatchers.containsString("Error 404 Not Found"));
     }

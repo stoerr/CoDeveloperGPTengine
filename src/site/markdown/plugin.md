@@ -1,4 +1,4 @@
-# Running the ToolBench as a plugin
+# Running the engine as a plugin
 
 You might want to prefer the [GPT approach](gpt.md) to run the engine since
 [ChatGPT Plugins](https://openai.com/blog/chatgpt-plugins) seem to be deprecated by OpenAI -

@@ -4,7 +4,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hamcrest.CoreMatchers.nullValue;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,17 +35,17 @@ public abstract class AbstractActionIT {
     public static void setUpClass() throws Exception {
         TbUtils.isLoggingEnabled = false;
         Files.createDirectories(Paths.get("target/test-actual"));
-        DevToolBench.currentDir = Paths.get(".").resolve("src/test/resources/testdir").normalize()
+        CoDeveloperEngine.currentDir = Paths.get(".").resolve("src/test/resources/testdir").normalize()
                 .toAbsolutePath();
-        DevToolBench.ignoreGlobalConfig = true;
-        DevToolBench.main(new String[]{"-p", String.valueOf(port), "-w"});
+        CoDeveloperEngine.ignoreGlobalConfig = true;
+        CoDeveloperEngine.main(new String[]{"-p", String.valueOf(port), "-w"});
         Thread.sleep(20);
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
         Thread.sleep(10);
-        DevToolBench.stop();
+        CoDeveloperEngine.stop();
         Thread.sleep(200);
     }
 

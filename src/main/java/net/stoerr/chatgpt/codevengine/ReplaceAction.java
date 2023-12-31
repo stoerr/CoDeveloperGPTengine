@@ -138,7 +138,7 @@ public class ReplaceAction extends AbstractPluginAction {
             resp.getWriter().write(totalReplacementCount + " replacement; modified line(s) "
                     + String.join(", ", modifiedLineDescr));
         } catch (NoSuchFileException e) {
-            throw sendError(resp, 404, "File not found: " + DevToolBench.currentDir.relativize(path));
+            throw sendError(resp, 404, "File not found: " + CoDeveloperEngine.currentDir.relativize(path));
         } catch (IOException e) {
             throw sendError(resp, 500, "Error reading or writing file : " + e);
         } catch (IllegalArgumentException e) {
