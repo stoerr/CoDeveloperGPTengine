@@ -48,15 +48,17 @@ public class TbUtils {
     }
 
     protected static void logBody(String parameterName, String parameterValue) {
-        if (isLoggingEnabled && Files.exists(requestLog)) {
+        if (isLoggingEnabled) {
             if (parameterValue != null && parameterValue.length() > 400) {
                 parameterValue = parameterValue.substring(0, 200) + "\n... (part omitted)\n" + parameterValue.substring(parameterValue.length() - 200);
             }
-            try {
-                Files.write(requestLog, (parameterName + ": " + parameterValue + "\n").getBytes(), StandardOpenOption.APPEND);
-                logInfo(parameterName + ": " + parameterValue + "\n");
-            } catch (IOException e) { // not critical but strange - we'd want to know.
-                logError("Could not write to request log " + requestLog + ": " + e);
+            logInfo(parameterName + ": " + parameterValue + "\n");
+            if (Files.exists(requestLog)) {
+                try {
+                    Files.write(requestLog, (parameterName + ": " + parameterValue + "\n").getBytes(), StandardOpenOption.APPEND);
+                } catch (IOException e) { // not critical but strange - we'd want to know.
+                    logError("Could not write to request log " + requestLog + ": " + e);
+                }
             }
         }
     }

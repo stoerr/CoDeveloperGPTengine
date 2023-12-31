@@ -7,10 +7,10 @@ that starts it. With argument -h or --help you get a short help message with the
 version: : CoDeveloperEngine version: 2.0
 usage: options are
     -g,--globalconfigdir {arg}   Directory for global configuration (default:
-    ~/.cgptdevbenchglobal/
+                                 ~/.cgptdevbenchglobal/
     -h,--help                    Display this help message
     -l,--local                   Only use local configuration via options -
-    ignore any global configuration
+                                 ignore any global configuration
     -p,--port {arg}              Port number
     -w,--write                   Permit file writes and action executions
 ```

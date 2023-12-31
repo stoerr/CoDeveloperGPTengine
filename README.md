@@ -1,6 +1,7 @@
 # CoDeveloperGPTengine
 
-Would you like to have ChatGPT list, search, read and modify your local files and have it execute (e.g. build and test)
+Would you like to have ChatGPT list, search, read your local files, discuss them with you, modify them 
+and have it execute (e.g. build and test)
 actions locally to support you in your development processes? Then this might be for you. The CoDeveloperGPTengine
 provide the actions for a OpenAI [GPT](https://openai.com/blog/introducing-gpts)
 for read or even write access to the files in the local directory it is started in. 

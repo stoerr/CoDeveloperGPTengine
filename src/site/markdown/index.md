@@ -6,7 +6,8 @@
     <img src="images/dalle/joinedkeyboard1.png" alt="Joined Keyboard Image" style="width: 15em; height: auto;" />
 </div>
 
-Would you like to have ChatGPT list, search, read and modify your local files and have it execute (e.g. build and test)
+Would you like to have ChatGPT list, search, read your local files, discuss them with you, and modify them
+and have it execute (e.g. build and test)
 actions locally to support you in your development processes? Then this might be for you. The Co-Developer GPT 
 Engine can either work as a [ChatGPT plugin](https://openai.com/blog/chatgpt-plugins) or provide the actions for a
 OpenAI
