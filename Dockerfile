@@ -2,7 +2,7 @@
 FROM maven:3
 
 # Copy the built jar file into the image
-COPY target/${JAR_FILE} /app/developers-chatgpt-toolbench-plugin.jar
+COPY target/${JAR_FILE} /app/co-developer-gpt-engine.jar
 
 # Set the working directory to /mnt
 WORKDIR /mnt
@@ -11,4 +11,4 @@ WORKDIR /mnt
 VOLUME ["/mnt"]
 
 # Command to run when the container starts
-CMD ["java", "-jar", "/app/developers-chatgpt-toolbench-plugin.jar"]
+CMD ["java", "-jar", "/app/co-developer-gpt-engine.jar"]

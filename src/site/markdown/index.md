@@ -1,4 +1,4 @@
-# Developers ChatGPT ToolBench
+# Co-Developer GPT Engine
 
 ## Introduction
 
@@ -7,8 +7,8 @@
 </div>
 
 Would you like to have ChatGPT list, search, read and modify your local files and have it execute (e.g. build and test)
-actions locally to support you in your development processes? Then this might be for you. The Developers ChatGPT
-ToolBench can either work as a [ChatGPT plugin](https://openai.com/blog/chatgpt-plugins) or provide the actions for a
+actions locally to support you in your development processes? Then this might be for you. The Co-Developer GPT 
+Engine can either work as a [ChatGPT plugin](https://openai.com/blog/chatgpt-plugins) or provide the actions for a
 OpenAI
 [GPT](https://openai.com/blog/introducing-gpts) for read or even write access to the files in the local directory it is
 started in.
@@ -26,7 +26,7 @@ See the respective documentation for details.
 
 ## Functionality
 
-The `Developers ChatGPT ToolBench` provides ChatGPT with read and optionally write access to the directory in which it
+The `Co-Developer GPT Engine` provides ChatGPT with read and optionally write access to the directory in which it
 is started. It provides ChatGPT with several operations that it can use on the files in that directory, including:
 
 - Listing the files in a directory
@@ -40,7 +40,7 @@ More details about the functionality are [here](functionality.md).
 
 ## Preconditions
 
-To use the `Developers ChatGPT ToolBench`, you need a [ChatGPT Plus](https://openai.com/blog/chatgpt-plus) account,
+To use the `Co-Developer GPT Engine`, you need a [ChatGPT Plus](https://openai.com/blog/chatgpt-plus) account,
 since only then OpenAI will let you use plugins / GPTs.
 The program is an executable Java JAR, so you need a Java runtime environment (JRE) of at least version 11 to run it.
 Also, you will have to make it reachable from OpenAI's servers via https -

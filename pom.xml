@@ -5,9 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.stoerr.chatgpt</groupId>
-    <name>Developers ChatGPT ToolBench</name>
-    <artifactId>developers-chatgpt-toolbench-plugin</artifactId>
+    <name>CoDeveloperGPTengine</name>
+    <artifactId>co-developer-gpt-engine</artifactId>
     <version>2.0.1-SNAPSHOT</version>
+    <description>Provides actions for a OpenAI GPT or ChatGPT plugin that allow reading, writing, searching and
+        modifying files in the directory the program is started in, and executing actions like builds and test runs.
+    </description>
 
     <distributionManagement>
         <site>
@@ -16,21 +19,21 @@
         </site>
         <repository>
             <id>github</id>
-            <name>Github Packages for stoerr/DevelopersChatGPTToolBench</name>
-            <url>https://maven.pkg.github.com/stoerr/DevelopersChatGPTToolBench</url>
+            <name>Github Packages for stoerr/CoDeveloperGPTengine</name>
+            <url>https://maven.pkg.github.com/stoerr/CoDeveloperGPTengine</url>
         </repository>
         <snapshotRepository>
             <id>github</id>
-            <name>Github Packages for stoerr/DevelopersChatGPTToolBench</name>
-            <url>https://maven.pkg.github.com/stoerr/DevelopersChatGPTToolBench</url>
+            <name>Github Packages for stoerr/CoDeveloperGPTengine</name>
+            <url>https://maven.pkg.github.com/stoerr/CoDeveloperGPTengine</url>
         </snapshotRepository>
     </distributionManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <mainClass>net.stoerr.chatgpt.devtoolbench.DevToolBench</mainClass>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <mainClass>net.stoerr.chatgpt.codevengine.CoDeveloperEngine</mainClass>
     </properties>
 
     <dependencies>
@@ -136,24 +139,24 @@
 
         <plugins>
             <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-enforcer-plugin</artifactId>
-              <version>3.4.1</version>
-              <executions>
-                <execution>
-                  <id>enforce-maven</id>
-                  <goals>
-                    <goal>enforce</goal>
-                  </goals>
-                  <configuration>
-                    <rules>
-                      <requireMavenVersion>
-                        <version>3.3.9</version>
-                      </requireMavenVersion>
-                    </rules>
-                  </configuration>
-                </execution>
-              </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.4.1</version>
+                <executions>
+                    <execution>
+                        <id>enforce-maven</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>3.3.9</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- Reports -->
@@ -333,7 +336,7 @@
                         <configuration>
                             <images>
                                 <image>
-                                    <name>stoerr/developers-chatgpt-toolbench-plugin:${project.version}</name>
+                                    <name>stoerr/co-developer-gpt-engine:${project.version}</name>
                                     <build>
                                         <dockerFile>Dockerfile</dockerFile>
                                         <contextDir>${project.basedir}</contextDir>

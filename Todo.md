@@ -137,8 +137,8 @@ Details:
   AI.
 
 Links:
-Weblink: CoDeveloperGPTengine.stoerr.net , https://stoerr.github.io/DevelopersChatGPTToolBench/
-Githublink: https://github.com/stoerr/CoDeveloperGPTengine , https://github.com/stoerr/DevelopersChatGPTToolBench
+Weblink: https://CoDeveloperGPTengine.stoerr.net/
+Githublink: https://github.com/stoerr/CoDeveloperGPTengine
 , ? Twitter, Linkedin, other
 
 Interactive Development Assistance: Get coding, documentation, testing, and building support from an AI-powered assist

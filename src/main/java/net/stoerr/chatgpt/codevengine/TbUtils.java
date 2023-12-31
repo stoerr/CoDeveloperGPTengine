@@ -1,4 +1,4 @@
-package net.stoerr.chatgpt.devtoolbench;
+package net.stoerr.chatgpt.codevengine;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +23,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * Catch-all class for various utilities not related to a class.
  */
 public class TbUtils {
-    static final Path requestLog = DevToolBench.currentDir.resolve(".cgptdevbench/.requestlog.txt");
+    static final Path requestLog = CoDeveloperEngine.currentDir.resolve(".cgptdevbench/.requestlog.txt");
     public static final PrintStream ERRLOG = System.err;
     public static final PrintStream LOG = System.out;
 
@@ -78,10 +78,10 @@ public class TbUtils {
     static void logVersion() {
         Properties properties = new Properties();
         try {
-            InputStream gitPropertiesStream = DevToolBench.class.getResourceAsStream("/git.properties");
+            InputStream gitPropertiesStream = CoDeveloperEngine.class.getResourceAsStream("/git.properties");
             if (gitPropertiesStream != null) {
                 properties.load(gitPropertiesStream);
-                String versionInfo = "DevToolBench version: " + properties.getProperty("git.build.version") +
+                String versionInfo = "CoDeveloperEngine version: " + properties.getProperty("git.build.version") +
                         properties.getProperty("git.commit.id.describe") + " from " + properties.getProperty("git.build.time");
                 logBody("\n\nversion: ", versionInfo);
             }
@@ -98,7 +98,7 @@ public class TbUtils {
         String mainInfo = "0.0.1";
         Properties properties = new Properties();
         try {
-            InputStream gitPropertiesStream = DevToolBench.class.getResourceAsStream("/git.properties");
+            InputStream gitPropertiesStream = CoDeveloperEngine.class.getResourceAsStream("/git.properties");
             if (gitPropertiesStream != null) {
                 properties.load(gitPropertiesStream);
                 gitInfo = properties.getProperty("git.commit.id.describe");
@@ -108,7 +108,7 @@ public class TbUtils {
         }
         properties = new Properties();
         try {
-            InputStream mainPropertiesStream = DevToolBench.class.getResourceAsStream("/main.properties");
+            InputStream mainPropertiesStream = CoDeveloperEngine.class.getResourceAsStream("/main.properties");
             if (mainPropertiesStream != null) {
                 properties.load(mainPropertiesStream);
                 mainInfo = properties.getProperty("pomversion");

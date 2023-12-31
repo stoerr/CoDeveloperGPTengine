@@ -1,4 +1,4 @@
-package net.stoerr.chatgpt.devtoolbench;
+package net.stoerr.chatgpt.codevengine;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,7 +22,7 @@ public class TbUtilsTest {
 
         Pattern compiledPattern = Pattern.compile(pattern);
         Matcher matcher = compiledPattern.matcher(input);
-        StringBuilder sb = new StringBuilder();
+        StringBuffer sb = new StringBuffer();
 
         while (matcher.find()) {
             matcher.appendReplacement(sb, TbUtils.compileReplacement(null, replacement));
@@ -40,7 +40,7 @@ public class TbUtilsTest {
 
         Pattern compiledPattern = Pattern.compile(pattern);
         Matcher matcher = compiledPattern.matcher(input);
-        StringBuilder sb = new StringBuilder();
+        StringBuffer sb = new StringBuffer();
 
         while (matcher.find()) {
             matcher.appendReplacement(sb, TbUtils.compileReplacement(null, replacement));

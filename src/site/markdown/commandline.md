@@ -1,10 +1,10 @@
 # Command line and configuration
 
-I assume you have [installed](install.md) the program and created a script `developersToolbenchPlugin` in your path
+I assume you have [installed](install.md) the program and created a script `codeveloperengine` in your path
 that starts it. With argument -h or --help you get a short help message with the options available.
 
 ```
-version: : DevToolBench version: 2.0
+version: : CoDeveloperEngine version: 2.0
 usage: options are
     -g,--globalconfigdir {arg}   Directory for global configuration (default:
     ~/.cgptdevbenchglobal/
@@ -38,7 +38,7 @@ openaitoken=exampletoken
 where:
 
 * `gptsecret` A secret that is configured in both the GPT and locally to make sure only your own GPT can access the
-  toolbench.
+  program.
 * `openaitoken` A token OpenAI privides after entering the gptSecret when deploying as a plugin - used to identify
   OpenAI to the plugin. (Not needed for GPTs.)
 
@@ -72,11 +72,11 @@ done
 It requires a comment `# Plugin Action: ` to be present in each *.sh file that explains the function of the action.
 
 More examples can be found in the
-[.cgptdevbench directory of the project](https://github.com/stoerr/DevelopersChatGPTToolBench/tree/develop/.cgptdevbench) .
+[.cgptdevbench directory of the project](https://github.com/stoerr/CoDeveloperGPTengine/tree/develop/.cgptdevbench) .
 
 ## Usage via docker image
 
-If you want to make extra sure that the toolbench cannot access anything outside of the current directory and
+If you want to make extra sure that the program cannot access anything outside of the current directory and
 cannot access anything on your local machine and want to try dangerous things like executing actions that immediately
 run ChatGPT generated code , you can also use it from the docker image 
-[stoerr/developers-chatgpt-toolbench-plugin](https://hub.docker.com/repository/docker/stoerr/developers-chatgpt-toolbench-plugin).
+[stoerr/co-developer-gpt-engine](https://hub.docker.com/repository/docker/stoerr/co-developer-gpt-engine).

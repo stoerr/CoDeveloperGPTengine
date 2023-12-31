@@ -1,4 +1,4 @@
-package net.stoerr.chatgpt.devtoolbench;
+package net.stoerr.chatgpt.codevengine;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -9,11 +9,11 @@ import java.nio.file.Paths;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
-public class DevToolBenchGeneralIT extends AbstractActionIT {
+public class CoDeveloperEngineGeneralIT extends AbstractActionIT {
 
     @Test
     public void testRoot() throws IOException {
-        TbUtils.logInfo("\nDevToolBenchGeneralIT.testRoot");
+        TbUtils.logInfo("\nCoDeveloperEngineGeneralIT.testRoot");
         String response = checkResponse("/", "GET", null, 200, null);
         String expected = readFile("/../../../src/main/resources/static/index.html");
         collector.checkThat(response, CoreMatchers.is(expected));
@@ -21,7 +21,7 @@ public class DevToolBenchGeneralIT extends AbstractActionIT {
 
     @Test
     public void testAiPluginJson() throws IOException {
-        TbUtils.logInfo("\nDevToolBenchGeneralIT.testAiPluginJson");
+        TbUtils.logInfo("\nCoDeveloperEngineGeneralIT.testAiPluginJson");
         String response = checkResponse("/.well-known/ai-plugin.json", "GET", null, 200, null);
         String expected = readFile("/../../../src/main/resources/ai-plugin.json")
                 .replace("THEURL", "http://localhost:7364")
@@ -31,22 +31,22 @@ public class DevToolBenchGeneralIT extends AbstractActionIT {
     }
 
     @Test
-    public void testDevToolBenchYaml() throws IOException {
-        TbUtils.logInfo("\nDevToolBenchGeneralIT.testDevToolBenchYaml");
-        checkResponse("/devtoolbench.yaml", "GET", null, 200, "devtoolbench.yaml");
-        // read target/test-actual/devtoolbench.yaml and compare to src/test/resources/test-expected/devtoolbench.yaml
+    public void testCoDeveloperEngineYaml() throws IOException {
+        TbUtils.logInfo("\nCoDeveloperEngineGeneralIT.testCoDeveloperEngineYaml");
+        checkResponse("/codeveloperengine.yaml", "GET", null, 200, "codeveloperengine.yaml");
+        // read target/test-actual/codeveloperengine.yaml and compare to src/test/resources/test-expected/codeveloperengine.yaml
         // and overwrite that file if it is different
-        String expected = readFile("/test-expected/devtoolbench.yaml");
-        String actual = Files.readString(Paths.get("target/test-actual/devtoolbench.yaml"), UTF_8);
+        String expected = readFile("/test-expected/codeveloperengine.yaml");
+        String actual = new String(Files.readAllBytes(Paths.get("target/test-actual/codeveloperengine.yaml")), UTF_8);
         collector.checkThat(actual, CoreMatchers.is(expected));
         if (!expected.equals(actual) && actual.contains("requestBody:")) {
-            Files.writeString(Paths.get("src/test/resources/test-expected/devtoolbench.yaml"), actual, UTF_8);
+            Files.write(Paths.get("src/test/resources/test-expected/codeveloperengine.yaml"), actual.getBytes( UTF_8));
         }
     }
 
     @Test
     public void testUnknownRequest() throws Exception {
-        TbUtils.logInfo("\nDevToolBenchGeneralIT.testUnknownRequest");
+        TbUtils.logInfo("\nCoDeveloperEngineGeneralIT.testUnknownRequest");
         String response = checkResponse("/nothing", "GET", null, 404, null);
         collector.checkThat(response, CoreMatchers.containsString("Error 404 Not Found"));
     }
