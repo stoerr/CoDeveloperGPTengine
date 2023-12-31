@@ -48,7 +48,7 @@ public class DevToolBench {
     public static final String PATH_SPEC = "/codeveloperengine.yaml";
     public static final List<String> UNPROTECTED_PATHS = Arrays.asList(PATH_AI_PLUGIN_JSON, PATH_SPEC, "/favicon.ico");
 
-    /** Files that are inaccessible to the toolbench. */
+    /** Files that are inaccessible to the program. */
     public static final Pattern IGNORE_FILES_PATTERN = Pattern.compile(".*/[.].*|.*/target/.*|.*/(Hpsx|hpsx).*|.*/node_modules/.*");
 
     /**
