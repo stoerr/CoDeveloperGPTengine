@@ -2,7 +2,7 @@
 
 openapi: 3.0.1
 info:
-  title: Developers ToolBench ChatGPT Plugin
+  title: Co-Developer GPT Engine
   version: THEVERSION
 servers:
   - url: http://localhost:7364

@@ -4,7 +4,7 @@ I assume you have [installed](install.md) the program and created a script `code
 that starts it. With argument -h or --help you get a short help message with the options available.
 
 ```
-version: : DevToolBench version: 2.0
+version: : CoDeveloperEngine version: 2.0
 usage: options are
     -g,--globalconfigdir {arg}   Directory for global configuration (default:
     ~/.cgptdevbenchglobal/

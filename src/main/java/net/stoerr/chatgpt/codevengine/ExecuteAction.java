@@ -86,7 +86,7 @@ public class ExecuteAction extends AbstractPluginAction {
             String content = StringUtils.defaultString(getBodyParameter(resp, json, "actionInput", false));
             String actionName = getMandatoryQueryParam(req, resp, "actionName");
             RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, content, actionName);
-            Path path = DevToolBench.currentDir.resolve(".cgptdevbench/" + actionName + ".sh");
+            Path path = CoDeveloperEngine.currentDir.resolve(".cgptdevbench/" + actionName + ".sh");
 
             if (!Files.exists(path)) {
                 throw sendError(resp, 400, "Action " + actionName + " not found");
@@ -98,7 +98,7 @@ public class ExecuteAction extends AbstractPluginAction {
             process = pb.start();
 
             OutputStream out = process.getOutputStream();
-            DevToolBench.execute(() -> {
+            CoDeveloperEngine.execute(() -> {
                 try {
                     try {
                         out.write(content.getBytes(StandardCharsets.UTF_8));
@@ -119,7 +119,7 @@ public class ExecuteAction extends AbstractPluginAction {
             }
             int exitCode = process.exitValue();
             logInfo("Process finished with exit code " + exitCode + ": " + abbreviate(output, 200));
-            output = output.replaceAll(Pattern.quote(DevToolBench.currentDir + "/"), "");
+            output = output.replaceAll(Pattern.quote(CoDeveloperEngine.currentDir + "/"), "");
             output = limitOutput(output, 2000);
 
             if (exitCode == 0) {
@@ -162,9 +162,9 @@ public class ExecuteAction extends AbstractPluginAction {
     }
 
     public boolean hasActions() {
-        // check whether there are any files that would be returned for DevToolBench.currentDir.resolve(".cgptdevbench/" + actionName + ".sh")
+        // check whether there are any files that would be returned for CoDeveloperEngine.currentDir.resolve(".cgptdevbench/" + actionName + ".sh")
         // check whether there are actually *.sh files there
-        Path dir = DevToolBench.currentDir.resolve(".cgptdevbench");
+        Path dir = CoDeveloperEngine.currentDir.resolve(".cgptdevbench");
         if (!Files.exists(dir)) {
             return false;
         }

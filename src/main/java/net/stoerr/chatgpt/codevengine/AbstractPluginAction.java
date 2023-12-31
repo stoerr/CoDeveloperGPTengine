@@ -99,8 +99,8 @@ public abstract class AbstractPluginAction extends HttpServlet {
     }
 
     protected static boolean isIgnored(Path path) {
-        return DevToolBench.IGNORE_FILES_PATTERN.matcher(path.toString()).matches()
-                && !DevToolBench.OVERRIDE_IGNORE_PATTERN.matcher(path.toString()).matches();
+        return CoDeveloperEngine.IGNORE_FILES_PATTERN.matcher(path.toString()).matches()
+                && !CoDeveloperEngine.OVERRIDE_IGNORE_PATTERN.matcher(path.toString()).matches();
     }
 
     /**
@@ -128,20 +128,20 @@ public abstract class AbstractPluginAction extends HttpServlet {
 
     protected Path getPath(HttpServletRequest request, HttpServletResponse response, boolean mustExist) {
         String path = getMandatoryQueryParam(request, response, "path");
-        if (DevToolBench.IGNORE_FILES_PATTERN.matcher(path).matches() && !DevToolBench.OVERRIDE_IGNORE_PATTERN.matcher(path).matches()) {
-            throw sendError(response, 400, "Access to path " + path + " is not allowed! (matches " + DevToolBench.IGNORE_FILES_PATTERN.pattern() + ")");
+        if (CoDeveloperEngine.IGNORE_FILES_PATTERN.matcher(path).matches() && !CoDeveloperEngine.OVERRIDE_IGNORE_PATTERN.matcher(path).matches()) {
+            throw sendError(response, 400, "Access to path " + path + " is not allowed! (matches " + CoDeveloperEngine.IGNORE_FILES_PATTERN.pattern() + ")");
         }
-        Path resolved = DevToolBench.currentDir.resolve(path).normalize().toAbsolutePath();
-        if (!resolved.startsWith(DevToolBench.currentDir)) {
+        Path resolved = CoDeveloperEngine.currentDir.resolve(path).normalize().toAbsolutePath();
+        if (!resolved.startsWith(CoDeveloperEngine.currentDir)) {
             throw sendError(response, 400, "Path " + path + " is outside of current directory!");
         }
         if (mustExist && !Files.exists(resolved)) {
             String message = "Path " + path + " does not exist! Try to list files with /listFiles to find the right path.";
             String filename = resolved.getFileName().toString();
-            List<Path> matchingFiles = findMatchingFiles(response, DevToolBench.currentDir, null, null)
+            List<Path> matchingFiles = findMatchingFiles(response, CoDeveloperEngine.currentDir, null, null)
                     .collect(toList());
             List<String> files = matchingFiles.stream()
-                    .map(p -> DevToolBench.currentDir.relativize(p).toString())
+                    .map(p -> CoDeveloperEngine.currentDir.relativize(p).toString())
                     .map(p -> Pair.of(p, StringUtils.getFuzzyDistance(p, filename, Locale.getDefault())))
                     .map(p -> Pair.of(p.getLeft(), -p.getRight()))
                     .sorted(Comparator.comparingDouble(Pair::getRight))
@@ -183,7 +183,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
     }
 
     protected String mappedFilename(Path path) {
-        return DevToolBench.currentDir.relativize(path).toString();
+        return CoDeveloperEngine.currentDir.relativize(path).toString();
     }
 
     protected String abbreviate(String s, int max) {

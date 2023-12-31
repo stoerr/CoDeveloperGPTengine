@@ -1,6 +1,6 @@
-# Creating a GPT with the Co-Developer GPT engine as action
+# Creating a GPT with the Co-Developer GPT Engine as action
 
-You have to create a [GPT](https://openai.com/blog/introducing-gpts) to use the Co-Developer GPT engine by yourself
+You have to create a [GPT](https://openai.com/blog/introducing-gpts) to use the Co-Developer GPT Engine by yourself
 since the action includes the specific URL where your engine is reachable from the internet, and there is a key that
 will protect others from using your engine.
 
@@ -29,7 +29,7 @@ tasks._
 
 _'Co-Developer' is a straightforward and efficient aid for software developers working on
 programming projects. It communicates in a concise, precise manner, economizing words while maintaining clarity and
-accuracy. This GPT specializes in using the Developers Toolbench Plugin action for tasks like file inspection, editing,
+accuracy. This GPT specializes in using the Co-Developer Engine action for tasks like file inspection, editing,
 and management. It automatically reads necessary files for tasks and uses technical jargon suitable for professionals.
 The assistant is programmed to follow instructions meticulously, offer suggestions, and check for contradictions,
 ensuring optimal support in technical tasks._
