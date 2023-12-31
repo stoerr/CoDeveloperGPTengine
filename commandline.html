@@ -108,7 +108,7 @@
           <div id="projectBaDateVersionContainer" class="justify-content-start">
             <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2023-12-31</span>
             <span id="projectDateVersionSpacer" class="px-1 navbar-text">|</span>
-            <span id="projectVersion" class="px-1 navbar-text">Version: 2.0.1-SNAPSHOT</span>
+            <span id="projectVersion" class="px-1 navbar-text">Version: 3.0.0</span>
           </div>
           <div id="breadcrumbSpacer" ></div>
         </div>
@@ -123,13 +123,13 @@
 that starts it. With argument -h or &#x2013;help you get a short help message with the options available.</p>
 
 <div class="verbatim">
-<pre><code>version: : CoDeveloperEngine version: 2.0
+<pre><code>version: : CoDeveloperEngine version: 3.0
 usage: options are
     -g,--globalconfigdir {arg}   Directory for global configuration (default:
-    ~/.cgptdevbenchglobal/
+                                 ~/.cgptcodeveloperglobal/
     -h,--help                    Display this help message
     -l,--local                   Only use local configuration via options -
-    ignore any global configuration
+                                 ignore any global configuration
     -p,--port {arg}              Port number
     -w,--write                   Permit file writes and action executions
 </code></pre></div>
@@ -141,13 +141,13 @@ port number 3002 is used.</li>
 command, writing and executing actions are disabled by default.</li>
 <li><code>-h</code>: This option is to display the help message. It'll also be shown when there's an exception in parsing options.</li>
 <li><code>-g</code>: This option is used to specify the directory path for global configuration. If it's not mentioned, the default
-directory &#x201c;~/.cgptdevbenchglobal/&#x201d; is used.</li>
+directory &#x201c;~/.cgptcodeveloperglobal/&#x201d; is used.</li>
 <li><code>-l</code>: This option if present, is used to ensure that only command line configuration is used and global configuration
 is ignored.</li>
 </ul><section>
 <h2>Global configuration file</h2>
 <p>The global configuration file defines several properties that are important for the communication with ChatGPT.
-Normally it's put into the directory <code>~/.cgptdevbenchglobal/</code> and is named <code>config.properties</code>, for example:</p>
+Normally it's put into the directory <code>~/.cgptcodeveloperglobal/</code> and is named <code>config.properties</code>, for example:</p>
 
 <div class="verbatim">
 <pre><code>gptsecret=examplesecret
@@ -173,7 +173,7 @@ there can also be the following properties:</p>
 than 443 probably won't work with ChatGPT)</li>
 </ul></section><section>
 <h2>Local configuration directory</h2>
-<p>If you have a directory named .cgptdevbench/ in the directory where you start the program, a log file <code>.requestlog.txt</code>
+<p>If you have a directory named .cgptcodeveloper/ in the directory where you start the program, a log file <code>.requestlog.txt</code>
 will be put there with the requests and responses to ChatGPT. This is useful for debugging or just to see what's going
 on.</p>
 <p>Second, you can put there a number of shell scripts *.sh that can be executed from the program. It's a good idea to
@@ -181,14 +181,14 @@ also put a file listActions.sh there that lists the available actions:</p>
 
 <div class="verbatim">
 <pre><code class="language-bash"># Plugin Action: list all available actions
-cd .cgptdevbench || exit 1
+cd .cgptcodeveloper || exit 1
 for fil in *.sh; do
 echo &quot;${fil%.sh} :  &quot; $(egrep -o &quot;Plugin Action: .*&quot; &quot;$fil&quot; | sed -e 's/Plugin Action: //')
 done
 </code></pre></div>
 <p>It requires a comment <code># Plugin Action:</code> to be present in each *.sh file that explains the function of the action.</p>
 <p>More examples can be found in the
-<a href="https://github.com/stoerr/CoDeveloperGPTengine/tree/develop/.cgptdevbench" class="externalLink">.cgptdevbench directory of the project</a> .</p></section><section>
+<a href="https://github.com/stoerr/CoDeveloperGPTengine/tree/develop/.cgptcodeveloper" class="externalLink">.cgptcodeveloper directory of the project</a> .</p></section><section>
 <h2>Usage via docker image</h2>
 <p>If you want to make extra sure that the program cannot access anything outside of the current directory and
 cannot access anything on your local machine and want to try dangerous things like executing actions that immediately
