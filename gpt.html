@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="generator" content="#generatedBy()" />
-    <title>Developers Toolbench ChatGPT Plugin – Creating a GPT with the Developers ChatGPT ToolBench as action</title>
+    <title>CoDeveloperGPTengine – Creating a GPT with the Co-Developer GPT Engine as action</title>
     <link rel="icon" href="./img/favicons/favicon.ico">
     <!-- CSS Stylesheets, site.css is included so downstream projects can override them as appropriate. -->
     <link rel="stylesheet" href="./css/bootstrap.min.css" />
@@ -21,7 +21,7 @@
     <header>
       <nav class="navbar navbar-expand-md navbar-dark bg-primary">
         <div id="projectBarContainer" class="container-fluid justify-content-center">
-<a href="#" id="navbarIconLink" title="Navbar Brand Icon" class="navbar-brand text-wrap ps-2"> Developers ChatGPT ToolBench
+<a href="#" id="navbarIconLink" title="Navbar Brand Icon" class="navbar-brand text-wrap ps-2"> CoDeveloperGPTengine
 </a>          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -106,9 +106,9 @@
         <div id="projectBarContainer" class="container-fluid">
 
           <div id="projectBaDateVersionContainer" class="justify-content-start">
-            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2023-12-19</span>
+            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2023-12-31</span>
             <span id="projectDateVersionSpacer" class="px-1 navbar-text">|</span>
-            <span id="projectVersion" class="px-1 navbar-text">Version: 2.0.0</span>
+            <span id="projectVersion" class="px-1 navbar-text">Version: 2.0.1-SNAPSHOT</span>
           </div>
           <div id="breadcrumbSpacer" ></div>
         </div>
@@ -118,12 +118,12 @@
     <main class="flex-shrink-0" role="main">
       <div class="container mt-3 rounded">
 <section>
-<h1>Creating a GPT with the Developers ChatGPT ToolBench as action</h1>
-<p>You have to create a <a href="https://openai.com/blog/introducing-gpts" class="externalLink">GPT</a> to use the Developers ChatGPT ToolBench by yourself
-since the action includes the specific URL where your toolbench is reachable from the internet, and there is a key that
-will protect others from using your toolbench.</p><section>
+<h1>Creating a GPT with the Co-Developer GPT Engine as action</h1>
+<p>You have to create a <a href="https://openai.com/blog/introducing-gpts" class="externalLink">GPT</a> to use the Co-Developer GPT Engine by yourself
+since the action includes the specific URL where your engine is reachable from the internet, and there is a key that
+will protect others from using your engine.</p><section>
 <h2>Setting up the GPT</h2>
-<p>Start the toolbench in some directory.
+<p>Start the engine in some directory.
 Open the <a href="https://chat.openai.com/gpts/discovery" class="externalLink">Explore</a> page in ChatGPT and click &#x201c;Create a GPT&#x201d;. This enters a
 dialog where you can either talk to ChatGPT to set up the GPT or click &#x201c;Configure&#x201d; and enter the configuration directly.
 For a starter I suggest this, but of course you can and should play around:</p>
@@ -137,13 +137,13 @@ For a starter I suggest this, but of course you can and should play around:</p>
     </a>
 </div>
 
-<p><strong>Name:</strong> <em>Developers Toolbench</em></p>
+<p><strong>Name:</strong> <em>Co-Developer</em></p>
 <p><strong>Description:</strong> <em>Assistant for professional software developers that is able to read and modify your files and perform
 tasks.</em></p>
 <p><strong>Instructions:</strong></p>
-<p><em>&#x2018;Developers Toolbench&#x2019; is a straightforward and efficient aid for software developers working on
+<p><em>&#x2018;Co-Developer&#x2019; is a straightforward and efficient aid for software developers working on
 programming projects. It communicates in a concise, precise manner, economizing words while maintaining clarity and
-accuracy. This GPT specializes in using the Developers Toolbench Plugin action for tasks like file inspection, editing,
+accuracy. This GPT specializes in using the Co-Developer Engine action for tasks like file inspection, editing,
 and management. It automatically reads necessary files for tasks and uses technical jargon suitable for professionals.
 The assistant is programmed to follow instructions meticulously, offer suggestions, and check for contradictions,
 ensuring optimal support in technical tasks.</em></p>
@@ -155,7 +155,7 @@ existing files always prefer to use operation replaceInFile.</em></p>
 <p><strong>Conversation starters</strong></p>
 <ul>
 
-<li><em>What can the Developers Toolbench do?</em></li>
+<li><em>What can the Co-Developer do?</em></li>
 <li><em>List all files</em></li>
 <li><em>Search for <code>GPTTask:</code> in all files and execute the described tasks</em></li>
 <li><em>Read the file <code>chatgpt.codeRules.md</code> and observe the contained rules during the whole session</em></li>
@@ -170,8 +170,8 @@ Click &#x201c;Add Action&#x201d;. For &quot;Authentication use &#x201c;API Key&#
 see <a href="images/GPTApiKey.png">screenshot</a>).
 That key must be placed in the <code>gptsecret</code> property of
 your <a href="commandline.html">global configuration file</a> <code>~/.cgptdevbenchglobal/config.properties</code>. For &#x201c;Action URL&#x201d; enter the
-URL where your toolbench is <a href="https.html">reachable from the internet</a> plus <code>/devtoolbench.yaml</code> ,
-e.g. <code>https://your-desired-domain-prefix.serveo.net/devtoolbench.yaml</code>. That should have the schema and various
+URL where your engine is <a href="https.html">reachable from the internet</a> plus <code>/codeveloperengine.yaml</code> ,
+e.g. <code>https://your-desired-domain-prefix.serveo.net/codeveloperengine.yaml</code>. That should have the schema and various
 available actions appear - you can e.g. test <code>listFiles</code> since that needs no parameters.</p>
 <p><strong>Additional Settings</strong>
 Well, it's up to you whether you want to help OpenAI improving things with the results of your discussions.</p>

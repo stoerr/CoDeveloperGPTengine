@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="generator" content="#generatedBy()" />
-    <title>Developers Toolbench ChatGPT Plugin – Command line and configuration</title>
+    <title>CoDeveloperGPTengine – Command line and configuration</title>
     <link rel="icon" href="./img/favicons/favicon.ico">
     <!-- CSS Stylesheets, site.css is included so downstream projects can override them as appropriate. -->
     <link rel="stylesheet" href="./css/bootstrap.min.css" />
@@ -21,7 +21,7 @@
     <header>
       <nav class="navbar navbar-expand-md navbar-dark bg-primary">
         <div id="projectBarContainer" class="container-fluid justify-content-center">
-<a href="#" id="navbarIconLink" title="Navbar Brand Icon" class="navbar-brand text-wrap ps-2"> Developers ChatGPT ToolBench
+<a href="#" id="navbarIconLink" title="Navbar Brand Icon" class="navbar-brand text-wrap ps-2"> CoDeveloperGPTengine
 </a>          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -106,9 +106,9 @@
         <div id="projectBarContainer" class="container-fluid">
 
           <div id="projectBaDateVersionContainer" class="justify-content-start">
-            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2023-12-19</span>
+            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2023-12-31</span>
             <span id="projectDateVersionSpacer" class="px-1 navbar-text">|</span>
-            <span id="projectVersion" class="px-1 navbar-text">Version: 2.0.0</span>
+            <span id="projectVersion" class="px-1 navbar-text">Version: 2.0.1-SNAPSHOT</span>
           </div>
           <div id="breadcrumbSpacer" ></div>
         </div>
@@ -119,11 +119,11 @@
       <div class="container mt-3 rounded">
 <section>
 <h1>Command line and configuration</h1>
-<p>I assume you have <a href="install.html">installed</a> the program and created a script <code>developersToolbenchPlugin</code> in your path
+<p>I assume you have <a href="install.html">installed</a> the program and created a script <code>codeveloperengine</code> in your path
 that starts it. With argument -h or &#x2013;help you get a short help message with the options available.</p>
 
 <div class="verbatim">
-<pre><code>version: : DevToolBench version: 2.0
+<pre><code>version: : CoDeveloperEngine version: 2.0
 usage: options are
     -g,--globalconfigdir {arg}   Directory for global configuration (default:
     ~/.cgptdevbenchglobal/
@@ -157,7 +157,7 @@ openaitoken=exampletoken
 <ul>
 
 <li><code>gptsecret</code> A secret that is configured in both the GPT and locally to make sure only your own GPT can access the
-toolbench.</li>
+program.</li>
 <li><code>openaitoken</code> A token OpenAI privides after entering the gptSecret when deploying as a plugin - used to identify
 OpenAI to the plugin. (Not needed for GPTs.)</li>
 </ul>
@@ -188,12 +188,12 @@ done
 </code></pre></div>
 <p>It requires a comment <code># Plugin Action:</code> to be present in each *.sh file that explains the function of the action.</p>
 <p>More examples can be found in the
-<a href="https://github.com/stoerr/DevelopersChatGPTToolBench/tree/develop/.cgptdevbench" class="externalLink">.cgptdevbench directory of the project</a> .</p></section><section>
+<a href="https://github.com/stoerr/CoDeveloperGPTengine/tree/develop/.cgptdevbench" class="externalLink">.cgptdevbench directory of the project</a> .</p></section><section>
 <h2>Usage via docker image</h2>
-<p>If you want to make extra sure that the toolbench cannot access anything outside of the current directory and
+<p>If you want to make extra sure that the program cannot access anything outside of the current directory and
 cannot access anything on your local machine and want to try dangerous things like executing actions that immediately
 run ChatGPT generated code , you can also use it from the docker image
-<a href="https://hub.docker.com/repository/docker/stoerr/developers-chatgpt-toolbench-plugin" class="externalLink">stoerr/developers-chatgpt-toolbench-plugin</a>.</p></section></section>
+<a href="https://hub.docker.com/repository/docker/stoerr/co-developer-gpt-engine" class="externalLink">stoerr/co-developer-gpt-engine</a>.</p></section></section>
       </div>
     </main>
 

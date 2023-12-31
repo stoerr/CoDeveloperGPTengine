@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="generator" content="#generatedBy()" />
-    <title>Developers Toolbench ChatGPT Plugin – Running the ToolBench as a plugin</title>
+    <title>CoDeveloperGPTengine – Running the engine as a plugin</title>
     <link rel="icon" href="./img/favicons/favicon.ico">
     <!-- CSS Stylesheets, site.css is included so downstream projects can override them as appropriate. -->
     <link rel="stylesheet" href="./css/bootstrap.min.css" />
@@ -21,7 +21,7 @@
     <header>
       <nav class="navbar navbar-expand-md navbar-dark bg-primary">
         <div id="projectBarContainer" class="container-fluid justify-content-center">
-<a href="#" id="navbarIconLink" title="Navbar Brand Icon" class="navbar-brand text-wrap ps-2"> Developers ChatGPT ToolBench
+<a href="#" id="navbarIconLink" title="Navbar Brand Icon" class="navbar-brand text-wrap ps-2"> CoDeveloperGPTengine
 </a>          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -106,9 +106,9 @@
         <div id="projectBarContainer" class="container-fluid">
 
           <div id="projectBaDateVersionContainer" class="justify-content-start">
-            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2023-12-19</span>
+            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2023-12-31</span>
             <span id="projectDateVersionSpacer" class="px-1 navbar-text">|</span>
-            <span id="projectVersion" class="px-1 navbar-text">Version: 2.0.0</span>
+            <span id="projectVersion" class="px-1 navbar-text">Version: 2.0.1-SNAPSHOT</span>
           </div>
           <div id="breadcrumbSpacer" ></div>
         </div>
@@ -118,26 +118,26 @@
     <main class="flex-shrink-0" role="main">
       <div class="container mt-3 rounded">
 <section>
-<h1>Running the ToolBench as a plugin</h1>
-<p>You might want to prefer the <a href="gpt.html">GPT approach</a> to run the toolbench since
+<h1>Running the engine as a plugin</h1>
+<p>You might want to prefer the <a href="gpt.html">GPT approach</a> to run the engine since
 <a href="https://openai.com/blog/chatgpt-plugins" class="externalLink">ChatGPT Plugins</a> seem to be deprecated by OpenAI -
 it seems that they <a href="https://openai.com/waitlist/plugins" class="externalLink">don't want new plugins</a> in favor of
 <a href="https://openai.com/blog/introducing-gpts" class="externalLink">GPTs</a>, and since 11/2023 they seem to have
 <a href="https://community.openai.com/t/what-happened-to-the-plugins/475969" class="externalLink">broken local plugin development for good</a>.
 But I've happily used it as a plugin for quite a while, so here you are.</p><section>
-<h2>Register the toolbench as an unverified plugin</h2>
-<p>For this you have to make the toolbench <a href="https.html">available via https</a>, open the plugin store in ChatGPT and
-click &#x201c;Install unverified plugin&#x201d;. Then you have to enter the domain name at which the toolbench is accessible from the
+<h2>Register the engine as an unverified plugin</h2>
+<p>For this you have to make the engine <a href="https.html">available via https</a>, open the plugin store in ChatGPT and
+click &#x201c;Install unverified plugin&#x201d;. Then you have to enter the domain name at which the engine is accessible from the
 internet.</p>
 <p>Once you've added the plugin, you can test it in the ChatGPT interface. Try asking the AI to
 list the files in the directory, read a specific file, write to a file, or execute a specific action after
 setting up some actions in a .cgptdevbench directory in the directory you're running it. If everything
 is set up correctly, the AI should be able to perform these operations using the plugin.</p></section><section>
 <h2>Run it locally as a plugin developer</h2>
-<p>That used to be the easiest way to run the toolbench as a plugin, but when I tried it since 11/2023 it didn't work
+<p>That used to be the easiest way to run the engine as a plugin, but when I tried it since 11/2023 it didn't work
 anymore and I'm not sure whether they will fix it since you cannot eveen register yourself as a plugin developer
 anymore. But for the record: if you open the plugin store there is a link &#x201c;Develop your own plugin&#x201d;. There you
-have to enter e.g. localhost:3002 if you run the toolbench with this port, and it should work.
+have to enter e.g. localhost:3002 if you run the engine with this port, and it should work.
 (Currently I can register the plugin that way, but when trying to use it ChatGPT says &#x201c;Plugin not found&#x201d;.)</p></section></section>
       </div>
     </main>
