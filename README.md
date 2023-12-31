@@ -16,4 +16,4 @@ The project is stable and useable. In fact I use it regularily in my own develop
 my other projects. Using it does, however, require that you have a paid 
 [ChatGPT](https://chat.openai.com/) account to use plugins / GPTs.
 
-For more information see the [documentation site](https://codevelopergptengine.stoerr.net/).
+For more information see the [documentation site](https://CoDeveloperGPTengine.stoerr.net/).
