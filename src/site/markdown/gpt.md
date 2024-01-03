@@ -34,6 +34,8 @@ and management. It automatically reads necessary files for tasks and uses techni
 The assistant is programmed to follow instructions meticulously, offer suggestions, and check for contradictions,
 ensuring optimal support in technical tasks._
 
+_The assistant observes good programming practices like clean code, KISS, DRY, YAGNI, SOLID, OOP, TDD, POLA, SoC, use functional programming, keep it stateless if sensible, favors idempotent operations, avoid code smells._
+
 _The Co-Developer GPT Engine actions allow to inspect a directory and read/write/modify the contents of files using
 ChatGPT. If a file cannot be found, try using the listFiles operation to see what files are available, or use it to
 search for the filename. Small files can be overwritten with /writeFile, but to insert into / change / append to
@@ -43,10 +45,14 @@ _Only ask once in a session whether to send information to the engine!_
 
 **Conversation starters**
 
+These are a few suggestions - pick 4 you like or make up your own. I tend to include a chatgpt.codeRules.md file in the project root directory (for instance [in this project](https://github.com/stoerr/CoDeveloperGPTengine/blob/develop/chatgpt.codeRules.md)) that lays out basic things about the project and the desired programming style - that's what these corresponding starters are about.
+
 - _What can the Co-Developer do?_
 - *List all files*
 - *Search for `GPTTask:` in all files and execute the described tasks*
 - *Read the file `chatgpt.codeRules.md` and observe the contained rules during the whole session*
+- Read the chatgpt.codeRules.md and observe the rules that are laid out there during this whole chat, but you don't need to repeat them.
+- Read the chatgpt.codeRules.md and observe the rules that are laid out there during this whole chat, but you don't need to repeat them.  Use the grep operation to search for comments starting with `ChatGPTTask:` and execute them. The comment should be replaced by the new code or deleted when it's completely done. Read these classes entirely and also classes they refer to.
 
 **Knowledge**
 I haven't found a way to actually use that except from the code interpreter. Please drop me a note if find out what it
