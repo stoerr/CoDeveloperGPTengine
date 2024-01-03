@@ -54,7 +54,7 @@ public class CoDeveloperEngine {
     /**
      * Exceptions overriding {@link #IGNORE_FILES_PATTERN}.
      */
-    public static final Pattern OVERRIDE_IGNORE_PATTERN = Pattern.compile(".*/.github/.*|.*/.content.xml|\\.chatgpt\\.codeRules\\.md|\\.htaccess");
+    public static final Pattern OVERRIDE_IGNORE_PATTERN = Pattern.compile(".*/.github/.*|.*/.content.xml|\\.chatgpt.*.md|\\.htaccess");
 
     // private static final Gson GSON = new Gson();
 
