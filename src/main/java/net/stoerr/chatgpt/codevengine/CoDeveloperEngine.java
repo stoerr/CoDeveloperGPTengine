@@ -198,7 +198,8 @@ public class CoDeveloperEngine {
 
         context.addFilter(new FilterHolder((ServletRequest request, ServletResponse response, FilterChain chain) -> {
             HttpServletRequest req = (HttpServletRequest) request;
-            TbUtils.logInfo(req.getMethod() + " " + req.getRequestURL() + (req.getQueryString() != null && !req.getQueryString().isEmpty() ? "?" + req.getQueryString() : ""));
+            TbUtils.logRequest(req);
+            TbUtils.logInfo("\n\n" + req.getMethod() + " " + req.getRequestURL() + (req.getQueryString() != null && !req.getQueryString().isEmpty() ? "?" + req.getQueryString() : ""));
             try {
                 chain.doFilter(request, response);
             } catch (ExecutionAbortedException e) {

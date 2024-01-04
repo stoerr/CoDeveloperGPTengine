@@ -24,8 +24,7 @@ public class ListFilesAction extends AbstractPluginAction {
 
     @Override
     public String openApiDescription() {
-        return "" +
-                "  /listFiles:\n" +
+        return "  /listFiles:\n" +
                 "    get:\n" +
                 "      operationId: listFiles\n" +
                 "      x-openai-isConsequential: false\n" +
@@ -94,7 +93,7 @@ public class ListFilesAction extends AbstractPluginAction {
             if (files.isEmpty()) {
                 long filePathFileCount = findMatchingFiles(resp, path, filePathPattern, null).count();
                 if (filePathFileCount > 0)
-                    throw sendError(resp, 404, "Found " + filePathFileCount + " files mat but none of them match grepRegex: " + grepRegex);
+                    throw sendError(resp, 404, "Found " + filePathFileCount + " files but none of them match grepRegex: " + grepRegex);
                 else if (Files.newDirectoryStream(path).iterator().hasNext()) {
                     throw sendError(resp, 404, "No files found matching filePathRegex: " + filePathRegex);
                 } else {

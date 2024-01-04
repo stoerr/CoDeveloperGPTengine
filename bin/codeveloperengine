@@ -3,6 +3,13 @@
 progfile=$(realpath $0)
 progdir=$(dirname "$progfile")
 
+JAVA=java
+# if jenv is in the path, we use the version that is set for the directory this script is in,
+# since the current dir could use some ridiculously low version.
+if which jenv >/dev/null 2>&1; then
+  JAVA=$(cd $progdir; jenv which java)
+fi
+
 # if there is a ~/.cgptcodeveloperglobal/tunnel.sh then run it and kill it when this script exits
 if test -f ~/.cgptcodeveloperglobal/tunnel.sh; then
   echo "Starting tunnel"
@@ -14,4 +21,4 @@ if test -f ~/.cgptcodeveloperglobal/tunnel.sh; then
   echo
 fi
 
-exec java -jar "$progdir/co-developer-gpt-engine.jar" "$@"
+exec $JAVA -jar "$progdir/co-developer-gpt-engine.jar" "$@"
