@@ -32,8 +32,7 @@ public class ReplaceAction extends AbstractPluginAction {
 
     @Override
     public String openApiDescription() {
-        return "" +
-                "  /replaceInFile:\n" +
+        return "  /replaceInFile:\n" +
                 "    post:\n" +
                 "      operationId: replaceInFile\n" +
                 "      x-openai-isConsequential: false\n" +
@@ -71,6 +70,7 @@ public class ReplaceAction extends AbstractPluginAction {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         BufferedReader reader = req.getReader();
         String json = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+        TbUtils.logBody("body", json);
         Path path = getPath(req, resp, true);
         ReplaceInFileRequest replacementRequest = gson.fromJson(json, ReplaceInFileRequest.class);
         if (replacementRequest.getReplacements().isEmpty()) {
@@ -88,6 +88,16 @@ public class ReplaceAction extends AbstractPluginAction {
                 StringBuffer sb = new StringBuffer();
                 String pattern = Pattern.quote(replacement.getSearch());
                 String compiledReplacement = Matcher.quoteReplacement(replacement.getReplace());
+                if (pattern.contains("\\n") && !Pattern.compile(pattern).matcher(content).find()) {
+                    // try a workaround for weird ChatGPT behaviour: as of 24/1/4 it sometimes transmitted \\n
+                    // instead of \n for newlines.
+                    String fixedPattern = Pattern.quote(replacement.getSearch().replaceAll("\\\\n", "\n"));
+                    if (Pattern.compile(fixedPattern).matcher(content).find()) {
+                        TbUtils.logInfo("Applied \\\\n workaround to pattern");
+                        pattern = fixedPattern;
+                    }
+                }
+
                 Matcher m = Pattern.compile(pattern).matcher(content);
 
                 TbUtils.logInfo("<<<<<<<<< ORIGINAL");
@@ -111,17 +121,21 @@ public class ReplaceAction extends AbstractPluginAction {
 
                 if (replacementCount != 1) {
                     if (replacementCount == 0) {
+                        String newlinecomplaint = "";
+                        if (replacement.getSearch().contains("\\n")) {
+                            newlinecomplaint = "\nIf you wanted to search for an actual newline character, you need to use `\\n`, not `\\\\n` .";
+                        }
                         throw sendError(resp, 400, "Search string " + replacementNo + " not found. " +
                                 "You might want to re-read the file to find out whether something is different from what you expected, or use grep with enough context lines if the file is long. " +
-                                "The search string is a literal string, not a regular expression." +
-                                "No changes have been made because of this error" +
-                                (replacementRequest.getReplacements().size() > 1 ? " - the other replacements also haven't been performed" : "") + "." +
+                                "The search string is a literal string, not a regular expression." + newlinecomplaint +
+                                "\nNo changes have been made because of this error" +
+                                (replacementRequest.getReplacements().size() > 1 ? " - the other replacements also have not been performed" : "") + "." +
                                 "The search string that was not found is:\n" + replacement.getSearch()
                         );
                     } else {
                         throw sendError(resp, 400, "Found " + replacementCount + " occurrences of search string " +
                                 replacementNo +
-                                ", but expected exactly one. You can e.g. add the previous or following line to the search string and pattern.");
+                                ", but expected exactly one. You must change the pattern - you can e.g. add the previous or following line to the search string to make it match only one place in the file.");
                     }
                 }
 
