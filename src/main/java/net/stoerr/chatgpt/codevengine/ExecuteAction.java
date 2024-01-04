@@ -1,5 +1,7 @@
 package net.stoerr.chatgpt.codevengine;
 
+import static net.stoerr.chatgpt.codevengine.CoDeveloperEngine.LOCAL_CONFIG_DIR;
+import static net.stoerr.chatgpt.codevengine.CoDeveloperEngine.currentDir;
 import static net.stoerr.chatgpt.codevengine.TbUtils.logInfo;
 
 import java.io.BufferedReader;
@@ -86,7 +88,7 @@ public class ExecuteAction extends AbstractPluginAction {
             String content = StringUtils.defaultString(getBodyParameter(resp, json, "actionInput", false));
             String actionName = getMandatoryQueryParam(req, resp, "actionName");
             RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, content, actionName);
-            Path path = CoDeveloperEngine.currentDir.resolve(".cgptcodeveloper/" + actionName + ".sh");
+            Path path = currentDir.resolve(LOCAL_CONFIG_DIR).resolve(actionName + ".sh");
 
             if (!Files.exists(path)) {
                 throw sendError(resp, 400, "Action " + actionName + " not found");
@@ -119,7 +121,7 @@ public class ExecuteAction extends AbstractPluginAction {
             }
             int exitCode = process.exitValue();
             logInfo("Process finished with exit code " + exitCode + ": " + abbreviate(output, 200));
-            output = output.replaceAll(Pattern.quote(CoDeveloperEngine.currentDir + "/"), "");
+            output = output.replaceAll(Pattern.quote(currentDir + "/"), "");
             output = limitOutput(output, 2000);
 
             if (exitCode == 0) {
@@ -164,7 +166,7 @@ public class ExecuteAction extends AbstractPluginAction {
     public boolean hasActions() {
         // check whether there are any files that would be returned for CoDeveloperEngine.currentDir.resolve(".cgptcodeveloper/" + actionName + ".sh")
         // check whether there are actually *.sh files there
-        Path dir = CoDeveloperEngine.currentDir.resolve(".cgptcodeveloper");
+        Path dir = currentDir.resolve(LOCAL_CONFIG_DIR);
         if (!Files.exists(dir)) {
             return false;
         }

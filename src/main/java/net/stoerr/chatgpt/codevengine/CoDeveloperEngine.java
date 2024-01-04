@@ -47,6 +47,7 @@ public class CoDeveloperEngine {
     public static final String PATH_AI_PLUGIN_JSON = "/.well-known/ai-plugin.json";
     public static final String PATH_SPEC = "/codeveloperengine.yaml";
     public static final List<String> UNPROTECTED_PATHS = Arrays.asList(PATH_AI_PLUGIN_JSON, PATH_SPEC, "/favicon.ico");
+    public static final String LOCAL_CONFIG_DIR = ".cgptcodeveloper";
 
     /** Files that are inaccessible to the program. */
     public static final Pattern IGNORE_FILES_PATTERN = Pattern.compile(".*/[.].*|.*/target/.*|.*/(Hpsx|hpsx).*|.*/node_modules/.*");
