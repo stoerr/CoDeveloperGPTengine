@@ -34,7 +34,7 @@ public class GrepActionIT extends AbstractActionIT {
     public void testNotExistingGrepRegex() throws Exception {
         TbUtils.logInfo("\nGrepActionIT.testNotExistingGrepRegex");
         String response = checkResponse("/grepFiles?path=firstfile.txt&grepRegex=ThisIsNowhere", "GET", null, 404, null);
-        collector.checkThat(response, is("Found 1 files mat but none of them match grepRegex: ThisIsNowhere"));
+        collector.checkThat(response, is("Found 1 files but none of them match grepRegex: ThisIsNowhere"));
     }
 
     @Test

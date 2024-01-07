@@ -76,7 +76,7 @@ public class ListFilesActionIT extends AbstractActionIT {
     public void testGrepRegexNotFound() throws Exception {
         TbUtils.logInfo("\nListFilesActionIT.testGrepRegexNotFound");
         String response = checkResponse("/listFiles?path=.&grepRegex=notexisting", "GET", null, 404, null);
-        collector.checkThat(response, is("Found 4 files mat but none of them match grepRegex: notexisting"));
+        collector.checkThat(response, is("Found 4 files but none of them match grepRegex: notexisting"));
     }
 
     @Test
