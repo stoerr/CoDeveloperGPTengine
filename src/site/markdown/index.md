@@ -23,8 +23,9 @@ The project is quite stable and useable. In fact I use it regularily in my own d
 my other projects. Using it does, however, require that you have a paid ChatGPT account that can use plugins / GPTs.
 There are three ways to use it within ChatGPT: put it as actions into a GPT, register it as an unverified plugin or run
 it as a localhost plugin if you are registered as a plugin developer.
-See the respective documentation for details. It is open source under the Apache 2.0 license - it's source is 
-available [on GitHub](https://github.com/stoerr/CoDeveloperGPTengine).
+See the respective documentation for details. It is open source under the Apache 2.0 license - it's source is
+available [on GitHub](https://github.com/stoerr/CoDeveloperGPTengine). See
+also [my blog](https://www.stoerr.net/blog/codeveloper) for some background.
 
 ## Functionality
 
