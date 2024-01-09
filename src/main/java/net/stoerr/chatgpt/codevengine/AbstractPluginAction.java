@@ -55,6 +55,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
     }
 
     protected static Stream<Path> findMatchingFiles(HttpServletResponse response, Path path, Pattern filePathPattern, Pattern grepPattern) {
+        boolean haveFilePathPattern = filePathPattern != null && !filePathPattern.pattern().isEmpty();
         List<Path> result = new ArrayList<>();
         try {
             Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
@@ -80,7 +81,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
         List<Path> matchingFiles = result.stream()
                 .filter(Files::isRegularFile)
                 .filter(p -> !isIgnored(p))
-                .filter(p -> filePathPattern == null || filePathPattern.matcher(p.toString()).find())
+                .filter(p -> !haveFilePathPattern || filePathPattern.matcher(p.toString()).find())
                 .collect(toList());
         if (matchingFiles.isEmpty()) {
             throw sendError(response, 404, "No files found matching " + filePathPattern);
@@ -102,10 +103,13 @@ public abstract class AbstractPluginAction extends HttpServlet {
         }
 
         if (grepMatched.isEmpty()) {
-            String foundFilesStatement = filePathPattern != null && !filePathPattern.pattern().isEmpty() ?
+            String foundFilesStatement = haveFilePathPattern ?
                     "Found " + matchingFiles.size() + " files whose name is matching the filePathRegex" :
                     "Found " + matchingFiles.size() + " files";
-            throw sendError(response, 404, foundFilesStatement + " but none of them contain a line matching " + grepPattern);
+            String fixingStatement = haveFilePathPattern ?
+                    "" :
+                    "\nDid you really want to search for files containing " + grepPattern + " or for files named like that pattern? If so you have to repeat the search with filePathRegex set instead pr grepRegex";
+            throw sendError(response, 404, foundFilesStatement + " but none of them contain a line matching " + grepPattern + ". " + fixingStatement);
         }
         return grepMatched.stream();
     }
