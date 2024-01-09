@@ -38,13 +38,13 @@ public class ListFilesAction extends AbstractPluginAction {
                 "            type: string\n" +
                 "        - name: filePathRegex\n" +
                 "          in: query\n" +
-                "          description: regex to filter file paths\n" +
+                "          description: regex to filter file paths - use for search by file name\n" +
                 "          required: false\n" +
                 "          schema:\n" +
                 "            type: string\n" +
                 "        - name: grepRegex\n" +
                 "          in: query\n" +
-                "          description: an optional regex that lists only files with matching content\n" +
+                "          description: an optional regex that lists only files that contain a line matching this pattern\n" +
                 "          required: false\n" +
                 "          schema:\n" +
                 "            type: string\n" +
