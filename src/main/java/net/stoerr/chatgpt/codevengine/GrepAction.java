@@ -14,8 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class GrepAction extends AbstractPluginAction {
 
-    public static final Pattern GREP_IGNORE_BINARIES_PATTERN = Pattern.compile("\\.(jar|class|png|jpg|gif|ico)$");
-
     @Override
     public String getUrl() {
         return "/grepFiles";
@@ -105,7 +103,7 @@ public class GrepAction extends AbstractPluginAction {
         if (!matchingFiles.isEmpty()) {
             StringBuilder buf = new StringBuilder();
             matchingFiles.stream()
-                    .filter(f -> !GREP_IGNORE_BINARIES_PATTERN.matcher(f.toString()).find())
+                    .filter(f -> !BINARY_FILES_PATTERN.matcher(f.toString()).find())
                     .forEachOrdered(path -> {
                         try {
                             List<String> lines = Files.readAllLines(path);
