@@ -38,8 +38,7 @@ public class ReadFileAction extends AbstractPluginAction {
 
     @Override
     public String openApiDescription() {
-        return "" +
-                "  /readFile:\n" +
+        return "  /readFile:\n" +
                 "    get:\n" +
                 "      operationId: readFile\n" +
                 "      x-openai-isConsequential: false\n" +
@@ -102,7 +101,9 @@ public class ReadFileAction extends AbstractPluginAction {
                         lines = lines.subList(0, lines.size() - numlinesToDrop);
                         content = String.join("\n", lines) + "\n";
                     } while (enc.encode(content).size() > MAXTOKENS_NOLIMIT);
-                    log("Dropped " + dropped + " lines to reduce token count from " + numtokens + " to " + enc.encode(content).size() + " in " + path);
+                    log("Dropped " + dropped + " lines to reduce token count from " + numtokens + " to " + enc.encode(content).size() +
+                            " . Repeat read request with startLine=" + lines.size() +
+                            " to get more of the file content, or use grepAction with enough contextLines if you are searching for something specific.");
                 }
             }
             if (maxLines != Integer.MAX_VALUE || startLine != 1 || dropped != 0) {
