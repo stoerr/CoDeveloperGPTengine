@@ -102,13 +102,16 @@ public class ReadFileAction extends AbstractPluginAction {
                         content = String.join("\n", lines) + "\n";
                     } while (enc.encode(content).size() > MAXTOKENS_NOLIMIT);
                     log("Dropped " + dropped + " lines to reduce token count from " + numtokens + " to " + enc.encode(content).size() +
-                            " . Repeat read request with startLine=" + lines.size() +
-                            " to get more of the file content, or use grepAction with enough contextLines if you are searching for something specific.");
+                            " . To get more of the file content repeat read request with startLine=" + lines.size() +
+                            " , or use the grepAction with enough contextLines if you are searching for something specific.");
                 }
             }
             if (maxLines != Integer.MAX_VALUE || startLine != 1 || dropped != 0) {
                 content = "Lines " + startLine + " to " + (startLine + lines.size() - 1) + " of " + fulllinecount +
-                        " lines of file " + CoDeveloperEngine.currentDir.relativize(path) + " start now. To read the other lines use parameters startLine and maxLines.\n\n" + content;
+                        " lines of file " + CoDeveloperEngine.currentDir.relativize(path) + " start now. " +
+                        "To get more of the file content repeat read request with startLine=" + lines.size() +
+                        " , or use the grepAction with enough contextLines if you are searching for something specific.\n\n"
+                        + content;
             }
             byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
             resp.setContentLength(bytes.length);
