@@ -29,6 +29,12 @@ import jakarta.servlet.http.HttpServletResponse;
 public class UserGlobalConfig {
 
     /**
+     * For local verification of responses from the browser - a cookie that can contain the service access token.
+     * You can set that manually in the browser when debugging.
+     */
+    public static final String COOKIE_CODEVACCESSTOKEN = "CodevAccessToken";
+
+    /**
      * The users global configuration directory at ~/.cgptcodeveloperglobal .
      */
     Path configDir = Paths.get(System.getProperty("user.home"), ".cgptcodeveloperglobal");
@@ -66,12 +72,11 @@ public class UserGlobalConfig {
      */
     String openaitoken;
 
-    private Properties config;
-
     /**
      * Reads the httpsConfigFile if it exists. Return true if configuration could be read completely.
      */
     public boolean readAndCheckConfiguration(@Nullable String globalConfigDir) throws IOException {
+        Properties config;
         configDir = globalConfigDir != null ? Paths.get(globalConfigDir) :
                 Paths.get(System.getProperty("user.home"), ".cgptcodeveloperglobal");
         configFile = configDir.resolve("config.properties");
@@ -146,6 +151,20 @@ public class UserGlobalConfig {
             }
 
             String secret = request.getHeader("Authorization");
+            if (secret == null) {
+                secret = request.getHeader("Cookie");
+                if (secret != null) {
+                    int start = secret.indexOf(COOKIE_CODEVACCESSTOKEN);
+                    if (start >= 0) {
+                        start += COOKIE_CODEVACCESSTOKEN.length();
+                        int end = secret.indexOf(';', start);
+                        if (end < 0) {
+                            end = secret.length();
+                        }
+                        secret = secret.substring(start, end);
+                    }
+                }
+            }
             boolean isPublicRequest = CoDeveloperEngine.UNPROTECTED_PATHS.contains(request.getRequestURI());
             if (!requestislocal && !isPublicRequest && (secret == null || !secret.contains(gptSecret))) {
                 TbUtils.logError("service access token missing. Request was " + request.getRequestURI() + " from " + request.getRemoteAddr() + " - wrong Authorization header " + secret);
@@ -158,7 +177,7 @@ public class UserGlobalConfig {
         };
     }
 
-    public void addHttpsConnector(Server server) throws IOException {
+    public void addHttpsConnector(Server server) {
         if (httpsPort != null) {
             SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
             sslContextFactory.setKeyStorePath(configDir.resolve(keystorePath).toString());

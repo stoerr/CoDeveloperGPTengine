@@ -34,7 +34,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
     /**
      * A pattern for filenames of binary files where grep would not work.
      */
-    private static final Pattern BINARY_FILES_PATTERN = Pattern.compile("(?i).*\\.(gif|png|mov|jpg|jpeg|mp4|mp3|pdf|zip|gz|tgz|tar|jar|class|war|ear|exe|dll|so|o|a|lib|bin|dat|dmg|iso)");
+    public static final Pattern BINARY_FILES_PATTERN = Pattern.compile("(?i).*\\.(gif|png|mov|jpg|jpeg|mp4|mp3|pdf|zip|gz|tgz|tar|jar|class|war|ear|exe|dll|so|o|a|lib|bin|dat|dmg|iso)");
 
     private final transient Gson gson = new Gson();
 
@@ -77,25 +77,37 @@ public abstract class AbstractPluginAction extends HttpServlet {
             throw sendError(response, 500, "Error reading " + path + " : " + e);
         }
 
-        return result.stream()
+        List<Path> matchingFiles = result.stream()
                 .filter(Files::isRegularFile)
                 .filter(p -> !isIgnored(p))
                 .filter(p -> filePathPattern == null || filePathPattern.matcher(p.toString()).find())
-                .filter(p -> {
-                    if (grepPattern == null) {
-                        return true;
-                    } else {
-                        if (BINARY_FILES_PATTERN.matcher(p.toString()).matches()) {
-                            return false;
-                        }
+                .collect(toList());
+        if (matchingFiles.isEmpty()) {
+            throw sendError(response, 404, "No files found matching " + filePathPattern);
+        }
+
+        List<Path> grepMatched = matchingFiles;
+        if (grepPattern != null && !grepPattern.pattern().isEmpty()) {
+            grepMatched = matchingFiles.stream()
+                    .filter(f -> !BINARY_FILES_PATTERN.matcher(f.toString()).find())
+                    .filter(p -> {
                         try (Stream<String> lines = Files.lines(p)) {
                             return lines.anyMatch(line -> grepPattern.matcher(line).find());
                         } catch (Exception e) {
                             logInfo("Error reading " + p + " : " + e);
                             return false;
                         }
-                    }
-                }).sorted();
+                    })
+                    .sorted().collect(toList());
+        }
+
+        if (grepMatched.isEmpty()) {
+            String foundFilesStatement = filePathPattern != null && !filePathPattern.pattern().isEmpty() ?
+                    "Found " + matchingFiles.size() + " files whose name is matching the filePathRegex" :
+                    "Found " + matchingFiles.size() + " files";
+            throw sendError(response, 404, foundFilesStatement + " but none of them contain a line matching " + grepPattern);
+        }
+        return grepMatched.stream();
     }
 
     protected static boolean isIgnored(Path path) {
