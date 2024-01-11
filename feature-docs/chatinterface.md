@@ -5,3 +5,6 @@ and chat.css and bootstrap. No other libraries than bootstrap should be used - c
 javascript. All those files will be statically served by the server at /chat/ .
 
 The chatInterfaceSketch.jpg image is a sketch of what the chat interface should look like.
+
+PROMPT: please write a basic version of those files. Create example chat names and example messages in chat.html, so
+that I can verify the design.   
