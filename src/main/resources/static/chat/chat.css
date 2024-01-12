@@ -1,0 +1,20 @@
+/* Chat page custom styles */
+#chatList a {
+    margin-bottom: 0.5rem;
+}
+
+#chatArea .card {
+    margin-bottom: 1rem;
+}
+
+#chatArea .card.bg-light {
+    background-color: #f8f9fa!important;
+}
+
+.card-header select {
+    width: auto;
+}
+
+#messageInput {
+    margin-top: 1rem;
+}
