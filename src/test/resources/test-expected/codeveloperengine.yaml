@@ -109,13 +109,13 @@ paths:
             type: string
         - name: filePathRegex
           in: query
-          description: regex to filter file paths
+          description: regex to filter file paths - use for search by file name
           required: false
           schema:
             type: string
         - name: grepRegex
           in: query
-          description: an optional regex that lists only files with matching content
+          description: an optional regex that lists only files that contain a line matching this pattern
           required: false
           schema:
             type: string
