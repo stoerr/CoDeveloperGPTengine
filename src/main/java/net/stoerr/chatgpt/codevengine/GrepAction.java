@@ -138,7 +138,7 @@ public class GrepAction extends AbstractPluginAction {
         } else {
             long filePathFileCount = findMatchingFiles(resp, startPath, filePattern, null).count();
             if (filePathFileCount > 0)
-                throw sendError(resp, 404, "Found " + filePathFileCount + " files but none of them match grepRegex: " + grepRegex);
+                throw sendError(resp, 404, "Found " + filePathFileCount + " files whose name is matching the filePathRegex but none of them contain a line matching the grepRegex.");
             else if (Files.isDirectory(startPath)) {
                 if (Files.newDirectoryStream(startPath).iterator().hasNext()) {
                     throw sendError(resp, 404, "No files found matching filePathRegex: " + fileRegex);

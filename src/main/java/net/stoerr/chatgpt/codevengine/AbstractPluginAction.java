@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -84,8 +85,9 @@ public abstract class AbstractPluginAction extends HttpServlet {
                 .filter(p -> !haveFilePathPattern || filePathPattern.matcher(p.toString()).find())
                 .collect(toList());
         if (matchingFiles.isEmpty()) {
-            throw sendError(response, 404, "No files found matching " + filePathPattern);
+            throw sendError(response, 404, "No files found matching filePathRegex: " + filePathPattern);
         }
+        Collections.sort(matchingFiles); // make it deterministic.
 
         List<Path> grepMatched = matchingFiles;
         if (grepPattern != null && !grepPattern.pattern().isEmpty()) {
@@ -108,8 +110,8 @@ public abstract class AbstractPluginAction extends HttpServlet {
                     "Found " + matchingFiles.size() + " files";
             String fixingStatement = haveFilePathPattern ?
                     "" :
-                    "\nDid you really want to search for files containing " + grepPattern + " or for files named like that pattern? If so you have to repeat the search with filePathRegex set instead pr grepRegex";
-            throw sendError(response, 404, foundFilesStatement + " but none of them contain a line matching " + grepPattern + ". " + fixingStatement);
+                    "\nDid you really want to search for files containing '" + grepPattern + "' or for files named like that pattern? If so you have to repeat the search with filePathRegex set instead of grepRegex.";
+            throw sendError(response, 404, foundFilesStatement + " but none of them contain a line matching the grepRegex." + fixingStatement);
         }
         return grepMatched.stream();
     }

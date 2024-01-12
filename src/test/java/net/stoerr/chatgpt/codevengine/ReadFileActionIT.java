@@ -23,7 +23,7 @@ public class ReadFileActionIT extends AbstractActionIT {
     @Test
     public void testReadWithStartLine() throws Exception {
         String response = checkResponse("/readFile?path=secondfile.md&startLine=14", "GET", null, 200, null);
-        assertEquals("Lines 14 to 17 of 17 lines of file secondfile.md start now. To read the other lines use parameters startLine and maxLines.\n" +
+        assertEquals("Lines 14 to 17 of 17 lines of file secondfile.md start now. To get more of the file content repeat read request with startLine=4 , or use the grepAction with enough contextLines if you are searching for something specific.\n" +
                 "\n" +
                 "appearing context line too\n" +
                 "\n" +
