@@ -2,13 +2,13 @@
 
 ## Introduction
 
-<div style="float: right;">
+<div style="float: right; margin-left: 1em; margin-bottom: 1em;">
     <img src="images/dalle/joinedkeyboard1.png" alt="Joined Keyboard Image" style="width: 15em; height: auto;" />
 </div>
 
 Would you like to have ChatGPT list, search, read your local files, discuss them with you, and modify them
 and have it execute (e.g. build and test)
-actions locally to support you in your development processes? Then this might be for you. The Co-Developer GPT 
+actions locally to support you in your development processes? Then this might be for you. The Co-Developer GPT
 Engine can either work as a [ChatGPT plugin](https://openai.com/blog/chatgpt-plugins) or provide the actions for a
 OpenAI
 [GPT](https://openai.com/blog/introducing-gpts) for read or even write access to the files in the local directory it is
@@ -29,6 +29,13 @@ also [my blog](https://www.stoerr.net/blog/codeveloper) for some background.
 
 ## Functionality
 
+<div style="float: right; margin-left: 2em; margin-bottom: 2em;">
+<iframe src="https://www.youtube.com/embed/ubBhv2PUSEs?si=Vk-QKH6rIq8oktPP" title="YouTube video player" 
+frameborder="0" width="560" height="315"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+allowfullscreen="allowfullscreen"></iframe>
+</div>
+
 The `Co-Developer GPT Engine` provides ChatGPT with read and optionally write access to the directory in which it
 is started. It provides ChatGPT with several operations that it can use on the files in that directory, including:
 
@@ -40,6 +47,8 @@ is started. It provides ChatGPT with several operations that it can use on the f
 - fetch the text content of an URL in the internet
 
 More details about the functionality are [here](functionality.md).
+The [video on the right](https://youtu.be/ubBhv2PUSEs)
+contains a quick demo what it can look like to work with the GPT.
 
 ## Preconditions
 
