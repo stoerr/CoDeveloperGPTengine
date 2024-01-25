@@ -46,7 +46,8 @@ public class CoDeveloperEngine {
 
     public static final String PATH_AI_PLUGIN_JSON = "/.well-known/ai-plugin.json";
     public static final String PATH_SPEC = "/codeveloperengine.yaml";
-    public static final List<String> UNPROTECTED_PATHS = Arrays.asList(PATH_AI_PLUGIN_JSON, PATH_SPEC, "/favicon.ico");
+    public static final List<String> UNPROTECTED_PATHS = Arrays.asList(PATH_AI_PLUGIN_JSON, PATH_SPEC, "/favicon.ico",
+            "debugging/setauthcookie.html");
     public static final String LOCAL_CONFIG_DIR = ".cgptcodeveloper";
 
     /** Files that are inaccessible to the program. */
@@ -55,7 +56,7 @@ public class CoDeveloperEngine {
     /**
      * Exceptions overriding {@link #IGNORE_FILES_PATTERN}.
      */
-    public static final Pattern OVERRIDE_IGNORE_PATTERN = Pattern.compile(".*/.github/.*|.*/.content.xml|\\.chatgpt.*.md|\\.htaccess");
+    public static final Pattern OVERRIDE_IGNORE_PATTERN = Pattern.compile(".*/.github/.*|.*/.content.xml|\\.chatgpt.*.md|.*\\.htaccess");
 
     // private static final Gson GSON = new Gson();
 
