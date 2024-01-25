@@ -1,7 +1,7 @@
 # CoDeveloperGPTengine
 
 <div style="float: right; margin-left: 1em; margin-bottom: 1em;">
-    <img src="images/dalle/joinedkeyboard1.png" alt="Joined Keyboard Image" style="width: 15em; height: auto;" />
+    <img src="src/site/resources/images/dalle/joinedkeyboard1.png" alt="Joined Keyboard Image" style="width: 15em; height: auto;" />
 </div>
 
 Would you like to have ChatGPT list, search, read your local files, discuss them with you, modify them 
