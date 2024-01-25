@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Set GPT Secret</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Set GPT Secret</h2>
+    <p class="lead">This interface allows you to set a 'gptsecret' cookie for debugging purposes.</p>
+    <p>Debugging hints:</p>
+    <p>
+        When you want to try repeating the requests done by ChatGPT from the browser, you will get a
+        'service access token missing' header since the proper Authorization header is missing. If you want to debug
+        the Co-Developer GPT engine, you could use this page to set a cookie containing the gptsecret, instead.
+        For more debugging hints see Debugging.md in the project sources.
+    </p>
+    <p>
+        To set the cookie copy the value for the gptsecret you've chosen in
+        <code>$HOME/.cgptcodeveloperglobal/config.properties</code>
+        into the form below and submit it. Then you can use the browser to repeat requests.
+    </p>
+    <form id="gptSecretForm">
+        <div class="form-group">
+            <label for="gptsecret">GPT Secret:</label>
+            <input type="text" class="form-control" id="gptsecret" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Set Cookie</button>
+    </form>
+</div>
+
+<!-- JavaScript to handle the form submission -->
+<script>
+    document.getElementById('gptSecretForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var gptSecret = document.getElementById('gptsecret').value;
+        document.cookie = "CodevAccessToken=" + gptSecret + "; path=/";
+        alert('GPT Secret set successfully.');
+    });
+</script>
+</body>
+</html>
