@@ -112,9 +112,8 @@ https://medium.com/@guandika8/unleashing-chatgpt-plugin-kaguya-the-quantum-leap-
 
 https://github.com/taishi-i/awesome-ChatGPT-repositories
 https://github.com/e2b-dev/awesome-ai-agents
-https://github.com/formulahendry/awesome-gpt
+(https://github.com/formulahendry/awesome-gpt - no submission)
 https://github.com/taranjeet/awesome-gpts
-https://github.com/targed/awesome-plugins
 
 ## Struktur Eintrag:
 
