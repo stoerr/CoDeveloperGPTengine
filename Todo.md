@@ -111,20 +111,33 @@ https://medium.com/@guandika8/unleashing-chatgpt-plugin-kaguya-the-quantum-leap-
 ## Entries wanted for:
 
 https://github.com/taishi-i/awesome-ChatGPT-repositories
-https://github.com/e2b-dev/awesome-ai-agents
+https://github.com/e2b-dev/awesome-ai-agent
 (https://github.com/formulahendry/awesome-gpt - no submission)
-https://github.com/taranjeet/awesome-gpts
+(https://github.com/taranjeet/awesome-gpts - only actual GPTs)
 
 ## Struktur Eintrag:
 
 Short: Let a GPT collaborate with you as a co-developer on your local files and execute actions on your computer.
+Very short: Reads and modifies local source files and executes actions
 
 Name: CoDeveloperGPTengine
+
 Make a GPT work together with you on your local files and run actions on your computer. Let ChatGPT explore your code,
 discuss it with you, and assign it flexible tasks: coding, documenting, testing, building and fixing your software,
 or even pair-programming with you!
 
 Details:
+
+- Equips an OpenAI GPT with the capability to read and write files in a local directory and execute user-defined
+  actions (like builds or test executions) there
+- A command line tool provides actions to the GPT including Capabilities include listing, searching, reading and
+  modifying textfiles within the directory where the tool is launched, execute user-defined actions, retrieve URLs
+  as markdown
+- Command ChatGPT to discuss your code, investigate, write code or documentation, answer questions, fix bugs, fulfill
+  assistance tasks,
+  or tell it to run the build and fix things until it works
+- Language-independent - works with any programming language ChatGPT knows.
+- Specialize it by creating GPTs with your own instructions and knowledge
 
 - A command line tool that equips your personal OpenAI GPT with actions that operate on local files in the directory
   where the tool is launched.
@@ -139,6 +152,11 @@ Details:
 Links:
 Weblink: https://CoDeveloperGPTengine.stoerr.net/
 Githublink: https://github.com/stoerr/CoDeveloperGPTengine
-, ? Twitter, Linkedin, other
+Linkedin: https://www.linkedin.com/in/hans-peter-st%C3%B6rr-5944594/
+Twitter: https://twitter.com/HansPeterStoerr
+Other: https://www.stoerr.net/blog.html
+Email: hans-peter.stoerr@email.de
 
 Interactive Development Assistance: Get coding, documentation, testing, and building support from an AI-powered assist
+
+Banner: Format 1280 x 640 = 2:1 , bei 150dpi: 8,5333 * 4,2667
