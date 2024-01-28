@@ -22,7 +22,8 @@ started in.
 In contrast to other approaches like [AutoGPT](https://github.com/Significant-Gravitas/AutoGPT) this is not meant to
 autonomously execute extensive changes (which would likely require a lot of prompt engineering), but to enable the
 developer to flexibly use the AI within a ChatGPT chat session for various tasks both to analyze code or documentation
-and to make some changes.
+and to make some changes. A ChatGPT chat does, however, permit to trigger several actions in one message, so it's 
+also possible to e.g. tell it to run the build, fix errors and repeat until it succeeds.
 
 The project is quite stable and useable. In fact I use it regularily in my own development - both on itself and on
 my other projects. Using it does, however, require that you have a paid ChatGPT account that can use plugins / GPTs.
