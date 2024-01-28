@@ -6,6 +6,18 @@
     <!-- https://maven.apache.org/doxia/doxia-sitetools/doxia-site-model/site.html -->
 
     <body>
+        <head>
+            &#x3C;meta property=&#x22;og:image&#x22; content=&#x22;https://codevelopergptengine.stoerr.net/banner.png&#x22;/&#x3E;
+            &#x3C;script async src=&#x22;https://www.googletagmanager.com/gtag/js?id=G-SL01MYCNDC&#x22;&#x3E;&#x3C;/script&#x3E;
+            &#x3C;script&#x3E;
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag(&#x27;js&#x27;, new Date());
+
+            gtag(&#x27;config&#x27;, &#x27;G-SL01MYCNDC&#x27;);
+            &#x3C;/script&#x3E;
+        </head>
+
         <links>
             <item name="Hans-Peter Störr" href="http://www.stoerr.net/"/>
             <item name="On Github" href="https://github.com/stoerr/CoDeveloperGPTengine"/>

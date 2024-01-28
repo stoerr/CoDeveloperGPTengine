@@ -5,11 +5,11 @@
 
 # Co-Developer GPT Engine
 
-## Introduction
-
-<div style="float: right; margin-left: 1em; margin-bottom: 1em;">
-    <img src="images/dalle/joinedkeyboard1.png" alt="Joined Keyboard Image" style="width: 15em; height: auto;" />
+<div style="text-align: center; margin-bottom: 2em; margin-top: 2em;">
+    <img src="banner-l.png" alt="Co-Developer GPT engine banner" style="max-width: 100%;height: auto;max-height: 25em;"/>
 </div>
+
+## Introduction
 
 Would you like to have ChatGPT list, search, read your local files, discuss them with you, and modify them
 and have it execute (e.g. build and test)
@@ -22,7 +22,7 @@ started in.
 In contrast to other approaches like [AutoGPT](https://github.com/Significant-Gravitas/AutoGPT) this is not meant to
 autonomously execute extensive changes (which would likely require a lot of prompt engineering), but to enable the
 developer to flexibly use the AI within a ChatGPT chat session for various tasks both to analyze code or documentation
-and to make some changes. A ChatGPT chat does, however, permit to trigger several actions in one message, so it's 
+and to make some changes. A ChatGPT chat does, however, permit to trigger several actions in one message, so it's
 also possible to e.g. tell it to run the build, fix errors and repeat until it succeeds.
 
 The project is quite stable and useable. In fact I use it regularily in my own development - both on itself and on
