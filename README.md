@@ -1,8 +1,7 @@
 # CoDeveloperGPTengine
 
-<div style="float: right; margin-left: 1em; margin-bottom: 1em;">
-    <img src="src/site/resources/images/dalle/joinedkeyboard1.png" alt="Joined Keyboard Image" style="width: 15em; height: auto;" />
-</div>
+<img src="src/site/resources/images/dalle/joinedkeyboard1.png" alt="Joined Keyboard Image" style="width: 15em; 
+height: auto;" align="right" />
 
 Would you like to have ChatGPT list, search, read your local files, discuss them with you, modify them 
 and have it execute (e.g. build and test)
@@ -22,4 +21,6 @@ my other projects. Using it does, however, require that you have a paid
 
 For more information see the [documentation site](https://CoDeveloperGPTengine.stoerr.net/).
 
-[![Quick Demo on Youtube](https://img.youtube.com/vi/ubBhv2PUSEs/hqdefault.jpg)](https://www.youtube.com/watch?v=ubBhv2PUSEs)
+<a href="https://www.youtube.com/watch?v=ubBhv2PUSEs">
+    <img src="https://img.youtube.com/vi/ubBhv2PUSEs/hqdefault.jpg" alt="Quick Demo on Youtube" align="middle">
+</a>
