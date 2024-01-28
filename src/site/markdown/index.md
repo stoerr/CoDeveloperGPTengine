@@ -1,3 +1,12 @@
+---
+description: Let a ChatGPT collaborate with you as a co-developer to read and write your local files and execute actions on your computer.
+keywords:
+  - AI
+  - ChatGPT
+  - Software Development
+  - Productivity
+---
+
 <!-- https://github.blog/2008-12-19-github-ribbons/ -->
 <a href="https://github.com/stoerr/CoDeveloperGPTengine" style=" position: absolute; top: 0px; right: 0px; ">
   <img decoding="async" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_gray_6d6d6d.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" loading="lazy" data-recalc-dims="1"></img>
@@ -6,7 +15,8 @@
 # Co-Developer GPT Engine
 
 <div style="text-align: center; margin-bottom: 2em; margin-top: 2em;">
-    <img src="banner-l.png" alt="Co-Developer GPT engine banner" style="max-width: 100%;height: auto;max-height: 25em;"/>
+    <img src="banner.png" itemprop="image" alt="Co-Developer GPT engine banner" style="max-width: 100%;height: auto;max-height: 
+25em;"/>
 </div>
 
 ## Introduction

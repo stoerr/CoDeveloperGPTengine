@@ -7,7 +7,10 @@
 
     <body>
         <head>
-            &#x3C;meta property=&#x22;og:image&#x22; content=&#x22;https://codevelopergptengine.stoerr.net/banner.png&#x22;/&#x3E;
+            &#x3C;meta property=&#x22;og:image&#x22; content=&#x22;https://codevelopergptengine.stoerr.net/banner.png&#x22;
+            /&#x3E;
+            &#x3C;meta property=&#x22;twitter:image&#x22; content=&#x22;https://codevelopergptengine.stoerr.net/banner.png&#x22;
+            /&#x3E;
             &#x3C;script async src=&#x22;https://www.googletagmanager.com/gtag/js?id=G-SL01MYCNDC&#x22;&#x3E;&#x3C;/script&#x3E;
             &#x3C;script&#x3E;
             window.dataLayer = window.dataLayer || [];
