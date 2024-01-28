@@ -22,6 +22,6 @@ my other projects. Using it does, however, require that you have a paid
 
 For more information see the [documentation site](https://CoDeveloperGPTengine.stoerr.net/).
 
-<a href="https://www.youtube.com/watch?v=ubBhv2PUSEs">
-    <img src="https://img.youtube.com/vi/ubBhv2PUSEs/hqdefault.jpg" alt="Quick Demo on Youtube">
-</a>
+## A quick demo
+
+[![Quick Demo on Youtube](src/site/resources/videos/CoDeveloperGPTengine-ytcover.png)](https://www.youtube.com/watch?v=ubBhv2PUSEs)
