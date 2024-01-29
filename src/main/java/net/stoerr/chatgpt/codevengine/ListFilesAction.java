@@ -107,7 +107,7 @@ public class ListFilesAction extends AbstractPluginAction {
                         .collect(Collectors.toList());
             } else if (files.size() > 100) {
                 long directoryCount = paths.stream().map(Path::getParent).distinct().count();
-                throw sendError(resp, 404, "Found " + files.size() + " files in " + directoryCount + " directories - please use a more specific path or filePathRegex");
+                throw sendError(resp, 404, "Found " + files.size() + " files in " + directoryCount + " directories - please use a more specific path or filePathRegex, or use listDirectories instead to get an overview and then list specific directories you're interested in.");
             }
             byte[] response = (String.join("\n", files) + "\n").getBytes(StandardCharsets.UTF_8);
             resp.setContentLength(response.length);
