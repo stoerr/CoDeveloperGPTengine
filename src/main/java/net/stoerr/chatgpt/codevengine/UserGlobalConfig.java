@@ -1,5 +1,8 @@
 package net.stoerr.chatgpt.codevengine;
 
+import static net.stoerr.chatgpt.codevengine.CoDeveloperEngine.LOCAL_CONFIG_DIR;
+import static net.stoerr.chatgpt.codevengine.CoDeveloperEngine.currentDir;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -38,7 +41,7 @@ public class UserGlobalConfig {
      * The users global configuration directory at ~/.cgptcodeveloperglobal .
      */
     Path configDir = Paths.get(System.getProperty("user.home"), ".cgptcodeveloperglobal");
-    Path configFile = configDir.resolve("https.properties");
+    Path configFile;
 
     /**
      * The port to use for https.
@@ -79,9 +82,14 @@ public class UserGlobalConfig {
         Properties config;
         configDir = globalConfigDir != null ? Paths.get(globalConfigDir) :
                 Paths.get(System.getProperty("user.home"), ".cgptcodeveloperglobal");
-        configFile = configDir.resolve("config.properties");
+        configFile = currentDir.resolve(LOCAL_CONFIG_DIR);
         if (!configFile.toFile().exists()) {
-            TbUtils.logError("Could not find global configuration file " + configFile + " - https disabled.");
+            configFile = configDir.resolve("config.properties");
+        }
+        if (!configFile.toFile().exists()) {
+            TbUtils.logError("Could not find global configuration file " + configFile
+                    + " and also no local configuration file " + currentDir.resolve(LOCAL_CONFIG_DIR)
+                    + " - https disabled.");
             return false;
         }
         config = new Properties();

@@ -16,7 +16,7 @@ developer to employ the AI flexibly within a ChatGPT chat session for various ta
 changes or execute configured actions like builds and tests. A ChatGPT chat does, however, permit to trigger several
 actions in one message, so it's also possible to e.g. tell it to run the build, fix errors and repeat until it succeeds.
 
-The project is stable and useable. In fact I use it regularily in my own development - both on itself and on
+The project is stable and useable. In fact I use it regularly in my own development - both on itself and on
 my other projects. Using it does, however, require that you have a paid
 [ChatGPT](https://chat.openai.com/) account to use plugins / GPTs.
 

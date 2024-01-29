@@ -2,6 +2,8 @@
 
 These are possible later plans, not urgent.
 
+!! Site config
+
 ## Improvements
 
 - Meta-GPT that answers questions about it?
@@ -10,7 +12,6 @@ These are possible later plans, not urgent.
 - ignore stuff in .gitignore?
 - ??? How to be a regular plugin?
 - Compare with Kaguaya
-- License?
 - announce somewhere. tinyurl.com/29e7g8co , https://github.com/taishi-i/awesome-ChatGPT-repositories
 - run in docker
 - Extend searh and replace message: if search string can be found with other indentation, report about that inc. the
@@ -89,23 +90,6 @@ Feedback action.
 
 https://github.com/smol-ai/developer - works on github creating PRs
 
-## Naming
-
-Aspekte: GPT, Co-Developer, Tools, major point: Local files
-portmanteau suggestions related to ChatGPT + Co-Developer
-
-Coding Companion? Co-Developer? Software Sidekick? Coding Sidekick? GPTCoDev? GPTCoDeveloper?
-
-GPTCoDev , GPTCoCoder, GPT CodeSmith
-
-AI LocalDev Tool
-Co-Developer Actions
-GPT Local DevAssistant
-CoDeveloperGPTengine
-GPT DevAction Lab
-GPT CoDeveloper tools
-CoDeveloper GPT tools
-
 https://medium.com/@guandika8/unleashing-chatgpt-plugin-kaguya-the-quantum-leap-in-the-coding-assistant-and-game-changer-weve-2e4fcd08de4d
 
 ## Entries wanted for:
@@ -118,9 +102,13 @@ https://github.com/e2b-dev/awesome-ai-agent
 ## Struktur Eintrag:
 
 Short: Let a GPT collaborate with you as a co-developer on your local files and execute actions on your computer.
-Very short: Reads and modifies local source files and executes actions
 
-Name: CoDeveloperGPTengine
+Alternative: Let a ChatGPT collaborate with you as a co-developer to read and write your local files and execute 
+actions on your computer.
+
+Very short: ChatGPT reads and modifies local source files and executes actions
+
+Name: Co-Developer GPT engine
 
 Make a GPT work together with you on your local files and run actions on your computer. Let ChatGPT explore your code,
 discuss it with you, and assign it flexible tasks: coding, documenting, testing, building and fixing your software,
@@ -155,8 +143,22 @@ Githublink: https://github.com/stoerr/CoDeveloperGPTengine
 Linkedin: https://www.linkedin.com/in/hans-peter-st%C3%B6rr-5944594/
 Twitter: https://twitter.com/HansPeterStoerr
 Other: https://www.stoerr.net/blog.html
+Other: https://codevelopergptengine.stoerr.net/banner.png
 Email: hans-peter.stoerr@email.de
 
 Interactive Development Assistance: Get coding, documentation, testing, and building support from an AI-powered assist
 
-Banner: Format 1280 x 640 = 2:1 , bei 150dpi: 8,5333 * 4,2667
+## Postings about it
+
+- https://www.stoerr.net/blog/2024-01-07-co-developer-gpt-engine.html
+- https://medium.com/@yu4cheem/the-co-developer-gpt-engine-creating-gpts-that-can-work-on-your-local-files-29ef9f5ac80f
+- https://www.youtube.com/watch?v=ubBhv2PUSEs
+- https://twitter.com/HansPeterStoerr/status/1744091597149475005
+
+Possible channels: Twitter, LinkedIn, Xing, Blog, ? OpenAI
+
+Canonical link: https://CoDeveloperGPTengine.stoerr.net/
+
+### TODO
+
+If you like to employ the arguably currently most advanced public AI, ChatGPT, for your software development - how about trying my Co-Developer GPT engine? It allows ChatGPT to look directly at the files in a local directory, modify them or write new ones, execute user-configured actions there. So it's much easier discussing your code with ChatGPT. And you can give it small tasks there: answer questions, make documentation, modify code, create tests, even run the build and fix errors. Just like your personal Co-Developer:
