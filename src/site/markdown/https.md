@@ -19,15 +19,6 @@ Each time before using the engine you have to start the serveo tunnel:
 Your engine URL for ChatGPT will be https://your-desired-domain-prefix.serveo.net/ in this example. To check whether
 it works you can call it up in a browser, after starting the developers engine.
 
-### [LocalTunnel](https://theboroer.github.io/localtunnel-www/)
-
-[LocalTunnel](https://theboroer.github.io/localtunnel-www/) is similar to serveo. You have to install a client, and then
-set up a tunnel. Pick an uncommon prefix, since everybody can use it.
-
-    lt -s your-desired-domain-prefix -p 3002
-
-Your engine URL for ChatGPT will be your-desired-domain-prefix.loca.lt in this example.
-
 ## Using paid services
 
 There are several paid services similar to Serveo and LocalTunnel. I haven't tried them, but they should work, too:
@@ -52,5 +43,19 @@ Fritz.Box like I do, you could do the following:
   mode
 
 You need to get a certificate for your hostname, e.g. with https://letsencrypt.org/. I did it, but
-since all that is a bit complicated, I'm only describe this if you ask me. :-)  One advantage is that you don't need to
-remember to start and stop a tunnel.
+since all that is a bit complicated, I'm only going to describe this if you ask me. :-)  One advantage is that you 
+don't need to remember to start and stop a tunnel.
+
+## Services that do (probably) not work
+
+If you feel like experimenting: [LocalTunnel](https://theboroer.github.io/localtunnel-www/) might or might not
+work - as of 1/2024 I couldn't get it to work anymore, it fails silently in ChatGPT without any error message in 
+ChatGPT. Perhaps it'll work later again.
+The command line that previously was working is this for an engine URL of your-desired-domain-prefix.loca.lt :
+
+    lt --print-requests=true -s your-desired-domain-prefix -p 3002
+
+<!-- 
+The problem is probably that it requires entering a password if you use it
+from a browser - except if the UserAgent header is set to something unusual. Not quite sure what ChatGPT sets as an
+UserAgent, probably that isn't counted as unusual anymore. -->
