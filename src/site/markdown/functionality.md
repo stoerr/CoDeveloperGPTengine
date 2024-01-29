@@ -35,8 +35,8 @@ Here are some examples of how to use the `Co-Developer GPT Engine`:
   operation. In ChatGPT, you would ask the AI to execute a specific action, and it would send a request to the plugin to
   perform this operation. The shell script should be located at `.cgptfmgr/{actionName}.sh`, where `{actionName}` is a
   parameter provided in the query string. The content is passed as standard input to the shell script. Some examples
-  are in [.cgptcodeveloper/](.cgptcodeveloper/) and
-  [src/test/resources/testdir/.cgptcodeveloper](src/test/resources/testdir/.cgptcodeveloper) .
+  are in [.cgptcodeveloper/](https://github.com/stoerr/CoDeveloperGPTengine/tree/develop/.cgptcodeveloper) and
+  [src/test/resources/testdir/.cgptcodeveloper](https://github.com/stoerr/CoDeveloperGPTengine/tree/develop/src/test/resources/testdir/.cgptcodeveloper) .
 
 - **Fetch the text content of an URL**: gives ChatGPT simple web access: this can perform a GET request and returns
   the text content of the URL (not the HTML) to ChatGPT.

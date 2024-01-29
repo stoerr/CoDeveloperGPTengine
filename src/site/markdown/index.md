@@ -3,8 +3,10 @@ description: Let a ChatGPT collaborate with you as a co-developer to read and wr
 keywords:
   - AI
   - ChatGPT
+  - GPT
   - Software Development
   - Productivity
+  - CoDeveloperGPTengine
 ---
 
 <!-- https://github.blog/2008-12-19-github-ribbons/ -->
@@ -15,8 +17,8 @@ keywords:
 # Co-Developer GPT Engine
 
 <div style="text-align: center; margin-bottom: 2em; margin-top: 2em;">
-    <img src="banner.png" itemprop="image" alt="Co-Developer GPT engine banner" style="max-width: 100%;height: auto;max-height: 
-25em;"/>
+    <img src="banner.png" itemprop="image" alt="Co-Developer GPT engine banner" 
+         style="max-width: 100%; height: auto; max-height: 25em;"/>
 </div>
 
 ## Introduction
@@ -35,7 +37,7 @@ developer to flexibly use the AI within a ChatGPT chat session for various tasks
 and to make some changes. A ChatGPT chat does, however, permit to trigger several actions in one message, so it's
 also possible to e.g. tell it to run the build, fix errors and repeat until it succeeds.
 
-The project is quite stable and useable. In fact I use it regularily in my own development - both on itself and on
+The project is quite stable and useable. In fact I use it regularly in my own development - both on itself and on
 my other projects. Using it does, however, require that you have a paid ChatGPT account that can use plugins / GPTs.
 There are three ways to use it within ChatGPT: put it as actions into a GPT, register it as an unverified plugin or run
 it as a localhost plugin if you are registered as a plugin developer.

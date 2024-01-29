@@ -49,7 +49,7 @@ Since the plugin is now accessed from the internet, we need some kind of authent
 ## Extending the plugin for SSL
 
 We need a common storage place for the configuration that is accessible from all the directories where the plugin is 
-run - ~/.cgptcodeveloperglobal/ . We read a https.properties from there that contains the following properties:
+run - ~/.cgptcodeveloperglobal/ . We read a config.properties from there that contains the following properties:
 httpsport=3003
 keystorepath=keystore.p12
 keystorepasswordpath=keystore.p12.password
