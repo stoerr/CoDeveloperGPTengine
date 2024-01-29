@@ -2,15 +2,24 @@
 <project xmlns="http://maven.apache.org/DECORATION/1.6.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/DECORATION/1.6.0 http://maven.apache.org/xsd/decoration-1.6.0.xsd"
-         name="CoDeveloperGPTengine">
+         name="Co-Developer GPT engine - ChatGPT reads and modifies local source files and executes action">
     <!-- https://maven.apache.org/doxia/doxia-sitetools/doxia-site-model/site.html -->
 
     <body>
+        <!--
+        <meta property="og:image" content="https://codevelopergptengine.stoerr.net/banner.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="627" />
+        <meta property="og:image:type" content="image/png" />
+        <meta name=”twitter:card” content=”summary” />
+        -->
         <head>
             &#x3C;meta property=&#x22;og:image&#x22; content=&#x22;https://codevelopergptengine.stoerr.net/banner.png&#x22;
             /&#x3E;
-            &#x3C;meta property=&#x22;twitter:image&#x22; content=&#x22;https://codevelopergptengine.stoerr.net/banner.png&#x22;
-            /&#x3E;
+            &#x3C;meta property=&#x22;og:image:width&#x22; content=&#x22;1200&#x22; /&#x3E;
+            &#x3C;meta property=&#x22;og:image:height&#x22; content=&#x22;627&#x22; /&#x3E;
+            &#x3C;meta property=&#x22;og:image:type&#x22; content=&#x22;image/png&#x22; /&#x3E;
+            &#x3C;meta name=&#x201D;twitter:card&#x201D; content=&#x201D;summary&#x201D; /&#x3E;
             &#x3C;script async src=&#x22;https://www.googletagmanager.com/gtag/js?id=G-SL01MYCNDC&#x22;&#x3E;&#x3C;/script&#x3E;
             &#x3C;script&#x3E;
             window.dataLayer = window.dataLayer || [];
