@@ -103,39 +103,23 @@ https://github.com/e2b-dev/awesome-ai-agent
 
 Short: Let a GPT collaborate with you as a co-developer on your local files and execute actions on your computer.
 
-Alternative: Let a ChatGPT collaborate with you as a co-developer to read and write your local files and execute 
+Alternative: Let a ChatGPT collaborate with you as a co-developer to read and write your local files and execute
 actions on your computer.
 
-Very short: ChatGPT reads and modifies local source files and executes actions
+Very short:
+12345678901234567890123456789012345678901234567890
+Build OpenAI GPTs that work with your local files
 
 Name: Co-Developer GPT engine
 
-Make a GPT work together with you on your local files and run actions on your computer. Let ChatGPT explore your code,
-discuss it with you, and assign it flexible tasks: coding, documenting, testing, building and fixing your software,
-or even pair-programming with you!
-
 Details:
 
-- Equips an OpenAI GPT with the capability to read and write files in a local directory and execute user-defined
-  actions (like builds or test executions) there
-- A command line tool provides actions to the GPT including Capabilities include listing, searching, reading and
-  modifying textfiles within the directory where the tool is launched, execute user-defined actions, retrieve URLs
-  as markdown
-- Command ChatGPT to discuss your code, investigate, write code or documentation, answer questions, fix bugs, fulfill
-  assistance tasks,
-  or tell it to run the build and fix things until it works
-- Language-independent - works with any programming language ChatGPT knows.
-- Specialize it by creating GPTs with your own instructions and knowledge
+Make a GPT work together with you on your local files and run actions on your computer. Tell ChatGPT to explore your code, discuss it with you, and assign it flexible tasks: coding, documenting, testing, building and fixing your software, even pair-programming with you or tell it to run the build and fix things until the tests work!
 
-- A command line tool that equips your personal OpenAI GPT with actions that operate on local files in the directory
-  where the tool is launched.
-- Capabilities include listing, searching, reading, and modifying textfiles within that directory.
-- Executes configured actions like builds and tests on your computer.
-- Provides examples of how to configure a GPT to use these actions, or allows you to add your own
-  instructions / knowledge.
-- Language-independent - works with any programming language ChatGPT knows.
-- Interactive development assistance: discussion, coding, documentation, testing, and building support, all powered by
-  AI.
+- Equips an OpenAI GPT with the capability to read and write files in a local directory and execute user-defined actions (like builds or test executions) there
+- A command line tool provides actions to the GPT including capabilities include listing, searching, reading and modifying textfiles within the directory where the tool is launched, execute user-defined actions, retrieve URLs as markdown
+- Language-independent - works with any programming language ChatGPT knows, or text files in general
+- Specialize it by creating GPTs with your own instructions and knowledge
 
 Links:
 Weblink: https://CoDeveloperGPTengine.stoerr.net/
@@ -145,8 +129,6 @@ Twitter: https://twitter.com/HansPeterStoerr
 Other: https://www.stoerr.net/blog.html
 Other: https://codevelopergptengine.stoerr.net/banner.png
 Email: hans-peter+publicsoftware@stoerr.net
-
-Interactive Development Assistance: Get coding, documentation, testing, and building support from an AI-powered assist
 
 ## Postings about it
 
@@ -161,4 +143,14 @@ Canonical link: https://CoDeveloperGPTengine.stoerr.net/
 
 ### TODO
 
-If you like to employ the arguably currently most advanced public AI, ChatGPT, for your software development - how about trying my Co-Developer GPT engine? It allows ChatGPT to look directly at the files in a local directory, modify them or write new ones, execute user-configured actions there. So it's much easier discussing your code with ChatGPT. And you can give it small tasks there: answer questions, make documentation, modify code, create tests, even run the build and fix errors. Just like your personal Co-Developer:
+If you like to employ the arguably currently most advanced public #AI, #openai #chatgpt , for your
+#softwaredevelopment - how about trying my Co-Developer #gpt engine? It allows ChatGPT to look directly at the files in
+a local directory, modify them or write new ones, execute user-configured actions there. So it's much easier discussing
+your code with ChatGPT. And you can give it small tasks there: answer questions, make documentation, modify code, create
+tests, even run the build and fix errors. Just like your personal Co-Developer:
+
+If you like to employ the arguably currently most advanced public AI, ChatGPT, for your software development - how about
+trying my Co-Developer GPT engine? It allows ChatGPT to look directly at the files in a local directory, modify them or
+write new ones, execute user-configured actions there. So it's much easier discussing your code with ChatGPT. And you
+can give it small tasks there: answer questions, make documentation, modify code, create tests, even run the build and
+fix errors. Just like your personal Co-Developer: https://CoDeveloperGPTengine.stoerr.net/

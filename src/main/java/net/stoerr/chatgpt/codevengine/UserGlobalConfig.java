@@ -82,8 +82,10 @@ public class UserGlobalConfig {
         Properties config;
         configDir = globalConfigDir != null ? Paths.get(globalConfigDir) :
                 Paths.get(System.getProperty("user.home"), ".cgptcodeveloperglobal");
-        configFile = currentDir.resolve(LOCAL_CONFIG_DIR);
-        if (!configFile.toFile().exists()) {
+        Path localConfigFile = currentDir.resolve(LOCAL_CONFIG_DIR).resolve("config.properties");
+        if (localConfigFile.toFile().exists()) {
+            configFile = localConfigFile;
+        } else {
             configFile = configDir.resolve("config.properties");
         }
         if (!configFile.toFile().exists()) {
@@ -96,8 +98,9 @@ public class UserGlobalConfig {
         try (InputStream is = Files.newInputStream(configFile)) {
             config.load(is);
         } catch (IOException e) {
-            throw new ContextedRuntimeException(e);
+            throw new ContextedRuntimeException(configFile.toString(), e);
         }
+        TbUtils.logInfo("Reading configuration from " + configFile);
 
         gptSecret = config.getProperty("gptsecret");
         if (null == gptSecret || gptSecret.trim().length() < 8) {

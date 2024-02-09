@@ -48,7 +48,7 @@ also [my blog](https://www.stoerr.net/blog/codeveloper) for some background.
 ## Functionality
 
 <div style="float: right; margin-left: 2em; margin-bottom: 2em;">
-<iframe src="https://www.youtube.com/embed/ubBhv2PUSEs?si=Vk-QKH6rIq8oktPP" title="YouTube video player" 
+<iframe src="https://www.youtube.com/embed/ubBhv2PUSEs?si=Vk-QKH6rIq8oktPP" title="Quick Demo" 
 frameborder="0" width="560" height="315"
 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 allowfullscreen="allowfullscreen"></iframe>
