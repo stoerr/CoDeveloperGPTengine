@@ -128,7 +128,6 @@ Linkedin: https://www.linkedin.com/in/hans-peter-st%C3%B6rr-5944594/
 Twitter: https://twitter.com/HansPeterStoerr
 Other: https://www.stoerr.net/blog.html
 Other: https://codevelopergptengine.stoerr.net/banner.png
-Email: hans-peter+publicsoftware@stoerr.net
 
 ## Postings about it
 
