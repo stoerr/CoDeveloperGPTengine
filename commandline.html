@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<!doctype html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="generator" content="#generatedBy()" />
+    <title>CoDeveloperGPTengine – Command line and configuration</title>
+    <link rel="icon" href="./img/favicons/favicon.ico">
+    <!-- CSS Stylesheets, site.css is included so downstream projects can override them as appropriate. -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/bootstrap-icons.css" />
+    <link rel="stylesheet" href="./css/maven-base.css" />
+    <link rel="stylesheet" href="./css/prettify.css" />
+    <link rel="stylesheet" href="https://bootswatch.com/5/cerulean/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/maven-theme.css" />
+    <link rel="stylesheet" href="./css/site.css" />
+  </head>
+  <body class="d-flex flex-column h-100">
+
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+        <div id="projectBarContainer" class="container-fluid justify-content-center">
+<a href="#" id="navbarIconLink" title="Navbar Brand Icon" class="navbar-brand text-wrap ps-2"> CoDeveloperGPTengine
+</a>          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div id="navbarCollapse" class="collapse navbar-collapse flex-grow-0">
+            <ul id="navbarList" class="navbar-nav">
+             <li class="nav-item dropdown">
+               <a class="nav-link dropdown-toggle" href="#" id="OverviewMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Overview <b class="caret"></b></a>
+               <ul class="dropdown-menu" aria-labelledby="OverviewMenuDropdown">
+                 <li class="nav-item dropdown-item" id="IntroductionDropdown">
+                   <a href="index.html" id="IntroductionDropdownLink" title="Introduction"  class="dropdown-item" >Introduction</a>                 </li>
+                 <li class="nav-item dropdown-item" id="FunctionalityDropdown">
+                   <a href="functionality.html" id="FunctionalityDropdownLink" title="Functionality"  class="dropdown-item" >Functionality</a>                 </li>
+                 <li class="nav-item dropdown-item" id="QuickstartDropdown">
+                   <a href="quickstart.html" id="QuickstartDropdownLink" title="Quickstart"  class="dropdown-item" >Quickstart</a>                 </li>
+               </ul>
+             </li>
+             <li class="nav-item dropdown">
+               <a class="nav-link dropdown-toggle" href="#" id="Installation / ConfigurationMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Installation / Configuration <b class="caret"></b></a>
+               <ul class="dropdown-menu" aria-labelledby="Installation / ConfigurationMenuDropdown">
+                 <li class="nav-item dropdown-item" id="Local installationDropdown">
+                   <a href="install.html" id="Local installationDropdownLink" title="Local installation"  class="dropdown-item" >Local installation</a>                 </li>
+                 <li class="nav-item dropdown-item" id="Command lineDropdown">
+                   <a title="Command line" class="dropdown-item">Command line</a>                 </li>
+                 <li class="nav-item dropdown-item" id="Install into a GPTDropdown">
+                   <a href="gpt.html" id="Install into a GPTDropdownLink" title="Install into a GPT"  class="dropdown-item" >Install into a GPT</a>                 </li>
+                 <li class="nav-item dropdown-item" id="Install as ChatGPT PluginDropdown">
+                   <a href="plugin.html" id="Install as ChatGPT PluginDropdownLink" title="Install as ChatGPT Plugin"  class="dropdown-item" >Install as ChatGPT Plugin</a>                 </li>
+                 <li class="nav-item dropdown-item" id="Access via HTTPSDropdown">
+                   <a href="https.html" id="Access via HTTPSDropdownLink" title="Access via HTTPS"  class="dropdown-item" >Access via HTTPS</a>                 </li>
+                 <li class="nav-item dropdown-item" id="ConfigurationDropdown">
+                   <a href="configuration.html" id="ConfigurationDropdownLink" title="Configuration"  class="dropdown-item" >Configuration</a>                 </li>
+               </ul>
+             </li>
+             <li class="nav-item dropdown">
+               <a class="nav-link dropdown-toggle" href="#" id="Project DocumentationMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Project Documentation <b class="caret"></b></a>
+               <ul class="dropdown-menu" aria-labelledby="Project DocumentationMenuDropdown">
+                 <li class="nav-item dropdown-item dropdown-submenu">
+                   <a href="project-info.html" id="Project InformationDropdownLink" title="Project Information"  class="dropdown-item" >Project Information</a>
+                   <ul id="Project DocumentationMenuSubMenuDropdown" class="dropdown-menu submenu">
+                     <li class="nav-item dropdown-item">
+                       <a href="dependencies.html" id="DependenciesDropdownLink" title="Dependencies"  class="dropdown-item" >Dependencies</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="dependency-info.html" id="Dependency InformationDropdownLink" title="Dependency Information"  class="dropdown-item" >Dependency Information</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="distribution-management.html" id="Distribution ManagementDropdownLink" title="Distribution Management"  class="dropdown-item" >Distribution Management</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="index.html" id="AboutDropdownLink" title="About"  class="dropdown-item" >About</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="plugin-management.html" id="Plugin ManagementDropdownLink" title="Plugin Management"  class="dropdown-item" >Plugin Management</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="plugins.html" id="PluginsDropdownLink" title="Plugins"  class="dropdown-item" >Plugins</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="summary.html" id="SummaryDropdownLink" title="Summary"  class="dropdown-item" >Summary</a>                     </li>
+                   </ul>
+                 </li>
+                 <li class="nav-item dropdown-item dropdown-submenu">
+                   <a href="project-reports.html" id="Project ReportsDropdownLink" title="Project Reports"  class="dropdown-item" >Project Reports</a>
+                   <ul id="Project DocumentationMenuSubMenuDropdown" class="dropdown-menu submenu">
+                     <li class="nav-item dropdown-item">
+                       <a href="failsafe-report.html" id="FailsafeDropdownLink" title="Failsafe"  class="dropdown-item" >Failsafe</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="surefire-report.html" id="SurefireDropdownLink" title="Surefire"  class="dropdown-item" >Surefire</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="jacoco-aggregate/index.html" id="JaCoCo AggregateDropdownLink" title="JaCoCo Aggregate"  class="dropdown-item" >JaCoCo Aggregate</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="apidocs/index.html" id="JavadocDropdownLink" title="Javadoc"  class="dropdown-item" >Javadoc</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="testapidocs/index.html" id="Test JavadocDropdownLink" title="Test Javadoc"  class="dropdown-item" >Test Javadoc</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="dependency-updates-report.html" id="Dependency Updates ReportDropdownLink" title="Dependency Updates Report"  class="dropdown-item" >Dependency Updates Report</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="plugin-updates-report.html" id="Plugin Updates ReportDropdownLink" title="Plugin Updates Report"  class="dropdown-item" >Plugin Updates Report</a>                     </li>
+                   </ul>
+                 </li>
+               </ul>
+             </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <nav id="projectBar" class="navbar py-0 navbar-dark bg-primary" aria-label="projectBarList">
+        <div id="projectBarContainer" class="container-fluid">
+
+          <div id="projectBaDateVersionContainer" class="justify-content-start">
+            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2024-02-11</span>
+            <span id="projectDateVersionSpacer" class="px-1 navbar-text">|</span>
+            <span id="projectVersion" class="px-1 navbar-text">Version: 3.0.1</span>
+          </div>
+          <div id="breadcrumbSpacer" ></div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="flex-shrink-0" role="main">
+      <div class="container mt-3 rounded">
+<section>
+<h1>Command line and configuration</h1>
+<p>I assume you have <a href="install.html">installed</a> the program and created a script <code>codeveloperengine</code> in your path
+that starts it. With argument -h or &#x2013;help you get a short help message with the options available.</p>
+
+<div class="verbatim">
+<pre><code>version: : CoDeveloperEngine version: 3.0
+usage: options are
+    -g,--globalconfigdir {arg}   Directory for global configuration (default:
+                                 ~/.cgptcodeveloperglobal/
+    -h,--help                    Display this help message
+    -l,--local                   Only use local configuration via options -
+                                 ignore any global configuration
+    -p,--port {arg}              Port number
+    -w,--write                   Permit file writes and action executions
+</code></pre></div>
+<ul>
+
+<li><code>-p</code>: To specify the port number, include -p followed by a valid port number. If no -p option is given, the default
+port number 3002 is used.</li>
+<li><code>-w</code>: If you include -w, writing and executing actions will be enabled. If there's no -w option mentioned in the
+command, writing and executing actions are disabled by default.</li>
+<li><code>-h</code>: This option is to display the help message. It'll also be shown when there's an exception in parsing options.</li>
+<li><code>-g</code>: This option is used to specify the directory path for global configuration. If it's not mentioned, the default
+directory &#x201c;~/.cgptcodeveloperglobal/&#x201d; is used.</li>
+<li><code>-l</code>: This option if present, is used to ensure that only command line configuration is used and global configuration
+is ignored.</li>
+</ul><section>
+<h2>Global configuration file</h2>
+<p>The global configuration file defines several properties that are important for the communication with ChatGPT.
+Normally it's put into the directory <code>~/.cgptcodeveloperglobal/</code> and is named <code>config.properties</code>, for example:</p>
+
+<div class="verbatim">
+<pre><code>gptsecret=examplesecret
+openaitoken=exampletoken
+</code></pre></div>
+<p>where:</p>
+<ul>
+
+<li><code>gptsecret</code> A secret that is configured in both the GPT and locally to make sure only your own GPT can access the
+program.</li>
+<li><code>openaitoken</code> A token OpenAI privides after entering the gptSecret when deploying as a plugin - used to identify
+OpenAI to the plugin. (Not needed for GPTs.)</li>
+</ul>
+<p>If you want to run it without a tunnel but to provide a HTTPS interface by itself (compare <a href="https.html">Access via HTTPS</a>)
+there can also be the following properties:</p>
+<ul>
+
+<li><code>httpsPort</code> The port the program should open for HTTPS (has to be reachable from the internet as port 443)</li>
+<li><code>keystorePath</code> The path to the keystore file.</li>
+<li><code>keystorePassword</code> The password for the keystore.</li>
+<li><code>domain</code> The external domain through which the application is accessible.</li>
+<li><code>externport</code> The external port through which the application is reachable (optional with default 443, something else
+than 443 probably won't work with ChatGPT)</li>
+</ul></section><section>
+<h2>Local configuration directory</h2>
+<p>If you have a directory named .cgptcodeveloper/ in the directory where you start the program, a log file <code>.requestlog.txt</code>
+will be put there with the requests and responses to ChatGPT. This is useful for debugging or just to see what's going
+on.</p>
+<p>Second, you can put there a number of shell scripts *.sh that can be executed from the program. It's a good idea to
+also put a file listActions.sh there that lists the available actions:</p>
+
+<div class="verbatim">
+<pre><code class="language-bash"># Plugin Action: list all available actions
+cd .cgptcodeveloper || exit 1
+for fil in *.sh; do
+echo &quot;${fil%.sh} :  &quot; $(egrep -o &quot;Plugin Action: .*&quot; &quot;$fil&quot; | sed -e 's/Plugin Action: //')
+done
+</code></pre></div>
+<p>It requires a comment <code># Plugin Action:</code> to be present in each *.sh file that explains the function of the action.</p>
+<p>More examples can be found in the
+<a href="https://github.com/stoerr/CoDeveloperGPTengine/tree/develop/.cgptcodeveloper" class="externalLink">.cgptcodeveloper directory of the project</a> .</p></section><section>
+<h2>Usage via docker image</h2>
+<p>If you want to make extra sure that the program cannot access anything outside of the current directory and
+cannot access anything on your local machine and want to try dangerous things like executing actions that immediately
+run ChatGPT generated code , you can also use it from the docker image
+<a href="https://hub.docker.com/repository/docker/stoerr/co-developer-gpt-engine" class="externalLink">stoerr/co-developer-gpt-engine</a>.</p></section></section>
+      </div>
+    </main>
+
+  <footer class="footer mt-auto py-4 bg-light text-dark">
+    <div class="container-fluid text-md-left">
+        <div class="row">
+          <div id="socialMediaDiv" class="col-md-5 col-lg-4 col-xl-4 mx-auto mb-md-0">
+
+            <div id="copyrightDiv" class="pt-3">
+              <p>&#169;
+      2024
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./js/jquery.slim.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/prettify.js"></script>
+
+    <!-- Used to enable the code-prettify running on the view. -->
+    <script>
+        addEventListener('load', function(event) { PR.prettyPrint(); }, false);
+    </script>
+  </body>

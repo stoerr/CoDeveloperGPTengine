@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<!doctype html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="generator" content="#generatedBy()" />
+    <title>CoDeveloperGPTengine – Plugin Updates Report</title>
+    <link rel="icon" href="./img/favicons/favicon.ico">
+    <!-- CSS Stylesheets, site.css is included so downstream projects can override them as appropriate. -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/bootstrap-icons.css" />
+    <link rel="stylesheet" href="./css/maven-base.css" />
+    <link rel="stylesheet" href="./css/prettify.css" />
+    <link rel="stylesheet" href="https://bootswatch.com/5/cerulean/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/maven-theme.css" />
+    <link rel="stylesheet" href="./css/site.css" />
+  </head>
+  <body class="d-flex flex-column h-100">
+
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+        <div id="projectBarContainer" class="container-fluid justify-content-center">
+<a href="#" id="navbarIconLink" title="Navbar Brand Icon" class="navbar-brand text-wrap ps-2"> CoDeveloperGPTengine
+</a>          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div id="navbarCollapse" class="collapse navbar-collapse flex-grow-0">
+            <ul id="navbarList" class="navbar-nav">
+             <li class="nav-item dropdown">
+               <a class="nav-link dropdown-toggle" href="#" id="OverviewMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Overview <b class="caret"></b></a>
+               <ul class="dropdown-menu" aria-labelledby="OverviewMenuDropdown">
+                 <li class="nav-item dropdown-item" id="IntroductionDropdown">
+                   <a href="index.html" id="IntroductionDropdownLink" title="Introduction"  class="dropdown-item" >Introduction</a>                 </li>
+                 <li class="nav-item dropdown-item" id="FunctionalityDropdown">
+                   <a href="functionality.html" id="FunctionalityDropdownLink" title="Functionality"  class="dropdown-item" >Functionality</a>                 </li>
+                 <li class="nav-item dropdown-item" id="QuickstartDropdown">
+                   <a href="quickstart.html" id="QuickstartDropdownLink" title="Quickstart"  class="dropdown-item" >Quickstart</a>                 </li>
+               </ul>
+             </li>
+             <li class="nav-item dropdown">
+               <a class="nav-link dropdown-toggle" href="#" id="Installation / ConfigurationMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Installation / Configuration <b class="caret"></b></a>
+               <ul class="dropdown-menu" aria-labelledby="Installation / ConfigurationMenuDropdown">
+                 <li class="nav-item dropdown-item" id="Local installationDropdown">
+                   <a href="install.html" id="Local installationDropdownLink" title="Local installation"  class="dropdown-item" >Local installation</a>                 </li>
+                 <li class="nav-item dropdown-item" id="Command lineDropdown">
+                   <a href="commandline.html" id="Command lineDropdownLink" title="Command line"  class="dropdown-item" >Command line</a>                 </li>
+                 <li class="nav-item dropdown-item" id="Install into a GPTDropdown">
+                   <a href="gpt.html" id="Install into a GPTDropdownLink" title="Install into a GPT"  class="dropdown-item" >Install into a GPT</a>                 </li>
+                 <li class="nav-item dropdown-item" id="Install as ChatGPT PluginDropdown">
+                   <a href="plugin.html" id="Install as ChatGPT PluginDropdownLink" title="Install as ChatGPT Plugin"  class="dropdown-item" >Install as ChatGPT Plugin</a>                 </li>
+                 <li class="nav-item dropdown-item" id="Access via HTTPSDropdown">
+                   <a href="https.html" id="Access via HTTPSDropdownLink" title="Access via HTTPS"  class="dropdown-item" >Access via HTTPS</a>                 </li>
+                 <li class="nav-item dropdown-item" id="ConfigurationDropdown">
+                   <a href="configuration.html" id="ConfigurationDropdownLink" title="Configuration"  class="dropdown-item" >Configuration</a>                 </li>
+               </ul>
+             </li>
+             <li class="nav-item dropdown">
+               <a class="nav-link dropdown-toggle" href="#" id="Project DocumentationMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Project Documentation <b class="caret"></b></a>
+               <ul class="dropdown-menu" aria-labelledby="Project DocumentationMenuDropdown">
+                 <li class="nav-item dropdown-item dropdown-submenu">
+                   <a href="project-info.html" id="Project InformationDropdownLink" title="Project Information"  class="dropdown-item" >Project Information</a>
+                   <ul id="Project DocumentationMenuSubMenuDropdown" class="dropdown-menu submenu">
+                     <li class="nav-item dropdown-item">
+                       <a href="dependencies.html" id="DependenciesDropdownLink" title="Dependencies"  class="dropdown-item" >Dependencies</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="dependency-info.html" id="Dependency InformationDropdownLink" title="Dependency Information"  class="dropdown-item" >Dependency Information</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="distribution-management.html" id="Distribution ManagementDropdownLink" title="Distribution Management"  class="dropdown-item" >Distribution Management</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="index.html" id="AboutDropdownLink" title="About"  class="dropdown-item" >About</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="plugin-management.html" id="Plugin ManagementDropdownLink" title="Plugin Management"  class="dropdown-item" >Plugin Management</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="plugins.html" id="PluginsDropdownLink" title="Plugins"  class="dropdown-item" >Plugins</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="summary.html" id="SummaryDropdownLink" title="Summary"  class="dropdown-item" >Summary</a>                     </li>
+                   </ul>
+                 </li>
+                 <li class="nav-item dropdown-item dropdown-submenu">
+                   <a href="project-reports.html" id="Project ReportsDropdownLink" title="Project Reports"  class="dropdown-item" >Project Reports</a>
+                   <ul id="Project DocumentationMenuSubMenuDropdown" class="dropdown-menu submenu">
+                     <li class="nav-item dropdown-item">
+                       <a href="failsafe-report.html" id="FailsafeDropdownLink" title="Failsafe"  class="dropdown-item" >Failsafe</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="surefire-report.html" id="SurefireDropdownLink" title="Surefire"  class="dropdown-item" >Surefire</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="jacoco-aggregate/index.html" id="JaCoCo AggregateDropdownLink" title="JaCoCo Aggregate"  class="dropdown-item" >JaCoCo Aggregate</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="apidocs/index.html" id="JavadocDropdownLink" title="Javadoc"  class="dropdown-item" >Javadoc</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="testapidocs/index.html" id="Test JavadocDropdownLink" title="Test Javadoc"  class="dropdown-item" >Test Javadoc</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="dependency-updates-report.html" id="Dependency Updates ReportDropdownLink" title="Dependency Updates Report"  class="dropdown-item" >Dependency Updates Report</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a title="Plugin Updates Report" class="dropdown-item">Plugin Updates Report</a>                     </li>
+                   </ul>
+                 </li>
+               </ul>
+             </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <nav id="projectBar" class="navbar py-0 navbar-dark bg-primary" aria-label="projectBarList">
+        <div id="projectBarContainer" class="container-fluid">
+
+          <div id="projectBaDateVersionContainer" class="justify-content-start">
+            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2024-02-11</span>
+            <span id="projectDateVersionSpacer" class="px-1 navbar-text">|</span>
+            <span id="projectVersion" class="px-1 navbar-text">Version: 3.0.1</span>
+          </div>
+          <div id="breadcrumbSpacer" ></div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="flex-shrink-0" role="main">
+      <div class="container mt-3 rounded">
+<section>
+<h1>Overview</h1>
+<p>This report summarizes newer versions that may be available for your project's various plugins.</p>
+<table class="table table-striped">
+<tr class="a">
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" /></td>
+<td># of plugins using the latest version available</td>
+<td>9</td></tr>
+<tr class="a">
+<td><img src="images/icon_warning_sml.gif" /></td>
+<td># of plugins where the next version available is smaller than an incremental version update</td>
+<td>1</td></tr>
+<tr class="b">
+<td><img src="images/icon_warning_sml.gif" /></td>
+<td># of plugins where the next version available is an incremental version update</td>
+<td>2</td></tr>
+<tr class="a">
+<td><img src="images/icon_warning_sml.gif" /></td>
+<td># of plugins where the next version available is a minor version update</td>
+<td>7</td></tr>
+<tr class="b">
+<td><img src="images/icon_warning_sml.gif" /></td>
+<td># of plugins where the next version available is a major version update</td>
+<td>1</td></tr>
+<tr class="a">
+<td><img src="images/icon_warning_sml.gif" /></td>
+<td># of plugins where a dependencies section containes a dependency with an updated version</td>
+<td>1</td></tr></tr></table><section>
+<h2>Plugin Management</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<th>Group Id</th>
+<th>Artifact Id</th>
+<th>Current Version</th>
+<th>Latest Subincremental</th>
+<th>Latest Incremental</th>
+<th>Latest Minor</th>
+<th>Latest Major</th>
+<th>Dependency status</th></tr>
+<tr class="b">
+<td><img src="images/icon_warning_sml.gif" /></td>
+<td>org.apache.maven.plugins</td>
+<td>maven-antrun-plugin</td>
+<td>1.3</td>
+<td></td>
+<td></td>
+<td><b>1.8</b></td>
+<td><b>3.1.0</b></td>
+<td><img src="images/icon_success_sml.gif" /></td></tr>
+<tr class="a">
+<td><img src="images/icon_warning_sml.gif" /></td>
+<td>org.apache.maven.plugins</td>
+<td>maven-assembly-plugin</td>
+<td>2.2-beta-5</td>
+<td><b>2.2</b></td>
+<td><b>2.2.2</b></td>
+<td><b>2.6</b></td>
+<td><b>3.6.0</b></td>
+<td><img src="images/icon_success_sml.gif" /></td></tr>
+<tr class="b">
+<td><img src="images/icon_warning_sml.gif" /></td>
+<td>org.apache.maven.plugins</td>
+<td>maven-dependency-plugin</td>
+<td>2.8</td>
+<td></td>
+<td></td>
+<td><b>2.10</b></td>
+<td><b>3.6.1</b></td>
+<td><img src="images/icon_success_sml.gif" /></td></tr>
+<tr class="a">
+<td><img src="images/icon_warning_sml.gif" /></td>
+<td>org.apache.maven.plugins</td>
+<td>maven-release-plugin</td>
+<td>2.5.3</td>
+<td></td>
+<td></td>
+<td></td>
+<td><b>3.0.1</b></td>
+<td><img src="images/icon_success_sml.gif" /></td></tr>
+<tr class="b">
+<th>Status</th>
+<th>Group Id</th>
+<th>Artifact Id</th>
+<th>Current Version</th>
+<th>Latest Subincremental</th>
+<th>Latest Incremental</th>
+<th>Latest Minor</th>
+<th>Latest Major</th>
+<th>Dependency status</th></tr></table></section><section>
+<h2>Plugins</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<th>Group Id</th>
+<th>Artifact Id</th>
+<th>Current Version</th>
+<th>Latest Subincremental</th>
+<th>Latest Incremental</th>
+<th>Latest Minor</th>
+<th>Latest Major</th>
+<th>Dependency status</th></tr>
+<tr class="b">
+<td><img src="images/icon_warning_sml.gif" /></td>
+<td>org.apache.maven.plugins</td>
+<td>maven-clean-plugin</td>
+<td>2.5</td>
+<td></td>
+<td></td>
+<td><b>2.6.1</b></td>
+<td><b>3.3.2</b></td>
+<td><img src="images/icon_success_sml.gif" /></td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" /></td>
+<td>org.apache.maven.plugins</td>
+<td>maven-compiler-plugin</td>
+<td><b>3.12.1</b></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><img src="images/icon_success_sml.gif" /></td></tr>
+<tr class="b">
+<td><img src="images/icon_warning_sml.gif" /></td>
+<td>org.apache.maven.plugins</td>
+<td>maven-deploy-plugin</td>
+<td>2.7</td>
+<td></td>
+<td></td>
+<td><b>2.8.2</b></td>
+<td><b>3.1.1</b></td>
+<td><img src="images/icon_success_sml.gif" /></td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" /></td>
+<td>org.apache.maven.plugins</td>
+<td>maven-enforcer-plugin</td>
+<td><b>3.4.1</b></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><img src="images/icon_success_sml.gif" /></td></tr>
+<tr class="b">
+<td><img src="images/icon_warning_sml.gif" /></td>
+<td>org.apache.maven.plugins</td>
+<td>maven-failsafe-plugin</td>
+<td>3.2.3</td>
+<td></td>
+<td><b>3.2.5</b></td>
+<td></td>
+<td></td>
+<td><img src="images/icon_success_sml.gif" /></td></tr>
+<tr class="a">
+<td><img src="images/icon_warning_sml.gif" /></td>
+<td>org.apache.maven.plugins</td>
+<td>maven-install-plugin</td>
+<td>2.4</td>
+<td></td>
+<td></td>
+<td><b>2.5.2</b></td>
+<td><b>3.1.1</b></td>
+<td><img src="images/icon_success_sml.gif" /></td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" /></td>
+<td>org.apache.maven.plugins</td>
+<td>maven-jar-plugin</td>
+<td><b>3.3.0</b></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><img src="images/icon_success_sml.gif" /></td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" /></td>
+<td>org.apache.maven.plugins</td>
+<td>maven-javadoc-plugin</td>
+<td><b>3.6.3</b></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><img src="images/icon_success_sml.gif" /></td></tr>
+<tr class="b">
+<td><img src="images/icon_warning_sml.gif" /></td>
+<td>org.apache.maven.plugins</td>
+<td>maven-resources-plugin</td>
+<td>2.6</td>
+<td></td>
+<td></td>
+<td><b>2.7</b></td>
+<td><b>3.3.1</b></td>
+<td><img src="images/icon_success_sml.gif" /></td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" /></td>
+<td>org.apache.maven.plugins</td>
+<td>maven-shade-plugin</td>
+<td><b>3.5.1</b></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><img src="images/icon_success_sml.gif" /></td></tr>
+<tr class="b">
+<td><img src="images/icon_warning_sml.gif" /></td>
+<td>org.apache.maven.plugins</td>
+<td>maven-site-plugin</td>
+<td>4.0.0-M13</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><img src="images/icon_warning_sml.gif" /></td></tr>
+<tr class="a">
+<td><img src="images/icon_warning_sml.gif" /></td>
+<td>org.apache.maven.plugins</td>
+<td>maven-surefire-plugin</td>
+<td>2.12.4</td>
+<td></td>
+<td></td>
+<td><b>2.22.2</b></td>
+<td><b>3.2.5</b></td>
+<td><img src="images/icon_success_sml.gif" /></td></tr>
+<tr class="b">
+<td><img src="images/icon_warning_sml.gif" /></td>
+<td>org.apache.maven.plugins</td>
+<td>maven-surefire-report-plugin</td>
+<td>3.2.3</td>
+<td></td>
+<td><b>3.2.5</b></td>
+<td></td>
+<td></td>
+<td><img src="images/icon_success_sml.gif" /></td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" /></td>
+<td>org.codehaus.mojo</td>
+<td>versions-maven-plugin</td>
+<td><b>2.16.2</b></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><img src="images/icon_success_sml.gif" /></td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" /></td>
+<td>org.jacoco</td>
+<td>jacoco-maven-plugin</td>
+<td><b>0.8.11</b></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><img src="images/icon_success_sml.gif" /></td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" /></td>
+<td>pl.project13.maven</td>
+<td>git-commit-id-plugin</td>
+<td><b>4.9.10</b></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><img src="images/icon_success_sml.gif" /></td></tr>
+<tr class="b">
+<th>Status</th>
+<th>Group Id</th>
+<th>Artifact Id</th>
+<th>Current Version</th>
+<th>Latest Subincremental</th>
+<th>Latest Incremental</th>
+<th>Latest Minor</th>
+<th>Latest Major</th>
+<th>Dependency status</th></tr></table></section></section><section>
+<h1>Plugin Updates</h1>
+<p></p><section>
+<h2>Plugin org.apache.maven.plugins:maven-antrun-plugin</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer minor version available. Minor updates are sometimes passive.</td></tr>
+<tr class="b">
+<th>Group Id</th>
+<td style="text-align: left;">org.apache.maven.plugins</td></tr>
+<tr class="a">
+<th>Artifact Id</th>
+<td style="text-align: left;">maven-antrun-plugin</td></tr>
+<tr class="b">
+<th>Current Version</th>
+<td style="text-align: left;">1.3</td></tr>
+<tr class="a">
+<th>Newer versions</th>
+<td style="text-align: left;">1.4<br />1.5<br />1.6<br />1.7<br /><b>1.8</b>&#160;<i>Latest Minor</i><br />3.0.0<br /><b>3.1.0</b>&#160;<i>Latest Major</i></td></tr></table></section><section>
+<h2>Plugin org.apache.maven.plugins:maven-assembly-plugin</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer version available.</td></tr>
+<tr class="b">
+<th>Group Id</th>
+<td style="text-align: left;">org.apache.maven.plugins</td></tr>
+<tr class="a">
+<th>Artifact Id</th>
+<td style="text-align: left;">maven-assembly-plugin</td></tr>
+<tr class="b">
+<th>Current Version</th>
+<td style="text-align: left;">2.2-beta-5</td></tr>
+<tr class="a">
+<th>Newer versions</th>
+<td style="text-align: left;"><b>2.2</b>&#160;<i>Latest Subincremental</i><br />2.2.1<br /><b>2.2.2</b>&#160;<i>Latest Incremental</i><br />2.3<br />2.4<br />2.4.1<br />2.5<br />2.5.1<br />2.5.2<br />2.5.3<br />2.5.4<br />2.5.5<br /><b>2.6</b>&#160;<i>Latest Minor</i><br />3.0.0<br />3.1.0<br />3.1.1<br />3.2.0<br />3.3.0<br />3.4.0<br />3.4.1<br />3.4.2<br />3.5.0<br /><b>3.6.0</b>&#160;<i>Latest Major</i></td></tr></table></section><section>
+<h2>Plugin org.apache.maven.plugins:maven-clean-plugin</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer minor version available. Minor updates are sometimes passive.</td></tr>
+<tr class="b">
+<th>Group Id</th>
+<td style="text-align: left;">org.apache.maven.plugins</td></tr>
+<tr class="a">
+<th>Artifact Id</th>
+<td style="text-align: left;">maven-clean-plugin</td></tr>
+<tr class="b">
+<th>Current Version</th>
+<td style="text-align: left;">2.5</td></tr>
+<tr class="a">
+<th>Newer versions</th>
+<td style="text-align: left;">2.6<br /><b>2.6.1</b>&#160;<i>Latest Minor</i><br />3.0.0<br />3.1.0<br />3.2.0<br />3.3.1<br /><b>3.3.2</b>&#160;<i>Latest Major</i></td></tr></table></section><section>
+<h2>Plugin org.apache.maven.plugins:maven-compiler-plugin</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" />&#160;No newer versions available.</td></tr>
+<tr class="b">
+<th>Group Id</th>
+<td style="text-align: left;">org.apache.maven.plugins</td></tr>
+<tr class="a">
+<th>Artifact Id</th>
+<td style="text-align: left;">maven-compiler-plugin</td></tr>
+<tr class="b">
+<th>Current Version</th>
+<td style="text-align: left;">3.12.1</td></tr></table></section><section>
+<h2>Plugin org.apache.maven.plugins:maven-dependency-plugin</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer minor version available. Minor updates are sometimes passive.</td></tr>
+<tr class="b">
+<th>Group Id</th>
+<td style="text-align: left;">org.apache.maven.plugins</td></tr>
+<tr class="a">
+<th>Artifact Id</th>
+<td style="text-align: left;">maven-dependency-plugin</td></tr>
+<tr class="b">
+<th>Current Version</th>
+<td style="text-align: left;">2.8</td></tr>
+<tr class="a">
+<th>Newer versions</th>
+<td style="text-align: left;">2.9<br /><b>2.10</b>&#160;<i>Latest Minor</i><br />3.0.0<br />3.0.1<br />3.0.2<br />3.1.0<br />3.1.1<br />3.1.2<br />3.2.0<br />3.3.0<br />3.4.0<br />3.5.0<br />3.6.0<br /><b>3.6.1</b>&#160;<i>Latest Major</i></td></tr></table></section><section>
+<h2>Plugin org.apache.maven.plugins:maven-deploy-plugin</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer minor version available. Minor updates are sometimes passive.</td></tr>
+<tr class="b">
+<th>Group Id</th>
+<td style="text-align: left;">org.apache.maven.plugins</td></tr>
+<tr class="a">
+<th>Artifact Id</th>
+<td style="text-align: left;">maven-deploy-plugin</td></tr>
+<tr class="b">
+<th>Current Version</th>
+<td style="text-align: left;">2.7</td></tr>
+<tr class="a">
+<th>Newer versions</th>
+<td style="text-align: left;">2.8<br />2.8.1<br /><b>2.8.2</b>&#160;<i>Latest Minor</i><br />3.0.0-M1<br />3.0.0-M2<br />3.0.0<br />3.1.0<br /><b>3.1.1</b>&#160;<i>Latest Major</i></td></tr></table></section><section>
+<h2>Plugin org.apache.maven.plugins:maven-enforcer-plugin</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" />&#160;No newer versions available.</td></tr>
+<tr class="b">
+<th>Group Id</th>
+<td style="text-align: left;">org.apache.maven.plugins</td></tr>
+<tr class="a">
+<th>Artifact Id</th>
+<td style="text-align: left;">maven-enforcer-plugin</td></tr>
+<tr class="b">
+<th>Current Version</th>
+<td style="text-align: left;">3.4.1</td></tr></table></section><section>
+<h2>Plugin org.apache.maven.plugins:maven-failsafe-plugin</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer incremental version available. Incremental updates are typically passive.</td></tr>
+<tr class="b">
+<th>Group Id</th>
+<td style="text-align: left;">org.apache.maven.plugins</td></tr>
+<tr class="a">
+<th>Artifact Id</th>
+<td style="text-align: left;">maven-failsafe-plugin</td></tr>
+<tr class="b">
+<th>Current Version</th>
+<td style="text-align: left;">3.2.3</td></tr>
+<tr class="a">
+<th>Newer versions</th>
+<td style="text-align: left;"><b>3.2.5</b>&#160;<i>Latest Incremental</i></td></tr></table></section><section>
+<h2>Plugin org.apache.maven.plugins:maven-install-plugin</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer minor version available. Minor updates are sometimes passive.</td></tr>
+<tr class="b">
+<th>Group Id</th>
+<td style="text-align: left;">org.apache.maven.plugins</td></tr>
+<tr class="a">
+<th>Artifact Id</th>
+<td style="text-align: left;">maven-install-plugin</td></tr>
+<tr class="b">
+<th>Current Version</th>
+<td style="text-align: left;">2.4</td></tr>
+<tr class="a">
+<th>Newer versions</th>
+<td style="text-align: left;">2.5<br />2.5.1<br /><b>2.5.2</b>&#160;<i>Latest Minor</i><br />3.0.0-M1<br />3.0.0<br />3.0.1<br />3.1.0<br /><b>3.1.1</b>&#160;<i>Latest Major</i></td></tr></table></section><section>
+<h2>Plugin org.apache.maven.plugins:maven-jar-plugin</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" />&#160;No newer versions available.</td></tr>
+<tr class="b">
+<th>Group Id</th>
+<td style="text-align: left;">org.apache.maven.plugins</td></tr>
+<tr class="a">
+<th>Artifact Id</th>
+<td style="text-align: left;">maven-jar-plugin</td></tr>
+<tr class="b">
+<th>Current Version</th>
+<td style="text-align: left;">3.3.0</td></tr></table></section><section>
+<h2>Plugin org.apache.maven.plugins:maven-javadoc-plugin</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" />&#160;No newer versions available.</td></tr>
+<tr class="b">
+<th>Group Id</th>
+<td style="text-align: left;">org.apache.maven.plugins</td></tr>
+<tr class="a">
+<th>Artifact Id</th>
+<td style="text-align: left;">maven-javadoc-plugin</td></tr>
+<tr class="b">
+<th>Current Version</th>
+<td style="text-align: left;">3.6.3</td></tr></table></section><section>
+<h2>Plugin org.apache.maven.plugins:maven-release-plugin</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer major version available. Major updates are rarely passive.</td></tr>
+<tr class="b">
+<th>Group Id</th>
+<td style="text-align: left;">org.apache.maven.plugins</td></tr>
+<tr class="a">
+<th>Artifact Id</th>
+<td style="text-align: left;">maven-release-plugin</td></tr>
+<tr class="b">
+<th>Current Version</th>
+<td style="text-align: left;">2.5.3</td></tr>
+<tr class="a">
+<th>Newer versions</th>
+<td style="text-align: left;">3.0.0-M1<br />3.0.0-M4<br />3.0.0-M5<br />3.0.0-M6<br />3.0.0-M7<br />3.0.0<br /><b>3.0.1</b>&#160;<i>Latest Major</i></td></tr></table></section><section>
+<h2>Plugin org.apache.maven.plugins:maven-resources-plugin</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer minor version available. Minor updates are sometimes passive.</td></tr>
+<tr class="b">
+<th>Group Id</th>
+<td style="text-align: left;">org.apache.maven.plugins</td></tr>
+<tr class="a">
+<th>Artifact Id</th>
+<td style="text-align: left;">maven-resources-plugin</td></tr>
+<tr class="b">
+<th>Current Version</th>
+<td style="text-align: left;">2.6</td></tr>
+<tr class="a">
+<th>Newer versions</th>
+<td style="text-align: left;"><b>2.7</b>&#160;<i>Latest Minor</i><br />3.0.0<br />3.0.1<br />3.0.2<br />3.1.0<br />3.2.0<br />3.3.0<br /><b>3.3.1</b>&#160;<i>Latest Major</i></td></tr></table></section><section>
+<h2>Plugin org.apache.maven.plugins:maven-shade-plugin</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" />&#160;No newer versions available.</td></tr>
+<tr class="b">
+<th>Group Id</th>
+<td style="text-align: left;">org.apache.maven.plugins</td></tr>
+<tr class="a">
+<th>Artifact Id</th>
+<td style="text-align: left;">maven-shade-plugin</td></tr>
+<tr class="b">
+<th>Current Version</th>
+<td style="text-align: left;">3.5.1</td></tr></table></section><section>
+<h2>Plugin org.apache.maven.plugins:maven-site-plugin</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" />&#160;No newer versions available.</td></tr>
+<tr class="b">
+<th>Group Id</th>
+<td style="text-align: left;">org.apache.maven.plugins</td></tr>
+<tr class="a">
+<th>Artifact Id</th>
+<td style="text-align: left;">maven-site-plugin</td></tr>
+<tr class="b">
+<th>Current Version</th>
+<td style="text-align: left;">4.0.0-M13</td></tr></table><section>
+<h3>Dependencies of org.apache.maven.plugins:maven-site-plugin</h3>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<th>Group Id</th>
+<th>Artifact Id</th>
+<th>Current Version</th>
+<th>Classifier</th>
+<th>Type</th>
+<th>Latest Subincremental</th>
+<th>Latest Incremental</th>
+<th>Latest Minor</th>
+<th>Latest Major</th>
+<th>Dependency status</th></tr>
+<tr class="b">
+<td><img src="images/icon_warning_sml.gif" /></td>
+<td>io.github.devacfr.maven.skins</td>
+<td>reflow-velocity-tools</td>
+<td>2.3.4</td>
+<td></td>
+<td>jar</td>
+<td></td>
+<td></td>
+<td><b>2.4.0-beta2</b></td>
+<td></td></tr>
+<tr class="a">
+<th>Status</th>
+<th>Group Id</th>
+<th>Artifact Id</th>
+<th>Current Version</th>
+<th>Classifier</th>
+<th>Type</th>
+<th>Latest Subincremental</th>
+<th>Latest Incremental</th>
+<th>Latest Minor</th>
+<th>Latest Major</th>
+<th>Dependency status</th></tr></table></section><section>
+<h3>Dependency io.github.devacfr.maven.skins:reflow-velocity-tools</h3>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer minor version available. Minor updates are sometimes passive.</td></tr>
+<tr class="b">
+<th>Group Id</th>
+<td style="text-align: left;">io.github.devacfr.maven.skins</td></tr>
+<tr class="a">
+<th>Artifact Id</th>
+<td style="text-align: left;">reflow-velocity-tools</td></tr>
+<tr class="b">
+<th>Current Version</th>
+<td style="text-align: left;">2.3.4</td></tr>
+<tr class="a">
+<th>Classifier</th>
+<td style="text-align: left;"></td></tr>
+<tr class="b">
+<th>Type</th>
+<td style="text-align: left;">jar</td></tr>
+<tr class="a">
+<th>Newer versions</th>
+<td style="text-align: left;">2.4.0-beta1<br /><b>2.4.0-beta2</b>&#160;<i>Latest Minor</i></td></tr></table></section></section><section>
+<h2>Plugin org.apache.maven.plugins:maven-surefire-plugin</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer minor version available. Minor updates are sometimes passive.</td></tr>
+<tr class="b">
+<th>Group Id</th>
+<td style="text-align: left;">org.apache.maven.plugins</td></tr>
+<tr class="a">
+<th>Artifact Id</th>
+<td style="text-align: left;">maven-surefire-plugin</td></tr>
+<tr class="b">
+<th>Current Version</th>
+<td style="text-align: left;">2.12.4</td></tr>
+<tr class="a">
+<th>Newer versions</th>
+<td style="text-align: left;">2.13<br />2.14<br />2.14.1<br />2.15<br />2.16<br />2.17<br />2.18<br />2.18.1<br />2.19<br />2.19.1<br />2.20<br />2.20.1<br />2.21.0<br />2.22.0<br />2.22.1<br /><b>2.22.2</b>&#160;<i>Latest Minor</i><br />3.0.0-M1<br />3.0.0-M2<br />3.0.0-M3<br />3.0.0-M4<br />3.0.0-M5<br />3.0.0-M6<br />3.0.0-M7<br />3.0.0-M8<br />3.0.0-M9<br />3.0.0<br />3.1.0<br />3.1.2<br />3.2.1<br />3.2.2<br />3.2.3<br /><b>3.2.5</b>&#160;<i>Latest Major</i></td></tr></table></section><section>
+<h2>Plugin org.apache.maven.plugins:maven-surefire-report-plugin</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer incremental version available. Incremental updates are typically passive.</td></tr>
+<tr class="b">
+<th>Group Id</th>
+<td style="text-align: left;">org.apache.maven.plugins</td></tr>
+<tr class="a">
+<th>Artifact Id</th>
+<td style="text-align: left;">maven-surefire-report-plugin</td></tr>
+<tr class="b">
+<th>Current Version</th>
+<td style="text-align: left;">3.2.3</td></tr>
+<tr class="a">
+<th>Newer versions</th>
+<td style="text-align: left;"><b>3.2.5</b>&#160;<i>Latest Incremental</i></td></tr></table></section><section>
+<h2>Plugin org.codehaus.mojo:versions-maven-plugin</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" />&#160;No newer versions available.</td></tr>
+<tr class="b">
+<th>Group Id</th>
+<td style="text-align: left;">org.codehaus.mojo</td></tr>
+<tr class="a">
+<th>Artifact Id</th>
+<td style="text-align: left;">versions-maven-plugin</td></tr>
+<tr class="b">
+<th>Current Version</th>
+<td style="text-align: left;">2.16.2</td></tr></table></section><section>
+<h2>Plugin org.jacoco:jacoco-maven-plugin</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" />&#160;No newer versions available.</td></tr>
+<tr class="b">
+<th>Group Id</th>
+<td style="text-align: left;">org.jacoco</td></tr>
+<tr class="a">
+<th>Artifact Id</th>
+<td style="text-align: left;">jacoco-maven-plugin</td></tr>
+<tr class="b">
+<th>Current Version</th>
+<td style="text-align: left;">0.8.11</td></tr></table></section><section>
+<h2>Plugin pl.project13.maven:git-commit-id-plugin</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Status</th>
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" />&#160;No newer versions available.</td></tr>
+<tr class="b">
+<th>Group Id</th>
+<td style="text-align: left;">pl.project13.maven</td></tr>
+<tr class="a">
+<th>Artifact Id</th>
+<td style="text-align: left;">git-commit-id-plugin</td></tr>
+<tr class="b">
+<th>Current Version</th>
+<td style="text-align: left;">4.9.10</td></tr></table></section></section>
+      </div>
+    </main>
+
+  <footer class="footer mt-auto py-4 bg-light text-dark">
+    <div class="container-fluid text-md-left">
+        <div class="row">
+          <div id="socialMediaDiv" class="col-md-5 col-lg-4 col-xl-4 mx-auto mb-md-0">
+
+            <div id="copyrightDiv" class="pt-3">
+              <p>&#169;
+      2024
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./js/jquery.slim.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/prettify.js"></script>
+
+    <!-- Used to enable the code-prettify running on the view. -->
+    <script>
+        addEventListener('load', function(event) { PR.prettyPrint(); }, false);
+    </script>
+  </body>

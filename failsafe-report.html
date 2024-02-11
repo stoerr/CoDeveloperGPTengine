@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<!doctype html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="generator" content="#generatedBy()" />
+    <title>CoDeveloperGPTengine – Failsafe Report</title>
+    <link rel="icon" href="./img/favicons/favicon.ico">
+    <!-- CSS Stylesheets, site.css is included so downstream projects can override them as appropriate. -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/bootstrap-icons.css" />
+    <link rel="stylesheet" href="./css/maven-base.css" />
+    <link rel="stylesheet" href="./css/prettify.css" />
+    <link rel="stylesheet" href="https://bootswatch.com/5/cerulean/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/maven-theme.css" />
+    <link rel="stylesheet" href="./css/site.css" />
+  </head>
+  <body class="d-flex flex-column h-100">
+
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+        <div id="projectBarContainer" class="container-fluid justify-content-center">
+<a href="#" id="navbarIconLink" title="Navbar Brand Icon" class="navbar-brand text-wrap ps-2"> CoDeveloperGPTengine
+</a>          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div id="navbarCollapse" class="collapse navbar-collapse flex-grow-0">
+            <ul id="navbarList" class="navbar-nav">
+             <li class="nav-item dropdown">
+               <a class="nav-link dropdown-toggle" href="#" id="OverviewMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Overview <b class="caret"></b></a>
+               <ul class="dropdown-menu" aria-labelledby="OverviewMenuDropdown">
+                 <li class="nav-item dropdown-item" id="IntroductionDropdown">
+                   <a href="index.html" id="IntroductionDropdownLink" title="Introduction"  class="dropdown-item" >Introduction</a>                 </li>
+                 <li class="nav-item dropdown-item" id="FunctionalityDropdown">
+                   <a href="functionality.html" id="FunctionalityDropdownLink" title="Functionality"  class="dropdown-item" >Functionality</a>                 </li>
+                 <li class="nav-item dropdown-item" id="QuickstartDropdown">
+                   <a href="quickstart.html" id="QuickstartDropdownLink" title="Quickstart"  class="dropdown-item" >Quickstart</a>                 </li>
+               </ul>
+             </li>
+             <li class="nav-item dropdown">
+               <a class="nav-link dropdown-toggle" href="#" id="Installation / ConfigurationMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Installation / Configuration <b class="caret"></b></a>
+               <ul class="dropdown-menu" aria-labelledby="Installation / ConfigurationMenuDropdown">
+                 <li class="nav-item dropdown-item" id="Local installationDropdown">
+                   <a href="install.html" id="Local installationDropdownLink" title="Local installation"  class="dropdown-item" >Local installation</a>                 </li>
+                 <li class="nav-item dropdown-item" id="Command lineDropdown">
+                   <a href="commandline.html" id="Command lineDropdownLink" title="Command line"  class="dropdown-item" >Command line</a>                 </li>
+                 <li class="nav-item dropdown-item" id="Install into a GPTDropdown">
+                   <a href="gpt.html" id="Install into a GPTDropdownLink" title="Install into a GPT"  class="dropdown-item" >Install into a GPT</a>                 </li>
+                 <li class="nav-item dropdown-item" id="Install as ChatGPT PluginDropdown">
+                   <a href="plugin.html" id="Install as ChatGPT PluginDropdownLink" title="Install as ChatGPT Plugin"  class="dropdown-item" >Install as ChatGPT Plugin</a>                 </li>
+                 <li class="nav-item dropdown-item" id="Access via HTTPSDropdown">
+                   <a href="https.html" id="Access via HTTPSDropdownLink" title="Access via HTTPS"  class="dropdown-item" >Access via HTTPS</a>                 </li>
+                 <li class="nav-item dropdown-item" id="ConfigurationDropdown">
+                   <a href="configuration.html" id="ConfigurationDropdownLink" title="Configuration"  class="dropdown-item" >Configuration</a>                 </li>
+               </ul>
+             </li>
+             <li class="nav-item dropdown">
+               <a class="nav-link dropdown-toggle" href="#" id="Project DocumentationMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Project Documentation <b class="caret"></b></a>
+               <ul class="dropdown-menu" aria-labelledby="Project DocumentationMenuDropdown">
+                 <li class="nav-item dropdown-item dropdown-submenu">
+                   <a href="project-info.html" id="Project InformationDropdownLink" title="Project Information"  class="dropdown-item" >Project Information</a>
+                   <ul id="Project DocumentationMenuSubMenuDropdown" class="dropdown-menu submenu">
+                     <li class="nav-item dropdown-item">
+                       <a href="dependencies.html" id="DependenciesDropdownLink" title="Dependencies"  class="dropdown-item" >Dependencies</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="dependency-info.html" id="Dependency InformationDropdownLink" title="Dependency Information"  class="dropdown-item" >Dependency Information</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="distribution-management.html" id="Distribution ManagementDropdownLink" title="Distribution Management"  class="dropdown-item" >Distribution Management</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="index.html" id="AboutDropdownLink" title="About"  class="dropdown-item" >About</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="plugin-management.html" id="Plugin ManagementDropdownLink" title="Plugin Management"  class="dropdown-item" >Plugin Management</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="plugins.html" id="PluginsDropdownLink" title="Plugins"  class="dropdown-item" >Plugins</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="summary.html" id="SummaryDropdownLink" title="Summary"  class="dropdown-item" >Summary</a>                     </li>
+                   </ul>
+                 </li>
+                 <li class="nav-item dropdown-item dropdown-submenu">
+                   <a href="project-reports.html" id="Project ReportsDropdownLink" title="Project Reports"  class="dropdown-item" >Project Reports</a>
+                   <ul id="Project DocumentationMenuSubMenuDropdown" class="dropdown-menu submenu">
+                     <li class="nav-item dropdown-item">
+                       <a title="Failsafe" class="dropdown-item">Failsafe</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="surefire-report.html" id="SurefireDropdownLink" title="Surefire"  class="dropdown-item" >Surefire</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="jacoco-aggregate/index.html" id="JaCoCo AggregateDropdownLink" title="JaCoCo Aggregate"  class="dropdown-item" >JaCoCo Aggregate</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="apidocs/index.html" id="JavadocDropdownLink" title="Javadoc"  class="dropdown-item" >Javadoc</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="testapidocs/index.html" id="Test JavadocDropdownLink" title="Test Javadoc"  class="dropdown-item" >Test Javadoc</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="dependency-updates-report.html" id="Dependency Updates ReportDropdownLink" title="Dependency Updates Report"  class="dropdown-item" >Dependency Updates Report</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="plugin-updates-report.html" id="Plugin Updates ReportDropdownLink" title="Plugin Updates Report"  class="dropdown-item" >Plugin Updates Report</a>                     </li>
+                   </ul>
+                 </li>
+               </ul>
+             </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <nav id="projectBar" class="navbar py-0 navbar-dark bg-primary" aria-label="projectBarList">
+        <div id="projectBarContainer" class="container-fluid">
+
+          <div id="projectBaDateVersionContainer" class="justify-content-start">
+            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2024-02-11</span>
+            <span id="projectDateVersionSpacer" class="px-1 navbar-text">|</span>
+            <span id="projectVersion" class="px-1 navbar-text">Version: 3.0.1</span>
+          </div>
+          <div id="breadcrumbSpacer" ></div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="flex-shrink-0" role="main">
+      <div class="container mt-3 rounded">
+<script type="text/javascript">
+function toggleDisplay(elementId) {
+ var elm = document.getElementById(elementId + '-error');
+ if (elm == null) {
+  elm = document.getElementById(elementId + '-failure');
+ }
+ if (elm && typeof elm.style != "undefined") {
+  if (elm.style.display == "none") {
+   elm.style.display = "";
+   document.getElementById(elementId + '-off').style.display = "none";
+   document.getElementById(elementId + '-on').style.display = "inline";
+  } else if (elm.style.display == "") {   elm.style.display = "none";
+   document.getElementById(elementId + '-off').style.display = "inline";
+   document.getElementById(elementId + '-on').style.display = "none";
+  }
+ }
+ }</script><section>
+<h1>Failsafe Report</h1></section><section><a id="Summary"></a>
+<h1>Summary</h1>
+<p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />
+<table class="table table-striped">
+<tr class="a">
+<th>Tests</th>
+<th>Errors</th>
+<th>Failures</th>
+<th>Skipped</th>
+<th>Success Rate</th>
+<th>Time</th></tr>
+<tr class="b">
+<td style="text-align: left;">46</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>97.8%</td>
+<td>18.05 s</td></tr></table><br />
+<p>Note: failures are anticipated and checked for with assertions while errors are unanticipated.</p><br /></section><section><a id="Package_List"></a>
+<h1>Package List</h1>
+<p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />
+<table class="table table-striped">
+<tr class="a">
+<th>Package</th>
+<th>Tests</th>
+<th>Errors</th>
+<th>Failures</th>
+<th>Skipped</th>
+<th>Success Rate</th>
+<th>Time</th></tr>
+<tr class="b">
+<td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine">net.stoerr.chatgpt.codevengine</a></td>
+<td>46</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>97.8%</td>
+<td>18.05 s</td></tr></table><br />
+<p>Note: package statistics are not computed recursively, they only sum up all of its testsuites numbers.</p><section><a id="net.stoerr.chatgpt.codevengine"></a>
+<h2>net.stoerr.chatgpt.codevengine</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>-</th>
+<th>Class</th>
+<th>Tests</th>
+<th>Errors</th>
+<th>Failures</th>
+<th>Skipped</th>
+<th>Success Rate</th>
+<th>Time</th></tr>
+<tr class="b">
+<td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine.ReadFileActionIT"><img src="images/icon_success_sml.gif" /></a></td>
+<td><a href="#net.stoerr.chatgpt.codevengine.ReadFileActionIT">ReadFileActionIT</a></td>
+<td>4</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>1.582 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine.ReplaceActionIT"><img src="images/icon_success_sml.gif" /></a></td>
+<td><a href="#net.stoerr.chatgpt.codevengine.ReplaceActionIT">ReplaceActionIT</a></td>
+<td>5</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>1.815 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine.ListFilesActionIT"><img src="images/icon_success_sml.gif" /></a></td>
+<td><a href="#net.stoerr.chatgpt.codevengine.ListFilesActionIT">ListFilesActionIT</a></td>
+<td>11</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>3.037 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine.GrepActionIT"><img src="images/icon_success_sml.gif" /></a></td>
+<td><a href="#net.stoerr.chatgpt.codevengine.GrepActionIT">GrepActionIT</a></td>
+<td>7</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>2.265 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine.CoDeveloperEngineGeneralIT"><img src="images/icon_success_sml.gif" /></a></td>
+<td><a href="#net.stoerr.chatgpt.codevengine.CoDeveloperEngineGeneralIT">CoDeveloperEngineGeneralIT</a></td>
+<td>4</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>1.641 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine.ExecuteActionIT"><img src="images/icon_success_sml.gif" /></a></td>
+<td><a href="#net.stoerr.chatgpt.codevengine.ExecuteActionIT">ExecuteActionIT</a></td>
+<td>6</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>3.494 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine.UrlActionIT"><img src="images/icon_success_sml.gif" /></a></td>
+<td><a href="#net.stoerr.chatgpt.codevengine.UrlActionIT">UrlActionIT</a></td>
+<td>5</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>2.797 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine.ReplaceRegexActionIT"><img src="images/icon_warning_sml.gif" /></a></td>
+<td><a href="#net.stoerr.chatgpt.codevengine.ReplaceRegexActionIT">ReplaceRegexActionIT</a></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0%</td>
+<td>0.001 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine.WriteFileActionIT"><img src="images/icon_success_sml.gif" /></a></td>
+<td><a href="#net.stoerr.chatgpt.codevengine.WriteFileActionIT">WriteFileActionIT</a></td>
+<td>3</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>1.413 s</td></tr></table></section><br /></section><section><a id="Test_Cases"></a>
+<h1>Test Cases</h1>
+<p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><section><a id="net.stoerr.chatgpt.codevengine.ReadFileActionIT"></a>
+<h2>ReadFileActionIT</h2>
+<table class="table table-striped">
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ReadFileActionIT.testReadWithStartLine"></a>testReadWithStartLine</td>
+<td>0.205 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ReadFileActionIT.testReadWithMaxLinesAndStartLine"></a>testReadWithMaxLinesAndStartLine</td>
+<td>0.203 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ReadFileActionIT.testReadWithoutParameters"></a>testReadWithoutParameters</td>
+<td>0.204 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ReadFileActionIT.testReadWithMaxLines"></a>testReadWithMaxLines</td>
+<td>0.204 s</td></tr></table></section><section><a id="net.stoerr.chatgpt.codevengine.ReplaceActionIT"></a>
+<h2>ReplaceActionIT</h2>
+<table class="table table-striped">
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ReplaceActionIT.testComplainAboutMultiplesSinceManyMatches"></a>testComplainAboutMultiplesSinceManyMatches</td>
+<td>0.211 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ReplaceActionIT.testReplaceOperationFileNotFound"></a>testReplaceOperationFileNotFound</td>
+<td>0.211 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ReplaceActionIT.testReplaceOperation"></a>testReplaceOperation</td>
+<td>0.208 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ReplaceActionIT.testComplainAboutMultiplesSinceNoMatch"></a>testComplainAboutMultiplesSinceNoMatch</td>
+<td>0.205 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ReplaceActionIT.testMultipleReplacementsInOneRequest"></a>testMultipleReplacementsInOneRequest</td>
+<td>0.206 s</td></tr></table></section><section><a id="net.stoerr.chatgpt.codevengine.ListFilesActionIT"></a>
+<h2>ListFilesActionIT</h2>
+<table class="table table-striped">
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ListFilesActionIT.testListFilesOperationBothRegex"></a>testListFilesOperationBothRegex</td>
+<td>0.209 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ListFilesActionIT.testListFilesOperationFilePathRegex"></a>testListFilesOperationFilePathRegex</td>
+<td>0.205 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ListFilesActionIT.testInvalidPath"></a>testInvalidPath</td>
+<td>0.205 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ListFilesActionIT.testListFilesOperationGrepRegex"></a>testListFilesOperationGrepRegex</td>
+<td>0.205 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ListFilesActionIT.testFileRegexNotFound"></a>testFileRegexNotFound</td>
+<td>0.205 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ListFilesActionIT.testListFilesOperationSubdir"></a>testListFilesOperationSubdir</td>
+<td>0.205 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ListFilesActionIT.testGrepRegexNotFound"></a>testGrepRegexNotFound</td>
+<td>0.204 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ListFilesActionIT.testListFilesOperationRoot"></a>testListFilesOperationRoot</td>
+<td>0.205 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ListFilesActionIT.testBrokenGrepRegex"></a>testBrokenGrepRegex</td>
+<td>0.204 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ListFilesActionIT.testBrokenFileRegex"></a>testBrokenFileRegex</td>
+<td>0.203 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ListFilesActionIT.testDirectories"></a>testDirectories</td>
+<td>0.205 s</td></tr></table></section><section><a id="net.stoerr.chatgpt.codevengine.GrepActionIT"></a>
+<h2>GrepActionIT</h2>
+<table class="table table-striped">
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.GrepActionIT.testBrokenFilePathRegex"></a>testBrokenFilePathRegex</td>
+<td>0.204 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.GrepActionIT.testGrepOperationContext"></a>testGrepOperationContext</td>
+<td>0.207 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.GrepActionIT.testNotExistingGrepRegex"></a>testNotExistingGrepRegex</td>
+<td>0.204 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.GrepActionIT.testWrongFilename"></a>testWrongFilename</td>
+<td>0.204 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.GrepActionIT.testFileRegexNotMatching"></a>testFileRegexNotMatching</td>
+<td>0.204 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.GrepActionIT.testGrepOperationFirstFile"></a>testGrepOperationFirstFile</td>
+<td>0.205 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.GrepActionIT.testBrokenGrepRegex"></a>testBrokenGrepRegex</td>
+<td>0.203 s</td></tr></table></section><section><a id="net.stoerr.chatgpt.codevengine.CoDeveloperEngineGeneralIT"></a>
+<h2>CoDeveloperEngineGeneralIT</h2>
+<table class="table table-striped">
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.CoDeveloperEngineGeneralIT.testAiPluginJson"></a>testAiPluginJson</td>
+<td>0.205 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.CoDeveloperEngineGeneralIT.testRoot"></a>testRoot</td>
+<td>0.206 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.CoDeveloperEngineGeneralIT.testUnknownRequest"></a>testUnknownRequest</td>
+<td>0.207 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.CoDeveloperEngineGeneralIT.testCoDeveloperEngineYaml"></a>testCoDeveloperEngineYaml</td>
+<td>0.205 s</td></tr></table></section><section><a id="net.stoerr.chatgpt.codevengine.ExecuteActionIT"></a>
+<h2>ExecuteActionIT</h2>
+<table class="table table-striped">
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ExecuteActionIT.testHelloWorldWithLargeFileAndCut"></a>testHelloWorldWithLargeFileAndCut</td>
+<td>1.002 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ExecuteActionIT.testExecuteActionFail"></a>testExecuteActionFail</td>
+<td>0.209 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ExecuteActionIT.testHelloWorldWithLargeFile"></a>testHelloWorldWithLargeFile</td>
+<td>0.210 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ExecuteActionIT.testExecuteActionHelloWorld"></a>testExecuteActionHelloWorld</td>
+<td>0.207 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ExecuteActionIT.testExecuteActionJsonError"></a>testExecuteActionJsonError</td>
+<td>0.204 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ExecuteActionIT.testExecuteActionNotThere"></a>testExecuteActionNotThere</td>
+<td>0.204 s</td></tr></table></section><section><a id="net.stoerr.chatgpt.codevengine.UrlActionIT"></a>
+<h2>UrlActionIT</h2>
+<table class="table table-striped">
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.UrlActionIT.testValidUrl"></a>testValidUrl</td>
+<td>0.492 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.UrlActionIT.testUrlWithoutProtocol"></a>testUrlWithoutProtocol</td>
+<td>0.209 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.UrlActionIT.testPdfUrl"></a>testPdfUrl</td>
+<td>0.849 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.UrlActionIT.testInvalidUrl"></a>testInvalidUrl</td>
+<td>0.354 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.UrlActionIT.testValidUrlRaw"></a>testValidUrlRaw</td>
+<td>0.206 s</td></tr></table></section><section><a id="net.stoerr.chatgpt.codevengine.ReplaceRegexActionIT"></a>
+<h2>ReplaceRegexActionIT</h2>
+<table class="table table-striped">
+<tr class="a">
+<td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine.ReplaceRegexActionIT."><img src="images/icon_warning_sml.gif" /></a></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.ReplaceRegexActionIT."></a><a href="#net.stoerr.chatgpt.codevengine.ReplaceRegexActionIT.">-</a>
+<div class="detailToggle" style="display:inline"><a href="javascript:toggleDisplay('net.stoerr.chatgpt.codevengine.ReplaceRegexActionIT.');"><span style="display:inline;" id="net.stoerr.chatgpt.codevengine.ReplaceRegexActionIT.-off"> + </span><span style="display:none;" id="net.stoerr.chatgpt.codevengine.ReplaceRegexActionIT.-on"> - </span>[ Detail ]</a></div></td>
+<td>0 s</td></tr>
+<tr class="b">
+<td style="text-align: left;">-</td>
+<td>ReplaceRegexActionIT is disabled since ReplaceRegexAction isn't active because of too many errors made by ChatGPT.</td>
+<td>-</td></tr></table></section><section><a id="net.stoerr.chatgpt.codevengine.WriteFileActionIT"></a>
+<h2>WriteFileActionIT</h2>
+<table class="table table-striped">
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.WriteFileActionIT.testAppendToFile"></a>testAppendToFile</td>
+<td>0.207 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.WriteFileActionIT.testWriteLargeFile"></a>testWriteLargeFile</td>
+<td>0.210 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.WriteFileActionIT.testWriteFileOperation"></a>testWriteFileOperation</td>
+<td>0.204 s</td></tr></table></section><br /></section><section><a id="Failure_Details"></a>
+<h1>Failure Details</h1>
+<p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />
+<table class="table table-striped">
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_warning_sml.gif" /></td>
+<td><a id="net.stoerr.chatgpt.codevengine.ReplaceRegexActionIT."></a></td></tr>
+<tr class="b">
+<td style="text-align: left;">-</td>
+<td>skipped: ReplaceRegexActionIT is disabled since ReplaceRegexAction isn't active because of too many errors made by ChatGPT.</td></tr></table><br /></section>
+      </div>
+    </main>
+
+  <footer class="footer mt-auto py-4 bg-light text-dark">
+    <div class="container-fluid text-md-left">
+        <div class="row">
+          <div id="socialMediaDiv" class="col-md-5 col-lg-4 col-xl-4 mx-auto mb-md-0">
+
+            <div id="copyrightDiv" class="pt-3">
+              <p>&#169;
+      2024
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./js/jquery.slim.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/prettify.js"></script>
+
+    <!-- Used to enable the code-prettify running on the view. -->
+    <script>
+        addEventListener('load', function(event) { PR.prettyPrint(); }, false);
+    </script>
+  </body>

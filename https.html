@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<!doctype html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="generator" content="#generatedBy()" />
+    <title>CoDeveloperGPTengine – Making the engine available via https</title>
+    <link rel="icon" href="./img/favicons/favicon.ico">
+    <!-- CSS Stylesheets, site.css is included so downstream projects can override them as appropriate. -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/bootstrap-icons.css" />
+    <link rel="stylesheet" href="./css/maven-base.css" />
+    <link rel="stylesheet" href="./css/prettify.css" />
+    <link rel="stylesheet" href="https://bootswatch.com/5/cerulean/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/maven-theme.css" />
+    <link rel="stylesheet" href="./css/site.css" />
+  </head>
+  <body class="d-flex flex-column h-100">
+
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+        <div id="projectBarContainer" class="container-fluid justify-content-center">
+<a href="#" id="navbarIconLink" title="Navbar Brand Icon" class="navbar-brand text-wrap ps-2"> CoDeveloperGPTengine
+</a>          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div id="navbarCollapse" class="collapse navbar-collapse flex-grow-0">
+            <ul id="navbarList" class="navbar-nav">
+             <li class="nav-item dropdown">
+               <a class="nav-link dropdown-toggle" href="#" id="OverviewMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Overview <b class="caret"></b></a>
+               <ul class="dropdown-menu" aria-labelledby="OverviewMenuDropdown">
+                 <li class="nav-item dropdown-item" id="IntroductionDropdown">
+                   <a href="index.html" id="IntroductionDropdownLink" title="Introduction"  class="dropdown-item" >Introduction</a>                 </li>
+                 <li class="nav-item dropdown-item" id="FunctionalityDropdown">
+                   <a href="functionality.html" id="FunctionalityDropdownLink" title="Functionality"  class="dropdown-item" >Functionality</a>                 </li>
+                 <li class="nav-item dropdown-item" id="QuickstartDropdown">
+                   <a href="quickstart.html" id="QuickstartDropdownLink" title="Quickstart"  class="dropdown-item" >Quickstart</a>                 </li>
+               </ul>
+             </li>
+             <li class="nav-item dropdown">
+               <a class="nav-link dropdown-toggle" href="#" id="Installation / ConfigurationMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Installation / Configuration <b class="caret"></b></a>
+               <ul class="dropdown-menu" aria-labelledby="Installation / ConfigurationMenuDropdown">
+                 <li class="nav-item dropdown-item" id="Local installationDropdown">
+                   <a href="install.html" id="Local installationDropdownLink" title="Local installation"  class="dropdown-item" >Local installation</a>                 </li>
+                 <li class="nav-item dropdown-item" id="Command lineDropdown">
+                   <a href="commandline.html" id="Command lineDropdownLink" title="Command line"  class="dropdown-item" >Command line</a>                 </li>
+                 <li class="nav-item dropdown-item" id="Install into a GPTDropdown">
+                   <a href="gpt.html" id="Install into a GPTDropdownLink" title="Install into a GPT"  class="dropdown-item" >Install into a GPT</a>                 </li>
+                 <li class="nav-item dropdown-item" id="Install as ChatGPT PluginDropdown">
+                   <a href="plugin.html" id="Install as ChatGPT PluginDropdownLink" title="Install as ChatGPT Plugin"  class="dropdown-item" >Install as ChatGPT Plugin</a>                 </li>
+                 <li class="nav-item dropdown-item" id="Access via HTTPSDropdown">
+                   <a title="Access via HTTPS" class="dropdown-item">Access via HTTPS</a>                 </li>
+                 <li class="nav-item dropdown-item" id="ConfigurationDropdown">
+                   <a href="configuration.html" id="ConfigurationDropdownLink" title="Configuration"  class="dropdown-item" >Configuration</a>                 </li>
+               </ul>
+             </li>
+             <li class="nav-item dropdown">
+               <a class="nav-link dropdown-toggle" href="#" id="Project DocumentationMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Project Documentation <b class="caret"></b></a>
+               <ul class="dropdown-menu" aria-labelledby="Project DocumentationMenuDropdown">
+                 <li class="nav-item dropdown-item dropdown-submenu">
+                   <a href="project-info.html" id="Project InformationDropdownLink" title="Project Information"  class="dropdown-item" >Project Information</a>
+                   <ul id="Project DocumentationMenuSubMenuDropdown" class="dropdown-menu submenu">
+                     <li class="nav-item dropdown-item">
+                       <a href="dependencies.html" id="DependenciesDropdownLink" title="Dependencies"  class="dropdown-item" >Dependencies</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="dependency-info.html" id="Dependency InformationDropdownLink" title="Dependency Information"  class="dropdown-item" >Dependency Information</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="distribution-management.html" id="Distribution ManagementDropdownLink" title="Distribution Management"  class="dropdown-item" >Distribution Management</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="index.html" id="AboutDropdownLink" title="About"  class="dropdown-item" >About</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="plugin-management.html" id="Plugin ManagementDropdownLink" title="Plugin Management"  class="dropdown-item" >Plugin Management</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="plugins.html" id="PluginsDropdownLink" title="Plugins"  class="dropdown-item" >Plugins</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="summary.html" id="SummaryDropdownLink" title="Summary"  class="dropdown-item" >Summary</a>                     </li>
+                   </ul>
+                 </li>
+                 <li class="nav-item dropdown-item dropdown-submenu">
+                   <a href="project-reports.html" id="Project ReportsDropdownLink" title="Project Reports"  class="dropdown-item" >Project Reports</a>
+                   <ul id="Project DocumentationMenuSubMenuDropdown" class="dropdown-menu submenu">
+                     <li class="nav-item dropdown-item">
+                       <a href="failsafe-report.html" id="FailsafeDropdownLink" title="Failsafe"  class="dropdown-item" >Failsafe</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="surefire-report.html" id="SurefireDropdownLink" title="Surefire"  class="dropdown-item" >Surefire</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="jacoco-aggregate/index.html" id="JaCoCo AggregateDropdownLink" title="JaCoCo Aggregate"  class="dropdown-item" >JaCoCo Aggregate</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="apidocs/index.html" id="JavadocDropdownLink" title="Javadoc"  class="dropdown-item" >Javadoc</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="testapidocs/index.html" id="Test JavadocDropdownLink" title="Test Javadoc"  class="dropdown-item" >Test Javadoc</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="dependency-updates-report.html" id="Dependency Updates ReportDropdownLink" title="Dependency Updates Report"  class="dropdown-item" >Dependency Updates Report</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="plugin-updates-report.html" id="Plugin Updates ReportDropdownLink" title="Plugin Updates Report"  class="dropdown-item" >Plugin Updates Report</a>                     </li>
+                   </ul>
+                 </li>
+               </ul>
+             </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <nav id="projectBar" class="navbar py-0 navbar-dark bg-primary" aria-label="projectBarList">
+        <div id="projectBarContainer" class="container-fluid">
+
+          <div id="projectBaDateVersionContainer" class="justify-content-start">
+            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2024-02-11</span>
+            <span id="projectDateVersionSpacer" class="px-1 navbar-text">|</span>
+            <span id="projectVersion" class="px-1 navbar-text">Version: 3.0.1</span>
+          </div>
+          <div id="breadcrumbSpacer" ></div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="flex-shrink-0" role="main">
+      <div class="container mt-3 rounded">
+<section>
+<h1>Making the engine available via https</h1>
+<p>When the engine is used from within ChatGPT, it has to be reachable from ChatGPT's servers. That is, it has to be
+reachable from the internet via https via the standard port 443 and has to have a fixed hostname.</p>
+<p>There are various ways to do this, depending on your setup. The following sections describe some of them.
+<a href="https://serveo.net/" class="externalLink">Serveo</a> is probably the easiest way to get started. For some reason I couldn't get it to work
+as a ChatGPT plugin when using Serveo and LocalTunnel as a plugin, but they do work as a GPT, which seems to be
+preferred by OpenAI anyway. With the Fritz.Box solution it works for me as a ChatGPT plugin, too.</p><section>
+<h2><a href="https://serveo.net/" class="externalLink">Serveo</a></h2>
+<p>The donation based <a href="https://serveo.net/" class="externalLink">https://serveo.net/</a> allows exporting a port to the internet and handles the certificate for you.
+Pick a domain prefix that is not common since everybody can use it.
+Each time before using the engine you have to start the serveo tunnel:</p>
+
+<div class="verbatim">
+<pre><code>ssh -T -R your-desired-domain-prefix.serveo.net:80:localhost:3002 serveo.net
+</code></pre></div>
+<p>Your engine URL for ChatGPT will be <a href="https://your-desired-domain-prefix.serveo.net/" class="externalLink">https://your-desired-domain-prefix.serveo.net/</a> in this example. To check whether
+it works you can call it up in a browser, after starting the developers engine.</p><section>
+<h3><a href="https://theboroer.github.io/localtunnel-www/" class="externalLink">LocalTunnel</a></h3>
+<p><a href="https://theboroer.github.io/localtunnel-www/" class="externalLink">LocalTunnel</a> is similar to serveo. You have to install a client, and then
+set up a tunnel. Pick an uncommon prefix, since everybody can use it.</p>
+
+<div class="verbatim">
+<pre><code>lt -s your-desired-domain-prefix -p 3002
+</code></pre></div>
+<p>Your engine URL for ChatGPT will be your-desired-domain-prefix.loca.lt in this example.</p></section></section><section>
+<h2>Using paid services</h2>
+<p>There are several paid services similar to Serveo and LocalTunnel. I haven't tried them, but they should work, too:
+<a href="https://ngrok.com/" class="externalLink">ngrok.com</a> (at least $8/month), <a href="https://pagekite.net/" class="externalLink">https://pagekite.net/</a> (&gt;=$3/month), <a href="https://inlets.dev/" class="externalLink">inlets</a> (
+$19/month).</p></section><section>
+<h2>You work on a computer with a fixed hostname that is reachable from the internet</h2>
+<p>The problem is here that you have to make the engine reachable via port 443, and the engine cannot be run as root.
+So you probably have to set up a reverse proxy or something like that that forwards the requests to the engine.
+Please <a href="https://www.stoerr.net/contact.html" class="externalLink">contact me</a>
+if you found a solution I could publish here. Also, you have to create a certificate for your hostname.
+If you don't have an easy solution for these topics, you can still use one of the other ways.</p></section><section>
+<h2>Local Fritz.box using DSL or similar</h2>
+<p>If you have a dialup account from home, that obviously depends on your local setup. If you have a DSL connection and a
+Fritz.Box like I do, you could do the following:</p>
+<ul>
+
+<li>Set up a DynDNS account like <a href="https://freeddns.dynu.com/" class="externalLink">freeddns.org</a> and configure your Fritz.Box to use it.</li>
+<li>Configure your Fritz.Box to forward port 443 to your local machine with a suitable port, e.g. 3003 for the engine's
+mode</li>
+</ul>
+<p>You need to get a certificate for your hostname, e.g. with <a href="https://letsencrypt.org/" class="externalLink">https://letsencrypt.org/</a>. I did it, but
+since all that is a bit complicated, I'm only describe this if you ask me. :-)  One advantage is that you don't need to
+remember to start and stop a tunnel.</p></section></section>
+      </div>
+    </main>
+
+  <footer class="footer mt-auto py-4 bg-light text-dark">
+    <div class="container-fluid text-md-left">
+        <div class="row">
+          <div id="socialMediaDiv" class="col-md-5 col-lg-4 col-xl-4 mx-auto mb-md-0">
+
+            <div id="copyrightDiv" class="pt-3">
+              <p>&#169;
+      2024
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./js/jquery.slim.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/prettify.js"></script>
+
+    <!-- Used to enable the code-prettify running on the view. -->
+    <script>
+        addEventListener('load', function(event) { PR.prettyPrint(); }, false);
+    </script>
+  </body>
