@@ -5,7 +5,7 @@
     <lastmod>2024-02-04</lastmod>
   </url>
   <url>
-    <loc>https://CoDeveloperGPTengine.stoerr.net/https.html</loc>
+    <loc>https://CoDeveloperGPTengine.stoerr.net/commandline.html</loc>
     <lastmod>2024-02-04</lastmod>
   </url>
   <url>
@@ -13,19 +13,7 @@
     <lastmod>2024-02-04</lastmod>
   </url>
   <url>
-    <loc>https://CoDeveloperGPTengine.stoerr.net/configuration.html</loc>
-    <lastmod>2024-02-04</lastmod>
-  </url>
-  <url>
     <loc>https://CoDeveloperGPTengine.stoerr.net/gpt.html</loc>
-    <lastmod>2024-02-04</lastmod>
-  </url>
-  <url>
-    <loc>https://CoDeveloperGPTengine.stoerr.net/install.html</loc>
-    <lastmod>2024-02-04</lastmod>
-  </url>
-  <url>
-    <loc>https://CoDeveloperGPTengine.stoerr.net/plugin.html</loc>
     <lastmod>2024-02-04</lastmod>
   </url>
   <url>
@@ -33,11 +21,23 @@
     <lastmod>2024-02-04</lastmod>
   </url>
   <url>
-    <loc>https://CoDeveloperGPTengine.stoerr.net/commandline.html</loc>
+    <loc>https://CoDeveloperGPTengine.stoerr.net/</loc>
+    <lastmod>2024-02-09</lastmod>
+  </url>
+  <url>
+    <loc>https://CoDeveloperGPTengine.stoerr.net/install.html</loc>
     <lastmod>2024-02-04</lastmod>
   </url>
   <url>
-    <loc>https://CoDeveloperGPTengine.stoerr.net/</loc>
-    <lastmod>2024-02-09</lastmod>
+    <loc>https://CoDeveloperGPTengine.stoerr.net/configuration.html</loc>
+    <lastmod>2024-02-04</lastmod>
+  </url>
+  <url>
+    <loc>https://CoDeveloperGPTengine.stoerr.net/https.html</loc>
+    <lastmod>2024-02-04</lastmod>
+  </url>
+  <url>
+    <loc>https://CoDeveloperGPTengine.stoerr.net/plugin.html</loc>
+    <lastmod>2024-02-04</lastmod>
   </url>
 </urlset>
