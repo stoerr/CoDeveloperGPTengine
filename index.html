@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="generator" content="#generatedBy()" />
-    <title>Co-Developer GPT engine - ChatGPT reads and modifies local source files and executes action</title>
+    <title>CoDeveloperGPTengine</title>
     <link rel="icon" href="./img/favicons/favicon.ico">
     <!-- CSS Stylesheets, site.css is included so downstream projects can override them as appropriate. -->
     <link rel="stylesheet" href="./css/bootstrap.min.css" />
@@ -15,21 +15,7 @@
     <link rel="stylesheet" href="https://bootswatch.com/5/cerulean/bootstrap.min.css" />
     <link rel="stylesheet" href="./css/maven-theme.css" />
     <link rel="stylesheet" href="./css/site.css" />
-<meta property="og:image" content="https://codevelopergptengine.stoerr.net/banner.png"
-            />
-            <meta property="og:image:width" content="1200" />
-            <meta property="og:image:height" content="627" />
-            <meta property="og:image:type" content="image/png" />
-            <meta name=”twitter:card” content=”summary” />
-            <script async src="https://www.googletagmanager.com/gtag/js?id=G-SL01MYCNDC"></script>
-            <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-SL01MYCNDC');
-            </script>
-<meta name="description" content="Let a ChatGPT collaborate with you as a co-developer to read and write your local files and execute actions on your computer." /><meta name="keywords" content="AI,ChatGPT,GPT,Software Development,Productivity,CoDeveloperGPTengine" />  </head>
+  </head>
   <body class="d-flex flex-column h-100">
 
     <header>
@@ -120,9 +106,9 @@
         <div id="projectBarContainer" class="container-fluid">
 
           <div id="projectBaDateVersionContainer" class="justify-content-start">
-            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2024-02-15</span>
+            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2024-02-24</span>
             <span id="projectDateVersionSpacer" class="px-1 navbar-text">|</span>
-            <span id="projectVersion" class="px-1 navbar-text">Version: 3.0.2-SNAPSHOT</span>
+            <span id="projectVersion" class="px-1 navbar-text">Version: 3.0.1</span>
           </div>
           <div id="breadcrumbSpacer" ></div>
         </div>
@@ -136,13 +122,13 @@
   <img src="https://github.blog/wp-content/uploads/2008/12/forkme_right_gray_6d6d6d.png?resize=149%2C149" width="149" height="149" class="attachment-full size-full" alt="Fork me on GitHub" /></img>
 </a>
 <section>
-<h1>Co-Developer GPT Engine</h1>
-
-<div style="text-align: center; margin-bottom: 2em; margin-top: 2em;">
-    <img src="banner.png" alt="Co-Developer GPT engine banner" style="max-width: 100%; height: auto; max-height: 25em;" />
-</div>
-<section>
+<h1>Co-Developer GPT Engine</h1><section>
 <h2>Introduction</h2>
+
+<div style="float: right; margin-left: 1em; margin-bottom: 1em;">
+    <img src="images/dalle/joinedkeyboard1.png" alt="Joined Keyboard Image" style="width: 15em; height: auto;" />
+</div>
+
 <p>Would you like to have ChatGPT list, search, read your local files, discuss them with you, and modify them
 and have it execute (e.g. build and test)
 actions locally to support you in your development processes? Then this might be for you. The Co-Developer GPT
@@ -155,7 +141,7 @@ autonomously execute extensive changes (which would likely require a lot of prom
 developer to flexibly use the AI within a ChatGPT chat session for various tasks both to analyze code or documentation
 and to make some changes. A ChatGPT chat does, however, permit to trigger several actions in one message, so it's
 also possible to e.g. tell it to run the build, fix errors and repeat until it succeeds.</p>
-<p>The project is quite stable and useable. In fact I use it regularly in my own development - both on itself and on
+<p>The project is quite stable and useable. In fact I use it regularily in my own development - both on itself and on
 my other projects. Using it does, however, require that you have a paid ChatGPT account that can use plugins / GPTs.
 There are three ways to use it within ChatGPT: put it as actions into a GPT, register it as an unverified plugin or run
 it as a localhost plugin if you are registered as a plugin developer.
@@ -165,7 +151,7 @@ also <a href="https://www.stoerr.net/blog/codeveloper" class="externalLink">my b
 <h2>Functionality</h2>
 
 <div style="float: right; margin-left: 2em; margin-bottom: 2em;">
-<iframe src="https://www.youtube.com/embed/ubBhv2PUSEs?si=Vk-QKH6rIq8oktPP" title="Quick Demo" frameborder="0" width="560" height="315" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen"></iframe>
+<iframe src="https://www.youtube.com/embed/ubBhv2PUSEs?si=Vk-QKH6rIq8oktPP" title="YouTube video player" frameborder="0" width="560" height="315" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen"></iframe>
 </div>
 
 <p>The <code>Co-Developer GPT Engine</code> provides ChatGPT with read and optionally write access to the directory in which it

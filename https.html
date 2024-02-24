@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="generator" content="#generatedBy()" />
-    <title>Co-Developer GPT engine - ChatGPT reads and modifies local source files and executes action – Making the engine available via https</title>
+    <title>CoDeveloperGPTengine – Making the engine available via https</title>
     <link rel="icon" href="./img/favicons/favicon.ico">
     <!-- CSS Stylesheets, site.css is included so downstream projects can override them as appropriate. -->
     <link rel="stylesheet" href="./css/bootstrap.min.css" />
@@ -15,20 +15,6 @@
     <link rel="stylesheet" href="https://bootswatch.com/5/cerulean/bootstrap.min.css" />
     <link rel="stylesheet" href="./css/maven-theme.css" />
     <link rel="stylesheet" href="./css/site.css" />
-<meta property="og:image" content="https://codevelopergptengine.stoerr.net/banner.png"
-            />
-            <meta property="og:image:width" content="1200" />
-            <meta property="og:image:height" content="627" />
-            <meta property="og:image:type" content="image/png" />
-            <meta name=”twitter:card” content=”summary” />
-            <script async src="https://www.googletagmanager.com/gtag/js?id=G-SL01MYCNDC"></script>
-            <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-SL01MYCNDC');
-            </script>
   </head>
   <body class="d-flex flex-column h-100">
 
@@ -120,9 +106,9 @@
         <div id="projectBarContainer" class="container-fluid">
 
           <div id="projectBaDateVersionContainer" class="justify-content-start">
-            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2024-02-15</span>
+            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2024-02-24</span>
             <span id="projectDateVersionSpacer" class="px-1 navbar-text">|</span>
-            <span id="projectVersion" class="px-1 navbar-text">Version: 3.0.2-SNAPSHOT</span>
+            <span id="projectVersion" class="px-1 navbar-text">Version: 3.0.1</span>
           </div>
           <div id="breadcrumbSpacer" ></div>
         </div>
@@ -148,7 +134,15 @@ Each time before using the engine you have to start the serveo tunnel:</p>
 <pre><code>ssh -T -R your-desired-domain-prefix.serveo.net:80:localhost:3002 serveo.net
 </code></pre></div>
 <p>Your engine URL for ChatGPT will be <a href="https://your-desired-domain-prefix.serveo.net/" class="externalLink">https://your-desired-domain-prefix.serveo.net/</a> in this example. To check whether
-it works you can call it up in a browser, after starting the developers engine.</p></section><section>
+it works you can call it up in a browser, after starting the developers engine.</p><section>
+<h3><a href="https://theboroer.github.io/localtunnel-www/" class="externalLink">LocalTunnel</a></h3>
+<p><a href="https://theboroer.github.io/localtunnel-www/" class="externalLink">LocalTunnel</a> is similar to serveo. You have to install a client, and then
+set up a tunnel. Pick an uncommon prefix, since everybody can use it.</p>
+
+<div class="verbatim">
+<pre><code>lt -s your-desired-domain-prefix -p 3002
+</code></pre></div>
+<p>Your engine URL for ChatGPT will be your-desired-domain-prefix.loca.lt in this example.</p></section></section><section>
 <h2>Using paid services</h2>
 <p>There are several paid services similar to Serveo and LocalTunnel. I haven't tried them, but they should work, too:
 <a href="https://ngrok.com/" class="externalLink">ngrok.com</a> (at least $8/month), <a href="https://pagekite.net/" class="externalLink">https://pagekite.net/</a> (&gt;=$3/month), <a href="https://inlets.dev/" class="externalLink">inlets</a> (
@@ -169,21 +163,8 @@ Fritz.Box like I do, you could do the following:</p>
 mode</li>
 </ul>
 <p>You need to get a certificate for your hostname, e.g. with <a href="https://letsencrypt.org/" class="externalLink">https://letsencrypt.org/</a>. I did it, but
-since all that is a bit complicated, I'm only going to describe this if you ask me. :-)  One advantage is that you
-don't need to remember to start and stop a tunnel.</p></section><section>
-<h2>Services that do (probably) not work</h2>
-<p>If you feel like experimenting: <a href="https://theboroer.github.io/localtunnel-www/" class="externalLink">LocalTunnel</a> might or might not
-work - as of 1/2024 I couldn't get it to work anymore, it fails silently in ChatGPT without any error message in
-ChatGPT. Perhaps it'll work later again.
-The command line that previously was working is this for an engine URL of your-desired-domain-prefix.loca.lt :</p>
-
-<div class="verbatim">
-<pre><code>lt --print-requests=true -s your-desired-domain-prefix -p 3002
-</code></pre></div><!-- 
-The problem is probably that it requires entering a password if you use it
-from a browser - except if the UserAgent header is set to something unusual. Not quite sure what ChatGPT sets as an
-UserAgent, probably that isn't counted as unusual anymore. -->
-</section></section>
+since all that is a bit complicated, I'm only describe this if you ask me. :-)  One advantage is that you don't need to
+remember to start and stop a tunnel.</p></section></section>
       </div>
     </main>
 
