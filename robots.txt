@@ -1,1 +1,4 @@
 # Allow everything.
+User-agent: *
+Allow: /
+SiteMap: https://codevelopergptengine.stoerr.net/sitemap.xml
