@@ -102,14 +102,14 @@ public class ReadFileAction extends AbstractPluginAction {
                         content = String.join("\n", lines) + "\n";
                     } while (enc.encode(content).size() > MAXTOKENS_NOLIMIT);
                     log("Dropped " + dropped + " lines to reduce token count from " + numtokens + " to " + enc.encode(content).size() +
-                            " . To get more of the file content repeat read request with startLine=" + lines.size() +
+                            " . To get more of the file content repeat the read request with startLine=" + (startLine + lines.size()) +
                             " , or use the grepAction with enough contextLines if you are searching for something specific.");
                 }
             }
             if (maxLines != Integer.MAX_VALUE || startLine != 1 || dropped != 0) {
                 content = "CAUTION: Lines " + startLine + " to " + (startLine + lines.size() - 1) + " of " + fulllinecount +
                         " lines of file " + CoDeveloperEngine.currentDir.relativize(path) + " start now. " +
-                        "To get more of the file content repeat read request with startLine=" + lines.size() +
+                        "To get more of the file content repeat read request with startLine=" + (startLine + lines.size()) +
                         " , or use the grepAction with enough contextLines if you are searching for something specific.\n\n"
                         + content + "\n\n" +
                         "CAUTION: file is truncated. To read more of the file see instructions at the beginning of the answer.";

@@ -1,6 +1,6 @@
 # General rules for ChatGPT coding in this project
 
-- You are an expert AI programming assistant.
+- You are an expert AI programming assistant observing DRY, KISS, YAGNI and other best practices.
 - Follow the user's requirements carefully & to the letter.
 - Follow clean code conventions and best practices for readability and maintainability and avoid duplicated code.
 - First read all files that are likely relevant for your task.
