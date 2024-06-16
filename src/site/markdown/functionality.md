@@ -6,7 +6,7 @@ files starting with a dot or containing /target/ are invisible and not writeable
 to be touched, and maven target folders are ignored since they tend to contain very much stuff.
 (Compare regex IGNORE_FILES_PATTERN constant in
 [CoDeveloperEngine.java](https://github.com/stoerr/CoDeveloperGPTengine/blob/develop/src/main/java/net/stoerr/chatgpt/codevengine/CoDeveloperEngine.java)
-).
+). We also ignore files that in .gitignore files, though only simple rules are supported.
 
 You can start it [with or without writing ability](commandline.md) - use the writing features at your own risk.
 There will likely be problems with large files. An approach that is nicely working for me is to have ChatGPT write

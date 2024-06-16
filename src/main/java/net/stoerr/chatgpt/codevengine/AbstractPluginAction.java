@@ -8,11 +8,13 @@ import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -117,8 +119,11 @@ public abstract class AbstractPluginAction extends HttpServlet {
     }
 
     protected static boolean isIgnored(Path path) {
-        return CoDeveloperEngine.IGNORE_FILES_PATTERN.matcher(path.toString()).matches()
-                && !CoDeveloperEngine.OVERRIDE_IGNORE_PATTERN.matcher(path.toString()).matches();
+        if (CoDeveloperEngine.IGNORE_FILES_PATTERN.matcher(path.toString()).matches()
+                && !CoDeveloperEngine.OVERRIDE_IGNORE_PATTERN.matcher(path.toString()).matches()) {
+            return true;
+        }
+        return gitIgnored(path);
     }
 
     /**
@@ -144,6 +149,9 @@ public abstract class AbstractPluginAction extends HttpServlet {
         return result;
     }
 
+    /**
+     * Returns the path parameter from the request, checks if it is within the current directory.
+     */
     protected Path getPath(HttpServletRequest request, HttpServletResponse response, boolean mustExist) {
         String path = getMandatoryQueryParam(request, response, "path");
         if (CoDeveloperEngine.IGNORE_FILES_PATTERN.matcher(path).matches() && !CoDeveloperEngine.OVERRIDE_IGNORE_PATTERN.matcher(path).matches()) {
@@ -215,4 +223,64 @@ public abstract class AbstractPluginAction extends HttpServlet {
         return null != s && !s.trim().isEmpty();
     }
 
+    protected static Map<Path, GitIgnoreRules> gitIgnoreRules = new HashMap<>();
+
+    protected static boolean gitIgnored(Path path) {
+        Path parent = path.getParent();
+        while (parent != null) {
+            GitIgnoreRules gitIgnoreFile = gitIgnoreRules.get(parent);
+            if (gitIgnoreFile == null) {
+                gitIgnoreFile = new GitIgnoreRules(parent);
+                gitIgnoreRules.put(parent, gitIgnoreFile);
+            }
+            if (gitIgnoreFile.isIgnored(path)) {
+                return true;
+            }
+            parent = parent.getParent();
+        }
+        return false;
+    }
+
+    /**
+     * Rules from the .gitignore file in the given directory - might be nothing if there is no .gitignore there.
+     * Not quite complete, but should match the most common cases.
+     */
+    static class GitIgnoreRules {
+
+        private final List<PathMatcher> rules = new ArrayList<>();
+        private final Path directory;
+
+        public GitIgnoreRules(Path directory) {
+            this.directory = directory;
+            Path gitignore = directory.resolve(".gitignore");
+            if (Files.exists(gitignore)) {
+                try {
+                    List<String> lines = Files.readAllLines(gitignore);
+                    for (String line : lines) {
+                        if (line.startsWith("#")) {
+                            continue;
+                        }
+                        if (line.isEmpty()) {
+                            continue;
+                        }
+                        if (line.startsWith("!")) {
+                            throw new UnsupportedOperationException("Negated gitignore rules are not supported: " + line);
+                        }
+                        if (line.endsWith("/")) {
+                            line += "**";
+                        }
+                        // that's a rough approximation, but should match most of the common cases. Sorry.
+                        rules.add(directory.getFileSystem().getPathMatcher("glob:" + line));
+                    }
+                } catch (IOException e) {
+                    throw new IllegalStateException("Error reading " + gitignore + " : " + e);
+                }
+            }
+        }
+
+        public boolean isIgnored(Path path) {
+            Path relativePath = directory.relativize(path);
+            return rules.stream().anyMatch(r -> r.matches(relativePath));
+        }
+    }
 }
