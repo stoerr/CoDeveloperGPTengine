@@ -6,16 +6,18 @@ These are possible later plans, not urgent.
 
 ## Improvements
 
+- Use from LobeChat https://lobehub.com/docs/usage/start with local models
+
 - Meta-GPT that answers questions about it?
-- Is it possible to return images?
 
 - ignore stuff in .gitignore?
 - ??? How to be a regular plugin?
 - Compare with Kaguaya
-- announce somewhere. tinyurl.com/29e7g8co , https://github.com/taishi-i/awesome-ChatGPT-repositories
-- run in docker
-- Extend searh and replace message: if search string can be found with other indentation, report about that inc. the
+- Extend search and replace message: if search string can be found with other indentation, report about that inc. the
   indentation.
+
+- use chatgpt-3.5 for modifications
+- recheck other modification variants with gpt-4o
 
 ## Refactoring
 
@@ -34,8 +36,6 @@ that isn't yet used.
 
 - instead of search and replace: sed script on file? conflicted diff format? actual java code to make the
   replacement? Annoying: huge amount of backslashes due to double and triple quoting.
-
-- Compare with https://github.com/e2b-dev/awesome-ai-agents references. Put there?
 
 ## Next feature, not quite clear how to do.
 
@@ -153,3 +153,7 @@ trying my Co-Developer GPT engine? It allows ChatGPT to look directly at the fil
 write new ones, execute user-configured actions there. So it's much easier discussing your code with ChatGPT. And you
 can give it small tasks there: answer questions, make documentation, modify code, create tests, even run the build and
 fix errors. Just like your personal Co-Developer: https://CoDeveloperGPTengine.stoerr.net/
+
+## Painpoints of others this could solve
+
+Informationssouche. RAG
