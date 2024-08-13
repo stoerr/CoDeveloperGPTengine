@@ -11,11 +11,16 @@ paths:
     post:
       operationId: executeAction
       x-openai-isConsequential: false
-      summary: Execute an action with given content as standard input. Only on explicit user request.
+      summary: Execute an action with some arguments and the given actionInput content as standard input. Only on explicit user request.
       parameters:
         - name: actionName
           in: query
           required: true
+          schema:
+            type: string
+        - name: arguments
+          in: query
+          required: false
           schema:
             type: string
       requestBody:
@@ -152,7 +157,7 @@ paths:
             type: integer
         - name: startLine
           in: query
-          description: line number to start reading from
+          description: line number to start reading from; 1 is the first line
           required: false
           schema:
             type: integer

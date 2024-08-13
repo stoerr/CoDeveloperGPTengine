@@ -11,6 +11,8 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
@@ -49,16 +51,20 @@ public class ExecuteAction extends AbstractPluginAction {
 
     @Override
     public String openApiDescription() {
-        return "" +
-                "  /executeAction:\n" +
+        return "  /executeAction:\n" +
                 "    post:\n" +
                 "      operationId: executeAction\n" +
                 "      x-openai-isConsequential: false\n" +
-                "      summary: Execute an action with given content as standard input. Only on explicit user request.\n" +
+                "      summary: Execute an action with some arguments and the given actionInput content as standard input. Only on explicit user request.\n" +
                 "      parameters:\n" +
                 "        - name: actionName\n" +
                 "          in: query\n" +
                 "          required: true\n" +
+                "          schema:\n" +
+                "            type: string\n" +
+                "        - name: arguments\n" +
+                "          in: query\n" +
+                "          required: false\n" +
                 "          schema:\n" +
                 "            type: string\n" +
                 "      requestBody:\n" +
@@ -87,14 +93,21 @@ public class ExecuteAction extends AbstractPluginAction {
         try {
             String content = StringUtils.defaultString(getBodyParameter(resp, json, "actionInput", false));
             String actionName = getMandatoryQueryParam(req, resp, "actionName");
-            RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, content, actionName);
+            String args = getQueryParam(req, "arguments");
+            RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, content, actionName, args);
             Path path = currentDir.resolve(LOCAL_CONFIG_DIR).resolve(actionName + ".sh");
 
             if (!Files.exists(path)) {
                 throw sendError(resp, 400, "Action " + actionName + " not found");
             }
 
-            ProcessBuilder pb = new ProcessBuilder("/bin/sh", path.toString());
+            List<String> cmdline = new ArrayList<>();
+            cmdline.add("/bin/sh");
+            cmdline.add(path.toString());
+            if (args != null && !args.trim().isEmpty()) {
+                cmdline.addAll(Arrays.asList(args.trim().split("\\s+")));
+            }
+            ProcessBuilder pb = new ProcessBuilder(cmdline);
             pb.redirectErrorStream(true);
             logInfo("Starting process: " + pb.command() + " with content: " + abbreviate(content, 40));
             process = pb.start();
