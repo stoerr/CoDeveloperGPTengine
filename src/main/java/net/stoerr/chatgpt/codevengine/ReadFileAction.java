@@ -109,7 +109,7 @@ public class ReadFileAction extends AbstractPluginAction {
                             " , or use the grepAction with enough contextLines if you are searching for something specific.");
                 }
             }
-            if (maxLines != Integer.MAX_VALUE || startLine > 1 || dropped != 0) {
+            if (maxLines <= fulllinecount || startLine > 1 || dropped != 0) {
                 content = "CAUTION: Lines " + startLine + " to " + (startLine + lines.size() - 1) + " of " + fulllinecount +
                         " lines of file " + CoDeveloperEngine.currentDir.relativize(path) + " start now. " +
                         "To get more of the file content repeat read request with startLine=" + (startLine + lines.size()) +
