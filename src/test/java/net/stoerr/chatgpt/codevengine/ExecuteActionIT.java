@@ -21,6 +21,12 @@ public class ExecuteActionIT extends AbstractActionIT {
     }
 
     @Test
+    public void testExecuteActionHelloWorldWithArguments() throws Exception {
+        TbUtils.logInfo("\nExecuteActionIT.testExecuteActionHelloWorldWithArguments");
+        checkResponse("/executeAction?actionName=helloworld&arguments=foo%20bar", "POST", "{\"actionInput\":\"testinput\"}", 200, "action-helloworld-args.txt");
+    }
+
+    @Test
     public void testHelloWorldWithLargeFile() throws Exception {
         TbUtils.logInfo("\nExecuteActionIT.testHelloWorldWithLargeFile");
         String prefix = "Hello World! Your input was: ";
@@ -45,7 +51,7 @@ public class ExecuteActionIT extends AbstractActionIT {
         collector.checkThat(actualResponse.replace(testinput, "(THETESTINPUT)"),
                 containsString("middle removed because of length restrictions"));
         EncodingRegistry registry = Encodings.newDefaultEncodingRegistry();
-        Encoding enc = registry.getEncoding(EncodingType.CL100K_BASE);
+        Encoding enc = registry.getEncoding(EncodingType.O200K_BASE); // GPT-4o*
         int tokenCount = enc.countTokens(actualResponse);
         collector.checkThat(tokenCount < 2000, CoreMatchers.is(true));
         collector.checkThat(tokenCount > 1500, CoreMatchers.is(true));

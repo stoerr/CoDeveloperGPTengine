@@ -11,6 +11,8 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
@@ -24,6 +26,7 @@ import com.knuddels.jtokkit.Encodings;
 import com.knuddels.jtokkit.api.Encoding;
 import com.knuddels.jtokkit.api.EncodingRegistry;
 import com.knuddels.jtokkit.api.EncodingType;
+import com.knuddels.jtokkit.api.IntArrayList;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -38,9 +41,9 @@ public class ExecuteAction extends AbstractPluginAction {
     protected final EncodingRegistry registry = Encodings.newDefaultEncodingRegistry();
 
     /**
-     * Tokenizer used for GPT-3.5 and GPT-4.
+     * Tokenizer used for GPT-4o*
      */
-    protected final Encoding enc = registry.getEncoding(EncodingType.CL100K_BASE);
+    protected final Encoding enc = registry.getEncoding(EncodingType.O200K_BASE); // GPT-4o*
 
     @Override
     public String getUrl() {
@@ -49,16 +52,20 @@ public class ExecuteAction extends AbstractPluginAction {
 
     @Override
     public String openApiDescription() {
-        return "" +
-                "  /executeAction:\n" +
+        return "  /executeAction:\n" +
                 "    post:\n" +
                 "      operationId: executeAction\n" +
                 "      x-openai-isConsequential: false\n" +
-                "      summary: Execute an action with given content as standard input. Only on explicit user request.\n" +
+                "      summary: Execute an action with some arguments and the given actionInput content as standard input. Only on explicit user request.\n" +
                 "      parameters:\n" +
                 "        - name: actionName\n" +
                 "          in: query\n" +
                 "          required: true\n" +
+                "          schema:\n" +
+                "            type: string\n" +
+                "        - name: arguments\n" +
+                "          in: query\n" +
+                "          required: false\n" +
                 "          schema:\n" +
                 "            type: string\n" +
                 "      requestBody:\n" +
@@ -87,14 +94,21 @@ public class ExecuteAction extends AbstractPluginAction {
         try {
             String content = StringUtils.defaultString(getBodyParameter(resp, json, "actionInput", false));
             String actionName = getMandatoryQueryParam(req, resp, "actionName");
-            RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, content, actionName);
+            String arguments = getQueryParam(req, "arguments");
+            RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, content, actionName, arguments);
             Path path = currentDir.resolve(LOCAL_CONFIG_DIR).resolve(actionName + ".sh");
 
             if (!Files.exists(path)) {
                 throw sendError(resp, 400, "Action " + actionName + " not found");
             }
 
-            ProcessBuilder pb = new ProcessBuilder("/bin/sh", path.toString());
+            List<String> cmdline = new ArrayList<>();
+            cmdline.add("/bin/sh");
+            cmdline.add(path.toString());
+            if (arguments != null && !arguments.trim().isEmpty()) {
+                cmdline.addAll(Arrays.asList(arguments.trim().split("\\s+")));
+            }
+            ProcessBuilder pb = new ProcessBuilder(cmdline);
             pb.redirectErrorStream(true);
             logInfo("Starting process: " + pb.command() + " with content: " + abbreviate(content, 40));
             process = pb.start();
@@ -154,13 +168,21 @@ public class ExecuteAction extends AbstractPluginAction {
         if (output.length() < maxTokens) { // tokens are longer than one char, no need to decode.
             return output;
         }
-        List<Integer> tokens = enc.encode(output);
+        IntArrayList tokens = enc.encode(output);
         if (tokens.size() < maxTokens) {
             return output;
         }
         int startLimit = maxTokens / 2 - 10;
         int endLimit = tokens.size() - maxTokens / 2 + 10;
-        return enc.decode(tokens.subList(0, startLimit)) + MIDDLE_MARKER + enc.decode(tokens.subList(endLimit, tokens.size()));
+        return enc.decode(intArrayListFromList(tokens.boxed().subList(0, startLimit))) +
+                MIDDLE_MARKER +
+                enc.decode(intArrayListFromList(tokens.boxed().subList(endLimit, tokens.size())));
+    }
+
+    protected IntArrayList intArrayListFromList(List<Integer> tokens) {
+        IntArrayList result = new IntArrayList();
+        tokens.forEach(result::add);
+        return result;
     }
 
     public boolean hasActions() {

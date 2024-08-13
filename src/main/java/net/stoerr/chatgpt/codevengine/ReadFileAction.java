@@ -29,7 +29,7 @@ public class ReadFileAction extends AbstractPluginAction {
     /**
      * Tokenizer used for GPT-3.5 and GPT-4.
      */
-    protected final transient Encoding enc = registry.getEncoding(EncodingType.CL100K_BASE);
+    protected final transient Encoding enc = registry.getEncoding(EncodingType.O200K_BASE); // GPT-4o*
 
     @Override
     public String getUrl() {
@@ -58,7 +58,7 @@ public class ReadFileAction extends AbstractPluginAction {
                 "            type: integer\n" +
                 "        - name: startLine\n" +
                 "          in: query\n" +
-                "          description: line number to start reading from\n" +
+                "          description: line number to start reading from; 1 is the first line\n" +
                 "          required: false\n" +
                 "          schema:\n" +
                 "            type: integer\n" +
@@ -83,9 +83,12 @@ public class ReadFileAction extends AbstractPluginAction {
             }
             List<String> lines;
             int fulllinecount = (int) Files.lines(path).count();
+            if (startLine > fulllinecount) {
+                throw sendError(resp, HttpServletResponse.SC_BAD_REQUEST, "startLine is beyond the end of the file: " + startLine + " > " + fulllinecount);
+            }
             try (Stream<String> linesStream = Files.lines(path)) {
                 lines = linesStream
-                        .skip(startLine - 1L)
+                        .skip(Math.max(startLine - 1L, 0L))
                         .limit(maxLines)
                         .collect(Collectors.toList());
             }
@@ -106,7 +109,7 @@ public class ReadFileAction extends AbstractPluginAction {
                             " , or use the grepAction with enough contextLines if you are searching for something specific.");
                 }
             }
-            if (maxLines != Integer.MAX_VALUE || startLine != 1 || dropped != 0) {
+            if (maxLines != Integer.MAX_VALUE || startLine > 1 || dropped != 0) {
                 content = "CAUTION: Lines " + startLine + " to " + (startLine + lines.size() - 1) + " of " + fulllinecount +
                         " lines of file " + CoDeveloperEngine.currentDir.relativize(path) + " start now. " +
                         "To get more of the file content repeat read request with startLine=" + (startLine + lines.size()) +
