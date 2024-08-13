@@ -22,7 +22,7 @@ public class ReadFileAction extends AbstractPluginAction {
     /**
      * The maximum number of ChatGPT tokes we output if there is no maxLines parameter given
      */
-    private static final int MAXTOKENS_NOLIMIT = 2000;
+    private static final int MAXTOKENS_NOLIMIT = 10000;
 
     protected final transient EncodingRegistry registry = Encodings.newDefaultEncodingRegistry();
 
