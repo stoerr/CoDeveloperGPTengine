@@ -40,8 +40,14 @@ public class GrepActionIT extends AbstractActionIT {
     @Test
     public void testFileRegexNotMatching() throws Exception {
         TbUtils.logInfo("\nGrepActionIT.testFileRegexNotMatching");
-        String response = checkResponse("/grepFiles?path=.&grepRegex=Hello&fileRegex=notmatching", "GET", null, 404, null);
-        collector.checkThat(response, is("No files found matching filePathRegex: notmatching"));
+        String response = checkResponse("/grepFiles?path=.&grepRegex=Hello&fileRegex=secondxfile", "GET", null, 404, null);
+        collector.checkThat(response, is("No files found matching filePathRegex: secondxfile\n" +
+                "\n" +
+                "Did you mean one of these files?\n" +
+                "secondfile.md\n" +
+                "firstfile.txt\n" +
+                "subdir/fileinsubdir.md\n" +
+                "filewritten.txt"));
     }
 
     @Test

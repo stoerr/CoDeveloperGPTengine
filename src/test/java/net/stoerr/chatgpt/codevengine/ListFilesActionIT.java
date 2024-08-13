@@ -68,8 +68,14 @@ public class ListFilesActionIT extends AbstractActionIT {
     @Test
     public void testFileRegexNotFound() throws Exception {
         TbUtils.logInfo("\nListFilesActionIT.testFileRegexNotFound");
-        String response = checkResponse("/listFiles?path=.&filePathRegex=notexisting", "GET", null, 404, null);
-        collector.checkThat(response, is("No files found matching filePathRegex: notexisting"));
+        String response = checkResponse("/listFiles?path=.&filePathRegex=secondxfile", "GET", null, 404, null);
+        collector.checkThat(response, is("No files found matching filePathRegex: secondxfile\n" +
+                "\n" +
+                "Did you mean one of these files?\n" +
+                "secondfile.md\n" +
+                "firstfile.txt\n" +
+                "subdir/fileinsubdir.md\n" +
+                "filewritten.txt"));
     }
 
     @Test
