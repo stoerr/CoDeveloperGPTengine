@@ -58,7 +58,7 @@ public class ReadFileAction extends AbstractPluginAction {
                 "            type: integer\n" +
                 "        - name: startLine\n" +
                 "          in: query\n" +
-                "          description: line number to start reading from\n" +
+                "          description: line number to start reading from; 1 is the first line\n" +
                 "          required: false\n" +
                 "          schema:\n" +
                 "            type: integer\n" +
@@ -83,9 +83,12 @@ public class ReadFileAction extends AbstractPluginAction {
             }
             List<String> lines;
             int fulllinecount = (int) Files.lines(path).count();
+            if (startLine >= fulllinecount) {
+                throw sendError(resp, HttpServletResponse.SC_BAD_REQUEST, "startLine is beyond the end of the file: " + startLine + " >= " + fulllinecount);
+            }
             try (Stream<String> linesStream = Files.lines(path)) {
                 lines = linesStream
-                        .skip(startLine - 1L)
+                        .skip(Math.max(startLine - 1L, 0L))
                         .limit(maxLines)
                         .collect(Collectors.toList());
             }

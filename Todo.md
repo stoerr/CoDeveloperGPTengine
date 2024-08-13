@@ -16,8 +16,9 @@ These are possible later plans, not urgent.
 - Extend search and replace message: if search string can be found with other indentation, report about that inc. the
   indentation.
 
-- use chatgpt-3.5 for modifications
+- use chatgpt-4o-mini for modifications
 - recheck other modification variants with gpt-4o
+- check how good gpt-4o-mini is for the tasks
 
 ## Refactoring
 

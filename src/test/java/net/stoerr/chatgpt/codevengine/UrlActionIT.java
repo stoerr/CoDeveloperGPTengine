@@ -48,7 +48,7 @@ public class UrlActionIT extends AbstractActionIT {
         TbUtils.logInfo("\nUrlActionIT.testPdfUrl");
         String pdfUrl = "https://datatracker.ietf.org/doc/pdf/rfc791.pdf";
         String response = checkResponse("/fetchUrlTextContent?url=" + pdfUrl, "GET", null, 200, null);
-        collector.checkThat(response, CoreMatchers.containsString("text content of "));
+        collector.checkThat(response, CoreMatchers.containsString("markdown for text/html content of "));
         collector.checkThat(response, CoreMatchers.containsString("INTERNET PROTOCOL"));
         collector.checkThat(response, CoreMatchers.containsString("September 1981"));
     }

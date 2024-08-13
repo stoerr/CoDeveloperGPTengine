@@ -36,7 +36,7 @@ public class ReadFileActionIT extends AbstractActionIT {
     public void testReadWithMaxLinesAndStartLine() throws Exception {
         String response = checkResponse("/readFile?path=firstfile.txt&maxLines=1&startLine=2", "GET", null, 200, null);
         String[] lines = response.split("\n");
-        assertEquals(6, lines.length);
+        assertEquals(1, lines.length);
         assertEquals("Just a test.", lines[2]);
     }
 }
