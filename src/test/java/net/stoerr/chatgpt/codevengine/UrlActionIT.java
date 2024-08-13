@@ -4,7 +4,6 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 
 import org.hamcrest.CoreMatchers;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class UrlActionIT extends AbstractActionIT {
@@ -45,15 +44,12 @@ public class UrlActionIT extends AbstractActionIT {
     }
 
     @Test
-    @Ignore("The URL doesn't work anymore.")
-    // FIXME(hps,24/08/13) use the test.pdf checked in
     public void testPdfUrl() throws Exception {
         TbUtils.logInfo("\nUrlActionIT.testPdfUrl");
-        String pdfUrl = "https://www.un.org/sites/un2.un.org/files/2021/03/udhr.pdf";
+        String pdfUrl = "https://codevelopergptengine.stoerr.net/test/test.pdf";
         String response = checkResponse("/fetchUrlTextContent?url=" + pdfUrl, "GET", null, 200, null);
-        collector.checkThat(response, CoreMatchers.containsString("markdown for text/html content of "));
-        collector.checkThat(response, CoreMatchers.containsString("INTERNET PROTOCOL"));
-        collector.checkThat(response, CoreMatchers.containsString("September 1981"));
+        collector.checkThat(response, CoreMatchers.containsString("text content of application/pdf content of "));
+        collector.checkThat(response, CoreMatchers.containsString("This is a test PDF"));
     }
 
     @Test
