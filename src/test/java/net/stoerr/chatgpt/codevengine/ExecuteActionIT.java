@@ -45,7 +45,7 @@ public class ExecuteActionIT extends AbstractActionIT {
         collector.checkThat(actualResponse.replace(testinput, "(THETESTINPUT)"),
                 containsString("middle removed because of length restrictions"));
         EncodingRegistry registry = Encodings.newDefaultEncodingRegistry();
-        Encoding enc = registry.getEncoding(EncodingType.CL100K_BASE);
+        Encoding enc = registry.getEncoding(EncodingType.O200K_BASE); // GPT-4o*
         int tokenCount = enc.countTokens(actualResponse);
         collector.checkThat(tokenCount < 2000, CoreMatchers.is(true));
         collector.checkThat(tokenCount > 1500, CoreMatchers.is(true));

@@ -26,6 +26,7 @@ import com.knuddels.jtokkit.Encodings;
 import com.knuddels.jtokkit.api.Encoding;
 import com.knuddels.jtokkit.api.EncodingRegistry;
 import com.knuddels.jtokkit.api.EncodingType;
+import com.knuddels.jtokkit.api.IntArrayList;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -40,9 +41,9 @@ public class ExecuteAction extends AbstractPluginAction {
     protected final EncodingRegistry registry = Encodings.newDefaultEncodingRegistry();
 
     /**
-     * Tokenizer used for GPT-3.5 and GPT-4.
+     * Tokenizer used for GPT-4o*
      */
-    protected final Encoding enc = registry.getEncoding(EncodingType.CL100K_BASE);
+    protected final Encoding enc = registry.getEncoding(EncodingType.O200K_BASE); // GPT-4o*
 
     @Override
     public String getUrl() {
@@ -167,13 +168,21 @@ public class ExecuteAction extends AbstractPluginAction {
         if (output.length() < maxTokens) { // tokens are longer than one char, no need to decode.
             return output;
         }
-        List<Integer> tokens = enc.encode(output);
+        IntArrayList tokens = enc.encode(output);
         if (tokens.size() < maxTokens) {
             return output;
         }
         int startLimit = maxTokens / 2 - 10;
         int endLimit = tokens.size() - maxTokens / 2 + 10;
-        return enc.decode(tokens.subList(0, startLimit)) + MIDDLE_MARKER + enc.decode(tokens.subList(endLimit, tokens.size()));
+        return enc.decode(intArrayListFromList(tokens.boxed().subList(0, startLimit))) +
+                MIDDLE_MARKER +
+                enc.decode(intArrayListFromList(tokens.boxed().subList(endLimit, tokens.size())));
+    }
+
+    protected IntArrayList intArrayListFromList(List<Integer> tokens) {
+        IntArrayList result = new IntArrayList();
+        tokens.forEach(result::add);
+        return result;
     }
 
     public boolean hasActions() {
