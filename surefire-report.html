@@ -78,7 +78,7 @@
                      <li class="nav-item dropdown-item">
                        <a href="dependencies.html" id="DependenciesDropdownLink" title="Dependencies"  class="dropdown-item" >Dependencies</a>                     </li>
                      <li class="nav-item dropdown-item">
-                       <a href="dependency-info.html" id="Dependency InformationDropdownLink" title="Dependency Information"  class="dropdown-item" >Dependency Information</a>                     </li>
+                       <a href="dependency-info.html" id="Maven CoordinatesDropdownLink" title="Maven Coordinates"  class="dropdown-item" >Maven Coordinates</a>                     </li>
                      <li class="nav-item dropdown-item">
                        <a href="distribution-management.html" id="Distribution ManagementDropdownLink" title="Distribution Management"  class="dropdown-item" >Distribution Management</a>                     </li>
                      <li class="nav-item dropdown-item">
@@ -87,6 +87,8 @@
                        <a href="plugin-management.html" id="Plugin ManagementDropdownLink" title="Plugin Management"  class="dropdown-item" >Plugin Management</a>                     </li>
                      <li class="nav-item dropdown-item">
                        <a href="plugins.html" id="PluginsDropdownLink" title="Plugins"  class="dropdown-item" >Plugins</a>                     </li>
+                     <li class="nav-item dropdown-item">
+                       <a href="scm.html" id="Source Code ManagementDropdownLink" title="Source Code Management"  class="dropdown-item" >Source Code Management</a>                     </li>
                      <li class="nav-item dropdown-item">
                        <a href="summary.html" id="SummaryDropdownLink" title="Summary"  class="dropdown-item" >Summary</a>                     </li>
                    </ul>
@@ -120,9 +122,9 @@
         <div id="projectBarContainer" class="container-fluid">
 
           <div id="projectBaDateVersionContainer" class="justify-content-start">
-            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2024-02-24</span>
+            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2024-08-13</span>
             <span id="projectDateVersionSpacer" class="px-1 navbar-text">|</span>
-            <span id="projectVersion" class="px-1 navbar-text">Version: 3.0.2</span>
+            <span id="projectVersion" class="px-1 navbar-text">Version: 3.1.0</span>
           </div>
           <div id="breadcrumbSpacer" ></div>
         </div>
@@ -160,7 +162,7 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
-<td style="text-align: left;">2</td>
+<td style="text-align: left;">8</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -180,7 +182,7 @@ function toggleDisplay(elementId) {
 <th>Time</th></tr>
 <tr class="b">
 <td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine">net.stoerr.chatgpt.codevengine</a></td>
-<td>2</td>
+<td>8</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -199,6 +201,15 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
+<td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest"><img src="images/icon_success_sml.gif" /></a></td>
+<td><a href="#net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest">GitIgnoreRulesTest</a></td>
+<td>6</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0 s</td></tr>
+<tr class="a">
 <td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine.TbUtilsTest"><img src="images/icon_success_sml.gif" /></a></td>
 <td><a href="#net.stoerr.chatgpt.codevengine.TbUtilsTest">TbUtilsTest</a></td>
 <td>2</td>
@@ -208,7 +219,33 @@ function toggleDisplay(elementId) {
 <td>100%</td>
 <td>0.025 s</td></tr></table></section><br /></section><section><a id="Test_Cases"></a>
 <h1>Test Cases</h1>
-<p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><section><a id="net.stoerr.chatgpt.codevengine.TbUtilsTest"></a>
+<p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><section><a id="net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest"></a>
+<h2>GitIgnoreRulesTest</h2>
+<table class="table table-striped">
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testEmptyGitignoreFile"></a>testEmptyGitignoreFile</td>
+<td>0 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testNegatedGitignoreRuleThrowsException"></a>testNegatedGitignoreRuleThrowsException</td>
+<td>0 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testValidGitignoreRules"></a>testValidGitignoreRules</td>
+<td>0 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testIsNotIgnored"></a>testIsNotIgnored</td>
+<td>0 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testIsIgnored"></a>testIsIgnored</td>
+<td>0 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testNoGitignoreFile"></a>testNoGitignoreFile</td>
+<td>0 s</td></tr></table></section><section><a id="net.stoerr.chatgpt.codevengine.TbUtilsTest"></a>
 <h2>TbUtilsTest</h2>
 <table class="table table-striped">
 <tr class="a">
