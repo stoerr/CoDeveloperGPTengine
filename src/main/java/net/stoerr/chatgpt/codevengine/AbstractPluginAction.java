@@ -74,7 +74,9 @@ public abstract class AbstractPluginAction extends HttpServlet {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                     FileVisitResult res = super.visitFile(file, attrs);
-                    result.add(file);
+                    if (!isIgnored(file)) {
+                        result.add(file);
+                    }
                     return res;
                 }
             });
@@ -83,9 +85,8 @@ public abstract class AbstractPluginAction extends HttpServlet {
         }
 
         List<Path> matchingFiles = result.stream()
-                .filter(Files::isRegularFile)
-                .filter(p -> !isIgnored(p))
                 .filter(p -> !haveFilePathPattern || filePathPattern.matcher(p.toString()).find())
+                .filter(Files::isRegularFile)
                 .collect(toList());
         if (matchingFiles.isEmpty()) {
             throw sendError(response, 404, "No files found matching filePathRegex: " + filePathPattern);

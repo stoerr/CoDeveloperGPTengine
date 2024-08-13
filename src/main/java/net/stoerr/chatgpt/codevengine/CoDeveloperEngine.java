@@ -51,12 +51,12 @@ public class CoDeveloperEngine {
     public static final String LOCAL_CONFIG_DIR = ".cgptcodeveloper";
 
     /** Files that are inaccessible to the program. */
-    public static final Pattern IGNORE_FILES_PATTERN = Pattern.compile(".*/[.].*|.*/target/.*|.*/(Hpsx|hpsx).*|.*/node_modules/.*");
+    public static final Pattern IGNORE_FILES_PATTERN = Pattern.compile(".*/[.].*|.*/target|.*/target/.*|.*/(Hpsx|hpsx).*|.*/node_modules/.*");
 
     /**
      * Exceptions overriding {@link #IGNORE_FILES_PATTERN}.
      */
-    public static final Pattern OVERRIDE_IGNORE_PATTERN = Pattern.compile(".*/.github/.*|.*/.content.xml|\\.chatgpt.*.md|.*\\.htaccess");
+    public static final Pattern OVERRIDE_IGNORE_PATTERN = Pattern.compile(".*/.github/.*|.*/.content.xml|(.*/)?\\.chatgpt.*.md|.*\\.htaccess");
 
     // private static final Gson GSON = new Gson();
 
