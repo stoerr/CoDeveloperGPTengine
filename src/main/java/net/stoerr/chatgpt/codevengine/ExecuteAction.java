@@ -94,8 +94,8 @@ public class ExecuteAction extends AbstractPluginAction {
         try {
             String content = StringUtils.defaultString(getBodyParameter(resp, json, "actionInput", false));
             String actionName = getMandatoryQueryParam(req, resp, "actionName");
-            String args = getQueryParam(req, "arguments");
-            RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, content, actionName, args);
+            String arguments = getQueryParam(req, "arguments");
+            RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, content, actionName, arguments);
             Path path = currentDir.resolve(LOCAL_CONFIG_DIR).resolve(actionName + ".sh");
 
             if (!Files.exists(path)) {
@@ -105,8 +105,8 @@ public class ExecuteAction extends AbstractPluginAction {
             List<String> cmdline = new ArrayList<>();
             cmdline.add("/bin/sh");
             cmdline.add(path.toString());
-            if (args != null && !args.trim().isEmpty()) {
-                cmdline.addAll(Arrays.asList(args.trim().split("\\s+")));
+            if (arguments != null && !arguments.trim().isEmpty()) {
+                cmdline.addAll(Arrays.asList(arguments.trim().split("\\s+")));
             }
             ProcessBuilder pb = new ProcessBuilder(cmdline);
             pb.redirectErrorStream(true);

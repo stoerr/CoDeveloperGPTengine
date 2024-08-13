@@ -21,6 +21,12 @@ public class ExecuteActionIT extends AbstractActionIT {
     }
 
     @Test
+    public void testExecuteActionHelloWorldWithArguments() throws Exception {
+        TbUtils.logInfo("\nExecuteActionIT.testExecuteActionHelloWorldWithArguments");
+        checkResponse("/executeAction?actionName=helloworld&arguments=foo%20bar", "POST", "{\"actionInput\":\"testinput\"}", 200, "action-helloworld-args.txt");
+    }
+
+    @Test
     public void testHelloWorldWithLargeFile() throws Exception {
         TbUtils.logInfo("\nExecuteActionIT.testHelloWorldWithLargeFile");
         String prefix = "Hello World! Your input was: ";
