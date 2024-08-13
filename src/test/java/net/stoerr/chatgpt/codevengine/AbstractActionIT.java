@@ -123,7 +123,7 @@ public abstract class AbstractActionIT {
             } else {
                 expectedContentType = "text/html; charset=UTF-8";
             }
-        } else if (expectedResponse.contains("openapi: 3.0")) {
+        } else if (expectedResponse.contains("openapi: 3.")) {
             expectedContentType = "text/yaml;charset=utf-8";
         } else {
             expectedContentType = "text/plain;charset=utf-8";
