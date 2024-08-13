@@ -95,7 +95,8 @@ public class ListFilesAction extends AbstractPluginAction {
                 if (filePathFileCount > 0)
                     throw sendError(resp, 404, "Found " + filePathFileCount + " files whose name is matching the filePathRegex but none of them contain a line matching the grepRegex.");
                 else if (Files.newDirectoryStream(path).iterator().hasNext()) {
-                    throw sendError(resp, 404, "No files found matching filePathRegex: " + filePathRegex);
+                    String similarFilesMessage = getSimilarFilesMessage(resp, path, filePathPattern.toString());
+                    throw sendError(resp, 404, "No files found matching filePathRegex: " + filePathRegex + "\n\n" + similarFilesMessage);
                 } else {
                     throw sendError(resp, 404, "No files found in directory: " + path);
                 }

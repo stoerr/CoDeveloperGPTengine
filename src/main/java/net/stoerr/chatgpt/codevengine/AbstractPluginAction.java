@@ -89,7 +89,8 @@ public abstract class AbstractPluginAction extends HttpServlet {
                 .filter(Files::isRegularFile)
                 .collect(toList());
         if (matchingFiles.isEmpty()) {
-            throw sendError(response, 404, "No files found matching filePathRegex: " + filePathPattern);
+            String similarFilesMessage = getSimilarFilesMessage(response, path, filePathPattern.toString());
+            throw sendError(response, 404, "No files found matching filePathRegex: " + filePathPattern + "\n\n" + similarFilesMessage);
         }
         Collections.sort(matchingFiles); // make it deterministic.
 
@@ -166,25 +167,34 @@ public abstract class AbstractPluginAction extends HttpServlet {
         if (mustExist && !Files.exists(resolved)) {
             String message = "Path " + path + " does not exist! Try to list files with /listFiles to find the right path.";
             String filename = resolved.getFileName().toString();
-            List<Path> matchingFiles = findMatchingFiles(response, CoDeveloperEngine.currentDir, null, null)
-                    .collect(toList());
-            List<String> files = matchingFiles.stream()
-                    .map(p -> CoDeveloperEngine.currentDir.relativize(p).toString())
-                    .map(p -> Pair.of(p, StringUtils.getFuzzyDistance(p, filename, Locale.getDefault())))
-                    .map(p -> Pair.of(p.getLeft(), -p.getRight()))
-                    .sorted(Comparator.comparingDouble(Pair::getRight))
-                    .limit(10)
-                    .map(Pair::getLeft)
-                    .collect(toList());
-            if (!files.isEmpty()) {
-                message += "\n\nDid you mean one of these files?\n" + String.join("\n", files);
-                if (files.size() < matchingFiles.size()) {
-                    message += "\n\n(suggestion list truncated - there are " + matchingFiles.size() + " files; use listFiles to find more files).";
-                }
+            String similarFilesMessage = getSimilarFilesMessage(response, CoDeveloperEngine.currentDir, filename);
+            if (!similarFilesMessage.isEmpty()) {
+                message += "\n\n" + similarFilesMessage;
             }
             throw sendError(response, 404, message);
         }
         return resolved;
+    }
+
+    protected static String getSimilarFilesMessage(HttpServletResponse response, Path path, String filename) {
+        String similarFilesMessage = "";
+        List<Path> matchingFiles = findMatchingFiles(response, path, null, null)
+                .collect(toList());
+        List<String> files = matchingFiles.stream()
+                .map(p -> CoDeveloperEngine.currentDir.relativize(p).toString())
+                .map(p -> Pair.of(p, StringUtils.getFuzzyDistance(p, filename, Locale.getDefault())))
+                .map(p -> Pair.of(p.getLeft(), -p.getRight()))
+                .sorted(Comparator.comparingDouble(Pair::getRight))
+                .map(Pair::getLeft)
+                .limit(10)
+                .collect(toList());
+        if (!files.isEmpty()) {
+            similarFilesMessage += "Did you mean one of these files?\n" + String.join("\n", files);
+            if (files.size() < matchingFiles.size()) {
+                similarFilesMessage += "\n\n(suggestion list truncated - there are " + matchingFiles.size() + " files; use listFiles to find more files).";
+            }
+        }
+        return similarFilesMessage;
     }
 
     /**
