@@ -54,10 +54,13 @@ public class GitIgnoreRulesTest {
         assertFalse(gitIgnoreRules.isIgnored(tempDirectory.resolve("notignored.txt")));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testNegatedGitignoreRuleThrowsException() throws IOException {
         Files.write(gitignoreFile, "!notignored.txt".getBytes());
-        new GitIgnoreRules(tempDirectory);
+        GitIgnoreRules gitIgnoreRules = new GitIgnoreRules(tempDirectory);
+        // Negated rules are not supported and should be ignored
+        assertFalse(gitIgnoreRules.isIgnored(tempDirectory.resolve("notignored.txt")));
+        assertFalse(gitIgnoreRules.isIgnored(tempDirectory.resolve("!notignored.txt")));
     }
 
     @Test
