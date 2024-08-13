@@ -12,6 +12,13 @@
         modifying files in the directory the program is started in, and executing actions like builds and test runs.
     </description>
 
+    <scm>
+        <url>https://github.com/stoerr/CoDeveloperGPTengine.git</url>
+        <connection>scm:git:https://github.com/stoerr/CoDeveloperGPTengine.git</connection>
+        <developerConnection>scm:git:https://github.comstoerr/CoDeveloperGPTengine.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
     <distributionManagement>
         <site>
             <id>site</id>

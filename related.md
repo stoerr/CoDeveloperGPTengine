@@ -22,6 +22,10 @@ https://github.com/PromtEngineer/localGPT
 - Write CSS animation by describing what u want
 - GPT4 >>> GPT3.5/Anthropic Claude for codegen
 
+## [Aider](https://aider.chat/)
+
+Pretty much the same idea but with a command line chat.
+
 ### Links
 - Author: [Swyx](https://twitter.com/swyx)
 - [Demo](https://www.youtube.com/watch?v=UCo7YeTy-aE)
