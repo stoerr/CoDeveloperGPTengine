@@ -71,8 +71,8 @@ paths:
       parameters:
         - name: path
           in: query
-          description: relative path to the directory to search in or the file to search. root directory = '.'
-          required: true
+          description: relative path to the directory to search in or the file to search. default is the root directory = '.'
+          required: false
           schema:
             type: string
         - name: fileRegex
@@ -108,8 +108,8 @@ paths:
       parameters:
         - name: path
           in: query
-          description: relative path to directory to list. root directory = '.'
-          required: true
+          description: relative path to directory to list. default is the root directory = '.'
+          required: false
           schema:
             type: string
         - name: filePathRegex

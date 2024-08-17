@@ -32,8 +32,8 @@ public class ListFilesAction extends AbstractPluginAction {
                 "      parameters:\n" +
                 "        - name: path\n" +
                 "          in: query\n" +
-                "          description: relative path to directory to list. root directory = '.'\n" +
-                "          required: true\n" +
+                "          description: relative path to directory to list. default is the root directory = '.'\n" +
+                "          required: false\n" +
                 "          schema:\n" +
                 "            type: string\n" +
                 "        - name: filePathRegex\n" +
@@ -65,7 +65,7 @@ public class ListFilesAction extends AbstractPluginAction {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Path path = getPath(req, resp, true);
+        Path path = getPath(req, resp, true, true);
         String filePathRegex = getQueryParam(req, "filePathRegex");
         String grepRegex = getQueryParam(req, "grepRegex");
         String listDirectories = getQueryParam(req, "listDirectories");

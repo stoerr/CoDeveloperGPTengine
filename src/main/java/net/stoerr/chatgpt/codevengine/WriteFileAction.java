@@ -26,8 +26,7 @@ public class WriteFileAction extends AbstractPluginAction {
 
     @Override
     public String openApiDescription() {
-        return "" +
-                "  /writeFile:\n" +
+        return "  /writeFile:\n" +
                 "    post:\n" +
                 "      operationId: writeFile\n" +
                 "      x-openai-isConsequential: false\n" +
@@ -74,7 +73,7 @@ public class WriteFileAction extends AbstractPluginAction {
             String appendParam = getQueryParam(req, "append");
             boolean append = appendParam != null && appendParam.toLowerCase().contains("true");
             String content = getBodyParameter(resp, json, "content", true);
-            Path path = getPath(req, resp, false);
+            Path path = getPath(req, resp, false, false);
             RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, path, appendParam, content);
             if (!Files.exists(path.getParent())) {
                 Files.createDirectories(path.getParent());

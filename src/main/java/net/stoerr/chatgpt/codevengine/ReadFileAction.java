@@ -73,7 +73,7 @@ public class ReadFileAction extends AbstractPluginAction {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Path path = getPath(req, resp, true);
+        Path path = getPath(req, resp, true, false);
         int maxLines = req.getParameter("maxLines") != null ? Integer.parseInt(req.getParameter("maxLines")) : Integer.MAX_VALUE;
         int startLine = req.getParameter("startLine") != null ? Integer.parseInt(req.getParameter("startLine")) : 1;
         RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, path);

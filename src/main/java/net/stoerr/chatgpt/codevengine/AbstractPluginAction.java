@@ -155,8 +155,13 @@ public abstract class AbstractPluginAction extends HttpServlet {
     /**
      * Returns the path parameter from the request, checks if it is within the current directory.
      */
-    protected Path getPath(HttpServletRequest request, HttpServletResponse response, boolean mustExist) {
-        String path = getMandatoryQueryParam(request, response, "path");
+    protected Path getPath(HttpServletRequest request, HttpServletResponse response, boolean mustExist, boolean usedefault) {
+        String path;
+        if (usedefault && request.getParameter("path") == null || request.getParameter("path").isEmpty()) {
+            path = ".";
+        } else {
+            path = getMandatoryQueryParam(request, response, "path");
+        }
         if (CoDeveloperEngine.IGNORE_FILES_PATTERN.matcher(path).matches() && !CoDeveloperEngine.OVERRIDE_IGNORE_PATTERN.matcher(path).matches()) {
             throw sendError(response, 400, "Access to path " + path + " is not allowed! (matches " + CoDeveloperEngine.IGNORE_FILES_PATTERN.pattern() + ")");
         }
@@ -182,12 +187,18 @@ public abstract class AbstractPluginAction extends HttpServlet {
                 .collect(toList());
         List<String> files = matchingFiles.stream()
                 .map(p -> CoDeveloperEngine.currentDir.relativize(p).toString())
+                .filter(p -> p.contains("/" + filename))
+                .limit(5)
+                .collect(toList());
+        matchingFiles.stream()
+                .map(p -> CoDeveloperEngine.currentDir.relativize(p).toString())
                 .map(p -> Pair.of(p, StringUtils.getFuzzyDistance(p, filename, Locale.getDefault())))
                 .map(p -> Pair.of(p.getLeft(), -p.getRight()))
                 .sorted(Comparator.comparingDouble(Pair::getRight))
                 .map(Pair::getLeft)
-                .limit(10)
-                .collect(toList());
+                .limit(20)
+                .forEachOrdered(files::add);
+        files = files.stream().distinct().collect(toList());
         if (!files.isEmpty()) {
             similarFilesMessage += "Did you mean one of these files?\n" + String.join("\n", files);
             if (files.size() < matchingFiles.size()) {

@@ -22,8 +22,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @Deprecated // "ChatGPT-4 made way too many mistakes when using that"
 public class ReplaceRegexAction extends AbstractPluginAction {
 
-    public static final String ERRORMESSAGE_PATTERNNOTFOUND = "" +
-            "Found no occurrences of pattern.\n" +
+    public static final String ERRORMESSAGE_PATTERNNOTFOUND = "Found no occurrences of pattern.\n" +
             "Possible actions to fix the problem:\n" +
             " - Re-read the file - it might be different than you think.\n" +
             " - Use literalSearchString instead of specifying a pattern. That is less error prone.\n" +
@@ -45,8 +44,7 @@ public class ReplaceRegexAction extends AbstractPluginAction {
 
     @Override
     public String openApiDescription() {
-        return "" +
-                "  /replaceRegexInFile:\n" +
+        return "  /replaceRegexInFile:\n" +
                 "    post:\n" +
                 "      operationId: replaceRegexInFile\n" +
                 "      summary: Replaces the single occurrence of a regular expression or a string in a file. You can use all advanced regex features. The whole file is matched, not line by line. Use exactly one of literalReplacement and replacementWithGroupReferences.\n" +
@@ -91,7 +89,7 @@ public class ReplaceRegexAction extends AbstractPluginAction {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         BufferedReader reader = req.getReader();
         String json = reader.lines().collect(Collectors.joining(System.lineSeparator()));
-        Path path = getPath(req, resp, true);
+        Path path = getPath(req, resp, true, false);
         String pattern = getBodyParameter(resp, json, "pattern", false);
         String literalSearchString = getBodyParameter(resp, json, "literalSearchString", false);
         String literalReplacement = getBodyParameter(resp, json, "literalReplacement", false);

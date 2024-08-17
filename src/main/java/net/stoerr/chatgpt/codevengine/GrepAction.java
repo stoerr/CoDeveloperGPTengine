@@ -29,8 +29,8 @@ public class GrepAction extends AbstractPluginAction {
                 "      parameters:\n" +
                 "        - name: path\n" +
                 "          in: query\n" +
-                "          description: relative path to the directory to search in or the file to search. root directory = '.'\n" +
-                "          required: true\n" +
+                "          description: relative path to the directory to search in or the file to search. default is the root directory = '.'\n" +
+                "          required: false\n" +
                 "          schema:\n" +
                 "            type: string\n" +
                 "        - name: fileRegex\n" +
@@ -65,7 +65,7 @@ public class GrepAction extends AbstractPluginAction {
     // matching lines with context lines
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Path startPath = getPath(req, resp, true);
+        Path startPath = getPath(req, resp, true, true);
         String fileRegex = getQueryParam(req, "fileRegex");
         String grepRegex = getMandatoryQueryParam(req, resp, "grepRegex");
         String contextLinesParam = getQueryParam(req, "contextLines");

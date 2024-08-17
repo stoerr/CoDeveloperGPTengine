@@ -71,7 +71,7 @@ public class ReplaceAction extends AbstractPluginAction {
         BufferedReader reader = req.getReader();
         String json = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         TbUtils.logBody("body", json);
-        Path path = getPath(req, resp, true);
+        Path path = getPath(req, resp, true, false);
         ReplaceInFileRequest replacementRequest = gson.fromJson(json, ReplaceInFileRequest.class);
         if (replacementRequest.getReplacements().isEmpty()) {
             throw sendError(resp, 400, "No replacements given.");
