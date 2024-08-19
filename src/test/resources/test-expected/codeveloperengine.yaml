@@ -11,7 +11,7 @@ paths:
     post:
       operationId: executeExternalAction
       x-openai-isConsequential: false
-      summary: Execute an external action with some arguments and the given actionInput content as standard input. Only on explicit user request.
+      summary: Runs a specified external action (given as parameter actionName), optionally with additional arguments and input. Run "listActions" to get a list of all available actions. Only on explicit user request.
       parameters:
         - name: actionName
           in: query

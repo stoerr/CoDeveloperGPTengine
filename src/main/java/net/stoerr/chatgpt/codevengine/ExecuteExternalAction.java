@@ -28,6 +28,7 @@ import com.knuddels.jtokkit.api.EncodingRegistry;
 import com.knuddels.jtokkit.api.EncodingType;
 import com.knuddels.jtokkit.api.IntArrayList;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -56,7 +57,7 @@ public class ExecuteExternalAction extends AbstractPluginAction {
                 "    post:\n" +
                 "      operationId: executeExternalAction\n" +
                 "      x-openai-isConsequential: false\n" +
-                "      summary: Execute an external action with some arguments and the given actionInput content as standard input. Only on explicit user request.\n" +
+                "      summary: Runs a specified external action (given as parameter actionName), optionally with additional arguments and input. Run \"listActions\" to get a list of all available actions. Only on explicit user request.\n" +
                 "      parameters:\n" +
                 "        - name: actionName\n" +
                 "          in: query\n" +
@@ -157,6 +158,14 @@ public class ExecuteExternalAction extends AbstractPluginAction {
             }
         }
 
+    }
+
+    /**
+     * Support that for debugging purposes, too.
+     */
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doPost(req, resp);
     }
 
     protected final String MIDDLE_MARKER = "\n\n[... middle removed because of length restrictions ...]\n\n";
