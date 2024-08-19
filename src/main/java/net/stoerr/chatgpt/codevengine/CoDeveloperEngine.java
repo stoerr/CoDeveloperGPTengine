@@ -67,7 +67,7 @@ public class CoDeveloperEngine {
     private static final Map<String, AbstractPluginAction> HANDLERS = new LinkedHashMap<>();
 
     private static final String OPENAPI_DESCR_START = "# THESPECURL\n\n" +
-            "openapi: 3.0.1\n" +
+            "openapi: 3.1.0\n" +
             "info:\n" +
             "  title: Co-Developer GPT Engine\n" +
             "  version: THEVERSION\n" +
