@@ -31,7 +31,8 @@ Here are some examples of how to use the `Co-Developer GPT Engine`:
 - **Search Files**: to search for Strings in files, you can use the 'grepFiles' operation. In ChatGPT, you could ask
   to search for files with a file name pattern and containing a string or pattern.
 
-- **Execute Action**: To execute a shell script with given content as standard input, you can use the `executeAction`
+- **Execute External Action**: To execute a shell script with given content as standard input, you can use the
+  `executeExternalAction`
   operation. In ChatGPT, you would ask the AI to execute a specific action, and it would send a request to the plugin to
   perform this operation. The shell script should be located at `.cgptfmgr/{actionName}.sh`, where `{actionName}` is a
   parameter provided in the query string. The content is passed as standard input to the shell script. Some examples

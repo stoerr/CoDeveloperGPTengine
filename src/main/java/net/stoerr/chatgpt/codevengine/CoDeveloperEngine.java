@@ -150,9 +150,9 @@ public class CoDeveloperEngine {
         addHandler(new GrepAction());
         if (writingEnabled) {
             addHandler(new WriteFileAction());
-            ExecuteAction executeAction = new ExecuteAction();
-            if (executeAction.hasActions()) { // not quite clear whether that is writing...
-                addHandler(executeAction);
+            ExecuteExternalAction executeExternalAction = new ExecuteExternalAction();
+            if (executeExternalAction.hasActions()) { // not quite clear whether that is writing...
+                addHandler(executeExternalAction);
             }
             // addHandler(new ReplaceRegexAction()); // too many mistakes when using that, look for alternatives
             addHandler(new ReplaceAction());
@@ -251,6 +251,7 @@ public class CoDeveloperEngine {
         // server.join();
         TbUtils.logInfo("Started on http://localhost:" + port + " in directory " + currentDir);
         TbUtils.logInfo("OpenAPI: " + StringUtils.defaultString(mainUrl, localUrl) + PATH_SPEC);
+        TbUtils.logInfo("Current directory: " + currentDir.toAbsolutePath());
     }
 
     private static void parseOptions(String[] args) {

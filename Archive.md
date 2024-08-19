@@ -17,7 +17,7 @@ that the request was too long.)
 namespace Devtoolbench {
 
 // Execute an action with given content as standard input. Only on explicit user request.
-type executeAction = (_: {
+type executeExternalAction = (_: {
 actionName: string,
 actionInput?: string,
 }) => any;

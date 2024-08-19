@@ -7,11 +7,11 @@ info:
 servers:
   - url: http://localhost:7364
 paths:
-  /executeAction:
+  /executeExternalAction:
     post:
-      operationId: executeAction
+      operationId: executeExternalAction
       x-openai-isConsequential: false
-      summary: Execute an action with some arguments and the given actionInput content as standard input. Only on explicit user request.
+      summary: Execute an external action with some arguments and the given actionInput content as standard input. Only on explicit user request.
       parameters:
         - name: actionName
           in: query

@@ -12,40 +12,40 @@ import com.knuddels.jtokkit.api.Encoding;
 import com.knuddels.jtokkit.api.EncodingRegistry;
 import com.knuddels.jtokkit.api.EncodingType;
 
-public class ExecuteActionIT extends AbstractActionIT {
+public class ExecuteExternalActionIT extends AbstractActionIT {
 
     @Test
     public void testExecuteActionHelloWorld() throws Exception {
-        TbUtils.logInfo("\nExecuteActionIT.testExecuteActionHelloWorld");
-        checkResponse("/executeAction?actionName=helloworld", "POST", "{\"actionInput\":\"testinput\"}", 200, "action-helloworld.txt");
+        TbUtils.logInfo("\nExecuteExternalActionIT.testExecuteActionHelloWorld");
+        checkResponse("/executeExternalAction?actionName=helloworld", "POST", "{\"actionInput\":\"testinput\"}", 200, "action-helloworld.txt");
     }
 
     @Test
     public void testExecuteActionHelloWorldWithArguments() throws Exception {
-        TbUtils.logInfo("\nExecuteActionIT.testExecuteActionHelloWorldWithArguments");
-        checkResponse("/executeAction?actionName=helloworld&arguments=foo%20bar", "POST", "{\"actionInput\":\"testinput\"}", 200, "action-helloworld-args.txt");
+        TbUtils.logInfo("\nExecuteExternalActionIT.testExecuteActionHelloWorldWithArguments");
+        checkResponse("/executeExternalAction?actionName=helloworld&arguments=foo%20bar", "POST", "{\"actionInput\":\"testinput\"}", 200, "action-helloworld-args.txt");
     }
 
     @Test
     public void testHelloWorldWithLargeFile() throws Exception {
-        TbUtils.logInfo("\nExecuteActionIT.testHelloWorldWithLargeFile");
+        TbUtils.logInfo("\nExecuteExternalActionIT.testHelloWorldWithLargeFile");
         String prefix = "Hello World! Your input was: ";
         StringBuilder testinput = new StringBuilder();
         testinput.append(StringUtils.repeat("test input", 500));
         System.out.println(testinput.length());
-        String actualResponse = checkResponse("/executeAction?actionName=helloworld", "POST", "{\"actionInput\":\"" + testinput + "\"}", 200, null);
+        String actualResponse = checkResponse("/executeExternalAction?actionName=helloworld", "POST", "{\"actionInput\":\"" + testinput + "\"}", 200, null);
         collector.checkThat(actualResponse.length(), is(prefix.length() + testinput.length() + 1)); // newliner
         collector.checkThat(actualResponse.replace(testinput, "(THETESTINPUT)"), is(prefix + "(THETESTINPUT)\n"));
     }
 
     @Test
     public void testHelloWorldWithLargeFileAndCut() throws Exception {
-        TbUtils.logInfo("\nExecuteActionIT.testHelloWorldWithLargeFileAndCut");
+        TbUtils.logInfo("\nExecuteExternalActionIT.testHelloWorldWithLargeFileAndCut");
         String prefix = "Hello World! Your input was: ";
         StringBuilder testinput = new StringBuilder();
         testinput.append(StringUtils.repeat("test input", 3000));
         System.out.println(testinput.length());
-        String actualResponse = checkResponse("/executeAction?actionName=helloworld", "POST", "{\"actionInput\":\"" + testinput + "\"}", 200, null);
+        String actualResponse = checkResponse("/executeExternalAction?actionName=helloworld", "POST", "{\"actionInput\":\"" + testinput + "\"}", 200, null);
         // check that it contains many "test input" and has the limiter and has < 2000 tokens.
         collector.checkThat(actualResponse.contains(StringUtils.repeat("test input", 300)), is(true));
         collector.checkThat(actualResponse.replace(testinput, "(THETESTINPUT)"),
@@ -60,20 +60,20 @@ public class ExecuteActionIT extends AbstractActionIT {
 
     @Test
     public void testExecuteActionNotThere() throws Exception {
-        TbUtils.logInfo("\nExecuteActionIT.testExecuteActionNotThere");
-        checkResponse("/executeAction?actionName=notthere", "POST", "{\"actionInput\":\"testinput\"}", 400, "action-notthere.txt");
+        TbUtils.logInfo("\nExecuteExternalActionIT.testExecuteActionNotThere");
+        checkResponse("/executeExternalAction?actionName=notthere", "POST", "{\"actionInput\":\"testinput\"}", 400, "action-notthere.txt");
     }
 
     @Test
     public void testExecuteActionFail() throws Exception {
-        TbUtils.logInfo("\nExecuteActionIT.testExecuteActionFail");
-        checkResponse("/executeAction?actionName=fail", "POST", "{\"actionInput\":\"testinput\"}", 500, "action-fail.txt");
+        TbUtils.logInfo("\nExecuteExternalActionIT.testExecuteActionFail");
+        checkResponse("/executeExternalAction?actionName=fail", "POST", "{\"actionInput\":\"testinput\"}", 500, "action-fail.txt");
     }
 
     @Test
     public void testExecuteActionJsonError() throws Exception {
-        TbUtils.logInfo("\nExecuteActionIT.testExecuteActionFail");
-        checkResponse("/executeAction?actionName=fail", "POST", "{{", 400, "action-gsonerror.txt");
+        TbUtils.logInfo("\nExecuteExternalActionIT.testExecuteActionFail");
+        checkResponse("/executeExternalAction?actionName=fail", "POST", "{{", 400, "action-gsonerror.txt");
     }
 
 }

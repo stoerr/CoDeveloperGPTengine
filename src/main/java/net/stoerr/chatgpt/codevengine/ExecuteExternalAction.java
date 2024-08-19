@@ -31,7 +31,7 @@ import com.knuddels.jtokkit.api.IntArrayList;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class ExecuteAction extends AbstractPluginAction {
+public class ExecuteExternalAction extends AbstractPluginAction {
 
     /**
      * The maximum number of ChatGPT tokes we output if there is no maxLines parameter given
@@ -47,16 +47,16 @@ public class ExecuteAction extends AbstractPluginAction {
 
     @Override
     public String getUrl() {
-        return "/executeAction";
+        return "/executeExternalAction";
     }
 
     @Override
     public String openApiDescription() {
-        return "  /executeAction:\n" +
+        return "  /executeExternalAction:\n" +
                 "    post:\n" +
-                "      operationId: executeAction\n" +
+                "      operationId: executeExternalAction\n" +
                 "      x-openai-isConsequential: false\n" +
-                "      summary: Execute an action with some arguments and the given actionInput content as standard input. Only on explicit user request.\n" +
+                "      summary: Execute an external action with some arguments and the given actionInput content as standard input. Only on explicit user request.\n" +
                 "      parameters:\n" +
                 "        - name: actionName\n" +
                 "          in: query\n" +
