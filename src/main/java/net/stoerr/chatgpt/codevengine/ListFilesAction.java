@@ -36,6 +36,13 @@ public class ListFilesAction extends AbstractPluginAction {
                 "          required: false\n" +
                 "          schema:\n" +
                 "            type: string\n" +
+                "        - name: recursive\n" +
+                "          in: query\n" +
+                "          description: if true (default) lists files recursively, else only in that directory.\n" +
+                "          required: false\n" +
+                "          schema:\n" +
+                "            type: boolean\n" +
+                "            default: true\n" +
                 "        - name: filePathRegex\n" +
                 "          in: query\n" +
                 "          description: regex to filter file paths - use for search by file name\n" +
@@ -69,7 +76,9 @@ public class ListFilesAction extends AbstractPluginAction {
         String filePathRegex = getQueryParam(req, "filePathRegex");
         String grepRegex = getQueryParam(req, "grepRegex");
         String listDirectories = getQueryParam(req, "listDirectories");
-        RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, path, filePathRegex, grepRegex);
+        String recursiveRaw = getQueryParam(req, "recursive");
+        boolean recursive = recursiveRaw == null || Boolean.parseBoolean(recursiveRaw);
+        RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, path, filePathRegex, grepRegex, recursiveRaw, listDirectories);
         Pattern filePathPattern;
         try {
             filePathPattern = filePathRegex != null ? Pattern.compile(filePathRegex) : null;
@@ -85,17 +94,17 @@ public class ListFilesAction extends AbstractPluginAction {
 
         if (Files.isDirectory(path)) {
             resp.setContentType("text/plain;charset=UTF-8");
-            List<Path> paths = findMatchingFiles(resp, path, filePathPattern, grepPattern)
+            List<Path> paths = findMatchingFiles(resp, path, filePathPattern, grepPattern, recursive)
                     .collect(Collectors.toList());
             List<String> files = paths.stream()
                     .map(this::mappedFilename)
                     .collect(Collectors.toList());
             if (files.isEmpty()) {
-                long filePathFileCount = findMatchingFiles(resp, path, filePathPattern, null).count();
+                long filePathFileCount = findMatchingFiles(resp, path, filePathPattern, null, recursive).count();
                 if (filePathFileCount > 0)
                     throw sendError(resp, 404, "Found " + filePathFileCount + " files whose name is matching the filePathRegex but none of them contain a line matching the grepRegex.");
                 else if (Files.newDirectoryStream(path).iterator().hasNext()) {
-                    String similarFilesMessage = getSimilarFilesMessage(resp, path, filePathPattern.toString());
+                    String similarFilesMessage = getSimilarFilesMessage(resp, path, filePathPattern != null ? filePathPattern.toString() : "");
                     throw sendError(resp, 404, "No files found matching filePathRegex: " + filePathRegex + "\n\n" + similarFilesMessage);
                 } else {
                     throw sendError(resp, 404, "No files found in directory: " + path);

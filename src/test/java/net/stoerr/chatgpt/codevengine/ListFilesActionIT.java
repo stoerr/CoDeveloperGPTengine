@@ -13,6 +13,12 @@ public class ListFilesActionIT extends AbstractActionIT {
     }
 
     @Test
+    public void testListFilesOperationRootNonrecursive() throws Exception {
+        TbUtils.logInfo("\nListFilesActionIT.testListFilesOperationRootNonrecursive");
+        checkResponse("/listFiles?path=.&recursive=false", "GET", null, 200, "listFilesNonrecursive.txt");
+    }
+
+    @Test
     public void testListFilesOperationSubdir() throws Exception {
         TbUtils.logInfo("\nListFilesActionIT.testListFilesOperationSubdir");
         checkResponse("/listFiles?path=subdir", "GET", null, 200, "listFilesSubdir.txt");

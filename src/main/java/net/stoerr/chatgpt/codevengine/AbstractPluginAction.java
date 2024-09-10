@@ -58,14 +58,15 @@ public abstract class AbstractPluginAction extends HttpServlet {
         throw new ExecutionAbortedException();
     }
 
-    protected static Stream<Path> findMatchingFiles(HttpServletResponse response, Path path, Pattern filePathPattern, Pattern grepPattern) {
+    protected static Stream<Path> findMatchingFiles(HttpServletResponse response, Path path, Pattern filePathPattern, Pattern grepPattern, boolean recursive) {
         boolean haveFilePathPattern = filePathPattern != null && !filePathPattern.pattern().isEmpty();
         List<Path> result = new ArrayList<>();
         try {
             Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                    if (isIgnored(dir)) {
+                    if (isIgnored(dir) ||
+                            (!recursive && !dir.equals(path))) {
                         return FileVisitResult.SKIP_SUBTREE;
                     }
                     return super.preVisitDirectory(dir, attrs);
@@ -89,7 +90,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
                 .filter(Files::isRegularFile)
                 .collect(toList());
         if (matchingFiles.isEmpty()) {
-            String similarFilesMessage = getSimilarFilesMessage(response, path, filePathPattern.toString());
+            String similarFilesMessage = getSimilarFilesMessage(response, path, filePathPattern != null ? filePathPattern.toString() : "");
             throw sendError(response, 404, "No files found matching filePathRegex: " + filePathPattern + "\n\n" + similarFilesMessage);
         }
         Collections.sort(matchingFiles); // make it deterministic.
@@ -183,7 +184,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
 
     protected static String getSimilarFilesMessage(HttpServletResponse response, Path path, String filename) {
         String similarFilesMessage = "";
-        List<Path> matchingFiles = findMatchingFiles(response, path, null, null)
+        List<Path> matchingFiles = findMatchingFiles(response, path, null, null, true)
                 .collect(toList());
         List<String> files = matchingFiles.stream()
                 .map(p -> CoDeveloperEngine.currentDir.relativize(p).toString())
@@ -251,11 +252,8 @@ public abstract class AbstractPluginAction extends HttpServlet {
     protected static boolean gitIgnored(Path path) {
         Path parent = path.getParent();
         while (parent != null) {
-            GitIgnoreRules gitIgnoreFile = gitIgnoreRules.get(parent);
-            if (gitIgnoreFile == null) {
-                gitIgnoreFile = new GitIgnoreRules(parent);
-                gitIgnoreRules.put(parent, gitIgnoreFile);
-            }
+            GitIgnoreRules gitIgnoreFile = gitIgnoreRules
+                    .computeIfAbsent(parent, k -> new GitIgnoreRules(k));
             if (gitIgnoreFile.isIgnored(path)) {
                 return true;
             }

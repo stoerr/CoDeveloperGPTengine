@@ -98,7 +98,7 @@ public class GrepAction extends AbstractPluginAction {
             throw sendError(resp, 404, "Path is not readable: " + startPath);
         }
 
-        List<Path> matchingFiles = findMatchingFiles(resp, startPath, filePattern, grepPattern)
+        List<Path> matchingFiles = findMatchingFiles(resp, startPath, filePattern, grepPattern, true)
                 .collect(Collectors.toList());
         if (!matchingFiles.isEmpty()) {
             StringBuilder buf = new StringBuilder();
@@ -136,7 +136,7 @@ public class GrepAction extends AbstractPluginAction {
             resp.setContentType("text/plain;charset=UTF-8");
             resp.getWriter().write(buf.toString());
         } else {
-            long filePathFileCount = findMatchingFiles(resp, startPath, filePattern, null).count();
+            long filePathFileCount = findMatchingFiles(resp, startPath, filePattern, null, true).count();
             if (filePathFileCount > 0)
                 throw sendError(resp, 404, "Found " + filePathFileCount + " files whose name is matching the filePathRegex but none of them contain a line matching the grepRegex.");
             else if (Files.isDirectory(startPath)) {

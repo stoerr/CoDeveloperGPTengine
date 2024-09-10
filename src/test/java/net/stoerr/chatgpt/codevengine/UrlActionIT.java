@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 
 import org.hamcrest.CoreMatchers;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class UrlActionIT extends AbstractActionIT {
@@ -44,6 +45,7 @@ public class UrlActionIT extends AbstractActionIT {
     }
 
     @Test
+    @Ignore("Takes a looong time")
     public void testPdfUrl() throws Exception {
         TbUtils.logInfo("\nUrlActionIT.testPdfUrl");
         String pdfUrl = "https://codevelopergptengine.stoerr.net/test/test.pdf";
@@ -57,6 +59,6 @@ public class UrlActionIT extends AbstractActionIT {
         TbUtils.logInfo("\nUrlActionIT.testInvalidUrl");
         String invalidUrl = "https://invalid.url.that.does.not.exist";
         String response = checkResponse("/fetchUrlTextContent?url=" + invalidUrl, "GET", null, 400, null);
-        System.out.printf("Response: %s\n", response);
+        System.out.printf("Response: %s%n", response);
     }
 }

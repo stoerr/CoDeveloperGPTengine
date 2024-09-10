@@ -112,6 +112,13 @@ paths:
           required: false
           schema:
             type: string
+        - name: recursive
+          in: query
+          description: if true (default) lists files recursively, else only in that directory.
+          required: false
+          schema:
+            type: boolean
+            default: true
         - name: filePathRegex
           in: query
           description: regex to filter file paths - use for search by file name
