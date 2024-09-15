@@ -114,7 +114,7 @@ paths:
             type: string
         - name: recursive
           in: query
-          description: if true (default) lists files recursively, else only in that directory.
+          description: if true (default) lists files recursively, else only in that directory.                        In that case we will also list directories.
           required: false
           schema:
             type: boolean

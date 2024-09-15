@@ -58,9 +58,14 @@ public abstract class AbstractPluginAction extends HttpServlet {
         throw new ExecutionAbortedException();
     }
 
-    protected static Stream<Path> findMatchingFiles(HttpServletResponse response, Path path, Pattern filePathPattern, Pattern grepPattern, boolean recursive) {
+    // suppressMessage: do not create error message if no files found since we are already in a recursion.
+    protected static Stream<Path> findMatchingFiles(
+            boolean suppressMessage,
+            HttpServletResponse response, Path path, Pattern filePathPattern,
+            Pattern grepPattern, boolean recursive) {
         boolean haveFilePathPattern = filePathPattern != null && !filePathPattern.pattern().isEmpty();
         List<Path> result = new ArrayList<>();
+        boolean returnDirectories = !recursive;
         try {
             Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
                 @Override
@@ -68,6 +73,9 @@ public abstract class AbstractPluginAction extends HttpServlet {
                     if (isIgnored(dir) ||
                             (!recursive && !dir.equals(path))) {
                         return FileVisitResult.SKIP_SUBTREE;
+                    }
+                    if (returnDirectories) {
+                        result.add(dir);
                     }
                     return super.preVisitDirectory(dir, attrs);
                 }
@@ -87,9 +95,9 @@ public abstract class AbstractPluginAction extends HttpServlet {
 
         List<Path> matchingFiles = result.stream()
                 .filter(p -> !haveFilePathPattern || filePathPattern.matcher(p.toString()).find())
-                .filter(Files::isRegularFile)
+                .filter(f -> returnDirectories || Files.isRegularFile(f))
                 .collect(toList());
-        if (matchingFiles.isEmpty()) {
+        if (matchingFiles.isEmpty() && !suppressMessage) {
             String similarFilesMessage = getSimilarFilesMessage(response, path, filePathPattern != null ? filePathPattern.toString() : "");
             throw sendError(response, 404, "No files found matching filePathRegex: " + filePathPattern + "\n\n" + similarFilesMessage);
         }
@@ -100,6 +108,9 @@ public abstract class AbstractPluginAction extends HttpServlet {
             grepMatched = matchingFiles.stream()
                     .filter(f -> !BINARY_FILES_PATTERN.matcher(f.toString()).find())
                     .filter(p -> {
+                        if (Files.isDirectory(p)) {
+                            return true;
+                        }
                         try (Stream<String> lines = Files.lines(p)) {
                             return lines.anyMatch(line -> grepPattern.matcher(line).find());
                         } catch (Exception e) {
@@ -110,11 +121,11 @@ public abstract class AbstractPluginAction extends HttpServlet {
                     .sorted().collect(toList());
         }
 
-        if (grepMatched.isEmpty()) {
+        if (grepMatched.isEmpty() && !suppressMessage) {
             String foundFilesStatement = haveFilePathPattern ?
                     "Found " + matchingFiles.size() + " files whose name is matching the filePathRegex" :
                     "Found " + matchingFiles.size() + " files";
-            String fixingStatement = haveFilePathPattern ?
+            String fixingStatement = haveFilePathPattern || grepPattern == null ?
                     "" :
                     "\nDid you really want to search for files containing '" + grepPattern + "' or for files named like that pattern? If so you have to repeat the search with filePathRegex set instead of grepRegex.";
             throw sendError(response, 404, foundFilesStatement + " but none of them contain a line matching the grepRegex." + fixingStatement);
@@ -184,7 +195,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
 
     protected static String getSimilarFilesMessage(HttpServletResponse response, Path path, String filename) {
         String similarFilesMessage = "";
-        List<Path> matchingFiles = findMatchingFiles(response, path, null, null, true)
+        List<Path> matchingFiles = findMatchingFiles(true, response, path, null, null, true)
                 .collect(toList());
         List<String> files = matchingFiles.stream()
                 .map(p -> CoDeveloperEngine.currentDir.relativize(p).toString())

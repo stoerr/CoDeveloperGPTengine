@@ -38,7 +38,8 @@ public class ListFilesAction extends AbstractPluginAction {
                 "            type: string\n" +
                 "        - name: recursive\n" +
                 "          in: query\n" +
-                "          description: if true (default) lists files recursively, else only in that directory.\n" +
+                "          description: if true (default) lists files recursively, else only in that directory. " +
+                "                       In that case we will also list directories.\n" +
                 "          required: false\n" +
                 "          schema:\n" +
                 "            type: boolean\n" +
@@ -94,13 +95,14 @@ public class ListFilesAction extends AbstractPluginAction {
 
         if (Files.isDirectory(path)) {
             resp.setContentType("text/plain;charset=UTF-8");
-            List<Path> paths = findMatchingFiles(resp, path, filePathPattern, grepPattern, recursive)
+            List<Path> paths = findMatchingFiles(false, resp, path, filePathPattern, grepPattern, recursive)
                     .collect(Collectors.toList());
             List<String> files = paths.stream()
                     .map(this::mappedFilename)
+                    .filter(StringUtils::isNotBlank)
                     .collect(Collectors.toList());
             if (files.isEmpty()) {
-                long filePathFileCount = findMatchingFiles(resp, path, filePathPattern, null, recursive).count();
+                long filePathFileCount = findMatchingFiles(false, resp, path, filePathPattern, null, recursive).count();
                 if (filePathFileCount > 0)
                     throw sendError(resp, 404, "Found " + filePathFileCount + " files whose name is matching the filePathRegex but none of them contain a line matching the grepRegex.");
                 else if (Files.newDirectoryStream(path).iterator().hasNext()) {

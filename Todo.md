@@ -4,6 +4,8 @@ These are possible later plans, not urgent.
 
 !! Site config
 
+listDirectories - too many directories check.
+
 ## Improvements
 
 - Use from LobeChat https://lobehub.com/docs/usage/start with local models
