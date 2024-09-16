@@ -2,4 +2,4 @@
 echo executing a LLM based search
 searchstring=$(cat)
 echo "search string is $searchstring"
-bin/llmsearch.sh "$searchstring"
+project-bin/llmsearch.sh "$searchstring"

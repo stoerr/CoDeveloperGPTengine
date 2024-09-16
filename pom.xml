@@ -298,7 +298,7 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>${project.basedir}/bin/generate_sitemap.sh</executable>
+                            <executable>${project.basedir}/project-bin/generate_sitemap.sh</executable>
                         </configuration>
                     </execution>
                 </executions>
