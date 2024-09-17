@@ -40,7 +40,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
      */
     public static final Pattern BINARY_FILES_PATTERN = Pattern.compile("(?i).*\\.(gif|png|mov|jpg|jpeg|mp4|mp3|pdf|zip|gz|tgz|tar|jar|class|war|ear|exe|dll|so|o|a|lib|bin|dat|dmg|iso)");
 
-    private final transient Gson gson = new Gson();
+    protected final transient Gson gson = new Gson();
 
     /**
      * Logs an error and sends it to ChatGPT, always throws {@link ExecutionAbortedException}.
