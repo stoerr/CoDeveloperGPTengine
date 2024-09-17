@@ -1,0 +1,203 @@
+[
+    {
+        "function": {
+            "name": "executeExternalAction",
+            "description": "Runs a specified external action with optional arguments and input.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "actionName": {
+                        "type": "string",
+                        "description": "The name of the action to execute."
+                    },
+                    "arguments": {
+                        "type": "string",
+                        "description": "Optional additional arguments for the action."
+                    },
+                    "actionInput": {
+                        "type": "string",
+                        "description": "Input for the action."
+                    }
+                },
+                "required": ["actionName", "actionInput"]
+            }
+        },
+        "commandline": [
+            "curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", "@-", "http://localhost:3002/executetool"
+        ]
+    },
+    {
+        "function": {
+            "name": "fetchUrlTextContent",
+            "description": "Fetch text content from a given URL.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "description": "The URL to fetch content from."
+                    },
+                    "raw": {
+                        "type": "boolean",
+                        "description": "Return raw HTML or PDF content without converting to markdown."
+                    }
+                },
+                "required": ["url"]
+            }
+        },
+        "commandline": [
+            "curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", "@-", "http://localhost:3002/executetool"
+        ]
+    },
+    {
+        "function": {
+            "name": "grepFiles",
+            "description": "Search for lines in text files matching the given regex.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "Relative path to the directory or file to search."
+                    },
+                    "fileRegex": {
+                        "type": "string",
+                        "description": "Optional regex to filter file names."
+                    },
+                    "grepRegex": {
+                        "type": "string",
+                        "description": "Regex to filter lines in the files."
+                    },
+                    "contextLines": {
+                        "type": "integer",
+                        "description": "Number of context lines to include with each match."
+                    }
+                },
+                "required": ["grepRegex"]
+            }
+        },
+        "commandline": [
+            "curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", "@-", "http://localhost:3002/executetool"
+        ]
+    },
+    {
+        "function": {
+            "name": "listFiles",
+            "description": "Recursively lists files in a directory with optional filters.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "Relative path to the directory to list."
+                    },
+                    "recursive": {
+                        "type": "boolean",
+                        "description": "If true, lists files recursively."
+                    },
+                    "filePathRegex": {
+                        "type": "string",
+                        "description": "Regex to filter file paths."
+                    },
+                    "grepRegex": {
+                        "type": "string",
+                        "description": "Regex to filter files that contain a line matching this pattern."
+                    },
+                    "listDirectories": {
+                        "type": "boolean",
+                        "description": "If true, lists directories instead of files."
+                    }
+                }
+            }
+        },
+        "commandline": [
+            "curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", "@-", "http://localhost:3002/executetool"
+        ]
+    },
+    {
+        "function": {
+            "name": "readFile",
+            "description": "Read a file's content.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "Relative path to the file."
+                    },
+                    "maxLines": {
+                        "type": "integer",
+                        "description": "Maximum number of lines to read from the file."
+                    },
+                    "startLine": {
+                        "type": "integer",
+                        "description": "Line number to start reading from."
+                    }
+                },
+                "required": ["path"]
+            }
+        },
+        "commandline": [
+            "curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", "@-", "http://localhost:3002/executetool"
+        ]
+    },
+    {
+        "function": {
+            "name": "replaceInFile",
+            "description": "Replaces occurrences of strings in a file.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "Relative path to the file."
+                    },
+                    "replacements": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "search": {
+                                    "type": "string",
+                                    "description": "The literal string to be replaced."
+                                },
+                                "replace": {
+                                    "type": "string",
+                                    "description": "Literal replacement."
+                                }
+                            },
+                            "required": ["search", "replace"]
+                        }
+                    }
+                },
+                "required": ["path", "replacements"]
+            }
+        },
+        "commandline": [
+            "curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", "@-", "http://localhost:3002/executetool"
+        ]
+    },
+    {
+        "function": {
+            "name": "writeFile",
+            "description": "Overwrite a file with new content.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "Relative path to the file."
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "Content to write to the file."
+                    }
+                },
+                "required": ["path", "content"]
+            }
+        },
+        "commandline": [
+            "curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", "@-", "http://localhost:3002/executetool"
+        ]
+    }
+]

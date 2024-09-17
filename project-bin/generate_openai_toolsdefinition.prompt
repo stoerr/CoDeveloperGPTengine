@@ -1,0 +1,2 @@
+Print an OpenAI tools definition file that describes the requests specified in the retrieved OpenAPI YAML.
+Set "strict" to false.
