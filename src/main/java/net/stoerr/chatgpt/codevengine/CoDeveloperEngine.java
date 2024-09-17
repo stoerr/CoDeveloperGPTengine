@@ -148,7 +148,7 @@ public class CoDeveloperEngine {
         addHandler(new ListFilesAction());
         addHandler(new ReadFileAction());
         addHandler(new GrepAction());
-        addHandler(new ExecuteOpenAIToolCallAction());
+        addHandler(new ExecuteOpenAIToolCallAction(HANDLERS));
         if (writingEnabled) {
             addHandler(new WriteFileAction());
             ExecuteExternalAction executeExternalAction = new ExecuteExternalAction();
