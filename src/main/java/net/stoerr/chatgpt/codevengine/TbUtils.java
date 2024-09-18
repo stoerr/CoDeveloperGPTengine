@@ -28,6 +28,7 @@ public class TbUtils {
     public static final PrintStream LOG = System.out;
 
     static boolean isLoggingEnabled = true;
+    static boolean quiet;
 
     /**
      * If there is a file named .cgptcodeveloper/.requestlog.txt, we append the request data to it.
@@ -72,7 +73,7 @@ public class TbUtils {
     }
 
     static void logInfo(String msg) {
-        if (isLoggingEnabled) {
+        if (isLoggingEnabled && !quiet) {
             LOG.println(msg);
         }
     }
@@ -183,5 +184,9 @@ public class TbUtils {
             rangeDescr = " " + lastRange.lowerEndpoint() + " - " + lastRange.upperEndpoint();
         }
         return rangeDescr;
+    }
+
+    public static void setQuiet(boolean quiet) {
+        TbUtils.quiet = quiet;
     }
 }
