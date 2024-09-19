@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# "Poor mans" co developer engine: run it with the chatgpt script from https://github.com/stoerr/chatGPTtools
+
+# start the co-developer-gpt-engine.jar in the directory this script is placed, following links
+progfile=$(realpath $0)
+progdir=$(dirname "$progfile")
+
+JAVA=java
+# if jenv is in the path, we use the version that is set for the directory this script is in,
+# since the current dir could use some ridiculously low version.
+if which jenv >/dev/null 2>&1; then
+  JAVA=$(cd $progdir; jenv which java)
+fi
+
+$JAVA -jar "$progdir/co-developer-gpt-engine.jar" -w &
+pid=$!
+trap "kill $pid" EXIT
+
+sleep 1
+
+chatgpt -tf <($JAVA -jar "$progdir/co-developer-gpt-engine.jar" --aitoolsdef) -cr "$@"
