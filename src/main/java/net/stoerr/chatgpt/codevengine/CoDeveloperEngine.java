@@ -224,6 +224,14 @@ public class CoDeveloperEngine {
     }
 
     public static void main(String[] args) throws Exception {
+        if (args.length == 1 && args[0].equals("--aitoolsdef")) {
+            // hidden option to output a description of the operations for use with my chatgpt script to stdout
+            try (InputStream in = CoDeveloperEngine.class.getResourceAsStream("/static/codeveloperengine-chatgptscript-toolsdefinition.json")) {
+                IOUtils.copy(in, System.out);
+            }
+            return;
+        }
+
         TbUtils.logVersion();
 
         parseOptions(args);
@@ -293,6 +301,7 @@ public class CoDeveloperEngine {
 
             if (cmd.hasOption("q")) {
                 TbUtils.setQuiet(true);
+                // todo change loglevels
             }
         } catch (ParseException e) {
             TbUtils.logError("Error parsing command line options: " + e);
