@@ -7,7 +7,7 @@
     <groupId>net.stoerr.chatgpt</groupId>
     <name>CoDeveloperGPTengine</name>
     <artifactId>co-developer-gpt-engine</artifactId>
-    <version>3.2.0</version>
+    <version>3.2.1-SNAPSHOT</version>
     <description>Provides actions for a OpenAI GPT or ChatGPT plugin that allow reading, writing, searching and
         modifying files in the directory the program is started in, and executing actions like builds and test runs.
     </description>
