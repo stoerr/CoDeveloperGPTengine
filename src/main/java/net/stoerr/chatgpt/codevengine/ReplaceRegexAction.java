@@ -158,7 +158,7 @@ public class ReplaceRegexAction extends AbstractPluginAction {
             resp.getWriter().write("Replaced " + replacementCount + " occurrences of pattern; modified lines "
                     + String.join(", ", modifiedLineDescr));
         } catch (NoSuchFileException e) {
-            throw sendError(resp, 404, "File not found: " + CoDeveloperEngine.currentDir.relativize(path));
+            throw sendError(resp, 404, "File not found: " + CoDeveloperEngine.canonicalName(path));
         } catch (IOException e) {
             throw sendError(resp, 500, "Error reading or writing file : " + e);
         } catch (PatternSyntaxException e) {

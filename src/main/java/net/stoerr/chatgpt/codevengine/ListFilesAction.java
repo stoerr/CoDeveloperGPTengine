@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -76,7 +75,8 @@ public class ListFilesAction extends AbstractPluginAction {
         Path path = getPath(req, resp, true, true);
         String filePathRegex = getQueryParam(req, "filePathRegex");
         String grepRegex = getQueryParam(req, "grepRegex");
-        String listDirectories = getQueryParam(req, "listDirectories");
+        String listDirectoriesRaw = getQueryParam(req, "listDirectories");
+        boolean listDirectories = Boolean.parseBoolean(listDirectoriesRaw);
         String recursiveRaw = getQueryParam(req, "recursive");
         boolean recursive = recursiveRaw == null || Boolean.parseBoolean(recursiveRaw);
         RepeatedRequestChecker.CHECKER.checkRequestRepetition(resp, this, path, filePathRegex, grepRegex, recursiveRaw, listDirectories);
@@ -95,28 +95,24 @@ public class ListFilesAction extends AbstractPluginAction {
 
         if (Files.isDirectory(path)) {
             resp.setContentType("text/plain;charset=UTF-8");
-            List<Path> paths = findMatchingFiles(false, resp, path, filePathPattern, grepPattern, recursive)
+            List<Path> paths = findMatchingFiles(false, resp, path, filePathPattern, grepPattern, recursive, listDirectories)
                     .collect(Collectors.toList());
             List<String> files = paths.stream()
-                    .map(this::mappedFilename)
+                    .map(path1 -> CoDeveloperEngine.canonicalName(path1))
                     .filter(StringUtils::isNotBlank)
                     .collect(Collectors.toList());
             if (files.isEmpty()) {
-                long filePathFileCount = findMatchingFiles(false, resp, path, filePathPattern, null, recursive).count();
-                if (filePathFileCount > 0)
-                    throw sendError(resp, 404, "Found " + filePathFileCount + " files whose name is matching the filePathRegex but none of them contain a line matching the grepRegex.");
-                else if (Files.newDirectoryStream(path).iterator().hasNext()) {
-                    String similarFilesMessage = getSimilarFilesMessage(resp, path, filePathPattern != null ? filePathPattern.toString() : "");
+                if (grepPattern != null) {
+                    long filePathFileCount = findMatchingFiles(false, resp, path, filePathPattern, null, recursive, listDirectories).count();
+                    if (filePathFileCount > 0)
+                        throw sendError(resp, 404, "Found " + filePathFileCount + " files whose name is matching the filePathRegex but none of them contain a line matching the grepRegex.");
+                }
+                if (Files.newDirectoryStream(path).iterator().hasNext()) {
+                    String similarFilesMessage = getSimilarFilesMessage(resp, path, filePathPattern != null ? filePathPattern.toString() : "", listDirectories);
                     throw sendError(resp, 404, "No files found matching filePathRegex: " + filePathRegex + "\n\n" + similarFilesMessage);
                 } else {
                     throw sendError(resp, 404, "No files found in directory: " + path);
                 }
-            } else if ("TRUE".equalsIgnoreCase(listDirectories)) {
-                files = paths.stream().map(Path::getParent).distinct()
-                        .sorted(Comparator.comparing(Path::toString))
-                        .map(f -> mappedFilename(f))
-                        .map(f -> StringUtils.defaultIfEmpty(f, ".") + "/")
-                        .collect(Collectors.toList());
             } else if (files.size() > 100) {
                 long directoryCount = paths.stream().map(Path::getParent).distinct().count();
                 throw sendError(resp, 404, "Found " + files.size() + " files in " + directoryCount + " directories - please use a more specific path or filePathRegex, or use listDirectories instead to get an overview and then list specific directories you're interested in.");

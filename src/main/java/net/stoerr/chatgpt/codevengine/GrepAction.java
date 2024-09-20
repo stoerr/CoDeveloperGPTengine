@@ -98,7 +98,7 @@ public class GrepAction extends AbstractPluginAction {
             throw sendError(resp, 404, "Path is not readable: " + startPath);
         }
 
-        List<Path> matchingFiles = findMatchingFiles(false, resp, startPath, filePattern, grepPattern, true)
+        List<Path> matchingFiles = findMatchingFiles(false, resp, startPath, filePattern, grepPattern, true, false)
                 .collect(Collectors.toList());
         if (!matchingFiles.isEmpty()) {
             StringBuilder buf = new StringBuilder();
@@ -136,7 +136,7 @@ public class GrepAction extends AbstractPluginAction {
             resp.setContentType("text/plain;charset=UTF-8");
             resp.getWriter().write(buf.toString());
         } else {
-            long filePathFileCount = findMatchingFiles(true, resp, startPath, filePattern, null, true).count();
+            long filePathFileCount = findMatchingFiles(true, resp, startPath, filePattern, null, true, false).count();
             if (filePathFileCount > 0)
                 throw sendError(resp, 404, "Found " + filePathFileCount + " files whose name is matching the filePathRegex but none of them contain a line matching the grepRegex.");
             else if (Files.isDirectory(startPath)) {
@@ -151,9 +151,9 @@ public class GrepAction extends AbstractPluginAction {
 
     private void appendBlock(List<String> lines, StringBuilder buf, Path path, int start, int end) {
         if (start == end - 1) {
-            buf.append("======================== ").append(mappedFilename(path)).append(" line ").append(start + 1).append('\n');
+            buf.append("======================== ").append(CoDeveloperEngine.canonicalName(path)).append(" line ").append(start + 1).append('\n');
         } else {
-            buf.append("======================== ").append(mappedFilename(path)).append(" lines ").append(start + 1).append(" to ").append(end).append('\n');
+            buf.append("======================== ").append(CoDeveloperEngine.canonicalName(path)).append(" lines ").append(start + 1).append(" to ").append(end).append('\n');
         }
         for (int j = start; j < end; j++) {
             buf.append(lines.get(j)).append('\n');

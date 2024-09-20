@@ -8,6 +8,8 @@ import java.io.StringReader;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
@@ -45,11 +47,11 @@ public class ExecuteOpenAIToolCallAction extends AbstractPluginAction {
         logInfo("Received tool call:\n" + json);
         String name = getBodyParameter(resp, json, "name", true);
         String arguments = getBodyParameter(resp, json, "arguments", true);
-        Map<String, String> parsedArguments = gson.fromJson(arguments, Map.class);
+        Map<String, Object> parsedArguments = gson.fromJson(arguments, Map.class);
         logInfo("Executing tool call: " + name + " " + parsedArguments);
         Object requestBody = parsedArguments.get("requestBody");
         String body = requestBody != null ? gson.toJson(requestBody) : null;
-        logInfo("Body: " + body);
+        if (StringUtils.isNotBlank(body)) logInfo("Body: " + body);
         AbstractPluginAction handler = handlers.get("/" + name);
         if (null == handler) {
             sendError(resp, HttpServletResponse.SC_BAD_REQUEST, "No handler for tool call: " + name);
@@ -58,7 +60,8 @@ public class ExecuteOpenAIToolCallAction extends AbstractPluginAction {
         HttpServletRequest requestWrapper = new HttpServletRequestWrapper(req) {
             @Override
             public String getParameter(String name) {
-                return String.valueOf(parsedArguments.get(name));
+                Object value = parsedArguments.get(name);
+                return value != null ? value.toString() : null;
             }
 
             @Override

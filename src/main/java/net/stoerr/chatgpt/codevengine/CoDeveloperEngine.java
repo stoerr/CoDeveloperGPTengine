@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -315,6 +316,15 @@ public class CoDeveloperEngine {
 
     public static void execute(Runnable runnable) {
         server.getThreadPool().execute(runnable);
+    }
+
+    public static final String canonicalName(Path path) {
+        if (!path.toAbsolutePath().startsWith(currentDir.toAbsolutePath())) {
+            throw new IllegalArgumentException("Bug: trying to return file not in current dir - " + path);
+        }
+        String file = currentDir.relativize(path).toString();
+        file = file.isEmpty() ? "." : file;
+        return Files.isDirectory(path) ? file + "/" : file;
     }
 
 }

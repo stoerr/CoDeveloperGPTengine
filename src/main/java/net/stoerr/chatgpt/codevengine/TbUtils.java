@@ -66,10 +66,12 @@ public class TbUtils {
 
     static void logStacktrace(Exception e) {
         e.printStackTrace(ERRLOG);
+        ERRLOG.println();
     }
 
     static void logError(String msg) {
         ERRLOG.println(msg);
+        ERRLOG.println();
     }
 
     static void logInfo(String msg) {

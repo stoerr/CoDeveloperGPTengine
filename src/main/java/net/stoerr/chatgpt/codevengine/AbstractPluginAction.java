@@ -62,10 +62,9 @@ public abstract class AbstractPluginAction extends HttpServlet {
     protected static Stream<Path> findMatchingFiles(
             boolean suppressMessage,
             HttpServletResponse response, Path path, Pattern filePathPattern,
-            Pattern grepPattern, boolean recursive) {
+            Pattern grepPattern, boolean recursive, boolean listDirectories) {
         boolean haveFilePathPattern = filePathPattern != null && !filePathPattern.pattern().isEmpty();
         List<Path> result = new ArrayList<>();
-        boolean returnDirectories = !recursive;
         try {
             Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
                 @Override
@@ -74,7 +73,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
                             (!recursive && !dir.equals(path))) {
                         return FileVisitResult.SKIP_SUBTREE;
                     }
-                    if (returnDirectories) {
+                    if (listDirectories || !recursive) {
                         result.add(dir);
                     }
                     return super.preVisitDirectory(dir, attrs);
@@ -83,7 +82,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                     FileVisitResult res = super.visitFile(file, attrs);
-                    if (!isIgnored(file)) {
+                    if (!isIgnored(file) && !listDirectories) {
                         result.add(file);
                     }
                     return res;
@@ -95,11 +94,15 @@ public abstract class AbstractPluginAction extends HttpServlet {
 
         List<Path> matchingFiles = result.stream()
                 .filter(p -> !haveFilePathPattern || filePathPattern.matcher(p.toString()).find())
-                .filter(f -> returnDirectories || Files.isRegularFile(f))
+                .filter(f -> listDirectories && Files.isDirectory(f) || Files.isRegularFile(f))
                 .collect(toList());
         if (matchingFiles.isEmpty() && !suppressMessage) {
-            String similarFilesMessage = getSimilarFilesMessage(response, path, filePathPattern != null ? filePathPattern.toString() : "");
-            throw sendError(response, 404, "No files found matching filePathRegex: " + filePathPattern + "\n\n" + similarFilesMessage);
+            if (filePathPattern != null) {
+                String similarFilesMessage = getSimilarFilesMessage(response, path, filePathPattern != null ? filePathPattern.toString() : "", listDirectories);
+                throw sendError(response, 404, "No files found matching filePathRegex: " + filePathPattern + "\n\n" + similarFilesMessage);
+            } else {
+                throw sendError(response, 404, "No files found in " + path);
+            }
         }
         Collections.sort(matchingFiles); // make it deterministic.
 
@@ -184,7 +187,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
         if (mustExist && !Files.exists(resolved)) {
             String message = "Path " + path + " does not exist! Try to list files with /listFiles to find the right path.";
             String filename = resolved.getFileName().toString();
-            String similarFilesMessage = getSimilarFilesMessage(response, CoDeveloperEngine.currentDir, filename);
+            String similarFilesMessage = getSimilarFilesMessage(response, CoDeveloperEngine.currentDir, filename, false);
             if (!similarFilesMessage.isEmpty()) {
                 message += "\n\n" + similarFilesMessage;
             }
@@ -193,17 +196,17 @@ public abstract class AbstractPluginAction extends HttpServlet {
         return resolved;
     }
 
-    protected static String getSimilarFilesMessage(HttpServletResponse response, Path path, String filename) {
+    protected static String getSimilarFilesMessage(HttpServletResponse response, Path path, String filename, boolean listDirectories) {
         String similarFilesMessage = "";
-        List<Path> matchingFiles = findMatchingFiles(true, response, path, null, null, true)
+        List<Path> matchingFiles = findMatchingFiles(true, response, path, null, null, true, listDirectories)
                 .collect(toList());
         List<String> files = matchingFiles.stream()
-                .map(p -> CoDeveloperEngine.currentDir.relativize(p).toString())
+                .map(CoDeveloperEngine::canonicalName)
                 .filter(p -> p.contains("/" + filename))
                 .limit(5)
                 .collect(toList());
         matchingFiles.stream()
-                .map(p -> CoDeveloperEngine.currentDir.relativize(p).toString())
+                .map(CoDeveloperEngine::canonicalName)
                 .map(p -> Pair.of(p, StringUtils.getFuzzyDistance(p, filename, Locale.getDefault())))
                 .map(p -> Pair.of(p.getLeft(), -p.getRight()))
                 .sorted(Comparator.comparingDouble(Pair::getRight))
@@ -241,10 +244,6 @@ public abstract class AbstractPluginAction extends HttpServlet {
             }
         }
         return parameterValue;
-    }
-
-    protected String mappedFilename(Path path) {
-        return CoDeveloperEngine.currentDir.relativize(path).toString();
     }
 
     protected String abbreviate(String s, int max) {
