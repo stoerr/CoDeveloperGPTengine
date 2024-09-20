@@ -84,6 +84,8 @@ public class ExecuteOpenAIToolCallAction extends AbstractPluginAction {
         };
         try {
             handler.service(requestWrapper, resp);
+        } catch (ExecutionAbortedException e) {
+            // is already sufficiently handled. Just ignore.
         } catch (ServletException | IOException | RuntimeException e) {
             TbUtils.logError("Error executing tool call: " + name + "\n" + arguments);
             TbUtils.logStacktrace(e);
