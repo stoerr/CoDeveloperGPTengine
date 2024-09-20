@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="generator" content="#generatedBy()" />
-    <title>Co-Developer GPT engine - ChatGPT reads and modifies local source files and executes action – Running the engine as a plugin</title>
+    <title>Co-Developer GPT engine - ChatGPT reads and modifies local source files and executes action – Running the codeveloper engine with the chatgpt command line tool</title>
     <link rel="icon" href="./img/favicons/favicon.ico">
     <!-- CSS Stylesheets, site.css is included so downstream projects can override them as appropriate. -->
     <link rel="stylesheet" href="./css/bootstrap.min.css" />
@@ -62,13 +62,13 @@
                  <li class="nav-item dropdown-item" id="Install into a GPTDropdown">
                    <a href="gpt.html" id="Install into a GPTDropdownLink" title="Install into a GPT"  class="dropdown-item" >Install into a GPT</a>                 </li>
                  <li class="nav-item dropdown-item" id="Install as ChatGPT PluginDropdown">
-                   <a title="Install as ChatGPT Plugin" class="dropdown-item">Install as ChatGPT Plugin</a>                 </li>
+                   <a href="plugin.html" id="Install as ChatGPT PluginDropdownLink" title="Install as ChatGPT Plugin"  class="dropdown-item" >Install as ChatGPT Plugin</a>                 </li>
                  <li class="nav-item dropdown-item" id="Access via HTTPSDropdown">
                    <a href="https.html" id="Access via HTTPSDropdownLink" title="Access via HTTPS"  class="dropdown-item" >Access via HTTPS</a>                 </li>
                  <li class="nav-item dropdown-item" id="ConfigurationDropdown">
                    <a href="configuration.html" id="ConfigurationDropdownLink" title="Configuration"  class="dropdown-item" >Configuration</a>                 </li>
                  <li class="nav-item dropdown-item" id="Run on the command lineDropdown">
-                   <a href="pmcodevgpt.html" id="Run on the command lineDropdownLink" title="Run on the command line"  class="dropdown-item" >Run on the command line</a>                 </li>
+                   <a title="Run on the command line" class="dropdown-item">Run on the command line</a>                 </li>
                </ul>
              </li>
              <li class="nav-item dropdown">
@@ -136,27 +136,23 @@
     <main class="flex-shrink-0" role="main">
       <div class="container mt-3 rounded">
 <section>
-<h1>Running the engine as a plugin</h1>
-<p>You might want to prefer the <a href="gpt.html">GPT approach</a> to run the engine since
-<a href="https://openai.com/blog/chatgpt-plugins" class="externalLink">ChatGPT Plugins</a> seem to be deprecated by OpenAI -
-it seems that they <a href="https://openai.com/waitlist/plugins" class="externalLink">don't want new plugins</a> in favor of
-<a href="https://openai.com/blog/introducing-gpts" class="externalLink">GPTs</a>, and since 11/2023 they seem to have
-<a href="https://community.openai.com/t/what-happened-to-the-plugins/475969" class="externalLink">broken local plugin development for good</a>.
-But I've happily used it as a plugin for quite a while, so here you are.</p><section>
-<h2>Register the engine as an unverified plugin</h2>
-<p>For this you have to make the engine <a href="https.html">available via https</a>, open the plugin store in ChatGPT and
-click &#x201c;Install unverified plugin&#x201d;. Then you have to enter the domain name at which the engine is accessible from the
-internet.</p>
-<p>Once you've added the plugin, you can test it in the ChatGPT interface. Try asking the AI to
-list the files in the directory, read a specific file, write to a file, or execute a specific action after
-setting up some actions in a .cgptcodeveloper directory in the directory you're running it. If everything
-is set up correctly, the AI should be able to perform these operations using the plugin.</p></section><section>
-<h2>Run it locally as a plugin developer</h2>
-<p>That used to be the easiest way to run the engine as a plugin, but when I tried it since 11/2023 it didn't work
-anymore and I'm not sure whether they will fix it since you cannot eveen register yourself as a plugin developer
-anymore. But for the record: if you open the plugin store there is a link &#x201c;Develop your own plugin&#x201d;. There you
-have to enter e.g. localhost:3002 if you run the engine with this port, and it should work.
-(Currently I can register the plugin that way, but when trying to use it ChatGPT says &#x201c;Plugin not found&#x201d;.)</p></section></section>
+<h1>Running the codeveloper engine with the chatgpt command line tool</h1>
+<p>As an alternative to running the CoDeveloper GPT Engine from ChatGPT you can run it with the chatgpt
+script from my <a href="https://github.com/stoerr/chatGPTtools" class="externalLink">ChatGPT Toolsuite</a>. This not a full fledged chat interface,
+(hence the script name <code>pmcodevgpt</code>= &#x201c;Poor Mans CoDEVeloper GPT&#x201d;),
+but starts up within a second and can be used for quick tasks. You'll need an
+<a href="https://platform.openai.com/api-keys" class="externalLink">OpenAI API key</a> to use it, though -
+either in an environment variable <code>OPENAI_API_KEY</code> or in a file <code>~/.openai-api-key.txt</code> .
+The <code>pmcodevgpt</code> script starts the CoDeveloper GPT Engine in the background and the
+<a href="https://github.com/stoerr/chatGPTtools/blob/develop/bin/chatgpt" class="externalLink">chatgpt</a> script with a tools definition
+that is generated from the OpenAPI description of the CoDeveloper GPT Engine.</p>
+<p>If you call pmcodevgpt, you can type your prompt and end it with <code>/end</code> on a line of its own, or press Ctrl-D to end
+each message. After processing and printing the response this starts again - abort the program with Ctrl-C.</p>
+<p>If you like you could also use the audio chat feature of the chatgpt script to talk to the CoDeveloper GPT Engine.
+You can call <code>pmcodevgpt -ca</code> to start the audio chat - follow the instructions it prints to the console. You can
+dictate your prompts, but the output will be written to the console.</p>
+<p>BTW: if you know any open source models / interfaces that support a function calling / tools interface like
+OpenAI does, please let me know! I'd like to try that / integrate that, too.</p></section>
       </div>
     </main>
 

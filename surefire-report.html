@@ -67,6 +67,8 @@
                    <a href="https.html" id="Access via HTTPSDropdownLink" title="Access via HTTPS"  class="dropdown-item" >Access via HTTPS</a>                 </li>
                  <li class="nav-item dropdown-item" id="ConfigurationDropdown">
                    <a href="configuration.html" id="ConfigurationDropdownLink" title="Configuration"  class="dropdown-item" >Configuration</a>                 </li>
+                 <li class="nav-item dropdown-item" id="Run on the command lineDropdown">
+                   <a href="pmcodevgpt.html" id="Run on the command lineDropdownLink" title="Run on the command line"  class="dropdown-item" >Run on the command line</a>                 </li>
                </ul>
              </li>
              <li class="nav-item dropdown">
@@ -122,9 +124,9 @@
         <div id="projectBarContainer" class="container-fluid">
 
           <div id="projectBaDateVersionContainer" class="justify-content-start">
-            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2024-08-13</span>
+            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2024-09-20</span>
             <span id="projectDateVersionSpacer" class="px-1 navbar-text">|</span>
-            <span id="projectVersion" class="px-1 navbar-text">Version: 3.1.0</span>
+            <span id="projectVersion" class="px-1 navbar-text">Version: 3.2.0</span>
           </div>
           <div id="breadcrumbSpacer" ></div>
         </div>
@@ -167,7 +169,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.048 s</td></tr></table><br />
+<td>0.038 s</td></tr></table><br />
 <p>Note: failures are anticipated and checked for with assertions while errors are unanticipated.</p><br /></section><section><a id="Package_List"></a>
 <h1>Package List</h1>
 <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />
@@ -187,7 +189,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.048 s</td></tr></table><br />
+<td>0.038 s</td></tr></table><br />
 <p>Note: package statistics are not computed recursively, they only sum up all of its testsuites numbers.</p><section><a id="net.stoerr.chatgpt.codevengine"></a>
 <h2>net.stoerr.chatgpt.codevengine</h2>
 <table class="table table-striped">
@@ -201,15 +203,6 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
-<td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest"><img src="images/icon_success_sml.gif" /></a></td>
-<td><a href="#net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest">GitIgnoreRulesTest</a></td>
-<td>6</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.024 s</td></tr>
-<tr class="a">
 <td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine.TbUtilsTest"><img src="images/icon_success_sml.gif" /></a></td>
 <td><a href="#net.stoerr.chatgpt.codevengine.TbUtilsTest">TbUtilsTest</a></td>
 <td>2</td>
@@ -217,45 +210,54 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.024 s</td></tr></table></section><br /></section><section><a id="Test_Cases"></a>
+<td>0.019 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest"><img src="images/icon_success_sml.gif" /></a></td>
+<td><a href="#net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest">GitIgnoreRulesTest</a></td>
+<td>6</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.019 s</td></tr></table></section><br /></section><section><a id="Test_Cases"></a>
 <h1>Test Cases</h1>
-<p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><section><a id="net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest"></a>
-<h2>GitIgnoreRulesTest</h2>
-<table class="table table-striped">
-<tr class="a">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
-<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testEmptyGitignoreFile"></a>testEmptyGitignoreFile</td>
-<td>0.017 s</td></tr>
-<tr class="b">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
-<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testNegatedGitignoreRuleThrowsException"></a>testNegatedGitignoreRuleThrowsException</td>
-<td>0.002 s</td></tr>
-<tr class="a">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
-<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testValidGitignoreRules"></a>testValidGitignoreRules</td>
-<td>0.002 s</td></tr>
-<tr class="b">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
-<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testIsNotIgnored"></a>testIsNotIgnored</td>
-<td>0.001 s</td></tr>
-<tr class="a">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
-<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testIsIgnored"></a>testIsIgnored</td>
-<td>0.002 s</td></tr>
-<tr class="b">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
-<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testNoGitignoreFile"></a>testNoGitignoreFile</td>
-<td>0 s</td></tr></table></section><section><a id="net.stoerr.chatgpt.codevengine.TbUtilsTest"></a>
+<p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><section><a id="net.stoerr.chatgpt.codevengine.TbUtilsTest"></a>
 <h2>TbUtilsTest</h2>
 <table class="table table-striped">
 <tr class="a">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.codevengine.TbUtilsTest.testCompileReplacementWithBackslashes"></a>testCompileReplacementWithBackslashes</td>
-<td>0.024 s</td></tr>
+<td>0.019 s</td></tr>
 <tr class="b">
 <td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.codevengine.TbUtilsTest.testCompileReplacementWithGroupReferences"></a>testCompileReplacementWithGroupReferences</td>
-<td>0 s</td></tr></table></section><br /></section>
+<td>0 s</td></tr></table></section><section><a id="net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest"></a>
+<h2>GitIgnoreRulesTest</h2>
+<table class="table table-striped">
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testEmptyGitignoreFile"></a>testEmptyGitignoreFile</td>
+<td>0.014 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testNegatedGitignoreRuleThrowsException"></a>testNegatedGitignoreRuleThrowsException</td>
+<td>0.003 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testValidGitignoreRules"></a>testValidGitignoreRules</td>
+<td>0 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testIsNotIgnored"></a>testIsNotIgnored</td>
+<td>0 s</td></tr>
+<tr class="a">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testIsIgnored"></a>testIsIgnored</td>
+<td>0.001 s</td></tr>
+<tr class="b">
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testNoGitignoreFile"></a>testNoGitignoreFile</td>
+<td>0.001 s</td></tr></table></section><br /></section>
       </div>
     </main>
 
