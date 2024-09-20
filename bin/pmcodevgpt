@@ -18,4 +18,10 @@ trap "kill $pid" EXIT
 
 sleep 2
 
-chatgpt -tf <($JAVA -jar "$progdir/co-developer-gpt-engine.jar" --aitoolsdef) -cr "$@"
+ARGS=""
+# if $* doesn't contain -cr or -ca we add -cr to ARGS
+if [[ ! "$*" =~ -cr ]] && [[ ! "$*" =~ -ca ]]; then
+  ARGS="-cr"
+fi
+
+chatgpt -tf <($JAVA -jar "$progdir/co-developer-gpt-engine.jar" --aitoolsdef) $ARGS "$@"
