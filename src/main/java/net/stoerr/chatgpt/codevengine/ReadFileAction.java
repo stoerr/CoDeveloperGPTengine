@@ -111,7 +111,7 @@ public class ReadFileAction extends AbstractPluginAction {
             }
             if (maxLines <= fulllinecount || startLine > 1 || dropped != 0) {
                 content = "CAUTION: Lines " + startLine + " to " + (startLine + lines.size() - 1) + " of " + fulllinecount +
-                        " lines of file " + CoDeveloperEngine.currentDir.relativize(path) + " start now. " +
+                        " lines of file " + CoDeveloperEngine.canonicalName(path) + " start now. " +
                         "To get more of the file content repeat read request with startLine=" + (startLine + lines.size()) +
                         " , or use the grepAction with enough contextLines if you are searching for something specific.\n\n"
                         + content + "\n\n" +

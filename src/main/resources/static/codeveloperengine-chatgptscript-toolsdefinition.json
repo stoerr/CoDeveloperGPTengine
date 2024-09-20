@@ -1,0 +1,234 @@
+[
+    {
+        "function": {
+            "name": "executeExternalAction",
+            "description": "Runs a specified external action (given as parameter actionName), optionally with additional arguments and input. Run \"listActions\" to get a list of all available actions. Only on explicit user request.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "actionName": {
+                        "type": "string",
+                        "description": "The name of the action to execute."
+                    },
+                    "arguments": {
+                        "type": "string",
+                        "description": "Optional additional arguments for the action."
+                    },
+                    "requestBody": {
+                        "type": "object",
+                        "properties": {
+                            "actionInput": {
+                                "type": "string",
+                                "description": "Input for the action."
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "actionName",
+                    "requestBody"
+                ]
+            }
+        },
+        "commandline": [
+            "curl", "-X", "POST", "-d", "@-", "http://localhost:3002/executetool"
+        ],
+        "stdin": "$toolcall"
+    },
+    {
+        "function": {
+            "name": "fetchUrlTextContent",
+            "description": "Fetch text content from a given URL.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "description": "The URL to fetch content from."
+                    },
+                    "raw": {
+                        "type": "boolean",
+                        "description": "return raw html or pdf content without converting to markdown"
+                    }
+                },
+                "required": ["url"]
+            }
+        },
+        "commandline": [
+            "curl", "-X", "POST", "-d", "@-", "http://localhost:3002/executetool"
+        ],
+        "stdin": "$toolcall"
+    },
+    {
+        "function": {
+            "name": "grepAction",
+            "description": "Search for lines in text files matching the given regex.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "relative path to the directory to search in or the file to search. default is the root directory = '.'."
+                    },
+                    "fileRegex": {
+                        "type": "string",
+                        "description": "optional regex to filter file names"
+                    },
+                    "grepRegex": {
+                        "type": "string",
+                        "description": "regex to filter lines in the files"
+                    },
+                    "contextLines": {
+                        "type": "integer",
+                        "description": "number of context lines to include with each match (not yet used)"
+                    }
+                },
+                "required": ["grepRegex"]
+            }
+        },
+        "commandline": [
+            "curl", "-X", "POST", "-d", "@-", "http://localhost:3002/executetool"
+        ],
+        "stdin": "$toolcall"
+    },
+    {
+        "function": {
+            "name": "listFiles",
+            "description": "Recursively lists files in a directory. Optionally filters by filename and content.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "relative path to directory to list. default is the root directory = '.'."
+                    },
+                    "recursive": {
+                        "type": "boolean",
+                        "description": "if true (default) lists files recursively, else only in that directory. In that case we will also list directories."
+                    },
+                    "filePathRegex": {
+                        "type": "string",
+                        "description": "regex to filter file paths - use for search by file name"
+                    },
+                    "grepRegex": {
+                        "type": "string",
+                        "description": "an optional regex that lists only files that contain a line matching this pattern"
+                    },
+                    "listDirectories": {
+                        "type": "boolean",
+                        "description": "if true, lists directories instead of files"
+                    }
+                },
+                "required": []
+            }
+        },
+        "commandline": [
+            "curl", "-X", "POST", "-d", "@-", "http://localhost:3002/executetool"
+        ],
+        "stdin": "$toolcall"
+    },
+    {
+        "function": {
+            "name": "readFile",
+            "description": "Read a files content.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "relative path to file"
+                    },
+                    "maxLines": {
+                        "type": "integer",
+                        "description": "maximum number of lines to read from the file"
+                    },
+                    "startLine": {
+                        "type": "integer",
+                        "description": "line number to start reading from; 1 is the first line"
+                    }
+                },
+                "required": ["path"]
+            }
+        },
+        "commandline": [
+            "curl", "-X", "POST", "-d", "@-", "http://localhost:3002/executetool"
+        ],
+        "stdin": "$toolcall"
+    },
+    {
+        "function": {
+            "name": "replaceInFile",
+            "description": "Replaces the single occurrence of one or more literal strings in a file. The whole file content is matched, not line by line.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "relative path to file"
+                    },
+                    "requestBody": {
+                        "type": "object",
+                        "properties": {
+                            "replacements": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "search": {
+                                            "type": "string",
+                                            "description": "The literal string to be replaced - can contain many lines, but please take care to find a small number of lines to replace. Everything that is replaced must be here. Prefer to match the whole line / several whole lines."
+                                        },
+                                        "replace": {
+                                            "type": "string",
+                                            "description": "Literal replacement, can contain several lines. Please observe the correct indentation."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "path",
+                    "requestBody"
+                ]
+            }
+        },
+        "commandline": [
+            "curl", "-X", "POST", "-d", "@-", "http://localhost:3002/executetool"
+        ],
+        "stdin": "$toolcall"
+    },
+    {
+        "function": {
+            "name": "writeFile",
+            "description": "Overwrite a small file with the complete content given in one step. You cannot append to a file or write parts or write parts - use replaceInFile for inserting parts.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "relative path to file"
+                    },
+                    "requestBody": {
+                        "type": "object",
+                        "properties": {
+                            "content": {
+                                "type": "string",
+                                "description": "Content to write to the file."
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "path",
+                    "requestBody"
+                ]
+            }
+        },
+        "commandline": [
+            "curl", "-X", "POST", "-d", "@-", "http://localhost:3002/executetool"
+        ],
+        "stdin": "$toolcall"
+    }
+]

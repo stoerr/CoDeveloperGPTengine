@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -23,9 +24,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.pdfbox.io.IOUtils;
-import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.RequestLog;
-import org.eclipse.jetty.server.Response;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
@@ -57,8 +56,6 @@ public class CoDeveloperEngine {
      * Exceptions overriding {@link #IGNORE_FILES_PATTERN}.
      */
     public static final Pattern OVERRIDE_IGNORE_PATTERN = Pattern.compile(".*/.github/.*|.*/.content.xml|(.*/)?\\.chatgpt.*.md|.*\\.htaccess");
-
-    // private static final Gson GSON = new Gson();
 
     static Path currentDir = Paths.get(".").normalize().toAbsolutePath();
 
@@ -113,24 +110,21 @@ public class CoDeveloperEngine {
         chain.doFilter(rawRequest, rawResponse);
     };
 
-    private static final RequestLog requestlog = new RequestLog() {
-        @Override
-        public void log(Request request, Response response) {
-            TbUtils.logInfo("Remote address: " + request.getRemoteAddr());
-            TbUtils.logInfo("Remote host: " + request.getRemoteHost());
-            TbUtils.logInfo("Remote port: " + request.getRemotePort());
-            TbUtils.logInfo("Requestlog: " + request.getMethod() + " " + request.getRequestURL() + (request.getQueryString() != null && !request.getQueryString().isEmpty() ? "?" + request.getQueryString() : "") + " " + response.getStatus());
-            // list all request headers
-            for (Enumeration<String> e = request.getHeaderNames(); e.hasMoreElements(); ) {
-                String header = e.nextElement();
-                TbUtils.logInfo("Request header: " + header + ": " + request.getHeader(header));
-            }
-            // list all response headers
-            for (String header : response.getHeaderNames()) {
-                TbUtils.logInfo("Response header: " + header + ": " + response.getHeader(header));
-            }
-            TbUtils.logInfo("");
+    private static final RequestLog requestlog = (request, response) -> {
+        TbUtils.logInfo("Remote address: " + request.getRemoteAddr());
+        TbUtils.logInfo("Remote host: " + request.getRemoteHost());
+        TbUtils.logInfo("Remote port: " + request.getRemotePort());
+        TbUtils.logInfo("Requestlog: " + request.getMethod() + " " + request.getRequestURL() + (request.getQueryString() != null && !request.getQueryString().isEmpty() ? "?" + request.getQueryString() : "") + " " + response.getStatus());
+        // list all request headers
+        for (Enumeration<String> e = request.getHeaderNames(); e.hasMoreElements(); ) {
+            String header = e.nextElement();
+            TbUtils.logInfo("Request header: " + header + ": " + request.getHeader(header));
         }
+        // list all response headers
+        for (String header : response.getHeaderNames()) {
+            TbUtils.logInfo("Response header: " + header + ": " + response.getHeader(header));
+        }
+        TbUtils.logInfo("");
     };
 
     private static void addHandler(AbstractPluginAction handler) {
@@ -148,6 +142,7 @@ public class CoDeveloperEngine {
         addHandler(new ListFilesAction());
         addHandler(new ReadFileAction());
         addHandler(new GrepAction());
+        addHandler(new ExecuteOpenAIToolCallAction(HANDLERS));
         if (writingEnabled) {
             addHandler(new WriteFileAction());
             ExecuteExternalAction executeExternalAction = new ExecuteExternalAction();
@@ -228,9 +223,19 @@ public class CoDeveloperEngine {
     }
 
     public static void main(String[] args) throws Exception {
-        TbUtils.logVersion();
+        if (args.length == 1 && args[0].equals("--aitoolsdef")) {
+            // hidden option to output a description of the operations for use with my chatgpt script to stdout
+            try (InputStream in = CoDeveloperEngine.class.getResourceAsStream("/static/codeveloperengine-chatgptscript-toolsdefinition.json")) {
+                IOUtils.copy(in, System.out);
+            }
+            return;
+        }
 
-        parseOptions(args);
+        try {
+            parseOptions(args);
+        } finally {
+            TbUtils.logVersion();
+        }
         server = new Server(new InetSocketAddress("127.0.0.1", port));
         context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         context.setContextPath("/");
@@ -262,6 +267,7 @@ public class CoDeveloperEngine {
         options.addOption("h", "help", false, "Display this help message");
         options.addOption("g", "globalconfigdir", true, "Directory for global configuration (default: ~/.cgptcodeveloperglobal/");
         options.addOption("l", "local", false, "Only use local configuration via options - ignore any global configuration");
+        options.addOption("q", "quiet", false, "Suppress info level output");
 
         CommandLineParser parser = new DefaultParser();
 
@@ -293,6 +299,10 @@ public class CoDeveloperEngine {
                 userGlobalConfigDir = null;
                 ignoreGlobalConfig = true;
             }
+
+            if (cmd.hasOption("q")) {
+                TbUtils.setQuiet(true);
+            }
         } catch (ParseException e) {
             TbUtils.logError("Error parsing command line options: " + e);
             System.exit(1);
@@ -305,6 +315,15 @@ public class CoDeveloperEngine {
 
     public static void execute(Runnable runnable) {
         server.getThreadPool().execute(runnable);
+    }
+
+    public static final String canonicalName(Path path) {
+        if (!path.toAbsolutePath().startsWith(currentDir.toAbsolutePath())) {
+            throw new IllegalArgumentException("Bug: trying to return file not in current dir - " + path);
+        }
+        String file = currentDir.relativize(path).toString();
+        file = file.isEmpty() ? "." : file;
+        return Files.isDirectory(path) ? file + "/" : file;
     }
 
 }

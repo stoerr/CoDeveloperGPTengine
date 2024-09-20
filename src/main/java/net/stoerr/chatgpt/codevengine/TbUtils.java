@@ -14,8 +14,13 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.slf4j.LoggerFactory;
+
 import com.google.common.collect.Range;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.LoggerContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -28,6 +33,11 @@ public class TbUtils {
     public static final PrintStream LOG = System.out;
 
     static boolean isLoggingEnabled = true;
+    static boolean quiet;
+
+    private TbUtils() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * If there is a file named .cgptcodeveloper/.requestlog.txt, we append the request data to it.
@@ -65,6 +75,7 @@ public class TbUtils {
 
     static void logStacktrace(Exception e) {
         e.printStackTrace(ERRLOG);
+        ERRLOG.println();
     }
 
     static void logError(String msg) {
@@ -72,7 +83,7 @@ public class TbUtils {
     }
 
     static void logInfo(String msg) {
-        if (isLoggingEnabled) {
+        if (isLoggingEnabled && !quiet) {
             LOG.println(msg);
         }
     }
@@ -183,5 +194,17 @@ public class TbUtils {
             rangeDescr = " " + lastRange.lowerEndpoint() + " - " + lastRange.upperEndpoint();
         }
         return rangeDescr;
+    }
+
+    public static void setQuiet(boolean quiet) {
+        TbUtils.quiet = quiet;
+        // change logback root logger and org.eclipse.jetty logger to WARN level
+        if (quiet) {
+            LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+            Logger rootLogger = loggerContext.getLogger(Logger.ROOT_LOGGER_NAME);
+            rootLogger.setLevel(Level.WARN);
+            Logger jettyLogger = loggerContext.getLogger("org.eclipse.jetty");
+            jettyLogger.setLevel(Level.WARN);
+        }
     }
 }

@@ -1,0 +1,14 @@
+Transform the retrieved OpenAI tools definition file into the following format:
+
+[
+    {
+        "function": {
+            // here comes the function definition of the tool
+        },
+        "commandline: [
+            "curl", "-X", "POST", "-d", "@-", "http://localhost:3002/executetool"
+        ],
+        "stdin": "$toolcall"
+    },
+    ... // more tools
+]

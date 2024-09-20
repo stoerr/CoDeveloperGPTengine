@@ -1,0 +1,4 @@
+Print an OpenAI tools definition file that describes the requests specified in the retrieved OpenAPI YAML.
+Set "strict" to false. Include the descriptions unmodified.
+Take care that the "required" attribute contains exactly the required attributes.
+If the request is a POST with requestBody, then the body content should be contained in a parameter "requestBody".
