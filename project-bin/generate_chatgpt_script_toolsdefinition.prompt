@@ -6,7 +6,7 @@ Transform the retrieved OpenAI tools definition file into the following format:
             // here comes the function definition of the tool
         },
         "commandline: [
-            "curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", "@-", "http://localhost:3002/executetool"
+            "curl", "-X", "POST", "-d", "@-", "http://localhost:3002/executetool"
         ],
         "stdin": "$toolcall"
     },

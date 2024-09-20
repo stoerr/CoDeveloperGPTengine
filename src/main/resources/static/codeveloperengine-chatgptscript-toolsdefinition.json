@@ -34,8 +34,6 @@
       "curl",
       "-X",
       "POST",
-      "-H",
-      "Content-Type: application/json",
       "-d",
       "@-",
       "http://localhost:3002/executetool"
@@ -67,8 +65,6 @@
       "curl",
       "-X",
       "POST",
-      "-H",
-      "Content-Type: application/json",
       "-d",
       "@-",
       "http://localhost:3002/executetool"
@@ -108,8 +104,6 @@
       "curl",
       "-X",
       "POST",
-      "-H",
-      "Content-Type: application/json",
       "-d",
       "@-",
       "http://localhost:3002/executetool"
@@ -151,8 +145,6 @@
       "curl",
       "-X",
       "POST",
-      "-H",
-      "Content-Type: application/json",
       "-d",
       "@-",
       "http://localhost:3002/executetool"
@@ -188,8 +180,6 @@
       "curl",
       "-X",
       "POST",
-      "-H",
-      "Content-Type: application/json",
       "-d",
       "@-",
       "http://localhost:3002/executetool"
@@ -239,8 +229,6 @@
       "curl",
       "-X",
       "POST",
-      "-H",
-      "Content-Type: application/json",
       "-d",
       "@-",
       "http://localhost:3002/executetool"
@@ -278,8 +266,6 @@
       "curl",
       "-X",
       "POST",
-      "-H",
-      "Content-Type: application/json",
       "-d",
       "@-",
       "http://localhost:3002/executetool"
