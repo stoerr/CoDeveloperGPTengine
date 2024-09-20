@@ -12,10 +12,10 @@ if which jenv >/dev/null 2>&1; then
   JAVA=$(cd $progdir; jenv which java)
 fi
 
-$JAVA -jar "$progdir/co-developer-gpt-engine.jar" -w &
+$JAVA -jar "$progdir/co-developer-gpt-engine.jar" -w -q &
 pid=$!
 trap "kill $pid" EXIT
 
-sleep 1
+sleep 2
 
 chatgpt -tf <($JAVA -jar "$progdir/co-developer-gpt-engine.jar" --aitoolsdef) -cr "$@"

@@ -57,8 +57,6 @@ public class CoDeveloperEngine {
      */
     public static final Pattern OVERRIDE_IGNORE_PATTERN = Pattern.compile(".*/.github/.*|.*/.content.xml|(.*/)?\\.chatgpt.*.md|.*\\.htaccess");
 
-    // private static final Gson GSON = new Gson();
-
     static Path currentDir = Paths.get(".").normalize().toAbsolutePath();
 
     private static int port;
@@ -302,7 +300,6 @@ public class CoDeveloperEngine {
 
             if (cmd.hasOption("q")) {
                 TbUtils.setQuiet(true);
-                // todo change loglevels
             }
         } catch (ParseException e) {
             TbUtils.logError("Error parsing command line options: " + e);

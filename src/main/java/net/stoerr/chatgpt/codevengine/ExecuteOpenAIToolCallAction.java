@@ -55,13 +55,21 @@ public class ExecuteOpenAIToolCallAction extends AbstractPluginAction {
         AbstractPluginAction handler = handlers.get("/" + name);
         if (null == handler) {
             sendError(resp, HttpServletResponse.SC_BAD_REQUEST, "No handler for tool call: " + name);
+            return;
         }
         // call handler with a request that has parsedArguments as parameters and body as request body (JSON request)
         HttpServletRequest requestWrapper = new HttpServletRequestWrapper(req) {
             @Override
             public String getParameter(String name) {
                 Object value = parsedArguments.get(name);
-                return value != null ? value.toString() : null;
+                if (value == null) return null;
+                if (value instanceof String) return (String) value;
+                if (value instanceof Double) {
+                    // check whether it's an integer
+                    double d = (Double) value;
+                    if (Math.abs(d - Math.round(d)) < 0.001) return "" + Math.round(d);
+                }
+                return String.valueOf(value);
             }
 
             @Override
@@ -74,7 +82,13 @@ public class ExecuteOpenAIToolCallAction extends AbstractPluginAction {
                 return requestBody != null ? "POST" : "GET";
             }
         };
-        handler.service(requestWrapper, resp);
+        try {
+            handler.service(requestWrapper, resp);
+        } catch (ServletException | IOException | RuntimeException e) {
+            TbUtils.logError("Error executing tool call: " + name + "\n" + arguments);
+            TbUtils.logStacktrace(e);
+            throw e;
+        }
     }
 
 }

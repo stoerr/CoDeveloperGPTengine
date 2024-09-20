@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # generates a json schema for using the engine within other tools
-scriptdir=$(dirname $(realpath $0))
-cd $(dirname $0)/../
+scriptdir=$(dirname "$(realpath $0)")
+cd "$(dirname $0)/../"
 aigenpipeline -wvf -o src/main/resources/static/codeveloperengine-toolsdefinition.json \
     -p $scriptdir/generate_openai_toolsdefinition.prompt src/test/resources/test-expected/codeveloperengine.yaml
 
