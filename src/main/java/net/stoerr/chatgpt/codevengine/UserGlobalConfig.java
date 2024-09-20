@@ -119,7 +119,7 @@ public class UserGlobalConfig {
         externport = Integer.parseInt(config.getProperty("externport", "443"));
 
         if (httpsPort == null || httpsPort <= 0) {
-            TbUtils.logError("httpsport property in " + configFile + " is not set - our own https is disabled, relying on a tunnel.");
+            TbUtils.logInfo("httpsport property in " + configFile + " is not set - our own https is disabled, relying on a tunnel.");
             // that is OK if we use a tunnel instead of doing https ourselves
             return true;
         } else {

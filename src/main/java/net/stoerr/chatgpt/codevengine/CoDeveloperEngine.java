@@ -231,9 +231,11 @@ public class CoDeveloperEngine {
             return;
         }
 
-        TbUtils.logVersion();
-
-        parseOptions(args);
+        try {
+            parseOptions(args);
+        } finally {
+            TbUtils.logVersion();
+        }
         server = new Server(new InetSocketAddress("127.0.0.1", port));
         context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         context.setContextPath("/");
