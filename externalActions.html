@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="generator" content="#generatedBy()" />
-    <title>Co-Developer GPT engine - ChatGPT reads and modifies local source files and executes action – Surefire Report</title>
+    <title>Co-Developer GPT engine - ChatGPT reads and modifies local source files and executes action – Integrating external actions</title>
     <link rel="icon" href="./img/favicons/favicon.ico">
     <!-- CSS Stylesheets, site.css is included so downstream projects can override them as appropriate. -->
     <link rel="stylesheet" href="./css/bootstrap.min.css" />
@@ -68,7 +68,7 @@
                  <li class="nav-item dropdown-item" id="ConfigurationDropdown">
                    <a href="configuration.html" id="ConfigurationDropdownLink" title="Configuration"  class="dropdown-item" >Configuration</a>                 </li>
                  <li class="nav-item dropdown-item" id="Extend by external actionsDropdown">
-                   <a href="externalActions.html" id="Extend by external actionsDropdownLink" title="Extend by external actions"  class="dropdown-item" >Extend by external actions</a>                 </li>
+                   <a title="Extend by external actions" class="dropdown-item">Extend by external actions</a>                 </li>
                  <li class="nav-item dropdown-item" id="Chat on the command lineDropdown">
                    <a href="pmcodevgpt.html" id="Chat on the command lineDropdownLink" title="Chat on the command line"  class="dropdown-item" >Chat on the command line</a>                 </li>
                </ul>
@@ -103,7 +103,7 @@
                      <li class="nav-item dropdown-item">
                        <a href="failsafe-report.html" id="FailsafeDropdownLink" title="Failsafe"  class="dropdown-item" >Failsafe</a>                     </li>
                      <li class="nav-item dropdown-item">
-                       <a title="Surefire" class="dropdown-item">Surefire</a>                     </li>
+                       <a href="surefire-report.html" id="SurefireDropdownLink" title="Surefire"  class="dropdown-item" >Surefire</a>                     </li>
                      <li class="nav-item dropdown-item">
                        <a href="jacoco-aggregate/index.html" id="JaCoCo AggregateDropdownLink" title="JaCoCo Aggregate"  class="dropdown-item" >JaCoCo Aggregate</a>                     </li>
                      <li class="nav-item dropdown-item">
@@ -137,129 +137,37 @@
 
     <main class="flex-shrink-0" role="main">
       <div class="container mt-3 rounded">
-<script type="text/javascript">
-function toggleDisplay(elementId) {
- var elm = document.getElementById(elementId + '-error');
- if (elm == null) {
-  elm = document.getElementById(elementId + '-failure');
- }
- if (elm && typeof elm.style != "undefined") {
-  if (elm.style.display == "none") {
-   elm.style.display = "";
-   document.getElementById(elementId + '-off').style.display = "none";
-   document.getElementById(elementId + '-on').style.display = "inline";
-  } else if (elm.style.display == "") {   elm.style.display = "none";
-   document.getElementById(elementId + '-off').style.display = "inline";
-   document.getElementById(elementId + '-on').style.display = "none";
-  }
- }
- }</script><section>
-<h1>Surefire Report</h1></section><section><a id="Summary"></a>
-<h1>Summary</h1>
-<p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />
-<table class="table table-striped">
-<tr class="a">
-<th>Tests</th>
-<th>Errors</th>
-<th>Failures</th>
-<th>Skipped</th>
-<th>Success Rate</th>
-<th>Time</th></tr>
-<tr class="b">
-<td style="text-align: left;">8</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.041 s</td></tr></table><br />
-<p>Note: failures are anticipated and checked for with assertions while errors are unanticipated.</p><br /></section><section><a id="Package_List"></a>
-<h1>Package List</h1>
-<p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />
-<table class="table table-striped">
-<tr class="a">
-<th>Package</th>
-<th>Tests</th>
-<th>Errors</th>
-<th>Failures</th>
-<th>Skipped</th>
-<th>Success Rate</th>
-<th>Time</th></tr>
-<tr class="b">
-<td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine">net.stoerr.chatgpt.codevengine</a></td>
-<td>8</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.041 s</td></tr></table><br />
-<p>Note: package statistics are not computed recursively, they only sum up all of its testsuites numbers.</p><section><a id="net.stoerr.chatgpt.codevengine"></a>
-<h2>net.stoerr.chatgpt.codevengine</h2>
-<table class="table table-striped">
-<tr class="a">
-<th>-</th>
-<th>Class</th>
-<th>Tests</th>
-<th>Errors</th>
-<th>Failures</th>
-<th>Skipped</th>
-<th>Success Rate</th>
-<th>Time</th></tr>
-<tr class="b">
-<td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine.TbUtilsTest"><img src="images/icon_success_sml.gif" /></a></td>
-<td><a href="#net.stoerr.chatgpt.codevengine.TbUtilsTest">TbUtilsTest</a></td>
-<td>2</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.021 s</td></tr>
-<tr class="a">
-<td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest"><img src="images/icon_success_sml.gif" /></a></td>
-<td><a href="#net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest">GitIgnoreRulesTest</a></td>
-<td>6</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.020 s</td></tr></table></section><br /></section><section><a id="Test_Cases"></a>
-<h1>Test Cases</h1>
-<p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><section><a id="net.stoerr.chatgpt.codevengine.TbUtilsTest"></a>
-<h2>TbUtilsTest</h2>
-<table class="table table-striped">
-<tr class="a">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
-<td><a id="TC_net.stoerr.chatgpt.codevengine.TbUtilsTest.testCompileReplacementWithBackslashes"></a>testCompileReplacementWithBackslashes</td>
-<td>0.021 s</td></tr>
-<tr class="b">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
-<td><a id="TC_net.stoerr.chatgpt.codevengine.TbUtilsTest.testCompileReplacementWithGroupReferences"></a>testCompileReplacementWithGroupReferences</td>
-<td>0 s</td></tr></table></section><section><a id="net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest"></a>
-<h2>GitIgnoreRulesTest</h2>
-<table class="table table-striped">
-<tr class="a">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
-<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testEmptyGitignoreFile"></a>testEmptyGitignoreFile</td>
-<td>0.014 s</td></tr>
-<tr class="b">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
-<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testNegatedGitignoreRuleThrowsException"></a>testNegatedGitignoreRuleThrowsException</td>
-<td>0.002 s</td></tr>
-<tr class="a">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
-<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testValidGitignoreRules"></a>testValidGitignoreRules</td>
-<td>0.001 s</td></tr>
-<tr class="b">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
-<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testIsNotIgnored"></a>testIsNotIgnored</td>
-<td>0.001 s</td></tr>
-<tr class="a">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
-<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testIsIgnored"></a>testIsIgnored</td>
-<td>0.001 s</td></tr>
-<tr class="b">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
-<td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testNoGitignoreFile"></a>testNoGitignoreFile</td>
-<td>0.001 s</td></tr></table></section><br /></section>
+<section>
+<h1>Integrating external actions</h1>
+<p>The CoDeveloper Engine has a nice feature that lets you easily integrate additional actions that can be triggered by
+ChatGPT by putting shell scripts into the directory <code>.cgptcodeveloper/</code> in your project.
+If you, e.g., ask ChatGPT to <em>Please execute listActions</em> then it'll trigger a request that has the engine look for a
+script called listActions.sh there, execute it and deliver the output to ChatGPT. I follow the convention
+to always put the script
+<a href="https://github.com/stoerr/CoDeveloperGPTengine/tree/develop/.cgptcodeveloper/listActions.sh" class="externalLink"><code>listActions.sh</code></a>
+there, which looks for other <code>*.sh</code> in this directory and prints their names and any comments starting with
+<code>Plugin Action:</code>. This way ChatGPT knows what actions it can execute, and what functions they have. When calling
+them, it can transmit arguments and / or standard input to the script. Remember to thoroughly inform
+the GPT about what's expected as arguments or input in the <code>Plugin Action:</code> comment!</p>
+<p>If you're working with Apache Maven as a build system, like I usually do, then this would be a nice script <code>build.sh</code>,
+which executes the build and writes the log to a file - and tells the GPT whether the build failed or was successful.</p>
+
+<div class="verbatim">
+<pre><code># Plugin Action: maven build incl. running unit- and integrationtests
+echo executing mvn clean install
+mvn -B clean install &gt; build.log 2&gt;&amp;1
+if [ $? -ne 0 ]; then
+  echo &quot;mvn clean install failed, see build.log. You can use the grep action with some context lines to look for errors and exceptions in file build.log&quot;
+  exit 1
+else
+  echo &quot;successful; build log is in build.log&quot;
+  exit 0
+fi
+</code></pre></div>
+<p>With this you can give it instructions to run the build and analyze or even fix any problems for you. For more examples
+please have a look at
+<a href="https://github.com/stoerr/CoDeveloperGPTengine/tree/develop/examples/actions" class="externalLink">examples/actions</a>
+or the <code>.cgptcodeveloper/</code> directory in the engine sources.</p></section>
       </div>
     </main>
 

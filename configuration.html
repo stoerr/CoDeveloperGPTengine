@@ -67,8 +67,10 @@
                    <a href="https.html" id="Access via HTTPSDropdownLink" title="Access via HTTPS"  class="dropdown-item" >Access via HTTPS</a>                 </li>
                  <li class="nav-item dropdown-item" id="ConfigurationDropdown">
                    <a title="Configuration" class="dropdown-item">Configuration</a>                 </li>
-                 <li class="nav-item dropdown-item" id="Run on the command lineDropdown">
-                   <a href="pmcodevgpt.html" id="Run on the command lineDropdownLink" title="Run on the command line"  class="dropdown-item" >Run on the command line</a>                 </li>
+                 <li class="nav-item dropdown-item" id="Extend by external actionsDropdown">
+                   <a href="externalActions.html" id="Extend by external actionsDropdownLink" title="Extend by external actions"  class="dropdown-item" >Extend by external actions</a>                 </li>
+                 <li class="nav-item dropdown-item" id="Chat on the command lineDropdown">
+                   <a href="pmcodevgpt.html" id="Chat on the command lineDropdownLink" title="Chat on the command line"  class="dropdown-item" >Chat on the command line</a>                 </li>
                </ul>
              </li>
              <li class="nav-item dropdown">
@@ -124,9 +126,9 @@
         <div id="projectBarContainer" class="container-fluid">
 
           <div id="projectBaDateVersionContainer" class="justify-content-start">
-            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2024-09-20</span>
+            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2024-09-21</span>
             <span id="projectDateVersionSpacer" class="px-1 navbar-text">|</span>
-            <span id="projectVersion" class="px-1 navbar-text">Version: 3.2.0</span>
+            <span id="projectVersion" class="px-1 navbar-text">Version: 3.2.1-SNAPSHOT</span>
           </div>
           <div id="breadcrumbSpacer" ></div>
         </div>
@@ -172,21 +174,9 @@ gptsecret=848KkaaASSDAkkD7/k(f
 openaitoken=84573967bd28c28578488277ff732834
 </code></pre></div></section><section>
 <h2>The scripts in <code>.cgptcodeveloper/</code></h2>
-<p>Any shell script called <code>*.sh</code> in the directory <code>.cgptcodeveloper/</code> can be called by name from ChatGPT. As an
-example you can use the
-<a href="https://github.com/stoerr/CoDeveloperGPTengine/tree/develop/.cgptcodeveloper" class="externalLink">.cgptcodeveloper/</a>
-directory in the
-engine sources. If you ask ChatGPT <em>Please execute listActions</em> then it'll trigger
-a request that has the engine look for a script called listActions.sh there, execute it and deliver the output to
-ChatGPT. In my examle the
-<a href="https://github.com/stoerr/CoDeveloperGPTengine/tree/develop/.cgptcodeveloper/listActions.sh" class="externalLink"><code>listActions.sh</code></a>
-searches for other scripts in that directory and prints them, so that ChatGPT knows what actions it can execute.
-If you use that, then put a comment like</p>
-
-<div class="verbatim">
-<pre><code># Plugin Action: maven build incl. running unit- and integrationtests
-</code></pre></div>
-<p>into each script, since any line containing <code>Plugin Action:</code> will be returned as description to ChatGPT.</p></section></section>
+<p>Any shell script called <code>*.sh</code> in the directory <code>.cgptcodeveloper/</code> can be called by name as action from ChatGPT.
+This gives you the possibility to easily extend the functionality of the engine by adding new actions.
+Please see <a href="externalActions.html">external actions</a> for more information.</p></section></section>
       </div>
     </main>
 

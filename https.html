@@ -67,8 +67,10 @@
                    <a title="Access via HTTPS" class="dropdown-item">Access via HTTPS</a>                 </li>
                  <li class="nav-item dropdown-item" id="ConfigurationDropdown">
                    <a href="configuration.html" id="ConfigurationDropdownLink" title="Configuration"  class="dropdown-item" >Configuration</a>                 </li>
-                 <li class="nav-item dropdown-item" id="Run on the command lineDropdown">
-                   <a href="pmcodevgpt.html" id="Run on the command lineDropdownLink" title="Run on the command line"  class="dropdown-item" >Run on the command line</a>                 </li>
+                 <li class="nav-item dropdown-item" id="Extend by external actionsDropdown">
+                   <a href="externalActions.html" id="Extend by external actionsDropdownLink" title="Extend by external actions"  class="dropdown-item" >Extend by external actions</a>                 </li>
+                 <li class="nav-item dropdown-item" id="Chat on the command lineDropdown">
+                   <a href="pmcodevgpt.html" id="Chat on the command lineDropdownLink" title="Chat on the command line"  class="dropdown-item" >Chat on the command line</a>                 </li>
                </ul>
              </li>
              <li class="nav-item dropdown">
@@ -124,9 +126,9 @@
         <div id="projectBarContainer" class="container-fluid">
 
           <div id="projectBaDateVersionContainer" class="justify-content-start">
-            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2024-09-20</span>
+            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2024-09-21</span>
             <span id="projectDateVersionSpacer" class="px-1 navbar-text">|</span>
-            <span id="projectVersion" class="px-1 navbar-text">Version: 3.2.0</span>
+            <span id="projectVersion" class="px-1 navbar-text">Version: 3.2.1-SNAPSHOT</span>
           </div>
           <div id="breadcrumbSpacer" ></div>
         </div>
@@ -152,7 +154,11 @@ Each time before using the engine you have to start the serveo tunnel:</p>
 <pre><code>ssh -T -R your-desired-domain-prefix.serveo.net:80:localhost:3002 serveo.net
 </code></pre></div>
 <p>Your engine URL for ChatGPT will be <a href="https://your-desired-domain-prefix.serveo.net/" class="externalLink">https://your-desired-domain-prefix.serveo.net/</a> in this example. To check whether
-it works you can call it up in a browser, after starting the developers engine.</p></section><section>
+it works you can call it up in a browser, after starting the developers engine.</p>
+<p>See
+<a href="https://github.com/stoerr/CoDeveloperGPTengine/tree/develop/examples/config/tunnel.sh" class="externalLink">examples/config/tunnel.sh</a>
+for an example how to start the tunnel automatically from the
+<a href="https://github.com/stoerr/CoDeveloperGPTengine/blob/develop/bin/codeveloperengine" class="externalLink">codeveloperengine</a> script.</p></section><section>
 <h2>Using paid services</h2>
 <p>There are several paid services similar to Serveo and LocalTunnel. I haven't tried them, but they should work, too:
 <a href="https://ngrok.com/" class="externalLink">ngrok.com</a> (at least $8/month), <a href="https://pagekite.net/" class="externalLink">https://pagekite.net/</a> (&gt;=$3/month), <a href="https://inlets.dev/" class="externalLink">inlets</a> (
