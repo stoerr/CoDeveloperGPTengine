@@ -21,4 +21,4 @@ if test -f ~/.cgptcodeveloperglobal/tunnel.sh; then
   echo
 fi
 
-exec $JAVA -jar "$progdir/co-developer-gpt-engine.jar" "$@"
+$JAVA -jar "$progdir/co-developer-gpt-engine.jar" "$@"
