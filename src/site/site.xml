@@ -48,6 +48,7 @@
             <item name="Install as ChatGPT Plugin" href="plugin.html"/>
             <item name="Access via HTTPS" href="https.html"/>
             <item name="Configuration" href="configuration.html"/>
+            <item name="Extend by external actions" href="externalActions.html"/>
             <item name="Chat on the command line" href="pmcodevgpt.html"/>
         </menu>
         <menu ref="modules" inherit="bottom"/>
