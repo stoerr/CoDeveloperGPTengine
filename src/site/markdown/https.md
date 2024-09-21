@@ -19,6 +19,11 @@ Each time before using the engine you have to start the serveo tunnel:
 Your engine URL for ChatGPT will be https://your-desired-domain-prefix.serveo.net/ in this example. To check whether
 it works you can call it up in a browser, after starting the developers engine.
 
+See
+[examples/config/tunnel.sh](https://github.com/stoerr/CoDeveloperGPTengine/tree/develop/examples/config/tunnel.sh)
+for an example how to start the tunnel automatically from the
+[codeveloperengine](https://github.com/stoerr/CoDeveloperGPTengine/blob/develop/bin/codeveloperengine) script.
+
 ## Using paid services
 
 There are several paid services similar to Serveo and LocalTunnel. I haven't tried them, but they should work, too:

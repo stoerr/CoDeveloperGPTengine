@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # start the co-developer-gpt-engine.jar in the directory this script is placed, following links
+# if there is a ~/.cgptcodeveloperglobal/tunnel.sh then run it and kill it when this script exits
+
 progfile=$(realpath $0)
 progdir=$(dirname "$progfile")
 

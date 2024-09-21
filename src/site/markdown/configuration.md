@@ -41,9 +41,10 @@ with a file containing the password, and the `domain` the engine is reachable wi
 
 Any shell script called `*.sh` in the directory `.cgptcodeveloper/` can be called by name from ChatGPT. As an
 example you can use the
-[.cgptcodeveloper/](https://github.com/stoerr/CoDeveloperGPTengine/tree/develop/.cgptcodeveloper) 
-directory in the
-engine sources. If you ask ChatGPT *Please execute listActions* then it'll trigger
+[.cgptcodeveloper/](https://github.com/stoerr/CoDeveloperGPTengine/tree/develop/.cgptcodeveloper)
+directory in the engine sources, or in the
+[examples/actions](https://github.com/stoerr/CoDeveloperGPTengine/tree/develop/examples/actions)
+. If you ask ChatGPT *Please execute listActions* then it'll trigger
 a request that has the engine look for a script called listActions.sh there, execute it and deliver the output to
 ChatGPT. In my examle the
 [`listActions.sh`](https://github.com/stoerr/CoDeveloperGPTengine/tree/develop/.cgptcodeveloper/listActions.sh)
