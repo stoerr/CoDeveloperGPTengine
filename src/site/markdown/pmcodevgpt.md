@@ -1,4 +1,4 @@
-# Running the codeveloper engine with the chatgpt command line tool
+# Chat on the command line using the codeveloper engine with the chatgpt command line tool
 
 As an alternative to running the CoDeveloper GPT Engine from ChatGPT you can run it with the chatgpt
 script from my [ChatGPT Toolsuite](https://github.com/stoerr/chatGPTtools). This not a full fledged chat interface,
