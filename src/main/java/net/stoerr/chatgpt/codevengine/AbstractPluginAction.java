@@ -263,7 +263,7 @@ public abstract class AbstractPluginAction extends HttpServlet {
         Path parent = path.getParent();
         while (parent != null) {
             GitIgnoreRules gitIgnoreFile = gitIgnoreRules
-                    .computeIfAbsent(parent, k -> new GitIgnoreRules(k));
+                    .computeIfAbsent(parent, GitIgnoreRules::new);
             if (gitIgnoreFile.isIgnored(path)) {
                 return true;
             }
@@ -281,6 +281,8 @@ public abstract class AbstractPluginAction extends HttpServlet {
         private final List<PathMatcher> rules = new ArrayList<>();
         private final Path directory;
 
+        private static boolean negativeRulesReported = false;
+
         public GitIgnoreRules(Path directory) {
             this.directory = directory;
             Path gitignore = directory.resolve(".gitignore");
@@ -295,7 +297,10 @@ public abstract class AbstractPluginAction extends HttpServlet {
                             continue;
                         }
                         if (line.startsWith("!")) {
-                            logError("Negated gitignore rules are not supported: " + line);
+                            if (negativeRulesReported) {
+                                logError("Negated gitignore rules are not supported: " + line);
+                                negativeRulesReported = true;
+                            }
                             continue;
                         }
                         if (line.endsWith("/")) {
