@@ -86,6 +86,12 @@ public class ReplaceAction extends AbstractPluginAction {
             for (Replacement replacement : replacementRequest.getReplacements()) {
                 replacementNo++;
                 StringBuffer sb = new StringBuffer();
+                if (replacement.getSearch() == null || replacement.getSearch().isEmpty()) {
+                    throw sendError(resp, 400, "Search string in replacement number " + replacementNo + " is empty.");
+                }
+                if (replacement.getReplace() == null) {
+                    throw sendError(resp, 400, "Replacement string in replacement number " + replacementNo + " is null.");
+                }
                 String pattern = Pattern.quote(replacement.getSearch());
                 String compiledReplacement = Matcher.quoteReplacement(replacement.getReplace());
                 if (pattern.contains("\\n") && !Pattern.compile(pattern).matcher(content).find()) {
