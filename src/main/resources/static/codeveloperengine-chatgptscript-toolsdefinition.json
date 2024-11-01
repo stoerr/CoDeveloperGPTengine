@@ -140,7 +140,7 @@
                     },
                     "maxLines": {
                         "type": "integer",
-                        "description": "maximum number of lines to read from the file"
+                        "description": "maximum number of lines to read from the file, e.g. 500"
                     },
                     "startLine": {
                         "type": "integer",

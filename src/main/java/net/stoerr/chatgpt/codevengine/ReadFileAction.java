@@ -52,7 +52,7 @@ public class ReadFileAction extends AbstractPluginAction {
                 "            type: string\n" +
                 "        - name: maxLines\n" +
                 "          in: query\n" +
-                "          description: maximum number of lines to read from the file\n" +
+                "          description: maximum number of lines to read from the file, e.g. 500\n" +
                 "          required: false\n" +
                 "          schema:\n" +
                 "            type: integer\n" +

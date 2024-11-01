@@ -158,7 +158,7 @@ paths:
             type: string
         - name: maxLines
           in: query
-          description: maximum number of lines to read from the file
+          description: maximum number of lines to read from the file, e.g. 500
           required: false
           schema:
             type: integer

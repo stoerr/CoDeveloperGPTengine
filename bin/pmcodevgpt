@@ -24,4 +24,4 @@ if [[ ! "$*" =~ -cr ]] && [[ ! "$*" =~ -ca ]]; then
   ARGS="-cr"
 fi
 
-chatgpt -tf <($JAVA -jar "$progdir/co-developer-gpt-engine.jar" --aitoolsdef) $ARGS "$@"
+chatgpt -mh -tf <($JAVA -jar "$progdir/co-developer-gpt-engine.jar" --aitoolsdef) $ARGS "$@"
