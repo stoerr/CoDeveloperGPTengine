@@ -305,6 +305,8 @@ public class CoDeveloperEngine {
             }
         } catch (ParseException e) {
             TbUtils.logError("Error parsing command line options: " + e);
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("options are", options);
             System.exit(1);
         }
     }
