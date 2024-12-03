@@ -5,6 +5,8 @@ These are possible later plans, not urgent.
 !! Site config
 
 listDirectories - too many directories check.
+Perhaps: is this compatible with Anthropics Model Context Protocol ?
+https://www.anthropic.com/news/model-context-protocol
 
 ## Improvements
 
