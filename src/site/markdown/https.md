@@ -51,6 +51,34 @@ You need to get a certificate for your hostname, e.g. with https://letsencrypt.o
 since all that is a bit complicated, I'm only going to describe this if you ask me. :-)  One advantage is that you 
 don't need to remember to start and stop a tunnel.
 
+## SSH port forwarding + Reverse proxy
+
+If you have a host in the cloud that has a wildcard SSL certificate and a web server like apache that supports
+creating virtual hosts and have set up passwordless login with ssh public key authentication, then you can:
+
+1. set up a new virtual host with a reverse proxy that goes to your cloud host, e.g. port 3002
+2. start ssh with forwarding that remote port to your local host, e.g.
+   `ssh -T -N -R 3002:localhost:3002 you@yourcloudhost.whereever`
+
+For the virtual host you'll probably need to set up a DNS CNAME record that maps that virtual host to your main host.
+For Apache 2 a site setup would be e.g.
+
+```
+<VirtualHost *:443>
+    ServerName yourvirtualhost.your.domain
+
+    SSLEngine On
+    SSLCertificateFile /etc/ssl/certs/your.domain_ssl_certificate.cer
+    SSLCertificateKeyFile /etc/ssl/private/_.your.domain_private_key.key
+    SSLCACertificateFile /etc/ssl/certs/_.your.domain_ssl_certificate_INTERMEDIATE.cer
+    Include /etc/letsencrypt/options-ssl-apache.conf
+
+    ProxyPreserveHost On
+    ProxyPass / http://localhost:3002/
+    ProxyPassReverse / http://localhost:3002/
+</VirtualHost>
+```
+
 ## Services that do (probably) not work
 
 If you feel like experimenting: [LocalTunnel](https://theboroer.github.io/localtunnel-www/) might or might not
