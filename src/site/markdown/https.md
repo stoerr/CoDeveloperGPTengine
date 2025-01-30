@@ -76,6 +76,8 @@ For Apache 2 a site setup would be e.g.
     ProxyPreserveHost On
     ProxyPass / http://localhost:3002/
     ProxyPassReverse / http://localhost:3002/
+    
+    RequestHeader set X-Forwarded-Proto https
 </VirtualHost>
 ```
 

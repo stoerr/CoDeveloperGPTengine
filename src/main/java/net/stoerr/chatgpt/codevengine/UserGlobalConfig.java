@@ -153,6 +153,7 @@ public class UserGlobalConfig {
             HttpServletResponse response = (HttpServletResponse) rawResponse;
 
             boolean requestislocal = request.getHeader("X-Forwarded-Proto") == null && !request.isSecure()
+                    && request.getHeader("X-Forwarded-Host") == null
                     || request.getRequestURL().toString().startsWith("http://localhost");
             if (!requestislocal && StringUtils.isBlank(gptSecret)) {
                 TbUtils.logError("No gptsecret configured in " + configFile + " and request is remote - refusing to serve for security reasons.");
