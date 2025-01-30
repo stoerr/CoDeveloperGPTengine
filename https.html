@@ -101,9 +101,9 @@
                    <a href="project-reports.html" id="Project ReportsDropdownLink" title="Project Reports"  class="dropdown-item" >Project Reports</a>
                    <ul id="Project DocumentationMenuSubMenuDropdown" class="dropdown-menu submenu">
                      <li class="nav-item dropdown-item">
-                       <a href="failsafe-report.html" id="FailsafeDropdownLink" title="Failsafe"  class="dropdown-item" >Failsafe</a>                     </li>
+                       <a href="failsafe.html" id="FailsafeDropdownLink" title="Failsafe"  class="dropdown-item" >Failsafe</a>                     </li>
                      <li class="nav-item dropdown-item">
-                       <a href="surefire-report.html" id="SurefireDropdownLink" title="Surefire"  class="dropdown-item" >Surefire</a>                     </li>
+                       <a href="surefire.html" id="SurefireDropdownLink" title="Surefire"  class="dropdown-item" >Surefire</a>                     </li>
                      <li class="nav-item dropdown-item">
                        <a href="jacoco-aggregate/index.html" id="JaCoCo AggregateDropdownLink" title="JaCoCo Aggregate"  class="dropdown-item" >JaCoCo Aggregate</a>                     </li>
                      <li class="nav-item dropdown-item">
@@ -126,9 +126,9 @@
         <div id="projectBarContainer" class="container-fluid">
 
           <div id="projectBaDateVersionContainer" class="justify-content-start">
-            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2024-09-21</span>
+            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2025-01-30</span>
             <span id="projectDateVersionSpacer" class="px-1 navbar-text">|</span>
-            <span id="projectVersion" class="px-1 navbar-text">Version: 3.2.1-SNAPSHOT</span>
+            <span id="projectVersion" class="px-1 navbar-text">Version: 3.2.1</span>
           </div>
           <div id="breadcrumbSpacer" ></div>
         </div>
@@ -181,6 +181,35 @@ mode</li>
 <p>You need to get a certificate for your hostname, e.g. with <a href="https://letsencrypt.org/" class="externalLink">https://letsencrypt.org/</a>. I did it, but
 since all that is a bit complicated, I'm only going to describe this if you ask me. :-)  One advantage is that you
 don't need to remember to start and stop a tunnel.</p></section><section>
+<h2>SSH port forwarding + Reverse proxy</h2>
+<p>If you have a host in the cloud that has a wildcard SSL certificate and a web server like apache that supports
+creating virtual hosts and have set up passwordless login with ssh public key authentication, then you can:</p>
+<ol style="list-style-type: decimal;">
+
+<li>set up a new virtual host with a reverse proxy that goes to your cloud host, e.g. port 3002</li>
+<li>start ssh with forwarding that remote port to your local host, e.g.
+<code>ssh -T -N -R 3002:localhost:3002 you@yourcloudhost.whereever</code></li>
+</ol>
+<p>For the virtual host you'll probably need to set up a DNS CNAME record that maps that virtual host to your main host.
+For Apache 2 a site setup would be e.g.</p>
+
+<div class="verbatim">
+<pre><code>&lt;VirtualHost *:443&gt;
+    ServerName yourvirtualhost.your.domain
+
+    SSLEngine On
+    SSLCertificateFile /etc/ssl/certs/your.domain_ssl_certificate.cer
+    SSLCertificateKeyFile /etc/ssl/private/_.your.domain_private_key.key
+    SSLCACertificateFile /etc/ssl/certs/_.your.domain_ssl_certificate_INTERMEDIATE.cer
+    Include /etc/letsencrypt/options-ssl-apache.conf
+
+    ProxyPreserveHost On
+    ProxyPass / http://localhost:3002/
+    ProxyPassReverse / http://localhost:3002/
+    
+    RequestHeader set X-Forwarded-Proto https
+&lt;/VirtualHost&gt;
+</code></pre></div></section><section>
 <h2>Services that do (probably) not work</h2>
 <p>If you feel like experimenting: <a href="https://theboroer.github.io/localtunnel-www/" class="externalLink">LocalTunnel</a> might or might not
 work - as of 1/2024 I couldn't get it to work anymore, it fails silently in ChatGPT without any error message in
@@ -204,7 +233,7 @@ UserAgent, probably that isn't counted as unusual anymore. -->
 
             <div id="copyrightDiv" class="pt-3">
               <p>&#169;
-      2024
+      2025
               </p>
             </div>
           </div>

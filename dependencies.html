@@ -101,9 +101,9 @@
                    <a href="project-reports.html" id="Project ReportsDropdownLink" title="Project Reports"  class="dropdown-item" >Project Reports</a>
                    <ul id="Project DocumentationMenuSubMenuDropdown" class="dropdown-menu submenu">
                      <li class="nav-item dropdown-item">
-                       <a href="failsafe-report.html" id="FailsafeDropdownLink" title="Failsafe"  class="dropdown-item" >Failsafe</a>                     </li>
+                       <a href="failsafe.html" id="FailsafeDropdownLink" title="Failsafe"  class="dropdown-item" >Failsafe</a>                     </li>
                      <li class="nav-item dropdown-item">
-                       <a href="surefire-report.html" id="SurefireDropdownLink" title="Surefire"  class="dropdown-item" >Surefire</a>                     </li>
+                       <a href="surefire.html" id="SurefireDropdownLink" title="Surefire"  class="dropdown-item" >Surefire</a>                     </li>
                      <li class="nav-item dropdown-item">
                        <a href="jacoco-aggregate/index.html" id="JaCoCo AggregateDropdownLink" title="JaCoCo Aggregate"  class="dropdown-item" >JaCoCo Aggregate</a>                     </li>
                      <li class="nav-item dropdown-item">
@@ -126,9 +126,9 @@
         <div id="projectBarContainer" class="container-fluid">
 
           <div id="projectBaDateVersionContainer" class="justify-content-start">
-            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2024-09-21</span>
+            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2025-01-30</span>
             <span id="projectDateVersionSpacer" class="px-1 navbar-text">|</span>
-            <span id="projectVersion" class="px-1 navbar-text">Version: 3.2.1-SNAPSHOT</span>
+            <span id="projectVersion" class="px-1 navbar-text">Version: 3.2.1</span>
           </div>
           <div id="breadcrumbSpacer" ></div>
         </div>
@@ -210,8 +210,8 @@
 <td><a class="externalLink" href="https://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, Version 2.0</a></td></tr>
 <tr class="b">
 <td>org.eclipse.jetty</td>
-<td><a class="externalLink" href="https://eclipse.dev/jetty/jetty-server">jetty-server</a></td>
-<td>11.0.18</td>
+<td><a class="externalLink" href="https://jetty.org/jetty-server">jetty-server</a></td>
+<td>11.0.24</td>
 <td>jar</td>
 <td><a class="externalLink" href="https://www.eclipse.org/legal/epl-2.0/">Eclipse Public License - Version 2.0</a><a class="externalLink" href="https://www.apache.org/licenses/LICENSE-2.0">Apache Software License - Version 2.0</a></td></tr>
 <tr class="a">
@@ -302,14 +302,14 @@
 <td><a class="externalLink" href="http://opensource.org/licenses/MIT">The MIT License</a></td></tr>
 <tr class="a">
 <td>org.eclipse.jetty</td>
-<td><a class="externalLink" href="https://eclipse.dev/jetty/jetty-http">jetty-http</a></td>
-<td>11.0.18</td>
+<td><a class="externalLink" href="https://jetty.org/jetty-http">jetty-http</a></td>
+<td>11.0.24</td>
 <td>jar</td>
 <td><a class="externalLink" href="https://www.eclipse.org/legal/epl-2.0/">Eclipse Public License - Version 2.0</a><a class="externalLink" href="https://www.apache.org/licenses/LICENSE-2.0">Apache Software License - Version 2.0</a></td></tr>
 <tr class="b">
 <td>org.eclipse.jetty</td>
-<td><a class="externalLink" href="https://eclipse.dev/jetty/jetty-io">jetty-io</a></td>
-<td>11.0.18</td>
+<td><a class="externalLink" href="https://jetty.org/jetty-io">jetty-io</a></td>
+<td>11.0.24</td>
 <td>jar</td>
 <td><a class="externalLink" href="https://www.eclipse.org/legal/epl-2.0/">Eclipse Public License - Version 2.0</a><a class="externalLink" href="https://www.apache.org/licenses/LICENSE-2.0">Apache Software License - Version 2.0</a></td></tr>
 <tr class="a">
@@ -320,8 +320,8 @@
 <td><a class="externalLink" href="https://www.eclipse.org/legal/epl-2.0/">Eclipse Public License - Version 2.0</a><a class="externalLink" href="https://www.apache.org/licenses/LICENSE-2.0">Apache Software License - Version 2.0</a></td></tr>
 <tr class="b">
 <td>org.eclipse.jetty</td>
-<td><a class="externalLink" href="https://eclipse.dev/jetty/jetty-util">jetty-util</a></td>
-<td>11.0.18</td>
+<td><a class="externalLink" href="https://jetty.org/jetty-util">jetty-util</a></td>
+<td>11.0.24</td>
 <td>jar</td>
 <td><a class="externalLink" href="https://www.eclipse.org/legal/epl-2.0/">Eclipse Public License - Version 2.0</a><a class="externalLink" href="https://www.apache.org/licenses/LICENSE-2.0">Apache Software License - Version 2.0</a></td></tr>
 <tr class="a">
@@ -396,7 +396,7 @@
 <section><a id="Dependency_Tree"></a>
 <h2>Dependency Tree</h2>
 <ul>
-<li>net.stoerr.chatgpt:co-developer-gpt-engine:jar:3.2.1-SNAPSHOT <img id="_img1" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep0', '_img1' );" style="cursor: pointer; vertical-align: text-bottom;" /><div id="_dep0" style="display:none">
+<li>net.stoerr.chatgpt:co-developer-gpt-engine:jar:3.2.1 <img id="_img1" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep0', '_img1' );" style="cursor: pointer; vertical-align: text-bottom;" /><div id="_dep0" style="display:none">
 <table class="table table-striped">
 <tr class="a">
 <th>CoDeveloperGPTengine</th></tr>
@@ -604,17 +604,45 @@ writes to specify Java code for type-checking by the Checker Framework.</p>
 <p><b>Description: </b>jsoup is a Java library for working with real-world HTML. It provides a very convenient API for fetching URLs and extracting and manipulating data, using the best of HTML5 DOM methods and CSS selectors. jsoup implements the WHATWG HTML5 specification, and parses HTML to the same DOM as modern browsers do.</p>
 <p><b>URL: </b><a class="externalLink" href="https://jsoup.org/">https://jsoup.org/</a></p>
 <p><b>Project Licenses: </b><a class="externalLink" href="https://jsoup.org/license">The MIT License</a></p></td></tr></table></div></li></ul></li>
-<li>org.eclipse.jetty:jetty-server:jar:11.0.18 (compile) <img id="_img39" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep38', '_img39' );" style="cursor: pointer; vertical-align: text-bottom;" /><div id="_dep38" style="display:none">
+<li>org.eclipse.jetty:jetty-server:jar:11.0.24 (compile) <img id="_img39" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep38', '_img39' );" style="cursor: pointer; vertical-align: text-bottom;" /><div id="_dep38" style="display:none">
 <table class="table table-striped">
 <tr class="a">
 <th>Jetty :: Server Core</th></tr>
 <tr class="b">
 <td>
 <p><b>Description: </b>The core jetty server artifact.</p>
-<p><b>URL: </b><a class="externalLink" href="https://eclipse.dev/jetty/jetty-server">https://eclipse.dev/jetty/jetty-server</a></p>
+<p><b>URL: </b><a class="externalLink" href="https://jetty.org/jetty-server">https://jetty.org/jetty-server</a></p>
 <p><b>Project Licenses: </b><a class="externalLink" href="https://www.eclipse.org/legal/epl-2.0/">Eclipse Public License - Version 2.0</a>, <a class="externalLink" href="https://www.apache.org/licenses/LICENSE-2.0">Apache Software License - Version 2.0</a></p></td></tr></table></div>
 <ul>
-<li>org.eclipse.jetty.toolchain:jetty-jakarta-servlet-api:jar:5.0.2 (compile) <img id="_img41" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep40', '_img41' );" style="cursor: pointer; vertical-align: text-bottom;" /><div id="_dep40" style="display:none">
+<li>org.eclipse.jetty:jetty-http:jar:11.0.24 (compile) <img id="_img41" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep40', '_img41' );" style="cursor: pointer; vertical-align: text-bottom;" /><div id="_dep40" style="display:none">
+<table class="table table-striped">
+<tr class="a">
+<th>Jetty :: Http Utility</th></tr>
+<tr class="b">
+<td>
+<p><b>Description: </b>The Eclipse Jetty Project</p>
+<p><b>URL: </b><a class="externalLink" href="https://jetty.org/jetty-http">https://jetty.org/jetty-http</a></p>
+<p><b>Project Licenses: </b><a class="externalLink" href="https://www.eclipse.org/legal/epl-2.0/">Eclipse Public License - Version 2.0</a>, <a class="externalLink" href="https://www.apache.org/licenses/LICENSE-2.0">Apache Software License - Version 2.0</a></p></td></tr></table></div>
+<ul>
+<li>org.eclipse.jetty:jetty-util:jar:11.0.24 (compile) <img id="_img43" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep42', '_img43' );" style="cursor: pointer; vertical-align: text-bottom;" /><div id="_dep42" style="display:none">
+<table class="table table-striped">
+<tr class="a">
+<th>Jetty :: Utilities</th></tr>
+<tr class="b">
+<td>
+<p><b>Description: </b>Utility classes for Jetty</p>
+<p><b>URL: </b><a class="externalLink" href="https://jetty.org/jetty-util">https://jetty.org/jetty-util</a></p>
+<p><b>Project Licenses: </b><a class="externalLink" href="https://www.eclipse.org/legal/epl-2.0/">Eclipse Public License - Version 2.0</a>, <a class="externalLink" href="https://www.apache.org/licenses/LICENSE-2.0">Apache Software License - Version 2.0</a></p></td></tr></table></div></li></ul></li>
+<li>org.eclipse.jetty:jetty-io:jar:11.0.24 (compile) <img id="_img45" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep44', '_img45' );" style="cursor: pointer; vertical-align: text-bottom;" /><div id="_dep44" style="display:none">
+<table class="table table-striped">
+<tr class="a">
+<th>Jetty :: IO Utility</th></tr>
+<tr class="b">
+<td>
+<p><b>Description: </b>The Eclipse Jetty Project</p>
+<p><b>URL: </b><a class="externalLink" href="https://jetty.org/jetty-io">https://jetty.org/jetty-io</a></p>
+<p><b>Project Licenses: </b><a class="externalLink" href="https://www.eclipse.org/legal/epl-2.0/">Eclipse Public License - Version 2.0</a>, <a class="externalLink" href="https://www.apache.org/licenses/LICENSE-2.0">Apache Software License - Version 2.0</a></p></td></tr></table></div></li>
+<li>org.eclipse.jetty.toolchain:jetty-jakarta-servlet-api:jar:5.0.2 (compile) <img id="_img47" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep46', '_img47' );" style="cursor: pointer; vertical-align: text-bottom;" /><div id="_dep46" style="display:none">
 <table class="table table-striped">
 <tr class="a">
 <th>Jetty :: Jakarta Servlet API and Schemas for JPMS and OSGi</th></tr>
@@ -622,35 +650,7 @@ writes to specify Java code for type-checking by the Checker Framework.</p>
 <td>
 <p><b>Description: </b>The Eclipse Jetty Toolchain Parent</p>
 <p><b>URL: </b><a class="externalLink" href="https://eclipse.org/jetty/jetty-jakarta-servlet-api">https://eclipse.org/jetty/jetty-jakarta-servlet-api</a></p>
-<p><b>Project Licenses: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache Software License - Version 2.0</a>, <a class="externalLink" href="http://www.eclipse.org/org/documents/epl-v10.php">Eclipse Public License - Version 1.0</a></p></td></tr></table></div></li>
-<li>org.eclipse.jetty:jetty-http:jar:11.0.18 (compile) <img id="_img43" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep42', '_img43' );" style="cursor: pointer; vertical-align: text-bottom;" /><div id="_dep42" style="display:none">
-<table class="table table-striped">
-<tr class="a">
-<th>Jetty :: Http Utility</th></tr>
-<tr class="b">
-<td>
-<p><b>Description: </b>The Eclipse Jetty Project</p>
-<p><b>URL: </b><a class="externalLink" href="https://eclipse.dev/jetty/jetty-http">https://eclipse.dev/jetty/jetty-http</a></p>
-<p><b>Project Licenses: </b><a class="externalLink" href="https://www.eclipse.org/legal/epl-2.0/">Eclipse Public License - Version 2.0</a>, <a class="externalLink" href="https://www.apache.org/licenses/LICENSE-2.0">Apache Software License - Version 2.0</a></p></td></tr></table></div>
-<ul>
-<li>org.eclipse.jetty:jetty-util:jar:11.0.18 (compile) <img id="_img45" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep44', '_img45' );" style="cursor: pointer; vertical-align: text-bottom;" /><div id="_dep44" style="display:none">
-<table class="table table-striped">
-<tr class="a">
-<th>Jetty :: Utilities</th></tr>
-<tr class="b">
-<td>
-<p><b>Description: </b>Utility classes for Jetty</p>
-<p><b>URL: </b><a class="externalLink" href="https://eclipse.dev/jetty/jetty-util">https://eclipse.dev/jetty/jetty-util</a></p>
-<p><b>Project Licenses: </b><a class="externalLink" href="https://www.eclipse.org/legal/epl-2.0/">Eclipse Public License - Version 2.0</a>, <a class="externalLink" href="https://www.apache.org/licenses/LICENSE-2.0">Apache Software License - Version 2.0</a></p></td></tr></table></div></li></ul></li>
-<li>org.eclipse.jetty:jetty-io:jar:11.0.18 (compile) <img id="_img47" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep46', '_img47' );" style="cursor: pointer; vertical-align: text-bottom;" /><div id="_dep46" style="display:none">
-<table class="table table-striped">
-<tr class="a">
-<th>Jetty :: IO Utility</th></tr>
-<tr class="b">
-<td>
-<p><b>Description: </b>The Eclipse Jetty Project</p>
-<p><b>URL: </b><a class="externalLink" href="https://eclipse.dev/jetty/jetty-io">https://eclipse.dev/jetty/jetty-io</a></p>
-<p><b>Project Licenses: </b><a class="externalLink" href="https://www.eclipse.org/legal/epl-2.0/">Eclipse Public License - Version 2.0</a>, <a class="externalLink" href="https://www.apache.org/licenses/LICENSE-2.0">Apache Software License - Version 2.0</a></p></td></tr></table></div></li></ul></li>
+<p><b>Project Licenses: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache Software License - Version 2.0</a>, <a class="externalLink" href="http://www.eclipse.org/org/documents/epl-v10.php">Eclipse Public License - Version 1.0</a></p></td></tr></table></div></li></ul></li>
 <li>org.eclipse.jetty:jetty-servlet:jar:11.0.20 (compile) <img id="_img49" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep48', '_img49' );" style="cursor: pointer; vertical-align: text-bottom;" /><div id="_dep48" style="display:none">
 <table class="table table-striped">
 <tr class="a">
@@ -984,18 +984,18 @@ writes to specify Java code for type-checking by the Checker Framework.</p>
 <td style="text-align: center;">1.8</td>
 <td style="text-align: center;">Yes</td></tr>
 <tr class="a">
-<td style="text-align: left;">jetty-http-11.0.18.jar</td>
-<td style="text-align: right;">278.3 kB</td>
-<td style="text-align: right;">153</td>
-<td style="text-align: right;">133</td>
+<td style="text-align: left;">jetty-http-11.0.24.jar</td>
+<td style="text-align: right;">272.9 kB</td>
+<td style="text-align: right;">146</td>
+<td style="text-align: right;">126</td>
 <td style="text-align: right;">4</td>
 <td style="text-align: center;">11</td>
 <td style="text-align: center;">Yes</td></tr>
 <tr class="b">
-<td style="text-align: left;">jetty-io-11.0.18.jar</td>
-<td style="text-align: right;">217.1 kB</td>
-<td style="text-align: right;">136</td>
-<td style="text-align: right;">121</td>
+<td style="text-align: left;">jetty-io-11.0.24.jar</td>
+<td style="text-align: right;">222.3 kB</td>
+<td style="text-align: right;">137</td>
+<td style="text-align: right;">122</td>
 <td style="text-align: right;">4</td>
 <td style="text-align: center;">11</td>
 <td style="text-align: center;">Yes</td></tr>
@@ -1008,10 +1008,10 @@ writes to specify Java code for type-checking by the Checker Framework.</p>
 <td style="text-align: center;">11</td>
 <td style="text-align: center;">Yes</td></tr>
 <tr class="b">
-<td style="text-align: left;">jetty-server-11.0.18.jar</td>
-<td style="text-align: right;">801.1 kB</td>
-<td style="text-align: right;">382</td>
-<td style="text-align: right;">361</td>
+<td style="text-align: left;">jetty-server-11.0.24.jar</td>
+<td style="text-align: right;">799.8 kB</td>
+<td style="text-align: right;">377</td>
+<td style="text-align: right;">356</td>
 <td style="text-align: right;">8</td>
 <td style="text-align: center;">11</td>
 <td style="text-align: center;">Yes</td></tr>
@@ -1024,10 +1024,10 @@ writes to specify Java code for type-checking by the Checker Framework.</p>
 <td style="text-align: center;">11</td>
 <td style="text-align: center;">Yes</td></tr>
 <tr class="b">
-<td style="text-align: left;">jetty-util-11.0.18.jar</td>
-<td style="text-align: right;">578.4 kB</td>
-<td style="text-align: right;">342</td>
-<td style="text-align: right;">316</td>
+<td style="text-align: left;">jetty-util-11.0.24.jar</td>
+<td style="text-align: right;">571.5 kB</td>
+<td style="text-align: right;">332</td>
+<td style="text-align: right;">306</td>
 <td style="text-align: right;">13</td>
 <td style="text-align: center;">11</td>
 <td style="text-align: center;">Yes</td></tr>
@@ -1090,16 +1090,16 @@ writes to specify Java code for type-checking by the Checker Framework.</p>
 <tr class="b">
 <td style="text-align: right;">31</td>
 <td style="text-align: right;">18.1 MB</td>
-<td style="text-align: right;">8578</td>
-<td style="text-align: right;">7452</td>
+<td style="text-align: right;">8557</td>
+<td style="text-align: right;">7431</td>
 <td style="text-align: right;">358</td>
 <td style="text-align: center;">11</td>
 <td style="text-align: right;">30</td></tr>
 <tr class="a">
 <td style="text-align: right;">compile: 25</td>
 <td style="text-align: right;">compile: 15.8 MB</td>
-<td style="text-align: right;">compile: 6817</td>
-<td style="text-align: right;">compile: 5973</td>
+<td style="text-align: right;">compile: 6796</td>
+<td style="text-align: right;">compile: 5952</td>
 <td style="text-align: right;">compile: 268</td>
 <td rowspan="2" style="text-align: center; vertical-align: middle;">11</td>
 <td style="text-align: right;">compile: 24</td></tr>
@@ -1128,7 +1128,7 @@ writes to specify Java code for type-checking by the Checker Framework.</p>
 
             <div id="copyrightDiv" class="pt-3">
               <p>&#169;
-      2024
+      2025
               </p>
             </div>
           </div>

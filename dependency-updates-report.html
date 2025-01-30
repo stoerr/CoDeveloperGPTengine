@@ -101,9 +101,9 @@
                    <a href="project-reports.html" id="Project ReportsDropdownLink" title="Project Reports"  class="dropdown-item" >Project Reports</a>
                    <ul id="Project DocumentationMenuSubMenuDropdown" class="dropdown-menu submenu">
                      <li class="nav-item dropdown-item">
-                       <a href="failsafe-report.html" id="FailsafeDropdownLink" title="Failsafe"  class="dropdown-item" >Failsafe</a>                     </li>
+                       <a href="failsafe.html" id="FailsafeDropdownLink" title="Failsafe"  class="dropdown-item" >Failsafe</a>                     </li>
                      <li class="nav-item dropdown-item">
-                       <a href="surefire-report.html" id="SurefireDropdownLink" title="Surefire"  class="dropdown-item" >Surefire</a>                     </li>
+                       <a href="surefire.html" id="SurefireDropdownLink" title="Surefire"  class="dropdown-item" >Surefire</a>                     </li>
                      <li class="nav-item dropdown-item">
                        <a href="jacoco-aggregate/index.html" id="JaCoCo AggregateDropdownLink" title="JaCoCo Aggregate"  class="dropdown-item" >JaCoCo Aggregate</a>                     </li>
                      <li class="nav-item dropdown-item">
@@ -126,9 +126,9 @@
         <div id="projectBarContainer" class="container-fluid">
 
           <div id="projectBaDateVersionContainer" class="justify-content-start">
-            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2024-09-21</span>
+            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2025-01-30</span>
             <span id="projectDateVersionSpacer" class="px-1 navbar-text">|</span>
-            <span id="projectVersion" class="px-1 navbar-text">Version: 3.2.1-SNAPSHOT</span>
+            <span id="projectVersion" class="px-1 navbar-text">Version: 3.2.1</span>
           </div>
           <div id="breadcrumbSpacer" ></div>
         </div>
@@ -137,7 +137,7 @@
 
     <main class="flex-shrink-0" role="main">
       <div class="container mt-3 rounded">
-<section>
+<section><a id="Overview"></a>
 <h1>Overview</h1>
 <p>This report summarizes newer versions that may be available for your project's various dependencies.</p>
 <table class="table table-striped">
@@ -153,17 +153,17 @@
 <tr class="b">
 <td><img src="images/icon_warning_sml.gif" /></td>
 <td># of dependencies where the next version available is an incremental version update</td>
-<td>6</td></tr>
+<td>5</td></tr>
 <tr class="a">
 <td><img src="images/icon_warning_sml.gif" /></td>
 <td># of dependencies where the next version available is a minor version update</td>
 <td>3</td></tr>
 <tr class="b">
-<td><img src="images/icon_success_sml.gif" /></td>
+<td><img src="images/icon_warning_sml.gif" /></td>
 <td># of dependencies where the next version available is a major version update</td>
-<td>0</td></tr></tr></table><section>
+<td>1</td></tr></tr></table><section><a id="Dependency_Management"></a>
 <h2>Dependency Management</h2>
-<p>This project does not declare any dependencies in a dependencyManagement section.</p></section><section>
+<p>This project does not declare any dependencies in a dependencyManagement section.</p></section><section><a id="Dependencies"></a>
 <h2>Dependencies</h2>
 <table class="table table-striped">
 <tr class="a">
@@ -187,7 +187,7 @@
 <td></td>
 <td>jar</td>
 <td></td>
-<td><b>1.5.8</b></td>
+<td><b>1.5.16</b></td>
 <td></td>
 <td></td></tr>
 <tr class="a">
@@ -199,7 +199,7 @@
 <td></td>
 <td>jar</td>
 <td></td>
-<td><b>1.5.8</b></td>
+<td><b>1.5.16</b></td>
 <td></td>
 <td></td></tr>
 <tr class="b">
@@ -224,7 +224,7 @@
 <td>jar</td>
 <td></td>
 <td></td>
-<td><b>2.11.0</b></td>
+<td><b>2.12.0</b></td>
 <td></td></tr>
 <tr class="b">
 <td><img src="images/icon_warning_sml.gif" /></td>
@@ -236,7 +236,7 @@
 <td>jar</td>
 <td></td>
 <td></td>
-<td><b>33.3.0-jre</b></td>
+<td><b>33.4.0-jre</b></td>
 <td></td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" /></td>
@@ -319,21 +319,21 @@
 <td></td>
 <td>jar</td>
 <td></td>
-<td><b>2.0.32</b></td>
+<td><b>2.0.33</b></td>
 <td></td>
-<td><b>3.0.3</b></td></tr>
+<td><b>3.0.4</b></td></tr>
 <tr class="b">
 <td><img src="images/icon_warning_sml.gif" /></td>
 <td>org.eclipse.jetty</td>
 <td>jetty-server</td>
-<td>11.0.18</td>
+<td>11.0.24</td>
 <td>compile</td>
 <td></td>
 <td>jar</td>
 <td></td>
-<td><b>11.0.24</b></td>
 <td></td>
-<td><b>12.0.13</b></td></tr>
+<td></td>
+<td><b>12.1.0.alpha1</b></td></tr>
 <tr class="a">
 <td><img src="images/icon_warning_sml.gif" /></td>
 <td>org.eclipse.jetty</td>
@@ -369,9 +369,9 @@
 <th>Latest Subincremental</th>
 <th>Latest Incremental</th>
 <th>Latest Minor</th>
-<th>Latest Major</th></tr></table></section></section><section>
+<th>Latest Major</th></tr></table></section></section><section><a id="Dependency_Updates"></a>
 <h1>Dependency Updates</h1>
-<p></p><section>
+<p>-</p><section><a id="ch.qos.logback.3Alogback-classic"></a>
 <h2>ch.qos.logback:logback-classic</h2>
 <table class="table table-striped">
 <tr class="a">
@@ -397,7 +397,7 @@
 <td style="text-align: left;">jar</td></tr>
 <tr class="b">
 <th>Newer versions</th>
-<td style="text-align: left;">1.5.7<br /><b>1.5.8</b>&#160;<i>Latest Incremental</i></td></tr></table></section><section>
+<td style="text-align: left;">1.5.7<br />1.5.8<br />1.5.9<br />1.5.10<br />1.5.11<br />1.5.12<br />1.5.13<br />1.5.14<br />1.5.15<br /><b>1.5.16</b>&#160;<i>Latest Incremental</i></td></tr></table></section><section><a id="ch.qos.logback.3Alogback-core"></a>
 <h2>ch.qos.logback:logback-core</h2>
 <table class="table table-striped">
 <tr class="a">
@@ -423,7 +423,7 @@
 <td style="text-align: left;">jar</td></tr>
 <tr class="b">
 <th>Newer versions</th>
-<td style="text-align: left;">1.5.7<br /><b>1.5.8</b>&#160;<i>Latest Incremental</i></td></tr></table></section><section>
+<td style="text-align: left;">1.5.7<br />1.5.8<br />1.5.9<br />1.5.10<br />1.5.11<br />1.5.12<br />1.5.13<br />1.5.14<br />1.5.15<br /><b>1.5.16</b>&#160;<i>Latest Incremental</i></td></tr></table></section><section><a id="com.google.code.findbugs.3Ajsr305"></a>
 <h2>com.google.code.findbugs:jsr305</h2>
 <table class="table table-striped">
 <tr class="a">
@@ -446,7 +446,7 @@
 <td style="text-align: left;"></td></tr>
 <tr class="a">
 <th>Type</th>
-<td style="text-align: left;">jar</td></tr></table></section><section>
+<td style="text-align: left;">jar</td></tr></table></section><section><a id="com.google.code.gson.3Agson"></a>
 <h2>com.google.code.gson:gson</h2>
 <table class="table table-striped">
 <tr class="a">
@@ -472,7 +472,7 @@
 <td style="text-align: left;">jar</td></tr>
 <tr class="b">
 <th>Newer versions</th>
-<td style="text-align: left;"><b>2.11.0</b>&#160;<i>Latest Minor</i></td></tr></table></section><section>
+<td style="text-align: left;">2.11.0<br /><b>2.12.0</b>&#160;<i>Latest Minor</i></td></tr></table></section><section><a id="com.google.guava.3Aguava"></a>
 <h2>com.google.guava:guava</h2>
 <table class="table table-striped">
 <tr class="a">
@@ -498,7 +498,7 @@
 <td style="text-align: left;">jar</td></tr>
 <tr class="b">
 <th>Newer versions</th>
-<td style="text-align: left;">33.1.0-android<br />33.1.0-jre<br />33.2.0-android<br />33.2.0-jre<br />33.2.1-android<br />33.2.1-jre<br />33.3.0-android<br /><b>33.3.0-jre</b>&#160;<i>Latest Minor</i></td></tr></table></section><section>
+<td style="text-align: left;">33.1.0-android<br />33.1.0-jre<br />33.2.0-android<br />33.2.0-jre<br />33.2.1-android<br />33.2.1-jre<br />33.3.0-android<br />33.3.0-jre<br />33.3.1-android<br />33.3.1-jre<br />33.4.0-android<br /><b>33.4.0-jre</b>&#160;<i>Latest Minor</i></td></tr></table></section><section><a id="com.knuddels.3Ajtokkit"></a>
 <h2>com.knuddels:jtokkit</h2>
 <table class="table table-striped">
 <tr class="a">
@@ -521,7 +521,7 @@
 <td style="text-align: left;"></td></tr>
 <tr class="a">
 <th>Type</th>
-<td style="text-align: left;">jar</td></tr></table></section><section>
+<td style="text-align: left;">jar</td></tr></table></section><section><a id="commons-cli.3Acommons-cli"></a>
 <h2>commons-cli:commons-cli</h2>
 <table class="table table-striped">
 <tr class="a">
@@ -544,7 +544,7 @@
 <td style="text-align: left;"></td></tr>
 <tr class="a">
 <th>Type</th>
-<td style="text-align: left;">jar</td></tr></table></section><section>
+<td style="text-align: left;">jar</td></tr></table></section><section><a id="io.github.furstenheim.3Acopy_down"></a>
 <h2>io.github.furstenheim:copy_down</h2>
 <table class="table table-striped">
 <tr class="a">
@@ -567,7 +567,7 @@
 <td style="text-align: left;"></td></tr>
 <tr class="a">
 <th>Type</th>
-<td style="text-align: left;">jar</td></tr></table></section><section>
+<td style="text-align: left;">jar</td></tr></table></section><section><a id="junit.3Ajunit"></a>
 <h2>junit:junit</h2>
 <table class="table table-striped">
 <tr class="a">
@@ -590,7 +590,7 @@
 <td style="text-align: left;"></td></tr>
 <tr class="a">
 <th>Type</th>
-<td style="text-align: left;">jar</td></tr></table></section><section>
+<td style="text-align: left;">jar</td></tr></table></section><section><a id="org.apache.commons.3Acommons-lang3"></a>
 <h2>org.apache.commons:commons-lang3</h2>
 <table class="table table-striped">
 <tr class="a">
@@ -616,7 +616,7 @@
 <td style="text-align: left;">jar</td></tr>
 <tr class="b">
 <th>Newer versions</th>
-<td style="text-align: left;">3.15.0<br />3.16.0<br /><b>3.17.0</b>&#160;<i>Latest Minor</i></td></tr></table></section><section>
+<td style="text-align: left;">3.15.0<br />3.16.0<br /><b>3.17.0</b>&#160;<i>Latest Minor</i></td></tr></table></section><section><a id="org.apache.httpcomponents.3Ahttpclient"></a>
 <h2>org.apache.httpcomponents:httpclient</h2>
 <table class="table table-striped">
 <tr class="a">
@@ -639,7 +639,7 @@
 <td style="text-align: left;"></td></tr>
 <tr class="a">
 <th>Type</th>
-<td style="text-align: left;">jar</td></tr></table></section><section>
+<td style="text-align: left;">jar</td></tr></table></section><section><a id="org.apache.pdfbox.3Apdfbox"></a>
 <h2>org.apache.pdfbox:pdfbox</h2>
 <table class="table table-striped">
 <tr class="a">
@@ -665,12 +665,12 @@
 <td style="text-align: left;">jar</td></tr>
 <tr class="b">
 <th>Newer versions</th>
-<td style="text-align: left;">2.0.31<br /><b>2.0.32</b>&#160;<i>Latest Incremental</i><br />3.0.0-alpha2<br />3.0.0-alpha3<br />3.0.0-beta1<br />3.0.0-RC1<br />3.0.0<br />3.0.1<br />3.0.2<br /><b>3.0.3</b>&#160;<i>Latest Major</i></td></tr></table></section><section>
+<td style="text-align: left;">2.0.31<br />2.0.32<br /><b>2.0.33</b>&#160;<i>Latest Incremental</i><br />3.0.0-alpha2<br />3.0.0-alpha3<br />3.0.0-beta1<br />3.0.0-RC1<br />3.0.0<br />3.0.1<br />3.0.2<br />3.0.3<br /><b>3.0.4</b>&#160;<i>Latest Major</i></td></tr></table></section><section><a id="org.eclipse.jetty.3Ajetty-server"></a>
 <h2>org.eclipse.jetty:jetty-server</h2>
 <table class="table table-striped">
 <tr class="a">
 <th>Status</th>
-<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer incremental version available. Incremental updates are typically passive.</td></tr>
+<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer major version available. Major updates are rarely passive.</td></tr>
 <tr class="b">
 <th>Group Id</th>
 <td style="text-align: left;">org.eclipse.jetty</td></tr>
@@ -679,7 +679,7 @@
 <td style="text-align: left;">jetty-server</td></tr>
 <tr class="b">
 <th>Current Version</th>
-<td style="text-align: left;">11.0.18</td></tr>
+<td style="text-align: left;">11.0.24</td></tr>
 <tr class="a">
 <th>Scope</th>
 <td style="text-align: left;">compile</td></tr>
@@ -691,7 +691,7 @@
 <td style="text-align: left;">jar</td></tr>
 <tr class="b">
 <th>Newer versions</th>
-<td style="text-align: left;">11.0.19<br />11.0.20<br />11.0.21<br />11.0.22<br />11.0.23<br /><b>11.0.24</b>&#160;<i>Latest Incremental</i><br />12.0.0.alpha0<br />12.0.0.alpha1<br />12.0.0.alpha2<br />12.0.0.alpha3<br />12.0.0.beta0<br />12.0.0.beta1<br />12.0.0.beta2<br />12.0.0.beta3<br />12.0.0.beta4<br />12.0.0<br />12.0.1<br />12.0.2<br />12.0.3<br />12.0.4<br />12.0.5<br />12.0.6<br />12.0.7<br />12.0.8<br />12.0.9<br />12.0.10<br />12.0.11<br />12.0.12<br /><b>12.0.13</b>&#160;<i>Latest Major</i></td></tr></table></section><section>
+<td style="text-align: left;">12.0.0.alpha0<br />12.0.0.alpha1<br />12.0.0.alpha2<br />12.0.0.alpha3<br />12.0.0.beta0<br />12.0.0.beta1<br />12.0.0.beta2<br />12.0.0.beta3<br />12.0.0.beta4<br />12.0.0<br />12.0.1<br />12.0.2<br />12.0.3<br />12.0.4<br />12.0.5<br />12.0.6<br />12.0.7<br />12.0.8<br />12.0.9<br />12.0.10<br />12.0.11<br />12.0.12<br />12.0.13<br />12.0.14<br />12.0.15<br />12.0.16<br />12.1.0.alpha0<br /><b>12.1.0.alpha1</b>&#160;<i>Latest Major</i></td></tr></table></section><section><a id="org.eclipse.jetty.3Ajetty-servlet"></a>
 <h2>org.eclipse.jetty:jetty-servlet</h2>
 <table class="table table-striped">
 <tr class="a">
@@ -717,7 +717,7 @@
 <td style="text-align: left;">jar</td></tr>
 <tr class="b">
 <th>Newer versions</th>
-<td style="text-align: left;">11.0.21<br />11.0.22<br />11.0.23<br /><b>11.0.24</b>&#160;<i>Latest Incremental</i></td></tr></table></section><section>
+<td style="text-align: left;">11.0.21<br />11.0.22<br />11.0.23<br /><b>11.0.24</b>&#160;<i>Latest Incremental</i></td></tr></table></section><section><a id="org.slf4j.3Aslf4j-api"></a>
 <h2>org.slf4j:slf4j-api</h2>
 <table class="table table-striped">
 <tr class="a">
@@ -754,7 +754,7 @@
 
             <div id="copyrightDiv" class="pt-3">
               <p>&#169;
-      2024
+      2025
               </p>
             </div>
           </div>

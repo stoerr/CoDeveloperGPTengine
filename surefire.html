@@ -101,7 +101,7 @@
                    <a href="project-reports.html" id="Project ReportsDropdownLink" title="Project Reports"  class="dropdown-item" >Project Reports</a>
                    <ul id="Project DocumentationMenuSubMenuDropdown" class="dropdown-menu submenu">
                      <li class="nav-item dropdown-item">
-                       <a href="failsafe-report.html" id="FailsafeDropdownLink" title="Failsafe"  class="dropdown-item" >Failsafe</a>                     </li>
+                       <a href="failsafe.html" id="FailsafeDropdownLink" title="Failsafe"  class="dropdown-item" >Failsafe</a>                     </li>
                      <li class="nav-item dropdown-item">
                        <a title="Surefire" class="dropdown-item">Surefire</a>                     </li>
                      <li class="nav-item dropdown-item">
@@ -126,9 +126,9 @@
         <div id="projectBarContainer" class="container-fluid">
 
           <div id="projectBaDateVersionContainer" class="justify-content-start">
-            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2024-09-21</span>
+            <span id="projectLastPublished" class="px-1 navbar-text">Last Published: 2025-01-30</span>
             <span id="projectDateVersionSpacer" class="px-1 navbar-text">|</span>
-            <span id="projectVersion" class="px-1 navbar-text">Version: 3.2.1-SNAPSHOT</span>
+            <span id="projectVersion" class="px-1 navbar-text">Version: 3.2.1</span>
           </div>
           <div id="breadcrumbSpacer" ></div>
         </div>
@@ -137,7 +137,8 @@
 
     <main class="flex-shrink-0" role="main">
       <div class="container mt-3 rounded">
-<script type="text/javascript">
+
+<script>
 function toggleDisplay(elementId) {
  var elm = document.getElementById(elementId + '-error');
  if (elm == null) {
@@ -153,9 +154,11 @@ function toggleDisplay(elementId) {
    document.getElementById(elementId + '-on').style.display = "none";
   }
  }
- }</script><section>
-<h1>Surefire Report</h1></section><section><a id="Summary"></a>
-<h1>Summary</h1>
+ }
+</script>
+<section><a id="Surefire_Report"></a>
+<h1>Surefire Report</h1><section><a id="Summary"></a>
+<h2>Summary</h2>
 <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />
 <table class="table table-striped">
 <tr class="a">
@@ -166,14 +169,14 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
-<td style="text-align: left;">8</td>
+<td>8</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.041 s</td></tr></table><br />
+<td>0.089 s</td></tr></table><br />
 <p>Note: failures are anticipated and checked for with assertions while errors are unanticipated.</p><br /></section><section><a id="Package_List"></a>
-<h1>Package List</h1>
+<h2>Package List</h2>
 <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />
 <table class="table table-striped">
 <tr class="a">
@@ -185,15 +188,15 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
-<td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine">net.stoerr.chatgpt.codevengine</a></td>
+<td><a href="#net.stoerr.chatgpt.codevengine">net.stoerr.chatgpt.codevengine</a></td>
 <td>8</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.041 s</td></tr></table><br />
+<td>0.089 s</td></tr></table><br />
 <p>Note: package statistics are not computed recursively, they only sum up all of its testsuites numbers.</p><section><a id="net.stoerr.chatgpt.codevengine"></a>
-<h2>net.stoerr.chatgpt.codevengine</h2>
+<h3>net.stoerr.chatgpt.codevengine</h3>
 <table class="table table-striped">
 <tr class="a">
 <th>-</th>
@@ -205,61 +208,61 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
-<td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine.TbUtilsTest"><img src="images/icon_success_sml.gif" /></a></td>
-<td><a href="#net.stoerr.chatgpt.codevengine.TbUtilsTest">TbUtilsTest</a></td>
-<td>2</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.021 s</td></tr>
-<tr class="a">
-<td style="text-align: left;"><a href="#net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest"><img src="images/icon_success_sml.gif" /></a></td>
+<td><a href="#net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest"><img src="images/icon_success_sml.gif" /></a></td>
 <td><a href="#net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest">GitIgnoreRulesTest</a></td>
 <td>6</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.020 s</td></tr></table></section><br /></section><section><a id="Test_Cases"></a>
-<h1>Test Cases</h1>
-<p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><section><a id="net.stoerr.chatgpt.codevengine.TbUtilsTest"></a>
-<h2>TbUtilsTest</h2>
+<td>0.077 s</td></tr>
+<tr class="a">
+<td><a href="#net.stoerr.chatgpt.codevengine.TbUtilsTest"><img src="images/icon_success_sml.gif" /></a></td>
+<td><a href="#net.stoerr.chatgpt.codevengine.TbUtilsTest">TbUtilsTest</a></td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.012 s</td></tr></table></section><br /></section><section><a id="Test_Cases"></a>
+<h2>Test Cases</h2>
+<p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><section><a id="net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest"></a>
+<h3>GitIgnoreRulesTest</h3>
 <table class="table table-striped">
 <tr class="a">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
-<td><a id="TC_net.stoerr.chatgpt.codevengine.TbUtilsTest.testCompileReplacementWithBackslashes"></a>testCompileReplacementWithBackslashes</td>
-<td>0.021 s</td></tr>
-<tr class="b">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
-<td><a id="TC_net.stoerr.chatgpt.codevengine.TbUtilsTest.testCompileReplacementWithGroupReferences"></a>testCompileReplacementWithGroupReferences</td>
-<td>0 s</td></tr></table></section><section><a id="net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest"></a>
-<h2>GitIgnoreRulesTest</h2>
-<table class="table table-striped">
-<tr class="a">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testEmptyGitignoreFile"></a>testEmptyGitignoreFile</td>
-<td>0.014 s</td></tr>
+<td>0.020 s</td></tr>
 <tr class="b">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testNegatedGitignoreRuleThrowsException"></a>testNegatedGitignoreRuleThrowsException</td>
-<td>0.002 s</td></tr>
+<td>0 s</td></tr>
 <tr class="a">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testValidGitignoreRules"></a>testValidGitignoreRules</td>
-<td>0.001 s</td></tr>
+<td>0 s</td></tr>
 <tr class="b">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testIsNotIgnored"></a>testIsNotIgnored</td>
 <td>0.001 s</td></tr>
 <tr class="a">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testIsIgnored"></a>testIsIgnored</td>
 <td>0.001 s</td></tr>
 <tr class="b">
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" /></td>
+<td><img src="images/icon_success_sml.gif" /></td>
 <td><a id="TC_net.stoerr.chatgpt.codevengine.GitIgnoreRulesTest.testNoGitignoreFile"></a>testNoGitignoreFile</td>
-<td>0.001 s</td></tr></table></section><br /></section>
+<td>0.001 s</td></tr></table></section><section><a id="net.stoerr.chatgpt.codevengine.TbUtilsTest"></a>
+<h3>TbUtilsTest</h3>
+<table class="table table-striped">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.TbUtilsTest.testCompileReplacementWithBackslashes"></a>testCompileReplacementWithBackslashes</td>
+<td>0.006 s</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" /></td>
+<td><a id="TC_net.stoerr.chatgpt.codevengine.TbUtilsTest.testCompileReplacementWithGroupReferences"></a>testCompileReplacementWithGroupReferences</td>
+<td>0 s</td></tr></table></section><br /></section></section>
       </div>
     </main>
 
@@ -270,7 +273,7 @@ function toggleDisplay(elementId) {
 
             <div id="copyrightDiv" class="pt-3">
               <p>&#169;
-      2024
+      2025
               </p>
             </div>
           </div>

@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://CoDeveloperGPTengine.stoerr.net/pmcodevgpt.html</loc>
-    <lastmod>2024-09-21</lastmod>
-  </url>
-  <url>
-    <loc>https://CoDeveloperGPTengine.stoerr.net/functionality.html</loc>
-    <lastmod>2024-09-21</lastmod>
-  </url>
-  <url>
-    <loc>https://CoDeveloperGPTengine.stoerr.net/gpt.html</loc>
-    <lastmod>2024-09-21</lastmod>
-  </url>
-  <url>
-    <loc>https://CoDeveloperGPTengine.stoerr.net/</loc>
-    <lastmod>2024-09-21</lastmod>
-  </url>
-  <url>
-    <loc>https://CoDeveloperGPTengine.stoerr.net/externalActions.html</loc>
-    <lastmod>2024-09-21</lastmod>
+    <loc>https://CoDeveloperGPTengine.stoerr.net/configuration.html</loc>
+    <lastmod>2025-01-30</lastmod>
   </url>
   <url>
     <loc>https://CoDeveloperGPTengine.stoerr.net/https.html</loc>
-    <lastmod>2024-09-21</lastmod>
+    <lastmod>2025-01-30</lastmod>
   </url>
   <url>
-    <loc>https://CoDeveloperGPTengine.stoerr.net/plugin.html</loc>
-    <lastmod>2024-09-21</lastmod>
+    <loc>https://CoDeveloperGPTengine.stoerr.net/pmcodevgpt.html</loc>
+    <lastmod>2025-01-30</lastmod>
+  </url>
+  <url>
+    <loc>https://CoDeveloperGPTengine.stoerr.net/externalActions.html</loc>
+    <lastmod>2025-01-30</lastmod>
   </url>
   <url>
     <loc>https://CoDeveloperGPTengine.stoerr.net/examples.html</loc>
-    <lastmod>2024-09-21</lastmod>
+    <lastmod>2025-01-30</lastmod>
   </url>
   <url>
     <loc>https://CoDeveloperGPTengine.stoerr.net/commandline.html</loc>
-    <lastmod>2024-09-21</lastmod>
+    <lastmod>2025-01-30</lastmod>
   </url>
   <url>
-    <loc>https://CoDeveloperGPTengine.stoerr.net/quickstart.html</loc>
-    <lastmod>2024-09-21</lastmod>
-  </url>
-  <url>
-    <loc>https://CoDeveloperGPTengine.stoerr.net/configuration.html</loc>
-    <lastmod>2024-09-21</lastmod>
+    <loc>https://CoDeveloperGPTengine.stoerr.net/gpt.html</loc>
+    <lastmod>2025-01-30</lastmod>
   </url>
   <url>
     <loc>https://CoDeveloperGPTengine.stoerr.net/install.html</loc>
-    <lastmod>2024-09-21</lastmod>
+    <lastmod>2025-01-30</lastmod>
+  </url>
+  <url>
+    <loc>https://CoDeveloperGPTengine.stoerr.net/</loc>
+    <lastmod>2025-01-30</lastmod>
+  </url>
+  <url>
+    <loc>https://CoDeveloperGPTengine.stoerr.net/plugin.html</loc>
+    <lastmod>2025-01-30</lastmod>
+  </url>
+  <url>
+    <loc>https://CoDeveloperGPTengine.stoerr.net/quickstart.html</loc>
+    <lastmod>2025-01-30</lastmod>
+  </url>
+  <url>
+    <loc>https://CoDeveloperGPTengine.stoerr.net/functionality.html</loc>
+    <lastmod>2025-01-30</lastmod>
   </url>
 </urlset>
