@@ -1,0 +1,1 @@
+Read docs/architecture.md for more details what is where and what functionality exists.
