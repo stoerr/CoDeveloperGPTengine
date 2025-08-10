@@ -7,6 +7,9 @@ These are possible later plans, not urgent.
 listDirectories - too many directories check.
 Perhaps: is this compatible with Anthropics Model Context Protocol ?
 https://www.anthropic.com/news/model-context-protocol
+Via proxy https://github.com/matthewhand/mcp-openapi-proxy?
+Alternative https://lobehub.com/de/mcp/cyanheads-filesystem-mcp-server
+oder https://github.com/smithery-ai/filesystem-mcp-server-1
 
 ## Improvements
 
