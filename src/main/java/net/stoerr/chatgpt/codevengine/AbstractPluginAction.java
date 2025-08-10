@@ -1,37 +1,22 @@
 package net.stoerr.chatgpt.codevengine;
 
-import static java.util.stream.Collectors.toList;
-import static net.stoerr.chatgpt.codevengine.TbUtils.logBody;
-import static net.stoerr.chatgpt.codevengine.TbUtils.logError;
-import static net.stoerr.chatgpt.codevengine.TbUtils.logInfo;
-
-import java.io.IOException;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.PathMatcher;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
-
-import javax.annotation.Nullable;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.google.gson.Gson;
-
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
+
+import javax.annotation.Nullable;
+import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.*;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
+import static net.stoerr.chatgpt.codevengine.TbUtils.*;
 
 public abstract class AbstractPluginAction extends HttpServlet {
 
@@ -49,9 +34,12 @@ public abstract class AbstractPluginAction extends HttpServlet {
     protected static ExecutionAbortedException sendError(HttpServletResponse response, int statusCode, String error) throws ExecutionAbortedException {
         logInfo("Error " + statusCode + ": " + error);
         response.setStatus(statusCode);
-        response.setContentType("text/plain;charset=UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
         try {
-            response.getWriter().write(error);
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", error);
+            String jsonError = new Gson().toJson(errorResponse);
+            response.getWriter().write(jsonError);
         } catch (IOException e) {
             logInfo("Error writing error: " + e);
         }
