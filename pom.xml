@@ -348,7 +348,7 @@
                         <!-- https://mvnrepository.com/artifact/io.fabric8/docker-maven-plugin -->
                         <groupId>io.fabric8</groupId>
                         <artifactId>docker-maven-plugin</artifactId>
-                        <version>0.44.0</version>
+                        <version>0.46.0</version>
                         <executions>
                             <execution>
                                 <id>default</id>
